@@ -1166,17 +1166,22 @@ export default function Home() {
   };
 
   useEffect(() => {
-    try {
-      const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
-      setLocalOnly(LOCAL_ONLY[q] || LOCAL_ONLY.ko);
-    } catch {
-      setLocalOnly(LOCAL_ONLY.ko);
-    }
+    const apply = () => {
+      try {
+        const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
+        setLocalOnly(LOCAL_ONLY[q] || LOCAL_ONLY[document.documentElement.lang.slice(0, 2)] || LOCAL_ONLY.ko);
+      } catch {
+        setLocalOnly(LOCAL_ONLY.ko);
+      }
+    };
+    apply();
+    window.addEventListener('popstate', apply);
+    return () => window.removeEventListener('popstate', apply);
   }, []);
 
   return (
     <div className={`game-container ${currentPlayer === 'black' ? 'turn-black' : 'turn-white'}`}>
-      <p className="local-only" role="note">{localOnly}</p>
+      <p className="local-only" id="local-only" role="note">{localOnly}</p>
       {/* Mode Selection Screen */}
       {showModeSelect && (
         <div className="mode-select-overlay">
@@ -1468,7 +1473,9 @@ export default function Home() {
           border-bottom: 2px solid #111;
           text-align: center;
           position: relative;
-          z-index: 5;
+          z-index: 3001;
+          overflow-wrap: anywhere;
+          flex-shrink: 0;
         }
 
         /* Header */

@@ -379,4 +379,6 @@ input::placeholder { color: #64748b; }
   background: #ffcc33;
   border: 1px solid #111;
   border-radius: 8px;
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
