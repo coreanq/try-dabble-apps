@@ -6,6 +6,6 @@
     "not_found_handling": "single-page-application"
   },
   "routes": [
-    { "pattern": "jump-map.try-dabble.com", "custom_domain": true }
+    { "pattern": "jump-map.try-dabble.com/*", "zone_name": "try-dabble.com" }
   ]
 }

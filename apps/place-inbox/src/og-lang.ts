@@ -27,6 +27,7 @@ const COPY: Record<Lang, { title: string; description: string; locale: string; i
   },
 };
 
+const SLUG = "place-inbox";
 const ORIGIN = 'https://place-inbox.try-dabble.com';
 const LANGS = new Set<string>(["ko", "en", "ja", "zh"]);
 
@@ -43,11 +44,12 @@ export default {
     const ct = asset.headers.get('content-type') || '';
     if (!ct.includes('text/html') || !isHome(url.pathname)) return asset;
     const q = url.searchParams.get('lang');
-    if (!q || !LANGS.has(q)) return asset;
+    let html: Response = asset;
+    if (q && LANGS.has(q)) {
     const lang = q as Lang;
     const copy = COPY[lang];
     const shareUrl = `${ORIGIN}/?lang=${lang}`;
-    return new HTMLRewriter()
+    html = new HTMLRewriter()
       .on('html', { element(el) { el.setAttribute('lang', lang === 'zh' ? 'zh' : lang); } })
       .on('title', { element(el) { el.setInnerContent(copy.title); } })
       .on('meta', {
@@ -74,5 +76,15 @@ export default {
         },
       })
       .transform(asset);
+    } // lang rewrite
+
+    const withWidget = new HTMLRewriter()
+      .on('body', {
+        element(el) {
+          el.append(`<script src="https://try-dabble.com/widget/feedback.js" data-app="${SLUG}" defer></script>`, { html: true });
+        },
+      })
+      .transform(html);
+    return withWidget;
   },
 };

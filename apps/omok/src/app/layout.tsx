@@ -226,7 +226,14 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script
+          src="https://try-dabble.com/widget/feedback.js"
+          data-app="omok"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
