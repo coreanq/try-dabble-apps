@@ -366,3 +366,18 @@ input:focus, select:focus, textarea:focus {
   .app { padding-top: 1.2rem; max-width: 36rem; }
   .idea-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
+
+.local-only {
+  margin: 0 0 0.35rem;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #111;
+  background: #ffcc33;
+  border: 1px solid #111;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}

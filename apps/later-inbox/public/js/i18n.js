@@ -1,6 +1,7 @@
 window.LI_I18N = {
   en: {
     title: "Later Inbox",
+    localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Later",
     tagline: "A shrinking read-later inbox",
     metaDescription: "Save a link with a required one-line why. Keep at most 3 for this week. Unpinned inbox items expire after 30 days. Data stays in your browser.",
@@ -75,6 +76,7 @@ window.LI_I18N = {
   },
   ko: {
     title: "나중함",
+    localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "나중함",
     tagline: "줄어드는 나중에 읽기함",
     metaDescription: "링크와 한 줄 이유를 남기고, 이번 주 최대 3개만 고릅니다. 핀하지 않으면 30일 후 만료됩니다. 데이터는 브라우저에만 남습니다.",
@@ -149,6 +151,7 @@ window.LI_I18N = {
   },
   ja: {
     title: "あとで読む",
+    localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "あとで",
     tagline: "小さくなるあとで読む箱",
     metaDescription: "リンクと一行の理由を残し、今週は最大3件。ピンなしは30日で期限切れ。データはこのブラウザだけです。",
@@ -223,6 +226,7 @@ window.LI_I18N = {
   },
   zh: {
     title: "稍后再读",
+    localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "稍后再读",
     tagline: "会变短的稍后再读收件箱",
     metaDescription: "保存链接并写下一句理由。本周最多 3 条。未钉选超过 30 天会过期。数据只留在浏览器。",

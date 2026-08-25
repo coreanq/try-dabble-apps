@@ -8,6 +8,13 @@ type Player = 'black' | 'white';
 type Board = (Player | null)[][];
 type GameMode = 'ai' | 'pvp'; // AI 대결 또는 2인 대결
 
+const LOCAL_ONLY: Record<string, string> = {
+  ko: '이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.',
+  en: 'Your data stays on this device. Nothing is sent to our servers.',
+  ja: 'データはこの端末にだけ保存されます。サーバーには送りません。',
+  zh: '数据仅保存在此设备，不会上传到服务器。',
+};
+
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,6 +25,7 @@ export default function Home() {
   const [currentPlayer, setCurrentPlayer] = useState<Player>('black');
   const [winner, setWinner] = useState<Player | 'draw' | null>(null);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+  const [localOnly, setLocalOnly] = useState(LOCAL_ONLY.ko);
   const [lastMove, setLastMove] = useState<{ row: number; col: number } | null>(null);
   const [isThinking, setIsThinking] = useState(false);
   const [moveCount, setMoveCount] = useState(0);
@@ -1157,8 +1165,18 @@ export default function Home() {
     setShowResult(false);
   };
 
+  useEffect(() => {
+    try {
+      const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
+      setLocalOnly(LOCAL_ONLY[q] || LOCAL_ONLY.ko);
+    } catch {
+      setLocalOnly(LOCAL_ONLY.ko);
+    }
+  }, []);
+
   return (
     <div className={`game-container ${currentPlayer === 'black' ? 'turn-black' : 'turn-white'}`}>
+      <p className="local-only" role="note">{localOnly}</p>
       {/* Mode Selection Screen */}
       {showModeSelect && (
         <div className="mode-select-overlay">
@@ -1439,6 +1457,18 @@ export default function Home() {
             radial-gradient(ellipse at 30% 20%, rgba(180, 140, 80, 0.08) 0%, transparent 50%),
             radial-gradient(ellipse at 70% 80%, rgba(180, 140, 80, 0.06) 0%, transparent 50%);
           pointer-events: none;
+        }
+
+        .local-only {
+          margin: 0;
+          padding: 6px 10px;
+          font: 700 11px/1.35 system-ui, sans-serif;
+          color: #111;
+          background: #ffcc33;
+          border-bottom: 2px solid #111;
+          text-align: center;
+          position: relative;
+          z-index: 5;
         }
 
         /* Header */

@@ -1,6 +1,7 @@
 window.GS_I18N = {
   en: {
     title: "Gift Stash",
+    localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Gift Stash",
     tagline: "Turn screenshots into gift ideas",
     metaDescription: "Local-first gift idea stash. Capture screenshots, tag them to a person, get reminded before their birthday. Data stays in your browser.",
@@ -80,6 +81,7 @@ window.GS_I18N = {
   },
   ko: {
     title: "선물 서랍",
+    localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "선물서랍",
     tagline: "스크린샷을 선물 아이디어로",
     metaDescription: "스크린샷을 선물 아이디어로 모으고, 사람에게 태깅하고, 생일 전에 알림을 받습니다. 데이터는 브라우저에만 저장됩니다.",
@@ -159,6 +161,7 @@ window.GS_I18N = {
   },
   ja: {
     title: "プレゼント引き出し",
+    localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "プレゼント",
     tagline: "スクショをプレゼント案に",
     metaDescription: "スクリーンショットをプレゼント案として保存し、人にタグ付けして誕生日前にリマインド。データはこのブラウザだけに残ります。",
@@ -238,6 +241,7 @@ window.GS_I18N = {
   },
   zh: {
     title: "礼物抽屉",
+    localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "礼物抽屉",
     tagline: "把截图变成礼物灵感",
     metaDescription: "本地优先的礼物灵感库。保存截图、标记给某人，生日前提醒。数据只留在浏览器。",

@@ -204,6 +204,8 @@
 
     const brandTitle = document.getElementById("brand-title");
     if (brandTitle) brandTitle.textContent = t("title");
+    const localOnly = document.getElementById("local-only");
+    if (localOnly) localOnly.textContent = t("localOnly");
     const brandTag = document.getElementById("brand-tagline");
     if (brandTag) brandTag.textContent = t("tagline");
 

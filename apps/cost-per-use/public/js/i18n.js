@@ -1,6 +1,7 @@
 window.CPU_I18N = {
   en: {
     title: "Cost-per-use Calculator",
+    localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Cost/Use",
     tagline: "See what each day and each use really costs",
     metaDescription: "Free cost-per-use and cost-per-day calculator. Enter price, purchase date, and expected lifespan to learn the true daily and per-use cost of anything you buy.",
@@ -54,6 +55,7 @@ window.CPU_I18N = {
   },
   ko: {
     title: "사용단가 계산기",
+    localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "사용단가",
     tagline: "하루·1회 사용 비용을 바로 확인",
     metaDescription: "구매 가격, 구매일, 예상 사용 기간으로 하루·1회 사용 비용을 계산하는 무료 사용단가 계산기. 데이터는 브라우저에만 저장됩니다.",
@@ -107,6 +109,7 @@ window.CPU_I18N = {
   },
   zh: {
     title: "单次使用成本计算器",
+    localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "使用成本",
     tagline: "查看每天和每次使用的真实成本",
     metaDescription: "免费的单次使用成本与每日成本计算器。输入价格、购买日期与预期使用寿命，了解物品的真实日均与单次成本。",
@@ -160,6 +163,7 @@ window.CPU_I18N = {
   },
   ja: {
     title: "1回あたり費用計算機",
+    localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "使用単価",
     tagline: "1日・1回あたりの本当のコストを確認",
     metaDescription: "購入価格・購入日・想定使用期間で1日あたり・1回あたりの費用を計算する無料ツール。データはこの端末にのみ保存されます。",

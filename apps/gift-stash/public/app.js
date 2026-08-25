@@ -228,6 +228,7 @@
       if (og) el.setAttribute("content", og);
     });
     setText("brand-title", t("title"));
+    setText("local-only", t("localOnly"));
     setText("brand-tagline", t("tagline"));
     setText("about-text", t("about"));
     setText("upcoming-title", t("upcoming"));

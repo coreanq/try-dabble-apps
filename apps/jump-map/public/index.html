@@ -171,6 +171,16 @@
       font-size: 22px;
     }
 
+
+    #local-only {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 6px 10px;
+      font: 700 11px/1.35 system-ui, sans-serif;
+      color: #111; background: #ffcc33;
+      border-bottom: 2px solid #111;
+      text-align: center;
+      pointer-events: none;
+    }
     #portrait-hint {
       display: none;
       position: fixed;
@@ -199,6 +209,7 @@
       <p>지하·땅·하늘·우주 4테마를 점프해 가는 픽셀 플랫포머입니다.</p>
     </div>
   </noscript>
+  <p id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
   <canvas id="game-canvas"></canvas>
 
   <div id="touch-controls" class="touch-only">
@@ -220,6 +231,22 @@
         navigator.serviceWorker.register('/sw.js').catch(() => {});
       });
     }
+  </script>
+
+  <script>
+    (function () {
+      var COPY = {
+        ko: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
+        en: "Your data stays on this device. Nothing is sent to our servers.",
+        ja: "データはこの端末にだけ保存されます。サーバーには送りません。",
+        zh: "数据仅保存在此设备，不会上传到服务器。"
+      };
+      var q = "";
+      try { q = new URLSearchParams(location.search).get("lang") || ""; } catch (e) {}
+      q = String(q).slice(0, 2).toLowerCase();
+      var el = document.getElementById("local-only");
+      if (el) el.textContent = COPY[q] || COPY.ko;
+    })();
   </script>
   <script src="https://try-dabble.com/widget/feedback.js" data-app="jump-map" defer></script>
 </body>

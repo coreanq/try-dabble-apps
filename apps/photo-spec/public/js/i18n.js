@@ -1,6 +1,7 @@
 window.PS_I18N = {
   en: {
     title: "Photo Spec",
+    localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Photo Spec",
     tagline: "Fit a photo or sign to exact px and KB",
     metaDescription: "Fit a photo or signature to exact pixels and min/max KB for exam, visa, job, and resume uploads. Local profile cheat-sheet. Data stays in your browser.",
@@ -52,6 +53,7 @@ window.PS_I18N = {
   },
   ko: {
     title: "사진 규격",
+    localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "사진규격",
     tagline: "사진·사인을 픽셀과 KB에 맞추기",
     metaDescription: "시험·비자·이력서 업로드용 사진·사인을 정확한 픽셀과 KB에 맞춥니다. 지원자 메모는 이 브라우저에만 저장됩니다.",
@@ -103,6 +105,7 @@ window.PS_I18N = {
   },
   ja: {
     title: "写真規格",
+    localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "写真規格",
     tagline: "写真・サインをピクセルとKBに合わせる",
     metaDescription: "試験・ビザ・履歴書の写真・サインを正確なピクセルとKBに合わせます。応募者メモはこのブラウザだけに残ります。",
@@ -154,6 +157,7 @@ window.PS_I18N = {
   },
   zh: {
     title: "照片规格",
+    localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "照片规格",
     tagline: "把照片或签名裁到指定像素和 KB",
     metaDescription: "把照片或签名裁到考试、签证、简历上传所需的精确像素和 KB。申请人备忘只存在此浏览器。",

@@ -121,6 +121,7 @@
     const twTitle = document.querySelector('meta[name="twitter:title"]');
     if (twTitle) twTitle.setAttribute("content", t("title") + " — Photo Spec");
     setText("brand-title", t("title"));
+    setText("local-only", t("localOnly"));
     setText("brand-tagline", t("tagline"));
     setText("about-text", t("about"));
     setText("presets-title", t("presets"));
