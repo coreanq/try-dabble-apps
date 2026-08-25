@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- 바둑판 나무 질감 -->
+    <linearGradient id="board" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8c06a"/>
+      <stop offset="50%" stop-color="#d4a94c"/>
+      <stop offset="100%" stop-color="#c89b3e"/>
+    </linearGradient>
+    <!-- 흑돌 그라디언트 -->
+    <radialGradient id="black-stone" cx="0.38" cy="0.35" r="0.55">
+      <stop offset="0%" stop-color="#555"/>
+      <stop offset="70%" stop-color="#222"/>
+      <stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+    <!-- 백돌 그라디언트 -->
+    <radialGradient id="white-stone" cx="0.38" cy="0.35" r="0.55">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="70%" stop-color="#eee"/>
+      <stop offset="100%" stop-color="#ccc"/>
+    </radialGradient>
+    <!-- 그림자 -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- 둥근 사각형 배경 (바둑판) -->
+  <rect width="512" height="512" rx="96" ry="96" fill="url(#board)"/>
+
+  <!-- 바둑판 선 (5x5 미리보기) -->
+  <g stroke="#8b6914" stroke-width="3" opacity="0.5">
+    <!-- 가로선 -->
+    <line x1="80" y1="120" x2="432" y2="120"/>
+    <line x1="80" y1="208" x2="432" y2="208"/>
+    <line x1="80" y1="296" x2="432" y2="296"/>
+    <line x1="80" y1="384" x2="432" y2="384"/>
+    <!-- 세로선 -->
+    <line x1="80" y1="80" x2="80" y2="432"/>
+    <line x1="168" y1="80" x2="168" y2="432"/>
+    <line x1="256" y1="80" x2="256" y2="432"/>
+    <line x1="344" y1="80" x2="344" y2="432"/>
+    <line x1="432" y1="80" x2="432" y2="432"/>
+  </g>
+
+  <!-- 화점 -->
+  <g fill="#8b6914" opacity="0.5">
+    <circle cx="168" cy="208" r="6"/>
+    <circle cx="344" cy="208" r="6"/>
+    <circle cx="256" cy="296" r="6"/>
+    <circle cx="168" cy="384" r="6"/>
+    <circle cx="344" cy="384" r="6"/>
+  </g>
+
+  <!-- 흑돌 (메인) -->
+  <circle cx="220" cy="240" r="72" fill="url(#black-stone)" filter="url(#shadow)"/>
+  <ellipse cx="200" cy="218" rx="18" ry="12" fill="white" opacity="0.25" transform="rotate(-30,200,218)"/>
+
+  <!-- 백돌 -->
+  <circle cx="330" cy="330" r="72" fill="url(#white-stone)" filter="url(#shadow)"/>
+  <ellipse cx="308" cy="308" rx="18" ry="12" fill="white" opacity="0.5" transform="rotate(-30,308,308)"/>
+</svg>

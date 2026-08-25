@@ -146,7 +146,7 @@
 
   function applyStaticI18n() {
     document.documentElement.lang = lang;
-    document.title = t("title") + " — Later Inbox";
+    document.title = t("title");
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", t("metaDescription"));
     const og = window.LI_OG && (window.LI_OG[lang] || window.LI_OG.en);

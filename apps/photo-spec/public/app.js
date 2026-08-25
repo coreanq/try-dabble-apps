@@ -109,7 +109,7 @@
 
   function applyStaticI18n() {
     document.documentElement.lang = lang;
-    document.title = t("title") + " — Photo Spec";
+    document.title = t("title");
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", t("metaDescription"));
     const og = window.PS_OG && (window.PS_OG[lang] || window.PS_OG.en);

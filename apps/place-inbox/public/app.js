@@ -185,7 +185,7 @@
 
   function applyStaticI18n() {
     document.documentElement.lang = lang;
-    document.title = t("title") + " — Place Inbox";
+    document.title = t("title");
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", t("metaDescription"));
     const og = window.PI_OG && (window.PI_OG[lang] || window.PI_OG.en);

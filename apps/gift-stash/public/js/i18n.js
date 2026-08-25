@@ -158,8 +158,8 @@ window.GS_I18N = {
     inDays: "{n}일"
   },
   ja: {
-    title: "Gift Stash",
-    shortName: "Gift Stash",
+    title: "プレゼント引き出し",
+    shortName: "プレゼント",
     tagline: "スクショをプレゼント案に",
     metaDescription: "スクリーンショットをプレゼント案として保存し、人にタグ付けして誕生日前にリマインド。データはこのブラウザだけに残ります。",
     about: "撮ったプレゼント案を人に付けて、誕生日前にこの端末でリマインドします。アカウントなし、ブラウザ内だけです。",
@@ -338,7 +338,10 @@ window.detectLang = function detectLang() {
   var lang = "ko";
   try {
     const q = new URLSearchParams(location.search).get("lang");
-    if (q && window.GS_I18N[q]) lang = q;
+    if (q && window.GS_I18N[q]) {
+      try { localStorage.setItem("gs_lang", q); } catch (_) {}
+      lang = q;
+    }
     else {
       try {
         const saved = localStorage.getItem("gs_lang");

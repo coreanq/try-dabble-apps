@@ -318,7 +318,10 @@ window.detectLang = function detectLang() {
   var lang = "ko";
   try {
     const q = new URLSearchParams(location.search).get("lang");
-    if (q && window.LI_I18N[q]) lang = q;
+    if (q && window.LI_I18N[q]) {
+      try { localStorage.setItem("li_lang", q); } catch (_) {}
+      lang = q;
+    }
     else {
       try {
         const saved = localStorage.getItem("li_lang");

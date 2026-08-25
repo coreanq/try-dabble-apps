@@ -220,7 +220,7 @@
 
   function applyStaticI18n() {
     document.documentElement.lang = lang;
-    document.title = t("title") + " — Gift Stash";
+    document.title = t("title");
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", t("metaDescription"));
     const og = window.GS_OG && (window.GS_OG[lang] || window.GS_OG.en);

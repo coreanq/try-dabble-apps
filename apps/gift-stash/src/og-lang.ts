@@ -14,7 +14,7 @@ const COPY: Record<Lang, { title: string; description: string; locale: string; i
     image: 'https://gift-stash.try-dabble.com/og-image-en.png',
   },
   ja: {
-    title: 'Gift Stash',
+    title: 'プレゼント引き出し',
     description: 'スクリーンショットをプレゼント案として保存し、人にタグ付けして誕生日前にリマインド。データはこのブラウザだけに残ります。',
     locale: 'ja_JP',
     image: 'https://gift-stash.try-dabble.com/og-image-ja.png',

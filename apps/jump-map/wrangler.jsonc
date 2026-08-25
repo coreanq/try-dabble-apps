@@ -1,0 +1,11 @@
+{
+  "name": "jump-map",
+  "compatibility_date": "2026-08-24",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "jump-map.try-dabble.com", "custom_domain": true }
+  ]
+}
