@@ -26,6 +26,7 @@ export default function Home() {
   const [winner, setWinner] = useState<Player | 'draw' | null>(null);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [localOnly, setLocalOnly] = useState(LOCAL_ONLY.ko);
+  const [uiLang, setUiLang] = useState('ko');
   const [lastMove, setLastMove] = useState<{ row: number; col: number } | null>(null);
   const [isThinking, setIsThinking] = useState(false);
   const [moveCount, setMoveCount] = useState(0);
@@ -1165,23 +1166,59 @@ export default function Home() {
     setShowResult(false);
   };
 
+  const detectLocalLang = () => {
+    try {
+      const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
+      if (LOCAL_ONLY[q]) return q;
+      const saved = localStorage.getItem('omok_lang') || '';
+      if (LOCAL_ONLY[saved]) return saved;
+    } catch {}
+    return 'ko';
+  };
+
   useEffect(() => {
     const apply = () => {
-      try {
-        const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
-        setLocalOnly(LOCAL_ONLY[q] || LOCAL_ONLY[document.documentElement.lang.slice(0, 2)] || LOCAL_ONLY.ko);
-      } catch {
-        setLocalOnly(LOCAL_ONLY.ko);
-      }
+      const next = detectLocalLang();
+      setUiLang(next);
+      setLocalOnly(LOCAL_ONLY[next]);
     };
     apply();
     window.addEventListener('popstate', apply);
     return () => window.removeEventListener('popstate', apply);
   }, []);
 
+  const setLang = (next: string) => {
+    if (!LOCAL_ONLY[next]) return;
+    setUiLang(next);
+    setLocalOnly(LOCAL_ONLY[next]);
+    try { localStorage.setItem('omok_lang', next); } catch {}
+    try {
+      const u = new URL(window.location.href);
+      if (u.searchParams.get('lang') !== next) {
+        u.searchParams.set('lang', next);
+        history.replaceState(null, '', u.pathname + u.search + u.hash);
+      }
+    } catch {}
+  };
+
   return (
     <div className={`game-container ${currentPlayer === 'black' ? 'turn-black' : 'turn-white'}`}>
-      <p className="local-only" id="local-only" role="note">{localOnly}</p>
+      <div className="local-only-bar">
+        <p className="local-only" id="local-only" role="note">{localOnly}</p>
+        <label className="sr-only" htmlFor="local-only-lang">Language</label>
+        <select
+          id="local-only-lang"
+          className="local-only-lang"
+          aria-label="Language"
+          value={uiLang}
+          onChange={(e) => setLang(e.target.value)}
+        >
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+      </div>
       {/* Mode Selection Screen */}
       {showModeSelect && (
         <div className="mode-select-overlay">
@@ -1464,18 +1501,41 @@ export default function Home() {
           pointer-events: none;
         }
 
-        .local-only {
+        .local-only-bar {
+          display: flex;
+          align-items: center;
+          gap: 8px;
           margin: 0;
           padding: 6px 10px;
-          font: 700 11px/1.35 system-ui, sans-serif;
-          color: #111;
           background: #ffcc33;
           border-bottom: 2px solid #111;
-          text-align: center;
           position: relative;
           z-index: 3001;
-          overflow-wrap: anywhere;
           flex-shrink: 0;
+        }
+        .local-only {
+          margin: 0;
+          flex: 1;
+          min-width: 0;
+          font: 700 11px/1.35 system-ui, sans-serif;
+          color: #111;
+          overflow-wrap: anywhere;
+        }
+        .local-only-lang {
+          flex-shrink: 0;
+          font: 700 11px system-ui, sans-serif;
+          color: #111;
+          background: #fff;
+          border: 1px solid #111;
+          border-radius: 6px;
+          padding: 2px 6px;
+        }
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
         }
 
         /* Header */

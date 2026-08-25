@@ -46,6 +46,28 @@
 <body>
   <div class="app">
     <p class="local-only" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+    <script>
+    (function () {
+      var COPY = {
+        ko: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
+        en: "Your data stays on this device. Nothing is sent to our servers.",
+        ja: "データはこの端末にだけ保存されます。サーバーには送りません。",
+        zh: "数据仅保存在此设备，不会上传到服务器。"
+      };
+      var lang = "ko";
+      try {
+        var q = new URLSearchParams(location.search).get("lang") || "";
+        q = String(q).slice(0, 2).toLowerCase();
+        if (COPY[q]) lang = q;
+        else {
+          var s = localStorage.getItem("pi_lang") || "";
+          if (COPY[s]) lang = s;
+        }
+      } catch (e) {}
+      var el = document.getElementById("local-only");
+      if (el) el.textContent = COPY[lang];
+    })();
+    </script>
     <header class="topbar">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">📍</div>
