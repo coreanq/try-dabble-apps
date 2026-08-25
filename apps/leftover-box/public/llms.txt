@@ -1,0 +1,32 @@
+# Leftover Box / 반찬함
+
+> A leftover-dish log: name, cooked-on, eat-by. Eat the oldest first. Not a fridge barcode inventory.
+
+This is a Progressive Web App (PWA) hosted at https://leftover-box.try-dabble.com/
+All data stays in the browser (localStorage key leftover-box:items:v1). No accounts, no server-side storage.
+
+This is NOT FridgeBuddy, eggg, pecco, a SKU inventory, an AI recipe app, or a nutrition tracker.
+
+## Pages
+
+- [Home](https://leftover-box.try-dabble.com/): Add leftover name + dates, eat oldest first, eaten history, export/import
+- [Privacy](https://leftover-box.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://leftover-box.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/leftover-box): How-to on try-dabble.com
+
+## Features
+
+- Dish name (required), cooked-on date, eat-by date (default cooked-on + 3 days)
+- Optional location: fridge / freezer / other
+- Optional one-line note
+- Open leftovers sorted by eat-by soonest
+- Days-left / today / overdue badges
+- Mark eaten (keeps a short eaten history)
+- Edit and delete
+- JSON export/import
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
