@@ -166,6 +166,7 @@
     if (!window.PS_I18N[next]) return;
     lang = next;
     try { localStorage.setItem(LANG_KEY, lang); } catch (_) {}
+    if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
     applyStaticI18n();
   }
 

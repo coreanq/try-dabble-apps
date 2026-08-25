@@ -201,6 +201,7 @@
   function setLang(next) {
     lang = next;
     try { localStorage.setItem(LANG_KEY, lang); } catch (_) {}
+    if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
     applyStaticI18n();
     render();
   }

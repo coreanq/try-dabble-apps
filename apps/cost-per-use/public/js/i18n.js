@@ -220,22 +220,44 @@ window.CPU_LOCALE = {
   ja: { locale: "ja-JP", currency: "JPY", currencyDisplay: "symbol" }
 };
 
+window.persistLangQuery = function persistLangQuery(lang) {
+  try {
+    var u = new URL(location.href);
+    if (u.searchParams.get("lang") !== lang) {
+      u.searchParams.set("lang", lang);
+      history.replaceState(null, "", u.pathname + u.search + u.hash);
+    }
+  } catch (_) {}
+};
+
 window.detectLang = function detectLang() {
+  var lang = "ko";
   try {
     const q = new URLSearchParams(location.search).get("lang");
     if (q && window.CPU_I18N[q]) {
       try { localStorage.setItem("cpu_lang", q); } catch (_) {}
-      return q;
+      lang = q;
+    } else {
+      try {
+        const saved = localStorage.getItem("cpu_lang");
+        if (saved && window.CPU_I18N[saved]) lang = saved;
+        else {
+          const nav = (navigator.language || "ko").toLowerCase();
+          if (nav.startsWith("ko")) lang = "ko";
+          else if (nav.startsWith("ja")) lang = "ja";
+          else if (nav.startsWith("zh")) lang = "zh";
+          else if (nav.startsWith("en")) lang = "en";
+          else lang = "ko";
+        }
+      } catch (_) {
+        const nav = (navigator.language || "ko").toLowerCase();
+        if (nav.startsWith("ko")) lang = "ko";
+        else if (nav.startsWith("ja")) lang = "ja";
+        else if (nav.startsWith("zh")) lang = "zh";
+        else if (nav.startsWith("en")) lang = "en";
+      }
     }
   } catch (_) {}
-  try {
-    const saved = localStorage.getItem("cpu_lang");
-    if (saved && window.CPU_I18N[saved]) return saved;
-  } catch (_) {}
-  const nav = (navigator.language || "ko").toLowerCase();
-  if (nav.startsWith("ko")) return "ko";
-  if (nav.startsWith("ja")) return "ja";
-  if (nav.startsWith("zh")) return "zh";
-  if (nav.startsWith("en")) return "en";
-  return "ko";
+  if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
+  return lang;
 };
