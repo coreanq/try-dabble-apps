@@ -1,0 +1,29 @@
+# Photo Spec / 사진 규격
+
+> Fit a photo or signature to exact pixel and min/max KB rules for exam, visa, job, and resume form uploads. Local applicant profile cheat-sheet. No autofill of government sites.
+
+This is a Progressive Web App (PWA) hosted at https://photo-spec.try-dabble.com/
+All processing happens in the browser (canvas). Photos and the applicant profile stay in localStorage. No accounts, no upload, no server-side storage.
+
+## Pages
+
+- [Home](https://photo-spec.try-dabble.com/): Presets, crop, JPEG quality fit, download, local profile
+- [Privacy](https://photo-spec.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://photo-spec.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/photo-spec): How-to on try-dabble.com
+
+## Features
+
+- Presets: India exam photo 200×230 20–50 KB; India exam sign 140×60 10–20 KB; passport/visa 2×2 600×600 50–200 KB; KR resume 3×4 300×400 30–100 KB; custom W/H/min/max/jpeg|png
+- Drop, file, camera, or Ctrl+V paste
+- Cover-crop to target aspect (center, optional drag offset)
+- Binary-search JPEG quality (slight downscale if still over max KB)
+- Live preview with exact W×H and KB (green in range, red if not)
+- Download with filename like photo-200x230-32kb.jpg
+- Local applicant profile (name, DOB, phone, email, address, parents, national ID note) with per-field Copy
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

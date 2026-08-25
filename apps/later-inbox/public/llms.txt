@@ -1,0 +1,33 @@
+# Later Inbox / 나중함
+
+> A shrinking read-later inbox: save a link with a required one-line why, keep at most 3 as this-week, auto-expire unpinned inbox items after 30 days.
+
+This is a Progressive Web App (PWA) hosted at https://later-inbox.try-dabble.com/
+All data stays in the browser (localStorage key later-inbox:items:v1). No accounts, no server-side storage.
+
+This is NOT a reader, highlighter, AI summarizer, or Pocket-style folder/tag library.
+
+## Pages
+
+- [Home](https://later-inbox.try-dabble.com/): Add URL + why, weekly triage (max 3), pin, expire, search, export/import
+- [Privacy](https://later-inbox.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://later-inbox.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/later-inbox): How-to on try-dabble.com
+
+## Features
+
+- Add a URL (required) and a one-line why (required); optional title
+- Paste URL from clipboard
+- Inbox / This week (max 3) / Done / Expired
+- Pin survives the 30-day auto-expire
+- On load, unpinned inbox items older than 30 days become expired
+- Weekly triage banner when the inbox is not empty
+- Search title, why, and URL
+- Netscape bookmarks.html import as drafts (why required before they count as saved)
+- JSON export/import
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

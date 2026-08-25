@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+dist/
+.dev.vars
+.stage_public/
+*.log
+gen_icons.py

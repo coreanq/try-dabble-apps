@@ -1,0 +1,31 @@
+# Gift Stash / 선물 서랍
+
+> Local-first gift-idea stash: capture screenshots, tag them to a person, get reminded before their birthday.
+
+This is a Progressive Web App (PWA) hosted at https://gift-stash.try-dabble.com/
+All data stays in the browser (IndexedDB for photos, localStorage for people/ideas). No accounts, no server-side storage.
+
+## Pages
+
+- [Home](https://gift-stash.try-dabble.com/): People, ideas (file/paste), upcoming birthdays, search, export/import
+- [Privacy](https://gift-stash.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://gift-stash.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/gift-stash): How-to on try-dabble.com
+
+## Features
+
+- Add people with birthday (MM-DD or full date), notes, optional face photo
+- Custom occasion dates (anniversary etc.)
+- Capture gift ideas from file picker, camera, or Ctrl+V paste
+- Tag ideas to a person or leave unassigned
+- Idea status: idea / bought / given
+- Upcoming strip: next 60 days of birthdays and occasions
+- Optional on-device Notification API reminder (checked on load)
+- Search across people and idea titles/notes
+- JSON export/import (photos as data URLs, or skip photos)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

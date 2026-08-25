@@ -1,0 +1,24 @@
+# Cost-per-use / Cost-per-day Calculator
+
+> Free client-side calculator that shows how much a purchase costs per day and per use.
+
+This is a Progressive Web App (PWA) hosted at https://cost-per-use.try-dabble.com/
+All data stays in the browser (localStorage). No accounts, no server-side storage.
+
+## Pages
+
+- [Home](https://cost-per-use.try-dabble.com/): Add items with name, purchase price, purchase date, and optional times used. View cost/day and cost/use. Edit or delete saved items.
+- [Privacy](https://cost-per-use.try-dabble.com/privacy.html): Privacy policy stub
+- [Terms](https://cost-per-use.try-dabble.com/terms.html): Terms of use stub
+
+## Features
+
+- Cost per day from purchase date to today
+- Cost per use when times-used is provided
+- Multi-language UI: Korean (default preference), English, Chinese, Japanese
+- Installable PWA with offline shell via service worker
+- Local-only persistence
+
+## Contact
+
+Part of try-dabble.com dabble tools.

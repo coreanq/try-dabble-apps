@@ -1,0 +1,33 @@
+# Place Inbox / 여행 받은편지함
+
+> Local inbox for chaotic travel saves: screenshots, Maps/Pinterest/social links, a “why I saved this” note, 1–5 want-to-go ranks, and named candidate-trip groups.
+
+This is a Progressive Web App (PWA) hosted at https://place-inbox.try-dabble.com/
+All data stays in the browser (IndexedDB for places, trips, and photos). No accounts, no server-side storage.
+
+This is NOT a gift app, not a cost-per-use calculator, and not a day-by-day itinerary planner.
+
+## Pages
+
+- [Home](https://place-inbox.try-dabble.com/): Places (file/paste/URL), why-saved, ranks, tags, trip buckets, optional map, export/import
+- [Privacy](https://place-inbox.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://place-inbox.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/place-inbox): How-to on try-dabble.com
+
+## Features
+
+- Add a place from a pasted URL, file/camera screenshot, or typed name
+- Optional photo stored in IndexedDB
+- Why-saved note and 1–5 want-to-go rank
+- Extra links: Maps, Instagram, Pinterest
+- Tags: food, hike, city, beach, stay
+- Named candidate-trip buckets, or leave in the unassigned inbox
+- Optional lat,lng pins on a small OSM map (no auto-geocode)
+- Filter by tag / trip / rank; sort by rank
+- JSON export/import (photos as data URLs, or skip photos)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

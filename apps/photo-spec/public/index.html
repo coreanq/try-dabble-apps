@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>사진 규격 — Photo Spec</title>
+  <meta name="description" content="시험·비자·이력서 업로드용 사진·사인을 픽셀과 KB에 맞춥니다. Fit a photo or signature to exact pixels and file size. Data stays in your browser." />
+  <meta name="theme-color" content="#0e1116" />
+  <meta name="application-name" content="사진 규격" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="사진규격" />
+  <link rel="canonical" href="https://photo-spec.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://photo-spec.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://photo-spec.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://photo-spec.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://photo-spec.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://photo-spec.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Photo Spec" />
+  <meta property="og:url" content="https://photo-spec.try-dabble.com/" />
+  <meta property="og:title" content="사진 규격 — Photo Spec" />
+  <meta property="og:description" content="시험·비자·이력서 업로드용 사진·사인을 픽셀과 KB에 맞춥니다. Fit a photo or signature to exact pixels and file size." />
+  <meta property="og:image" content="https://photo-spec.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="사진 규격 — Photo Spec" />
+  <meta name="twitter:description" content="시험·비자·이력서 업로드용 사진·사인을 픽셀과 KB에 맞춥니다." />
+  <meta name="twitter:image" content="https://photo-spec.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://photo-spec.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://photo-spec.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://photo-spec.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">▣</div>
+        <div>
+          <h1 id="brand-title">사진 규격</h1>
+          <p class="tagline" id="brand-tagline">사진·사인을 픽셀과 KB에 맞추기</p>
+        </div>
+      </div>
+      <label class="sr-only" id="lang-label" for="lang-select">언어</label>
+      <select id="lang-select" class="lang-select" aria-label="Language">
+        <option value="ko" selected>한국어</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="zh">中文</option>
+      </select>
+    </header>
+
+    <section class="card about" aria-label="About">
+      <p id="about-text">시험·비자·이력서 폼에 맞게 사진이나 사인을 정확한 픽셀과 KB로 자릅니다. 정부 사이트 자동입력은 하지 않습니다. 계정 없이 이 브라우저에서만 처리됩니다.</p>
+    </section>
+
+    <section class="card">
+      <div class="list-head">
+        <h2 id="presets-title">규격</h2>
+      </div>
+      <div class="filters" id="preset-chips" role="group" aria-label="Presets"></div>
+      <p id="caption-hint" class="hint" hidden>UPSC는 사진 하단에 이름과 오늘 날짜를 넣습니다. 지원자 메모의 이름을 씁니다.</p>
+      <div id="custom-fields" hidden>
+        <div class="custom-grid">
+          <label>
+            <span id="label-width">너비 (px)</span>
+            <input id="custom-w" type="number" min="20" max="4000" step="1" value="200" />
+          </label>
+          <label>
+            <span id="label-height">높이 (px)</span>
+            <input id="custom-h" type="number" min="20" max="4000" step="1" value="230" />
+          </label>
+          <label>
+            <span id="label-minkb">최소 KB</span>
+            <input id="custom-minkb" type="number" min="1" max="5000" step="1" value="20" />
+          </label>
+          <label>
+            <span id="label-maxkb">최대 KB</span>
+            <input id="custom-maxkb" type="number" min="1" max="5000" step="1" value="50" />
+          </label>
+        </div>
+        <div class="custom-grid fmt">
+          <label>
+            <span id="label-format">형식</span>
+            <select id="custom-fmt">
+              <option value="jpeg">JPEG</option>
+              <option value="png">PNG</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="list-head">
+        <h2 id="source-title">사진</h2>
+      </div>
+      <div class="drop" id="drop-zone">
+        <p id="drop-hint">파일을 고르거나 이미지를 붙여넣으세요 (Ctrl+V)</p>
+        <div class="tool-row">
+          <label class="btn btn-ghost btn-sm file-btn">
+            <span id="pick-file-label">파일 / 카메라</span>
+            <input id="file-input" type="file" accept="image/*" hidden />
+          </label>
+          <label class="btn btn-ghost btn-sm file-btn">
+            <span id="camera-label">카메라</span>
+            <input id="camera-input" type="file" accept="image/*" capture="environment" hidden />
+          </label>
+          <button type="button" id="clear-photo" class="btn btn-ghost btn-sm" hidden>사진 제거</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="list-head">
+        <h2 id="preview-title">미리보기</h2>
+      </div>
+      <div class="preview-wrap" id="preview-wrap">
+        <div id="preview-empty" class="preview-empty">이미지를 넣으면 여기에 맞춰 보입니다.</div>
+        <canvas id="preview-canvas" hidden></canvas>
+      </div>
+      <p id="size-line" class="meta-line" hidden></p>
+      <p id="drag-hint" class="hint" hidden>미리보기를 드래그하면 자르기 위치를 옮깁니다.</p>
+      <div class="tool-row" style="margin-top:0.7rem">
+        <button type="button" id="download-btn" class="btn btn-primary" disabled>다운로드</button>
+      </div>
+    </section>
+
+    <div class="ad-slot" id="ad-slot" role="complementary" aria-label="Advertisement">
+      <ins class="adsbygoogle"
+           style="display:block;min-height:90px;width:100%"
+           data-ad-client="ca-pub-3398336402999065"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <section class="card">
+      <div class="list-head">
+        <h2 id="profile-title">지원자 메모</h2>
+      </div>
+      <p id="profile-hint" class="hint" style="margin-top:0">폼에 붙일 때 쓰는 치트시트입니다. 정부 사이트를 자동입력하지 않습니다. 이 브라우저에만 저장됩니다.</p>
+      <div class="field-row">
+        <label>
+          <span id="label-name">이름</span>
+          <input id="pf-name" type="text" maxlength="120" autocomplete="name" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-name">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-dob">생년월일</span>
+          <input id="pf-dob" type="text" maxlength="40" placeholder="1994-03-21" autocomplete="bday" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-dob">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-phone">전화</span>
+          <input id="pf-phone" type="tel" maxlength="40" autocomplete="tel" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-phone">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-email">이메일</span>
+          <input id="pf-email" type="email" maxlength="120" autocomplete="email" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-email">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-address">주소</span>
+          <textarea id="pf-address" rows="2" maxlength="400" autocomplete="street-address"></textarea>
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-address">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-father">아버지 (선택)</span>
+          <input id="pf-father" type="text" maxlength="120" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-father">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-mother">어머니 (선택)</span>
+          <input id="pf-mother" type="text" maxlength="120" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-mother">복사</button>
+      </div>
+      <div class="field-row">
+        <label>
+          <span id="label-nid">신분증 메모</span>
+          <input id="pf-nid" type="text" maxlength="160" />
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm copy-btn" data-copy="pf-nid">복사</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a id="link-privacy" href="/privacy.html">개인정보</a>
+      <a id="link-terms" href="/terms.html">이용약관</a>
+      <span>try-dabble.com</span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/js/i18n.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>
