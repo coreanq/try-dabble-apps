@@ -108,9 +108,10 @@
 
   function badgeFor(iso) {
     const n = daysUntil(iso);
-    if (n < 0) return { cls: "badge-overdue", text: t("badgeOverdue"), overdue: true };
-    if (n === 0) return { cls: "badge-today", text: t("badgeToday"), overdue: false };
-    return { cls: "badge-soon", text: t("badgeDays", { n }), overdue: false };
+    const date = iso || "";
+    if (n < 0) return { cls: "stamp stamp-overdue", dday: t("badgeOverdue"), date, overdue: true };
+    if (n === 0) return { cls: "stamp stamp-today", dday: t("badgeToday"), date, overdue: false };
+    return { cls: "stamp stamp-ok", dday: t("badgeDays", { n }), date, overdue: false };
   }
 
   function locLabel(loc) {
@@ -242,7 +243,7 @@
       return `<article class="item-card${overdueClass}">
         <div class="ttl">${esc(it.name || "")}</div>
         <div class="item-meta">
-          <span class="badge ${badge.cls}">${esc(badge.text)}</span>
+          <span class="${badge.cls}" title="${esc(badge.date)}"><em>${esc(badge.dday)}</em><small>${esc(badge.date)}</small></span>
           <span class="loc-pill">${meta}</span>
         </div>
         ${it.note ? `<div class="note">${esc(it.note)}</div>` : ""}

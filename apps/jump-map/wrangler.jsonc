@@ -3,9 +3,12 @@
   "compatibility_date": "2026-08-24",
   "assets": {
     "directory": "./public",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS",
+    "run_worker_first": true
   },
   "routes": [
     { "pattern": "jump-map.try-dabble.com/*", "zone_name": "try-dabble.com" }
-  ]
+  ],
+  "main": "src/og-lang.ts"
 }

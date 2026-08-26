@@ -1,4 +1,4 @@
-const CACHE = "leftover-box-v1";
+const CACHE = "leftover-box-v2";
 const ASSETS = [
   "/",
   "/index.html",
