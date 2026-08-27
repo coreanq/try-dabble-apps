@@ -48,7 +48,7 @@ const COPY: Record<
     title: '剩菜盒',
     description: '记下剩菜名字和食用日期。先吃最早的。数据只留在此设备。',
     locale: 'zh_CN',
-    image: 'https://leftover-box.try-dabble.com/og-image-en.png',
+    image: 'https://leftover-box.try-dabble.com/og-image-zh.png',
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
     tagline: '先吃最早的剩菜',
   },
