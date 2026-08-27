@@ -3,119 +3,175 @@ import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 
-const OUT = path.join(import.meta.dirname, "public");
-const OLIVE = { r: 48, g: 46, b: 32, alpha: 1 };
-const FONT = "Noto Serif CJK KR, Noto Serif CJK JP, Noto Serif CJK SC, serif";
-const MONO = "Courier New, ui-monospace, monospace";
+/**
+ * Omok card: a close crop of the board at the moment the game ends.
+ * No headline over an illustration — the grid runs edge to edge, five black
+ * stones are already connected under a vermilion marker, and the name sits on
+ * a paper slip laid on the wood with a seal beside it.
+ */
 
-function grainDots() {
-  const dots = [];
-  let seed = 19;
+const OUT = path.join(import.meta.dirname, "public");
+const WOOD_BG = { r: 219, g: 172, b: 107, alpha: 1 };
+
+const CJK = { ko: "KR", ja: "JP", zh: "SC", en: "KR" };
+const serif = (lang, latin) => `${latin ? latin + ", " : ""}Noto Serif CJK ${CJK[lang]}, serif`;
+const mono = (lang) => `Noto Sans Mono CJK ${CJK[lang]}, monospace`;
+
+const LINE = "#4a3418";
+const SLIP = "#f7f0dd";
+const VERMILION = "#b8382b";
+const INK = "#2a1e10";
+
+const S = 84;
+const P = (i, j) => [42 + i * S, 42 + j * S];
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function textWidth(text, size) {
+  let w = 0;
+  for (const ch of String(text)) w += ch.codePointAt(0) > 0x2e80 ? size : size * 0.58;
+  return w;
+}
+
+function fitSize(text, maxWidth, sizes) {
+  for (const s of sizes) if (textWidth(text, s) <= maxWidth) return s;
+  return sizes[sizes.length - 1];
+}
+
+function woodGrain() {
+  const out = [];
+  let seed = 1301;
   for (let i = 0; i < 90; i++) {
     seed = (seed * 1103515245 + 12345) & 0x7fffffff;
     const x = seed % 1800;
     seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const y = seed % 945;
+    const y = seed % 800;
     seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const o = 0.04 + (seed % 8) / 120;
-    dots.push(`<circle cx="${x}" cy="${y}" r="1.2" fill="rgba(212,184,110,${o.toFixed(3)})"/>`);
+    const h = 90 + (seed % 420);
+    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+    const o = 0.03 + (seed % 6) / 150;
+    const bow = 6 + (seed % 14);
+    out.push(`<path d="M${x} ${y} q${bow} ${h / 2} 0 ${h}" fill="none" stroke="rgba(96,62,22,${o.toFixed(3)})" stroke-width="${2 + (seed % 3)}"/>`);
   }
-  return dots.join("");
+  return out.join("");
 }
 
-function stone(cx, cy, color) {
-  const fill = color === "black" ? "#1a1814" : "#f6efe2";
-  const hi = color === "black" ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.85)";
-  const rim = color === "black" ? "#0a0908" : "#d8cbb0";
-  return `
-    <circle cx="${cx}" cy="${cy}" r="16" fill="rgba(0,0,0,0.22)"/>
-    <circle cx="${cx}" cy="${cy - 2}" r="16" fill="${fill}" stroke="${rim}" stroke-width="1.5"/>
-    <ellipse cx="${cx - 4}" cy="${cy - 7}" rx="5" ry="3.2" fill="${hi}"/>
-  `;
+function grid() {
+  const out = [];
+  for (let i = 0; i <= 21; i++) {
+    const [x] = P(i, 0);
+    out.push(`<rect x="${x - 1}" y="0" width="2.5" height="945" fill="${LINE}" opacity="0.72"/>`);
+  }
+  for (let j = 0; j <= 10; j++) {
+    const [, y] = P(0, j);
+    out.push(`<rect x="0" y="${y - 1}" width="1800" height="2.5" fill="${LINE}" opacity="0.72"/>`);
+  }
+  for (const [i, j] of [[3, 2], [10, 2], [17, 2], [3, 8], [10, 8], [17, 8], [10, 5]]) {
+    const [x, y] = P(i, j);
+    out.push(`<circle cx="${x}" cy="${y}" r="8" fill="${LINE}" opacity="0.85"/>`);
+  }
+  return out.join("");
 }
 
-function woodBoard(x, y, s) {
-  const lines = [];
-  const origin = 36;
-  const step = 36;
-  const n = 10;
-  for (let i = 0; i <= n; i++) {
-    const p = origin + i * step;
-    lines.push(`<line x1="${origin}" y1="${p}" x2="${origin + n * step}" y2="${p}" stroke="#5a3e1b" stroke-width="1.6"/>`);
-    lines.push(`<line x1="${p}" y1="${origin}" x2="${p}" y2="${origin + n * step}" stroke="#5a3e1b" stroke-width="1.6"/>`);
-  }
-  const blacks = [[3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [2, 5], [6, 3]];
-  const whites = [[3, 4], [4, 5], [5, 4], [5, 6], [6, 5], [4, 3]];
-  const stones = [
-    ...blacks.map(([c, r]) => stone(origin + c * step, origin + r * step, "black")),
-    ...whites.map(([c, r]) => stone(origin + c * step, origin + r * step, "white")),
-  ].join("");
+function stone(i, j, black) {
+  const [x, y] = P(i, j);
+  return black
+    ? `<g>
+        <ellipse cx="${x}" cy="${y + 7}" rx="37" ry="12" fill="rgba(60,38,12,0.30)"/>
+        <circle cx="${x}" cy="${y}" r="37" fill="url(#blackStone)"/>
+        <ellipse cx="${x - 12}" cy="${y - 14}" rx="12" ry="8" fill="rgba(255,255,255,0.22)" transform="rotate(-28 ${x - 12} ${y - 14})"/>
+      </g>`
+    : `<g>
+        <ellipse cx="${x}" cy="${y + 7}" rx="37" ry="12" fill="rgba(60,38,12,0.28)"/>
+        <circle cx="${x}" cy="${y}" r="37" fill="url(#whiteStone)"/>
+        <ellipse cx="${x - 12}" cy="${y - 15}" rx="13" ry="8" fill="rgba(255,255,255,0.85)" transform="rotate(-28 ${x - 12} ${y - 15})"/>
+      </g>`;
+}
+
+function winMarker(a, b) {
+  const [x1, y1] = P(...a);
+  const [x2, y2] = P(...b);
   return `
-  <g transform="translate(${x},${y}) scale(${s})">
-    <ellipse cx="216" cy="456" rx="210" ry="18" fill="rgba(0,0,0,0.32)"/>
-    <rect x="0" y="0" width="432" height="432" rx="18" fill="#8a6230"/>
-    <rect x="14" y="14" width="404" height="404" rx="10" fill="#d4b06a"/>
-    <rect x="14" y="14" width="404" height="404" rx="10" fill="url(#woodgrain)" opacity="0.35"/>
-    ${lines.join("")}
-    <circle cx="${origin + 2 * step}" cy="${origin + 2 * step}" r="3" fill="#5a3e1b"/>
-    <circle cx="${origin + 8 * step}" cy="${origin + 2 * step}" r="3" fill="#5a3e1b"/>
-    <circle cx="${origin + 5 * step}" cy="${origin + 5 * step}" r="3" fill="#5a3e1b"/>
-    <circle cx="${origin + 2 * step}" cy="${origin + 8 * step}" r="3" fill="#5a3e1b"/>
-    <circle cx="${origin + 8 * step}" cy="${origin + 8 * step}" r="3" fill="#5a3e1b"/>
-    ${stones}
+  <g>
+    <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${VERMILION}" stroke-width="86" stroke-linecap="round" opacity="0.20"/>
+    <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${VERMILION}" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
   </g>`;
 }
 
-function esc(s) {
-  return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+function seal(lang) {
+  return `
+  <g transform="translate(742,60) rotate(3)">
+    <rect x="0" y="0" width="96" height="128" rx="6" fill="${VERMILION}"/>
+    <rect x="8" y="8" width="80" height="112" rx="3" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="4"/>
+    <text x="48" y="60" text-anchor="middle" font-family="${serif(lang)}" font-size="42" font-weight="700" fill="#fff">五</text>
+    <text x="48" y="108" text-anchor="middle" font-family="${serif(lang)}" font-size="42" font-weight="700" fill="#fff">目</text>
+  </g>`;
 }
 
-function titleSize(title) {
-  const n = [...title].length;
-  if (n <= 4) return 128;
-  if (n <= 7) return 100;
-  if (n <= 10) return 86;
-  return 72;
+function slip(lang, title, subtitle, meta) {
+  const titleSize = fitSize(title, 620, [104, 90, 78, 66, 56]);
+  const subSize = fitSize(subtitle, 640, [34, 30, 27, 24]);
+  return `
+  <g transform="translate(96,566) rotate(-1.1)">
+    <rect x="10" y="14" width="900" height="266" fill="rgba(52,32,10,0.28)"/>
+    <rect x="0" y="0" width="900" height="266" fill="${SLIP}"/>
+    <rect x="0" y="0" width="900" height="266" fill="none" stroke="rgba(74,52,24,0.35)" stroke-width="3"/>
+    <rect x="22" y="22" width="900" height="0" fill="none"/>
+    <rect x="0" y="0" width="14" height="266" fill="${VERMILION}"/>
+    <text x="60" y="${118 + titleSize * 0.3}" font-family="${serif(lang, "URW Bookman")}" font-size="${titleSize}" font-weight="700" fill="${INK}">${esc(title)}</text>
+    <text x="60" y="${188 + subSize * 0.3}" font-family="${serif(lang)}" font-size="${subSize}" font-weight="600" fill="rgba(42,30,16,0.66)">${esc(subtitle)}</text>
+    <text x="60" y="242" font-family="${mono(lang)}" font-size="22" font-weight="700" fill="rgba(42,30,16,0.5)" letter-spacing="3">${esc(meta)}</text>
+    ${seal(lang)}
+  </g>`;
 }
 
-function svgFor(title, subtitle) {
-  const escaped = esc(title);
-  const sub = esc(subtitle || "");
-  const fontSize = titleSize(title);
-  const y = 500;
+function svgFor(job) {
+  const { lang, title, subtitle, meta } = job;
+  const whites = [[11, 1], [12, 3], [13, 6], [15, 2], [16, 5], [18, 3], [14, 8], [10, 4], [4, 1], [3, 3]];
+  const blacks = [[13, 1], [16, 2], [11, 6], [19, 5], [17, 7], [5, 2]];
+  const win = [[12, 2], [13, 3], [14, 4], [15, 5], [16, 6]];
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="945" viewBox="0 0 1800 945">
   <defs>
-    <linearGradient id="olive" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3c3a28"/>
-      <stop offset="100%" stop-color="#302e20"/>
+    <linearGradient id="board" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#e6bd7f"/>
+      <stop offset="52%" stop-color="#dbac6b"/>
+      <stop offset="100%" stop-color="#c8944f"/>
     </linearGradient>
-    <linearGradient id="woodgrain" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f0d08a"/>
-      <stop offset="50%" stop-color="#c49650"/>
-      <stop offset="100%" stop-color="#e0bc78"/>
-    </linearGradient>
+    <radialGradient id="blackStone" cx="0.34" cy="0.3" r="0.86">
+      <stop offset="0%" stop-color="#4b4740"/>
+      <stop offset="52%" stop-color="#1e1c19"/>
+      <stop offset="100%" stop-color="#0c0b0a"/>
+    </radialGradient>
+    <radialGradient id="whiteStone" cx="0.34" cy="0.3" r="0.86">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="62%" stop-color="#f4efe2"/>
+      <stop offset="100%" stop-color="#d9d0bb"/>
+    </radialGradient>
+    <radialGradient id="vign" cx="0.5" cy="0.45" r="0.78">
+      <stop offset="60%" stop-color="rgba(0,0,0,0)"/>
+      <stop offset="100%" stop-color="rgba(60,36,8,0.26)"/>
+    </radialGradient>
   </defs>
-  <rect width="1800" height="945" fill="url(#olive)"/>
-  ${grainDots()}
-  <rect width="1800" height="8" fill="#d4b06a"/>
-  <text x="70" y="${y}" font-family="${FONT}" font-size="${fontSize}" font-weight="700" fill="#f3e6c4">${escaped}</text>
-  <rect x="70" y="${y + 22}" width="220" height="8" rx="4" fill="#d4b06a"/>
-  <text x="70" y="${y + 72}" font-family="${FONT}" font-size="32" font-weight="600" fill="#c4b48a">${sub}</text>
-  ${woodBoard(1180, 190, 1.12)}
-  <g transform="translate(78,150)">
-    <rect width="132" height="36" rx="4" fill="#302e20" stroke="#d4b06a" stroke-width="3"/>
-    <text x="66" y="24" text-anchor="middle" font-family="${MONO}" font-size="15" font-weight="800" fill="#d4b06a">15 × 15</text>
-  </g>
+
+  <rect width="1800" height="945" fill="url(#board)"/>
+  ${woodGrain()}
+  ${grid()}
+  ${winMarker(win[0], win[4])}
+  ${whites.map(([i, j]) => stone(i, j, false)).join("")}
+  ${blacks.map(([i, j]) => stone(i, j, true)).join("")}
+  ${win.map(([i, j]) => stone(i, j, true)).join("")}
+  <rect width="1800" height="945" fill="url(#vign)"/>
+  ${slip(lang, title, subtitle, meta)}
 </svg>`;
 }
 
 async function contain(inputBuf, output) {
   await sharp(inputBuf)
-    .resize(1200, 630, { fit: "contain", background: OLIVE })
+    .resize(1200, 630, { fit: "contain", background: WOOD_BG })
     .png()
     .toFile(output);
   const m = await sharp(output).metadata();
@@ -128,16 +184,14 @@ async function contain(inputBuf, output) {
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const jobs = [
-    { title: "오목", subtitle: "다섯을 잇다", files: ["og-image.png", "og-image-ko.png"] },
-    { title: "Gomoku", subtitle: "Five in a row", files: ["og-image-en.png"] },
-    { title: "五目並べ", subtitle: "五つを並べる", files: ["og-image-ja.png"] },
-    { title: "五子棋", subtitle: "连成五子", files: ["og-image-zh.png"] },
+    { lang: "ko", title: "오목", subtitle: "먼저 다섯을 잇는 쪽이 이깁니다", meta: "혼자 · 둘이 · 브라우저에서 바로", files: ["og-image.png", "og-image-ko.png"] },
+    { lang: "en", title: "Gomoku", subtitle: "First to connect five wins", meta: "SOLO · TWO PLAYER · IN THE BROWSER", files: ["og-image-en.png"] },
+    { lang: "ja", title: "五目並べ", subtitle: "先に五つ並べたほうが勝ち", meta: "ひとり · ふたり · ブラウザですぐ", files: ["og-image-ja.png"] },
+    { lang: "zh", title: "五子棋", subtitle: "先连成五子者胜", meta: "单人 · 双人 · 打开浏览器就下", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
-    const buf = Buffer.from(svgFor(job.title, job.subtitle));
-    for (const file of job.files) {
-      await contain(buf, path.join(OUT, file));
-    }
+    const buf = Buffer.from(svgFor(job));
+    for (const file of job.files) await contain(buf, path.join(OUT, file));
   }
 }
 

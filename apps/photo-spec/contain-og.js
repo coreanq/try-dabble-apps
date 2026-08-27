@@ -1,99 +1,162 @@
+// ESM: package.json is "type": "module" since the Vite rewrite.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
+/**
+ * Photo Spec card: a self-healing cutting mat with the prints laid out on it.
+ * Every element is a measuring instrument — mat grid, top ruler, crop marks,
+ * and a drafting title block instead of a headline, because the app's whole job
+ * is hitting an exact size in mm, px and KB.
+ */
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const OUT = path.join(__dirname, "public");
-const GRAY = { r: 232, g: 230, b: 226, alpha: 1 };
-const FONT = "Noto Serif CJK KR, Noto Serif CJK JP, Noto Serif CJK SC, serif";
-const MONO = "Courier New, ui-monospace, monospace";
+const MAT = { r: 46, g: 76, b: 65, alpha: 1 };
 
-function grainDots() {
-  const dots = [];
-  let seed = 53;
-  for (let i = 0; i < 80; i++) {
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const x = seed % 1800;
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const y = seed % 945;
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const o = 0.04 + (seed % 8) / 130;
-    dots.push(`<circle cx="${x}" cy="${y}" r="1.15" fill="rgba(70,68,64,${o.toFixed(3)})"/>`);
-  }
-  return dots.join("");
+const CJK = { ko: "KR", ja: "JP", zh: "SC", en: "KR" };
+const sans = (lang, latin) => `${latin ? latin + ", " : ""}Noto Sans CJK ${CJK[lang]}, sans-serif`;
+const mono = (lang) => `Noto Sans Mono CJK ${CJK[lang]}, monospace`;
+
+const PAPER = "#f4f6f4";
+const AMBER = "#f2b134";
+const LINE = "rgba(255,255,255,0.72)";
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function idPhotoFrame(x, y, s) {
+function textWidth(text, size) {
+  let w = 0;
+  for (const ch of String(text)) w += ch.codePointAt(0) > 0x2e80 ? size : size * 0.6;
+  return w;
+}
+
+function fitSize(text, maxWidth, sizes) {
+  for (const s of sizes) if (textWidth(text, s) <= maxWidth) return s;
+  return sizes[sizes.length - 1];
+}
+
+function matGrid() {
+  const out = [];
+  for (let x = 0; x <= 1800; x += 45) {
+    const major = x % 225 === 0;
+    out.push(`<rect x="${x}" y="76" width="${major ? 2 : 1}" height="869" fill="rgba(255,255,255,${major ? 0.16 : 0.075})"/>`);
+  }
+  for (let y = 76; y <= 945; y += 45) {
+    const major = (y - 76) % 225 === 0;
+    out.push(`<rect x="0" y="${y}" width="1800" height="${major ? 2 : 1}" fill="rgba(255,255,255,${major ? 0.16 : 0.075})"/>`);
+  }
+  for (let i = -6; i < 10; i++) {
+    out.push(`<line x1="${i * 225}" y1="945" x2="${i * 225 + 869}" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="2"/>`);
+  }
+  return out.join("");
+}
+
+function ruler(lang) {
+  const ticks = [];
+  for (let x = 0; x <= 1800; x += 22.5) {
+    const n = Math.round(x / 22.5);
+    const big = n % 8 === 0;
+    const mid = n % 4 === 0;
+    ticks.push(`<rect x="${x}" y="${big ? 30 : mid ? 42 : 52}" width="2" height="${big ? 46 : mid ? 34 : 24}" fill="rgba(255,255,255,0.55)"/>`);
+    if (big) ticks.push(`<text x="${x + 8}" y="26" font-family="${mono(lang)}" font-size="18" font-weight="700" fill="rgba(255,255,255,0.45)">${n * 5}</text>`);
+  }
+  return `<g><rect x="0" y="0" width="1800" height="76" fill="rgba(255,255,255,0.06)"/>${ticks.join("")}<rect x="0" y="74" width="1800" height="2" fill="rgba(255,255,255,0.3)"/></g>`;
+}
+
+function cropMarks(x, y, w, h, color) {
+  const m = 22;
+  const L = 34;
+  const s = 3;
+  const corner = (cx, cy, dx, dy) => `
+    <rect x="${cx}" y="${cy}" width="${L * dx > 0 ? L : s}" height="${L * dx > 0 ? s : L}" fill="${color}"/>`;
   return `
-  <g transform="translate(${x},${y}) scale(${s})">
-    <ellipse cx="170" cy="430" rx="190" ry="20" fill="rgba(60,58,54,0.16)"/>
-    <rect x="8" y="8" width="324" height="404" rx="10" fill="#cfcbc4" stroke="#8a8680" stroke-width="3"/>
-    <rect x="28" y="28" width="284" height="364" rx="4" fill="#f4f2ee"/>
-    <rect x="40" y="40" width="260" height="340" fill="#d8d4ce"/>
-    <rect x="40" y="40" width="260" height="210" fill="#c8d0d6"/>
-    <ellipse cx="170" cy="168" rx="62" ry="74" fill="#6e6a64"/>
-    <ellipse cx="170" cy="156" rx="48" ry="56" fill="#8a8680"/>
-    <path d="M92 380 C96 292, 244 292, 248 380 Z" fill="#4a4844"/>
-    <path d="M108 380 C114 318, 226 318, 232 380 Z" fill="#5c5a56"/>
-    <rect x="40" y="40" width="260" height="340" fill="none" stroke="#3a3834" stroke-width="3"/>
-    <g fill="none" stroke="#3a3834" stroke-width="6" stroke-linecap="square">
-      <path d="M28 62 L28 28 L62 28"/>
-      <path d="M278 28 L312 28 L312 62"/>
-      <path d="M28 358 L28 392 L62 392"/>
-      <path d="M278 392 L312 392 L312 358"/>
-    </g>
-    <rect x="96" y="392" width="148" height="28" rx="4" fill="#3a3834"/>
-    <text x="170" y="412" text-anchor="middle" font-family="${MONO}" font-size="15" font-weight="800" fill="#f4f2ee">3.5 × 4.5</text>
+  <g>
+    <rect x="${x - m - L}" y="${y - m}" width="${L}" height="${s}" fill="${color}"/>
+    <rect x="${x - m}" y="${y - m - L}" width="${s}" height="${L}" fill="${color}"/>
+    <rect x="${x + w + m}" y="${y - m}" width="${L}" height="${s}" fill="${color}"/>
+    <rect x="${x + w + m}" y="${y - m - L}" width="${s}" height="${L}" fill="${color}"/>
+    <rect x="${x - m - L}" y="${y + h + m}" width="${L}" height="${s}" fill="${color}"/>
+    <rect x="${x - m}" y="${y + h + m}" width="${s}" height="${L}" fill="${color}"/>
+    <rect x="${x + w + m}" y="${y + h + m}" width="${L}" height="${s}" fill="${color}"/>
+    <rect x="${x + w + m}" y="${y + h + m}" width="${s}" height="${L}" fill="${color}"/>
   </g>`;
 }
 
-function esc(s) {
-  return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+/** A print on the mat: white border, sitter, crop marks and the size under it. */
+function print(lang, x, y, w, h, rot, caption, active, kind = "face") {
+  const b = Math.round(w * 0.055);
+  const iw = w - b * 2;
+  const ih = h - b * 2;
+  const cs = fitSize(caption, w + 60, [24, 21, 19, 17]);
+  return `
+  <g transform="translate(${x},${y}) rotate(${rot})">
+    <rect x="6" y="10" width="${w}" height="${h}" rx="3" fill="rgba(8,20,16,0.35)"/>
+    <rect x="0" y="0" width="${w}" height="${h}" rx="3" fill="${PAPER}"/>
+    <rect x="${b}" y="${b}" width="${iw}" height="${ih}" fill="#cfdbe2"/>
+    ${kind === "sign"
+      ? `<path d="M${b + iw * 0.08} ${b + ih * 0.72} C${b + iw * 0.2} ${b + ih * 0.18}, ${b + iw * 0.3} ${b + ih * 0.9}, ${b + iw * 0.42} ${b + ih * 0.44} S${b + iw * 0.58} ${b + ih * 0.9}, ${b + iw * 0.7} ${b + ih * 0.4} S${b + iw * 0.86} ${b + ih * 0.82}, ${b + iw * 0.94} ${b + ih * 0.52}" fill="none" stroke="#42566b" stroke-width="${Math.max(4, ih * 0.07)}" stroke-linecap="round"/>`
+      : `<circle cx="${b + iw / 2}" cy="${b + ih * 0.36}" r="${iw * 0.19}" fill="#7d8f9c"/>
+    <path d="M${b + iw * 0.12} ${b + ih} Q${b + iw / 2} ${b + ih * 0.56} ${b + iw * 0.88} ${b + ih} Z" fill="#7d8f9c"/>`}
+    ${cropMarks(0, 0, w, h, active ? AMBER : "rgba(255,255,255,0.42)")}
+    ${active ? `<rect x="-4" y="-4" width="${w + 8}" height="${h + 8}" fill="none" stroke="${AMBER}" stroke-width="4"/>` : ""}
+    <text x="${w / 2}" y="${h + 76}" text-anchor="middle" font-family="${mono(lang)}" font-size="${cs}" font-weight="700" fill="${active ? AMBER : LINE}">${esc(caption)}</text>
+  </g>`;
 }
 
-function titleSize(title) {
-  const n = [...title].length;
-  if (n <= 4) return 128;
-  if (n <= 7) return 100;
-  if (n <= 10) return 86;
-  return 72;
+/** Drafting title block: the sheet's identity, in cells, not a headline. */
+function titleBlock(lang, title, subtitle, cells) {
+  const w = 812;
+  const titleSize = fitSize(title, w - 60, [76, 66, 58, 50, 44]);
+  const subSize = fitSize(subtitle, w - 60, [28, 25, 22, 20]);
+  const cellW = w / 3;
+  return `
+  <g transform="translate(88,660)">
+    <rect x="0" y="0" width="${w}" height="252" fill="rgba(12,26,22,0.86)"/>
+    <rect x="0" y="0" width="${w}" height="252" fill="none" stroke="${LINE}" stroke-width="3"/>
+    <rect x="0" y="0" width="${w}" height="52" fill="none" stroke="${LINE}" stroke-width="3"/>
+    <rect x="0" y="188" width="${w}" height="64" fill="none" stroke="${LINE}" stroke-width="3"/>
+    <text x="20" y="35" font-family="${mono(lang)}" font-size="22" font-weight="800" fill="${AMBER}" letter-spacing="4">TRY DABBLE</text>
+    <text x="${w - 20}" y="35" text-anchor="end" font-family="${mono(lang)}" font-size="22" font-weight="700" fill="rgba(255,255,255,0.55)">photo-spec.try-dabble.com</text>
+    <text x="20" y="${52 + 78}" font-family="${sans(lang, "URW Gothic")}" font-size="${titleSize}" font-weight="700" fill="${PAPER}">${esc(title)}</text>
+    <text x="20" y="${52 + 78 + 46}" font-family="${sans(lang)}" font-size="${subSize}" font-weight="600" fill="rgba(255,255,255,0.62)">${esc(subtitle)}</text>
+    ${cells.map((c, i) => `
+    <g transform="translate(${i * cellW},188)">
+      ${i > 0 ? `<rect x="0" y="0" width="3" height="64" fill="${LINE}"/>` : ""}
+      <text x="20" y="26" font-family="${mono(lang)}" font-size="17" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">${esc(c[0])}</text>
+      <text x="20" y="52" font-family="${mono(lang)}" font-size="24" font-weight="800" fill="${AMBER}">${esc(c[1])}</text>
+    </g>`).join("")}
+  </g>`;
 }
 
-function svgFor(title, subtitle) {
-  const escaped = esc(title);
-  const sub = esc(subtitle || "");
-  const fontSize = titleSize(title);
-  const y = 500;
+function svgFor(job) {
+  const { lang, title, subtitle, cells, prints } = job;
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="945" viewBox="0 0 1800 945">
   <defs>
-    <linearGradient id="studio" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f0eeea"/>
-      <stop offset="100%" stop-color="#e8e6e2"/>
-    </linearGradient>
+    <radialGradient id="matbg" cx="0.42" cy="0.36" r="0.86">
+      <stop offset="0%" stop-color="#37594c"/>
+      <stop offset="100%" stop-color="#254036"/>
+    </radialGradient>
   </defs>
-  <rect width="1800" height="945" fill="url(#studio)"/>
-  ${grainDots()}
-  <rect width="1800" height="10" fill="#6b6660"/>
-  <text x="70" y="${y}" font-family="${FONT}" font-size="${fontSize}" font-weight="700" fill="#2a2824">${escaped}</text>
-  <rect x="70" y="${y + 22}" width="220" height="8" rx="4" fill="#6b6660"/>
-  <text x="70" y="${y + 72}" font-family="${FONT}" font-size="32" font-weight="600" fill="#6b6660">${sub}</text>
-  ${idPhotoFrame(1220, 200, 1.18)}
-  <g transform="translate(78,150)">
-    <rect width="168" height="36" rx="4" fill="#f4f2ee" stroke="#6b6660" stroke-width="3"/>
-    <text x="84" y="24" text-anchor="middle" font-family="${MONO}" font-size="15" font-weight="800" fill="#3a3834">ID PHOTO</text>
-  </g>
+  <rect width="1800" height="945" fill="url(#matbg)"/>
+  ${matGrid()}
+  ${ruler(lang)}
+
+  ${print(lang, 176, 140, 334, 430, -3, prints[0], true)}
+  ${print(lang, 812, 196, 250, 322, 2.5, prints[1], false)}
+  ${print(lang, 1150, 168, 268, 268, -1.5, prints[2], false)}
+  ${print(lang, 1414, 636, 306, 102, 3, prints[3], false, "sign")}
+
+  ${titleBlock(lang, title, subtitle, cells)}
 </svg>`;
 }
 
 async function contain(inputBuf, output) {
   await sharp(inputBuf)
-    .resize(1200, 630, { fit: "contain", background: GRAY })
+    .resize(1200, 630, { fit: "contain", background: MAT })
     .png()
     .toFile(output);
   const m = await sharp(output).metadata();
@@ -106,16 +169,34 @@ async function contain(inputBuf, output) {
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const jobs = [
-    { title: "사진규격", subtitle: "픽셀과 KB에 맞추기", files: ["og-image.png", "og-image-ko.png"] },
-    { title: "Photo Spec", subtitle: "Fit to pixels & KB", files: ["og-image-en.png"] },
-    { title: "写真規格", subtitle: "ピクセルとKBに合わせる", files: ["og-image-ja.png"] },
-    { title: "照片规格", subtitle: "对齐像素和 KB", files: ["og-image-zh.png"] },
+    {
+      lang: "ko", title: "사진 규격", subtitle: "픽셀과 KB까지 정확히 맞춥니다",
+      cells: [["규격", "35×45mm"], ["픽셀", "413×531"], ["용량", "≤ 200KB"]],
+      prints: ["여권 35×45mm", "이력서 30×40mm", "비자 51×51mm", "사인 6×2cm"],
+      files: ["og-image.png", "og-image-ko.png"],
+    },
+    {
+      lang: "en", title: "Photo Spec", subtitle: "Exact pixels, exact kilobytes",
+      cells: [["SIZE", "35×45mm"], ["PIXELS", "413×531"], ["WEIGHT", "≤ 200KB"]],
+      prints: ["Passport 35×45mm", "Resume 30×40mm", "Visa 51×51mm", "Signature 6×2cm"],
+      files: ["og-image-en.png"],
+    },
+    {
+      lang: "ja", title: "写真規格", subtitle: "ピクセルもKBもぴったりに",
+      cells: [["寸法", "35×45mm"], ["画素", "413×531"], ["容量", "≤ 200KB"]],
+      prints: ["パスポート 35×45mm", "履歴書 30×40mm", "ビザ 51×51mm", "署名 6×2cm"],
+      files: ["og-image-ja.png"],
+    },
+    {
+      lang: "zh", title: "照片规格", subtitle: "像素和 KB 都对得上",
+      cells: [["尺寸", "35×45mm"], ["像素", "413×531"], ["大小", "≤ 200KB"]],
+      prints: ["护照 35×45mm", "简历 30×40mm", "签证 51×51mm", "签名 6×2cm"],
+      files: ["og-image-zh.png"],
+    },
   ];
   for (const job of jobs) {
-    const buf = Buffer.from(svgFor(job.title, job.subtitle));
-    for (const file of job.files) {
-      await contain(buf, path.join(OUT, file));
-    }
+    const buf = Buffer.from(svgFor(job));
+    for (const file of job.files) await contain(buf, path.join(OUT, file));
   }
 }
 

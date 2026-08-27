@@ -3,128 +3,223 @@ import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 
+/**
+ * Block Jumper card: one frame of the game, drawn on the game's own grid.
+ * Four theme columns run left to right — underground, ground, sky, space — with
+ * dithered seams between them, and the runner is caught mid-arc over the seam.
+ * Everything snaps to a 15px cell and renders with crispEdges: no soft shapes.
+ */
+
 const OUT = path.join(import.meta.dirname, "public");
-const NIGHT = { r: 15, g: 15, b: 26, alpha: 1 };
-const FONT = "Noto Serif CJK KR, Noto Serif CJK JP, Noto Serif CJK SC, serif";
-const MONO = "Courier New, ui-monospace, monospace";
+const NIGHT = { r: 20, g: 16, b: 34, alpha: 1 };
 
-function grainDots() {
-  const dots = [];
-  let seed = 37;
-  for (let i = 0; i < 110; i++) {
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const x = seed % 1800;
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const y = seed % 945;
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    const o = 0.18 + (seed % 10) / 40;
-    const r = 0.8 + (seed % 5) / 4;
-    dots.push(`<circle cx="${x}" cy="${y}" r="${r.toFixed(1)}" fill="rgba(240,244,255,${o.toFixed(3)})"/>`);
+const CJK = { ko: "KR", ja: "JP", zh: "SC", en: "KR" };
+const sans = (lang, latin) => `${latin ? latin + ", " : ""}Noto Sans CJK ${CJK[lang]}, sans-serif`;
+const mono = (lang) => `Noto Sans Mono CJK ${CJK[lang]}, monospace`;
+
+const U = 15;
+const PANEL = "#f2f0ff";
+const INK = "#191430";
+const HERO = "#ffd23f";
+const HERO_DK = "#e0921c";
+const PINK = "#f0688a";
+
+const BANDS = [
+  { x0: 0, x1: 456, sky: "#241d3a", deep: "#171227", plat: "#7d5aa8", cap: "#c79bf0" },
+  { x0: 456, x1: 900, sky: "#7cc0e8", deep: "#5aa7d6", plat: "#8a5a34", cap: "#6cbf5a" },
+  { x0: 900, x1: 1344, sky: "#bfe4f7", deep: "#9ed2f0", plat: "#e8eef7", cap: "#ffffff" },
+  { x0: 1344, x1: 1800, sky: "#141a33", deep: "#0d1226", plat: "#4a56b8", cap: "#8fa0ff" },
+];
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function textWidth(text, size) {
+  let w = 0;
+  for (const ch of String(text)) w += ch.codePointAt(0) > 0x2e80 ? size : size * 0.58;
+  return w;
+}
+
+function fitSize(text, maxWidth, sizes) {
+  for (const s of sizes) if (textWidth(text, s) <= maxWidth) return s;
+  return sizes[sizes.length - 1];
+}
+
+const snap = (v) => Math.round(v / U) * U;
+
+function px(x, y, w, h, fill, opacity) {
+  return `<rect x="${snap(x)}" y="${snap(y)}" width="${snap(w)}" height="${snap(h)}" fill="${fill}"${opacity ? ` opacity="${opacity}"` : ""}/>`;
+}
+
+/** Bayer-dithered seam: how a pixel game blends two palettes. */
+function dither(x, fromFill, toFill) {
+  const BAYER = [
+    [0, 8, 2, 10],
+    [12, 4, 14, 6],
+    [3, 11, 1, 9],
+    [15, 7, 13, 5],
+  ];
+  const cols = 8;
+  const out = [];
+  for (let c = 0; c < cols; c++) {
+    const density = (c + 1) / (cols + 1);
+    for (let r = 0; r < 63; r++) {
+      const on = density > (BAYER[r % 4][c % 4] + 0.5) / 16;
+      out.push(px(x + (c - cols / 2) * U, r * U, U, U, on ? toFill : fromFill));
+    }
   }
-  return dots.join("");
+  return out.join("");
 }
 
-function block(x, y, w, h, fill, top) {
-  return `
-    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/>
-    <rect x="${x}" y="${y}" width="${w}" height="10" fill="${top}"/>
-    <rect x="${x}" y="${y}" width="8" height="${h}" fill="rgba(255,255,255,0.08)"/>
-  `;
+function stars(x0, x1, seed0) {
+  const out = [];
+  let seed = seed0;
+  for (let i = 0; i < 42; i++) {
+    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+    const x = x0 + (seed % (x1 - x0));
+    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+    const y = seed % 780;
+    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+    out.push(px(x, y, U, U, "#eef1ff", seed % 4 === 0 ? 0.9 : 0.35));
+  }
+  return out.join("");
 }
 
-function stackedBlocks(x, y, s) {
+/** A platform: outlined body with a bright cap row, the way the game draws it. */
+function platform(x, y, cells, band) {
+  const w = cells * U;
   return `
-  <g transform="translate(${x},${y}) scale(${s})">
-    <ellipse cx="210" cy="430" rx="200" ry="18" fill="rgba(120,160,255,0.12)"/>
-    <circle cx="340" cy="46" r="38" fill="#c4a574"/>
-    <ellipse cx="340" cy="46" rx="62" ry="10" fill="none" stroke="#f4d27a" stroke-width="6"/>
-    <circle cx="392" cy="92" r="14" fill="#5b8def"/>
-    ${block(20, 300, 150, 70, "#3d3558", "#6a5f8a")}
-    ${block(200, 248, 130, 70, "#2a3d6a", "#4a6aa8")}
-    ${block(120, 168, 120, 64, "#3a2a4a", "#7a4a78")}
-    ${block(280, 120, 110, 58, "#1e3a4a", "#3a7a7a")}
-    <g transform="translate(168, 86)">
-      <rect x="18" y="52" width="10" height="18" fill="#c45c6a"/>
-      <rect x="48" y="52" width="10" height="18" fill="#c45c6a"/>
-      <rect x="8" y="8" width="60" height="48" fill="#f07888"/>
-      <rect x="8" y="8" width="60" height="10" fill="#ffb0ba"/>
-      <rect x="18" y="22" width="12" height="12" fill="#fff8ee"/>
-      <rect x="46" y="22" width="12" height="12" fill="#fff8ee"/>
-      <rect x="20" y="24" width="6" height="6" fill="#1a1020"/>
-      <rect x="48" y="24" width="6" height="6" fill="#1a1020"/>
-      <rect x="-4" y="28" width="12" height="10" fill="#f07888"/>
-      <rect x="68" y="20" width="12" height="10" fill="#f07888"/>
-    </g>
-    <g transform="translate(40, 286)">
-      <polygon points="12,0 24,18 0,18" fill="#9aa3ad"/>
-      <polygon points="36,0 48,18 24,18" fill="#9aa3ad"/>
-      <polygon points="60,0 72,18 48,18" fill="#9aa3ad"/>
-    </g>
+    ${px(x - U, y - U, w + U * 2, U * 5 + U * 2, INK, 0.55)}
+    ${px(x, y, w, U * 5, band.plat)}
+    ${px(x, y, w, U, band.cap)}
+    ${px(x, y + U, w, U, "rgba(255,255,255,0.18)")}
+    ${px(x, y + U * 4, w, U, "rgba(0,0,0,0.30)")}`;
+}
+
+/** The floor each theme column stands on. */
+function floor(band) {
+  return `
+    ${px(band.x0, 855, band.x1 - band.x0, 90, band.plat)}
+    ${px(band.x0, 855, band.x1 - band.x0, U, band.cap)}
+    ${px(band.x0, 855 + U, band.x1 - band.x0, U, "rgba(255,255,255,0.14)")}`;
+}
+
+function runner(x, y) {
+  return `
+  <g>
+    ${px(x - U, y - U, U * 6, U * 6, INK, 0.5)}
+    ${px(x, y, U * 4, U * 4, HERO)}
+    ${px(x, y + U * 3, U * 4, U, HERO_DK)}
+    ${px(x + U, y + U, U, U, INK)}
+    ${px(x + U * 3, y + U, U, U, INK)}
+    ${px(x + U, y + U * 2, U * 2, U, INK)}
+    ${px(x - U, y + U * 4, U, U * 2, HERO_DK)}
+    ${px(x + U * 4, y + U * 4, U, U * 2, HERO_DK)}
   </g>`;
 }
 
-function esc(s) {
-  return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+function arc(points) {
+  return points
+    .map(([x, y], i) => px(x, y, U, U, HERO, 0.22 + i * 0.18))
+    .join("");
 }
 
-function titleSize(title) {
-  const n = [...title].length;
-  if (n <= 4) return 128;
-  if (n <= 7) return 100;
-  if (n <= 10) return 86;
-  return 72;
+function crystal(x, y, h, fill) {
+  return `
+    ${px(x, y, U * 2, h, fill)}
+    ${px(x + U * 2, y + U * 2, U * 2, h - U * 2, fill)}
+    ${px(x, y, U, U, "#ffffff", 0.5)}
+    ${px(x, y + h - U, U * 4, U, "rgba(0,0,0,0.30)")}`;
 }
 
-function svgFor(title, subtitle) {
-  const escaped = esc(title);
-  const sub = esc(subtitle || "");
-  const fontSize = titleSize(title);
-  const y = 500;
+function panel(lang, title, subtitle) {
+  const w = 645;
+  const titleSize = fitSize(title, w - 96, [74, 64, 56, 48, 42]);
+  const subSize = fitSize(subtitle, w - 96, [28, 25, 22, 20]);
+  const h = 234;
+  const x = 60;
+  const y = 618;
+  return `
+  <g>
+    ${px(x + U, y + U, w, h, "#000000", 0.45)}
+    ${px(x, y, w, h, PANEL)}
+    ${px(x, y, w, U, INK)}
+    ${px(x, y + h - U, w, U, INK)}
+    ${px(x, y, U, h, INK)}
+    ${px(x + w - U, y, U, h, INK)}
+    ${px(x + U * 2, y + U * 2, w - U * 4, U, "#ffffff")}
+    <text x="${x + 46}" y="${y + 112 + titleSize * 0.3}" font-family="${sans(lang, "URW Gothic")}" font-size="${titleSize}" font-weight="700" fill="${INK}">${esc(title)}</text>
+    <text x="${x + 48}" y="${y + 180 + subSize * 0.3}" font-family="${mono(lang)}" font-size="${subSize}" font-weight="700" fill="#5b5480">${esc(subtitle)}</text>
+  </g>`;
+}
+
+function themeTag(lang, band, label, dark) {
+  const size = 24;
+  const w = textWidth(label, size) + 42;
+  const cx = (band.x0 + band.x1) / 2;
+  return `
+  <g>
+    ${px(cx - w / 2, 54, w, 54, dark ? "rgba(10,8,22,0.55)" : "rgba(255,255,255,0.62)")}
+    <text x="${cx}" y="90" text-anchor="middle" font-family="${mono(lang)}" font-size="${size}" font-weight="800" fill="${dark ? "#dfe4ff" : INK}">${esc(label)}</text>
+  </g>`;
+}
+
+function svgFor(job) {
+  const { lang, title, subtitle, themes } = job;
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="945" viewBox="0 0 1800 945">
-  <defs>
-    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#141428"/>
-      <stop offset="100%" stop-color="#0f0f1a"/>
-    </linearGradient>
-    <radialGradient id="moon" cx="80%" cy="12%" r="30%">
-      <stop offset="0%" stop-color="#5b4a88" stop-opacity="0.28"/>
-      <stop offset="100%" stop-color="#0f0f1a" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1800" height="945" fill="url(#night)"/>
-  <rect width="1800" height="945" fill="url(#moon)"/>
-  ${grainDots()}
-  <rect width="1800" height="8" fill="#f07888"/>
-  <text x="70" y="${y}" font-family="${FONT}" font-size="${fontSize}" font-weight="700" fill="#f4f1ea">${escaped}</text>
-  <rect x="70" y="${y + 22}" width="220" height="8" rx="4" fill="#f07888"/>
-  <text x="70" y="${y + 72}" font-family="${FONT}" font-size="32" font-weight="600" fill="#9aa3ad">${sub}</text>
-  ${stackedBlocks(1160, 200, 1.22)}
-  <g transform="translate(78,150)">
-    <rect width="168" height="36" rx="4" fill="#0f0f1a" stroke="#f07888" stroke-width="3"/>
-    <text x="84" y="24" text-anchor="middle" font-family="${MONO}" font-size="15" font-weight="800" fill="#f07888">4 THEMES</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="945" viewBox="0 0 1800 945" shape-rendering="crispEdges">
+  ${BANDS.map((b) => px(b.x0, 0, b.x1 - b.x0, 945, b.sky)).join("")}
+  ${dither(456, BANDS[0].sky, BANDS[1].sky)}
+  ${dither(900, BANDS[1].sky, BANDS[2].sky)}
+  ${dither(1344, BANDS[2].sky, BANDS[3].sky)}
+  ${stars(0, 456, 8807)}
+  ${stars(1344, 1800, 5501)}
+
+  ${px(1560, 150, U * 6, U * 6, "#f0a35a")}
+  ${px(1575, 135, U * 4, U, "#f0a35a")}
+  ${px(1575, 240, U * 4, U, "#f0a35a")}
+  ${px(1500, 195, U * 12, U, HERO, 0.65)}
+
+  ${px(975, 165, U * 5, U * 3, "#ffffff", 0.9)}
+  ${px(1005, 150, U * 6, U * 3, "#ffffff", 0.9)}
+  ${px(1155, 270, U * 4, U * 2, "#ffffff", 0.75)}
+
+  ${BANDS.map((b) => floor(b)).join("")}
+
+  ${crystal(120, 435, U * 8, "#c79bf0")}
+  ${crystal(255, 510, U * 6, "#8f6ec9")}
+  ${crystal(345, 390, U * 7, "#c79bf0")}
+  ${px(60, 240, U * 3, U * 2, "#3a2f56")}
+  ${px(300, 195, U * 4, U * 2, "#3a2f56")}
+  ${px(180, 660, U * 2, U * 2, "#3a2f56")}
+
+  ${platform(510, 570, 6, BANDS[1])}
+  ${platform(720, 735, 9, BANDS[1])}
+  ${platform(930, 615, 8, BANDS[2])}
+  ${platform(1155, 495, 8, BANDS[2])}
+  ${platform(1395, 375, 8, BANDS[3])}
+  ${platform(1650, 270, 7, BANDS[3])}
+
+  ${px(555, 495, U * 3, U * 3, HERO)}
+  ${px(570, 510, U, U, INK)}
+  ${px(990, 540, U * 3, U * 3, PINK)}
+  ${px(1005, 555, U, U, INK)}
+  ${px(1440, 300, U * 3, U * 3, HERO)}
+  ${px(1455, 315, U, U, INK)}
+
+  ${arc([[1200, 450], [1245, 405], [1275, 360], [1305, 315]])}
+  ${runner(1335, 255)}
+
+  ${themeTag(lang, BANDS[0], themes[0], true)}
+  ${themeTag(lang, BANDS[1], themes[1], false)}
+  ${themeTag(lang, BANDS[2], themes[2], false)}
+  ${themeTag(lang, BANDS[3], themes[3], true)}
+
+  ${panel(lang, title, subtitle)}
 </svg>`;
 }
 
-async function contain(inputBuf, output) {
-  await sharp(inputBuf)
-    .resize(1200, 630, { fit: "contain", background: NIGHT })
-    .png()
-    .toFile(output);
-  const m = await sharp(output).metadata();
-  if (m.width !== 1200 || m.height !== 630) {
-    throw new Error(`bad og size ${output} ${m.width}x${m.height}`);
-  }
-  console.log(output, m.width, m.height);
-}
-
-// The PWA icon is the marquee mark: three blocks, a coin and a jumper, drawn
-// on a 32px grid and blown up with nearest-neighbour so it stays pixel art at
-// 192 and 512.
 const ICON_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
   <rect width="32" height="32" fill="#0d0d18"/>
@@ -152,19 +247,29 @@ async function icon(size, output) {
   console.log(output, size + "x" + size);
 }
 
+async function contain(inputBuf, output) {
+  await sharp(inputBuf)
+    .resize(1200, 630, { fit: "contain", background: NIGHT })
+    .png()
+    .toFile(output);
+  const m = await sharp(output).metadata();
+  if (m.width !== 1200 || m.height !== 630) {
+    throw new Error(`bad og size ${output} ${m.width}x${m.height}`);
+  }
+  console.log(output, m.width, m.height);
+}
+
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const jobs = [
-    { title: "블록점퍼", subtitle: "네 테마 점프", files: ["og-image.png", "og-image-ko.png"] },
-    { title: "Block Jumper", subtitle: "Four-theme jumper", files: ["og-image-en.png"] },
-    { title: "ブロックジャンパー", subtitle: "4つのテーマ", files: ["og-image-ja.png"] },
-    { title: "方块跳跃者", subtitle: "四大主题跳跃", files: ["og-image-zh.png"] },
+    { lang: "ko", title: "블록점퍼", subtitle: "떨어져도 다시 올라섭니다", themes: ["지하", "땅", "하늘", "우주"], files: ["og-image.png", "og-image-ko.png"] },
+    { lang: "en", title: "Block Jumper", subtitle: "Fall, land, keep going", themes: ["UNDER", "GROUND", "SKY", "SPACE"], files: ["og-image-en.png"] },
+    { lang: "ja", title: "ブロックジャンパー", subtitle: "落ちてもまた登れる", themes: ["地下", "地上", "空", "宇宙"], files: ["og-image-ja.png"] },
+    { lang: "zh", title: "方块跳跃者", subtitle: "掉下去也能再站上来", themes: ["地下", "地面", "天空", "宇宙"], files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
-    const buf = Buffer.from(svgFor(job.title, job.subtitle));
-    for (const file of job.files) {
-      await contain(buf, path.join(OUT, file));
-    }
+    const buf = Buffer.from(svgFor(job));
+    for (const file of job.files) await contain(buf, path.join(OUT, file));
   }
   await icon(192, path.join(OUT, "icon-192.png"));
   await icon(512, path.join(OUT, "icon-512.png"));
