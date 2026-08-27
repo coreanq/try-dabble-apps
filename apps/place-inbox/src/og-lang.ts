@@ -51,7 +51,7 @@ const COPY: Record<
       '把旅行截图和链接连同“为何收藏”、1–5 想去程度和候选行程分组。数据只留在浏览器。',
     tagline: '把乱七八糟的旅行收藏收进一处',
     locale: 'zh_CN',
-    image: 'https://place-inbox.try-dabble.com/og-image-en.png',
+    image: 'https://place-inbox.try-dabble.com/og-image-zh.png',
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
   },
 };

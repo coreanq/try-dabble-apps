@@ -1,6 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const OUT = path.join(__dirname, "public");
 const PLUM = { r: 28, g: 16, b: 22, alpha: 1 };
@@ -117,6 +120,7 @@ async function main() {
     { title: "선물서랍", subtitle: "아이디어를 서랍에", files: ["og-image.png", "og-image-ko.png"] },
     { title: "Gift Stash", subtitle: "Ideas in a drawer", files: ["og-image-en.png"] },
     { title: "プレゼント引き出し", subtitle: "引き出しにしまう", files: ["og-image-ja.png"] },
+    { title: "礼物抽屉", subtitle: "把灵感放进抽屉", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
     const buf = Buffer.from(svgFor(job.title, job.subtitle));

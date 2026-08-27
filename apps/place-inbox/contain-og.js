@@ -1,6 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const OUT = path.join(__dirname, "public");
 const SKY = { r: 212, g: 228, b: 240, alpha: 1 };
@@ -125,6 +128,7 @@ async function main() {
     { title: "여행받은편지함", subtitle: "여행 저장함", files: ["og-image.png", "og-image-ko.png"] },
     { title: "Place Inbox", subtitle: "Travel saves", files: ["og-image-en.png"] },
     { title: "旅の受信箱", subtitle: "旅の保存箱", files: ["og-image-ja.png"] },
+    { title: "旅行收件箱", subtitle: "旅行保存箱", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
     const buf = Buffer.from(svgFor(job.title, job.subtitle));

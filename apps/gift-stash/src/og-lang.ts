@@ -39,7 +39,7 @@ const COPY: Record<
     tagline: '把截图变成礼物灵感',
     description: '本地优先的礼物灵感库。保存截图、标记给某人，生日前提醒。数据只留在浏览器。',
     locale: 'zh_CN',
-    image: 'https://gift-stash.try-dabble.com/og-image-en.png',
+    image: 'https://gift-stash.try-dabble.com/og-image-zh.png',
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
   },
 };
