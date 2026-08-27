@@ -1,6 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const OUT = path.join(__dirname, "public");
 const GRAY = { r: 232, g: 230, b: 226, alpha: 1 };
@@ -106,6 +109,7 @@ async function main() {
     { title: "사진규격", subtitle: "픽셀과 KB에 맞추기", files: ["og-image.png", "og-image-ko.png"] },
     { title: "Photo Spec", subtitle: "Fit to pixels & KB", files: ["og-image-en.png"] },
     { title: "写真規格", subtitle: "ピクセルとKBに合わせる", files: ["og-image-ja.png"] },
+    { title: "照片规格", subtitle: "对齐像素和 KB", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
     const buf = Buffer.from(svgFor(job.title, job.subtitle));
