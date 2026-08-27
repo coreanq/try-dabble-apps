@@ -41,16 +41,23 @@ function isHome(pathname: string): boolean {
   return pathname === '/' || pathname === '/index.html' || pathname === '';
 }
 
+function pickLang(request: Request, url: URL): Lang | null {
+  const q = url.searchParams.get('lang');
+  if (q && LANGS.has(q)) return q as Lang;
+  const m = (request.headers.get('cookie') || '').match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+  if (m && LANGS.has(m[1])) return m[1] as Lang;
+  return null;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const asset = await env.ASSETS.fetch(request);
     const ct = asset.headers.get('content-type') || '';
     if (!ct.includes('text/html') || !isHome(url.pathname)) return asset;
-    const q = url.searchParams.get('lang');
+    const lang = pickLang(request, url);
     let html: Response = asset;
-    if (q && LANGS.has(q)) {
-    const lang = q as Lang;
+    if (lang) {
     const copy = COPY[lang];
     const shareUrl = `${ORIGIN}/?lang=${lang}`;
     html = new HTMLRewriter()

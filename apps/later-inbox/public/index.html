@@ -59,8 +59,16 @@
         q = String(q).slice(0, 2).toLowerCase();
         if (COPY[q]) lang = q;
         else {
-          var s = localStorage.getItem("li_lang") || "";
-          if (COPY[s]) lang = s;
+          var cookieLang = "";
+          try {
+            var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+            if (cm && COPY[cm[1]]) cookieLang = cm[1];
+          } catch (err) {}
+          if (cookieLang) lang = cookieLang;
+          else {
+            var s = localStorage.getItem("li_lang") || "";
+            if (COPY[s]) lang = s;
+          }
         }
       } catch (e) {}
       var el = document.getElementById("local-only");

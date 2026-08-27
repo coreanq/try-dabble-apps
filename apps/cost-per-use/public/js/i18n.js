@@ -242,6 +242,15 @@ window.detectLang = function detectLang() {
       try { localStorage.setItem("cpu_lang", q); } catch (_) {}
       lang = q;
     } else {
+      var cookieLang = "";
+      try {
+        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+        if (cm && window.CPU_I18N[cm[1]]) cookieLang = cm[1];
+      } catch (_) {}
+      if (cookieLang) {
+        try { localStorage.setItem("cpu_lang", cookieLang); } catch (_) {}
+        lang = cookieLang;
+      } else {
       try {
         const saved = localStorage.getItem("cpu_lang");
         if (saved && window.CPU_I18N[saved]) lang = saved;
@@ -259,6 +268,7 @@ window.detectLang = function detectLang() {
         else if (nav.startsWith("ja")) lang = "ja";
         else if (nav.startsWith("zh")) lang = "zh";
         else if (nav.startsWith("en")) lang = "en";
+      }
       }
     }
   } catch (_) {}
