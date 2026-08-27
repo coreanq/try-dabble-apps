@@ -1,0 +1,646 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  블록점퍼 / Block Jumper — a cabinet in a dark arcade at 2 a.m.
+  The page is night sky with a hand-scattered starfield; the masthead is a
+  marquee of stacked blocks under a coin-gold rule; the game sits behind the
+  glass of a plastic bezel with rivets, scanlines and a screen-glow, and the
+  copy panels are labelled like the sticker strip on a cabinet's control deck.
+  Everything is hard-cornered with 3px ink outlines and offset shadows — no
+  blur, no rounded card, no gradient button.
+  Deliberately NOT the kitchen kraft of leftover-box, the manila office of
+  later-inbox, the postage map of place-inbox, the wrapping paper of
+  gift-stash, the cutting mat of photo-spec, the account book of cost-per-use,
+  the corrugated kraft of box-qr, the washi goban of omok — and above all not
+  a flat #111 utility form. shadcn is the kit, not the look: its button, card
+  and dialog are re-dressed as cabinet keys, bezels and a pause screen.
+*/
+
+@theme {
+  --color-night: #0d0d18;
+  --color-night-2: #14142c;
+  --color-ink: #05050c;
+  --color-slab: #1b1b38;
+  --color-slab-2: #262650;
+  --color-gold: #ffd23f;
+  --color-gold-deep: #c99400;
+  --color-pink: #f0688a;
+  --color-sky: #59a5ff;
+  --color-leaf: #6cd47c;
+  --color-brick: #c2703a;
+  --color-star: #eef1ff;
+  --color-dust: #a6abd8;
+  --color-amber: #ffcc33;
+  --color-amber-ink: #2b1c00;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-pixel);
+  --font-mono: var(--stack-pixel);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* The one app in the family that is a game: it gets the arcade face.
+     Press Start 2P has no CJK, so each script falls through to its own
+     chunky gothic and the two read as one marquee. */
+  --stack-pixel: "Press Start 2P", "DungGeunMo", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Hiragino Sans", "Microsoft YaHei", ui-monospace, monospace;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans",
+    "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --background: #0d0d18;
+  --foreground: #eef1ff;
+  --card: #161632;
+  --card-foreground: #eef1ff;
+  --popover: #161632;
+  --popover-foreground: #eef1ff;
+  --primary: #ffd23f;
+  --primary-foreground: #241a00;
+  --secondary: #262650;
+  --secondary-foreground: #eef1ff;
+  --muted: #1b1b38;
+  --muted-foreground: #a6abd8;
+  --accent: #59a5ff;
+  --accent-foreground: #04122b;
+  --destructive: #f0688a;
+  --border: #34346a;
+  --input: #34346a;
+  --ring: #ffd23f;
+
+  --radius: 0px;
+  --notice-h: 2rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    background: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply text-foreground;
+    margin: 0;
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    /* Night sky: two washes of blue over ink, then a hand-scattered
+       starfield — fixed, so the stars hold still while the page scrolls. */
+    background-color: var(--color-night);
+    background-image:
+      radial-gradient(1100px 520px at 78% -8%, #23234d 0%, rgba(35, 35, 77, 0) 70%),
+      radial-gradient(900px 460px at 8% 4%, #1a1a3c 0%, rgba(26, 26, 60, 0) 72%),
+      radial-gradient(1.6px 1.6px at 12% 18%, var(--color-star) 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 27% 9%, #cfd6ff 50%, transparent 51%),
+      radial-gradient(1.8px 1.8px at 41% 24%, var(--color-star) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 56% 6%, #b9c2ff 50%, transparent 51%),
+      radial-gradient(1.6px 1.6px at 68% 21%, var(--color-star) 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 83% 12%, #cfd6ff 50%, transparent 51%),
+      radial-gradient(1.7px 1.7px at 94% 27%, var(--color-star) 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 19% 41%, #b9c2ff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 47% 52%, #cfd6ff 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 74% 46%, var(--color-star) 50%, transparent 51%),
+      linear-gradient(180deg, #0d0d18 0%, #10102a 55%, #0a0a16 100%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .pj-shell {
+    width: 100%;
+    max-width: 60rem;
+    margin-inline: auto;
+    padding: 0 0.85rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Marquee and copy panels: everything the cabinet is wrapped in, and the
+     first thing to go when a phone turns sideways. */
+  .pj-chrome {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /*
+    The amber strip is the one thing every try-dabble app shares — but here it
+    is nailed to the cabinet with an ink rule, and its number sign is a
+    pixel-font glyph, not a serif one.
+  */
+  .pj-notice {
+    position: relative;
+    z-index: 60;
+    margin: 0 -0.85rem;
+    padding: 0.4rem 0.9rem 0.4rem 2rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: linear-gradient(180deg, #ffdb63 0%, var(--color-amber) 100%);
+    border-bottom: 3px solid var(--color-ink);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .pj-notice::before {
+    content: "#";
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-pixel);
+    font-size: 0.72rem;
+    line-height: 1;
+    color: var(--color-amber-ink);
+    opacity: 0.75;
+  }
+
+  .pj-noticebar {
+    position: relative;
+    z-index: 60;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 0 -0.85rem;
+    background: var(--color-amber);
+    border-bottom: 3px solid var(--color-ink);
+  }
+  .pj-noticebar .pj-notice {
+    flex: 1;
+    margin: 0;
+    border-bottom: 0;
+  }
+
+  .pj-langs {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.6rem 0.25rem 0.4rem;
+    flex-shrink: 0;
+  }
+
+  /* Cabinet keys: ink-outlined chips that press down when picked. */
+  .pj-key {
+    font-family: var(--stack-ui);
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    padding: 0.3rem 0.4rem;
+    color: var(--color-amber-ink);
+    background: #fff3cf;
+    border: 2px solid var(--color-ink);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+    height: auto;
+  }
+  .pj-key:hover {
+    background: #fff;
+  }
+  .pj-key[aria-pressed="true"] {
+    color: #fff8dd;
+    background: var(--color-ink);
+    box-shadow: inset 2px 2px 0 rgba(255, 210, 63, 0.35);
+  }
+
+  /*
+    Signature — the marquee. Stacked blocks on the left, the game's name in
+    the cabinet font, and a coin-gold rule underlining the whole board the way
+    a marquee light strip does.
+  */
+  .pj-masthead {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1rem;
+    background:
+      linear-gradient(180deg, #1c1c3e 0%, #12122a 100%);
+    border: 3px solid var(--color-ink);
+    box-shadow:
+      0 0 0 3px #2c2c5c,
+      0 6px 0 rgba(0, 0, 0, 0.55),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  .pj-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-gold) 0 10px,
+      var(--color-gold-deep) 10px 20px
+    );
+  }
+  .pj-mark {
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+  }
+  .pj-brand h1 {
+    margin: 0;
+    font-family: var(--stack-pixel);
+    font-size: clamp(1rem, 4.2vw, 1.5rem);
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    color: var(--color-gold);
+    text-shadow: 3px 3px 0 var(--color-ink);
+  }
+  .pj-brand p {
+    margin: 0.4rem 0 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-dust);
+  }
+  .pj-masthead-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* Gold coin button — the only fully saturated control on the page. */
+  .pj-btn {
+    font-family: var(--stack-ui);
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--color-ink);
+    background: var(--color-gold);
+    border: 3px solid var(--color-ink);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+    height: 2.1rem;
+    padding-inline: 0.7rem;
+  }
+  .pj-btn:hover {
+    background: #ffe27a;
+  }
+  .pj-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+  }
+
+  .pj-stage {
+    display: grid;
+    place-items: center;
+  }
+
+  /*
+    The bezel. Plastic shell, four rivets, and a screen that glows the way a
+    CRT does behind glass.
+  */
+  .pj-cabinet {
+    width: 100%;
+    max-width: min(100%, calc(62dvh * 16 / 9));
+    position: relative;
+    padding: 0.75rem;
+    gap: 0;
+    background: linear-gradient(180deg, #23234c 0%, #191938 100%);
+    border: 3px solid var(--color-ink);
+    box-shadow:
+      0 0 0 3px #33336a,
+      0 8px 0 rgba(0, 0, 0, 0.55),
+      0 0 44px rgba(89, 165, 255, 0.16);
+  }
+  .pj-rivet {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #6d6db4;
+    border: 2px solid var(--color-ink);
+  }
+  .pj-rivet-tl { top: 6px; left: 6px; }
+  .pj-rivet-tr { top: 6px; right: 6px; }
+  .pj-rivet-bl { bottom: 6px; left: 6px; }
+  .pj-rivet-br { bottom: 6px; right: 6px; }
+
+  .pj-screen {
+    position: relative;
+    background: #07070f;
+    border: 3px solid var(--color-ink);
+    box-shadow: inset 0 0 0 2px #000, inset 0 0 26px rgba(89, 165, 255, 0.18);
+    overflow: hidden;
+  }
+  .pj-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.16) 0 1px,
+      rgba(0, 0, 0, 0) 1px 3px
+    );
+    mix-blend-mode: multiply;
+  }
+
+  #game-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: #07070f;
+    image-rendering: pixelated;
+    touch-action: none;
+  }
+
+  .pj-loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: var(--stack-pixel);
+    font-size: 0.7rem;
+    color: var(--color-gold);
+    background: #07070f;
+    z-index: 2;
+  }
+
+  /* Control-deck sticker strip under the glass. */
+  .pj-deck {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+    padding: 0.6rem 0.15rem 0.1rem;
+    font-size: 0.72rem;
+    color: var(--color-dust);
+  }
+  .pj-deck-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .pj-cap {
+    font-family: var(--stack-pixel);
+    font-size: 0.6rem;
+    line-height: 1;
+    padding: 0.32rem 0.36rem;
+    color: #12122a;
+    background: #cfd6ff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 0 2px 0 #6d6db4;
+  }
+
+  .pj-panels {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 40rem) {
+    .pj-panels { grid-template-columns: 1fr 1fr; }
+  }
+
+  .pj-panel {
+    gap: 0;
+    padding: 0.9rem 1rem 1rem;
+    background: #14142e;
+    border: 3px solid var(--color-ink);
+    box-shadow: 0 0 0 3px #2a2a58, 0 6px 0 rgba(0, 0, 0, 0.5);
+  }
+  .pj-panel-title {
+    margin: 0 0 0.7rem;
+    font-family: var(--stack-pixel);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--color-gold);
+    text-shadow: 2px 2px 0 var(--color-ink);
+  }
+  .pj-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pj-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #d7dcff;
+  }
+  .pj-list b {
+    color: #fff;
+  }
+  .pj-list p {
+    margin: 0.1rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-dust);
+  }
+
+  /* A 12px block of solid colour stands in for each theme and hazard. */
+  .pj-chip {
+    flex-shrink: 0;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-top: 0.22rem;
+    border: 2px solid var(--color-ink);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  }
+  .pj-chip-under { background: var(--color-brick); }
+  .pj-chip-ground { background: var(--color-leaf); }
+  .pj-chip-sky { background: var(--color-sky); }
+  .pj-chip-space { background: #8a6bff; }
+  .pj-chip-spike { background: var(--color-pink); }
+  .pj-chip-fake { background: #6d6db4; }
+  .pj-chip-fall { background: var(--color-gold); }
+
+  .pj-prose {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: #c9cfff;
+  }
+  .pj-prose p { margin: 0 0 0.6rem; }
+  .pj-prose p:last-child { margin-bottom: 0; }
+
+  /* Pause screen — the dialog is a panel bolted over the game. */
+  .pj-dialog {
+    background: #14142e;
+    border: 3px solid var(--color-ink);
+    box-shadow: 0 0 0 3px var(--color-gold), 0 10px 0 rgba(0, 0, 0, 0.6);
+  }
+  .pj-dialog-title {
+    font-family: var(--stack-pixel);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-gold);
+    text-shadow: 2px 2px 0 var(--color-ink);
+  }
+
+  /*
+    Touch pad — ported from the pre-Vite page so the buttons land where a
+    returning player's thumbs already are. [data-key] is the engine's hook.
+  */
+  #touch-controls {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    #touch-controls { display: block; }
+  }
+  #touch-controls button {
+    pointer-events: auto;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    font-family: var(--stack-ui);
+    font-size: 28px;
+    color: #fff;
+    background: rgba(30, 30, 66, 0.55);
+    border: 3px solid rgba(207, 214, 255, 0.55);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #touch-controls button:active,
+  #touch-controls button.active {
+    background: rgba(255, 210, 63, 0.4);
+    border-color: var(--color-gold);
+  }
+  #btn-left { left: 24px; bottom: 100px; }
+  #btn-right { left: 110px; bottom: 100px; }
+  #btn-jump {
+    right: 32px;
+    bottom: 80px;
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+    background: rgba(240, 104, 138, 0.3);
+    border-color: rgba(240, 104, 138, 0.75);
+  }
+  #btn-menu {
+    top: calc(var(--notice-h) + 10px);
+    right: 16px;
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  #portrait-hint {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--stack-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    background: rgba(5, 5, 12, 0.94);
+  }
+  @media (hover: none) and (pointer: coarse) and (orientation: portrait) {
+    #portrait-hint { display: flex; }
+  }
+
+  /*
+    On a phone held sideways the cabinet gets out of the way: the game goes
+    full-bleed exactly like the pre-Vite page, with only the amber strip and
+    the touch pad on top of it.
+  */
+  @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+    .pj-shell { padding: 0; gap: 0; }
+    .pj-chrome { display: none; }
+    .pj-noticebar { margin: 0; position: fixed; top: 0; left: 0; right: 0; }
+    .pj-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: #05050c;
+    }
+    .pj-cabinet {
+      max-width: none;
+      width: auto;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+    .pj-rivet, .pj-deck { display: none; }
+    .pj-screen { border: 0; box-shadow: none; }
+    #game-canvas {
+      width: auto;
+      height: auto;
+      max-width: 100vw;
+      max-height: 100dvh;
+    }
+  }
+
+  .pj-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

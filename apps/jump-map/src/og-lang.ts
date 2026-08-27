@@ -1,7 +1,18 @@
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
+/**
+ * The Worker runs before the assets binding replies (run_worker_first), so the
+ * FIRST HTML already carries the requested ?lang= — html lang, title, the
+ * local-only banner, the marquee h1, the portrait hint, the noscript fallback
+ * and every og/twitter tag. Crawlers never run JS, so anything the React app
+ * fixes up later is too late for them.
+ *
+ * Copy is duplicated from src/lib/i18n.ts on purpose: the Worker is bundled on
+ * its own and must not drag React-side modules in.
+ */
 const COPY: Record<Lang, {
   title: string;
+  titleSub: string;
   description: string;
   locale: string;
   image: string;
@@ -16,6 +27,7 @@ const COPY: Record<Lang, {
 }> = {
   ko: {
     title: '블록점퍼',
+    titleSub: '네 테마 점프',
     description: '블록을 점프해 멀리 가는 사이드스크롤 플랫포머 — 4테마(지하/땅/하늘/우주)와 추락-회복 메커닉',
     locale: 'ko_KR',
     image: 'https://jump-map.try-dabble.com/og-image.png',
@@ -30,6 +42,7 @@ const COPY: Record<Lang, {
   },
   en: {
     title: 'Block Jumper',
+    titleSub: 'Four-theme jumper',
     description: 'A side-scrolling platformer where you jump across blocks — 4 themes (underground/ground/sky/space) with fall-recovery mechanic',
     locale: 'en_US',
     image: 'https://jump-map.try-dabble.com/og-image-en.png',
@@ -44,6 +57,7 @@ const COPY: Record<Lang, {
   },
   ja: {
     title: 'ブロックジャンパー',
+    titleSub: '4つのテーマ',
     description: 'ブロックをジャンプして遠くを目指す横スクロールプラットフォーマー — 4テーマ(地下/地上/空/宇宙)と落下リカバリー',
     locale: 'ja_JP',
     image: 'https://jump-map.try-dabble.com/og-image-ja.png',
@@ -58,9 +72,10 @@ const COPY: Record<Lang, {
   },
   zh: {
     title: '方块跳跃者',
+    titleSub: '四大主题跳跃',
     description: '一款横版跳跃平台游戏：穿越地下、地面、天空、宇宙四个主题，跌落后还能重新站上踏板。',
     locale: 'zh_CN',
-    image: 'https://jump-map.try-dabble.com/og-image-en.png',
+    image: 'https://jump-map.try-dabble.com/og-image-zh.png',
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
     portraitHint: '请旋转设备（建议横屏）',
     noscriptJs: '此游戏需要启用 JavaScript。请在浏览器中开启 JavaScript。',
@@ -72,8 +87,9 @@ const COPY: Record<Lang, {
   },
 };
 
+const SLUG = 'jump-map';
 const ORIGIN = 'https://jump-map.try-dabble.com';
-const LANGS = new Set<string>(["ko", "en", "ja", "zh"]);
+const LANGS = new Set<string>(['ko', 'en', 'ja', 'zh']);
 
 type Env = { ASSETS: { fetch: (request: Request) => Promise<Response> } };
 
@@ -95,21 +111,27 @@ export default {
     const asset = await env.ASSETS.fetch(request);
     const ct = asset.headers.get('content-type') || '';
     if (!ct.includes('text/html') || !isHome(url.pathname)) return asset;
+
     const lang = pickLang(request, url);
+    let html: Response = asset;
+
     if (lang) {
       const copy = COPY[lang];
       const shareUrl = `${ORIGIN}/?lang=${lang}`;
-      return new HTMLRewriter()
-        .on('html', { element(el) { el.setAttribute('lang', lang === 'zh' ? 'zh' : lang); } })
+      html = new HTMLRewriter()
+        .on('html', { element(el) { el.setAttribute('lang', lang); } })
         .on('title', { element(el) { el.setInnerContent(copy.title); } })
         .on('#local-only', { element(el) { el.setInnerContent(copy.localOnly); } })
-        .on('h1', { element(el) { el.setInnerContent(copy.title); } })
+        .on('h1#brand-title', { element(el) { el.setInnerContent(copy.title); } })
+        .on('#brand-sub', { element(el) { el.setInnerContent(copy.titleSub); } })
         .on('#portrait-hint-text', { element(el) { el.setInnerContent(copy.portraitHint); } })
+        // HTMLRewriter parses <noscript> content as raw text, so its children
+        // are unreachable by selector — the whole block is replaced instead.
         .on('noscript', {
           element(el) {
             el.setInnerContent(
               `<div style="padding:2rem;color:#fff;font-family:sans-serif;text-align:center"><h2>${copy.title}</h2><p id="noscript-js">${copy.noscriptJs}</p><p id="noscript-themes">${copy.noscriptThemes}</p></div>`,
-              { html: true }
+              { html: true },
             );
           },
         })
@@ -120,7 +142,12 @@ export default {
         .on('meta', {
           element(el) {
             const key = el.getAttribute('property') || el.getAttribute('name') || '';
-            if (key === 'description' || key === 'og:description' || key === 'twitter:description' || key === 'og:image:alt') {
+            if (
+              key === 'description' ||
+              key === 'og:description' ||
+              key === 'twitter:description' ||
+              key === 'og:image:alt'
+            ) {
               el.setAttribute('content', copy.description);
             } else if (key === 'og:title' || key === 'twitter:title') {
               el.setAttribute('content', copy.title);
@@ -144,6 +171,17 @@ export default {
         })
         .transform(asset);
     }
-    return asset;
+
+    // The 의견 widget rides on every response, localised or not.
+    return new HTMLRewriter()
+      .on('body', {
+        element(el) {
+          el.append(
+            `<script src="https://try-dabble.com/widget/feedback.js" data-app="${SLUG}" defer></script>`,
+            { html: true },
+          );
+        },
+      })
+      .transform(html);
   },
 };

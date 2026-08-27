@@ -1,4 +1,8 @@
-const VERSION = 'v1';
+// Bumped for the Vite build: the hand-written shell is gone and the app now
+// ships hashed files under /assets/, which the fetch handler caches at
+// runtime rather than precaching by name. The engine bundle
+// (/assets/index-DCoPmObG.js) is one of them.
+const VERSION = 'v2';
 const PRECACHE = `bj-precache-${VERSION}`;
 const RUNTIME = `bj-runtime-${VERSION}`;
 
@@ -40,21 +44,34 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const sameOrigin = url.origin === self.location.origin;
 
-  // Navigation: network-first, fall back to cached index.html (offline shell)
-  if (req.mode === 'navigate') {
+  // HTML, JS, CSS and the manifest go network-first so a deploy shows up at
+  // once — and so the Worker's ?lang= rewrite of the first HTML is never
+  // served stale. The cache is only the offline fallback.
+  const isShell =
+    req.mode === 'navigate' ||
+    (sameOrigin &&
+      (url.pathname === '/' ||
+        url.pathname.endsWith('.html') ||
+        url.pathname.endsWith('.js') ||
+        url.pathname.endsWith('.css') ||
+        url.pathname.endsWith('.webmanifest')));
+
+  if (isShell) {
     event.respondWith(
       fetch(req)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(RUNTIME).then((c) => c.put(req, copy));
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(RUNTIME).then((c) => c.put(req, copy)).catch(() => {});
+          }
           return res;
         })
-        .catch(() => caches.match(req).then((r) => r || caches.match('/index.html')))
+        .catch(() => caches.match(req).then((hit) => hit || caches.match('/index.html')))
     );
     return;
   }
 
-  // Same-origin static assets (incl. hashed /assets/*): stale-while-revalidate
+  // Same-origin images and icons: serve the cached copy, refresh behind it.
   if (sameOrigin) {
     event.respondWith(
       caches.match(req).then((cached) => {
@@ -62,7 +79,7 @@ self.addEventListener('fetch', (event) => {
           .then((res) => {
             if (res && res.status === 200 && res.type === 'basic') {
               const copy = res.clone();
-              caches.open(RUNTIME).then((c) => c.put(req, copy));
+              caches.open(RUNTIME).then((c) => c.put(req, copy)).catch(() => {});
             }
             return res;
           })
@@ -73,7 +90,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cross-origin (Google Fonts etc.): cache-first
+  // Cross-origin (Google Fonts etc.): cache-first.
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
@@ -81,7 +98,7 @@ self.addEventListener('fetch', (event) => {
         .then((res) => {
           if (res && (res.status === 200 || res.type === 'opaque')) {
             const copy = res.clone();
-            caches.open(RUNTIME).then((c) => c.put(req, copy));
+            caches.open(RUNTIME).then((c) => c.put(req, copy)).catch(() => {});
           }
           return res;
         })

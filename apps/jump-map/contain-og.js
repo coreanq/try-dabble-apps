@@ -1,8 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+// ESM: package.json is "type": "module" since the Vite rewrite.
+import fs from "node:fs";
+import path from "node:path";
+import sharp from "sharp";
 
-const OUT = path.join(__dirname, "public");
+const OUT = path.join(import.meta.dirname, "public");
 const NIGHT = { r: 15, g: 15, b: 26, alpha: 1 };
 const FONT = "Noto Serif CJK KR, Noto Serif CJK JP, Noto Serif CJK SC, serif";
 const MONO = "Courier New, ui-monospace, monospace";
@@ -121,12 +122,43 @@ async function contain(inputBuf, output) {
   console.log(output, m.width, m.height);
 }
 
+// The PWA icon is the marquee mark: three blocks, a coin and a jumper, drawn
+// on a 32px grid and blown up with nearest-neighbour so it stays pixel art at
+// 192 and 512.
+const ICON_SVG = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <rect width="32" height="32" fill="#0d0d18"/>
+  <rect x="1" y="24" width="12" height="7" fill="#c2703a"/>
+  <rect x="19" y="18" width="12" height="7" fill="#c2703a"/>
+  <rect x="1" y="24" width="12" height="2" fill="#6cd47c"/>
+  <rect x="19" y="18" width="12" height="2" fill="#6cd47c"/>
+  <rect x="14" y="29" width="2" height="2" fill="#f0688a"/>
+  <rect x="17" y="29" width="2" height="2" fill="#f0688a"/>
+  <rect x="24" y="7" width="4" height="4" fill="#ffd23f"/>
+  <rect x="10" y="12" width="6" height="6" fill="#59a5ff"/>
+  <rect x="9" y="18" width="2" height="4" fill="#59a5ff"/>
+  <rect x="15" y="18" width="2" height="4" fill="#59a5ff"/>
+  <rect x="11" y="14" width="2" height="2" fill="#eef1ff"/>
+  <rect x="14" y="14" width="1" height="2" fill="#eef1ff"/>
+  <rect x="4" y="6" width="1" height="1" fill="#eef1ff"/>
+  <rect x="28" y="26" width="1" height="1" fill="#eef1ff"/>
+</svg>`;
+
+async function icon(size, output) {
+  await sharp(Buffer.from(ICON_SVG), { density: 384 })
+    .resize(size, size, { kernel: "nearest" })
+    .png()
+    .toFile(output);
+  console.log(output, size + "x" + size);
+}
+
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const jobs = [
     { title: "블록점퍼", subtitle: "네 테마 점프", files: ["og-image.png", "og-image-ko.png"] },
     { title: "Block Jumper", subtitle: "Four-theme jumper", files: ["og-image-en.png"] },
     { title: "ブロックジャンパー", subtitle: "4つのテーマ", files: ["og-image-ja.png"] },
+    { title: "方块跳跃者", subtitle: "四大主题跳跃", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
     const buf = Buffer.from(svgFor(job.title, job.subtitle));
@@ -134,6 +166,8 @@ async function main() {
       await contain(buf, path.join(OUT, file));
     }
   }
+  await icon(192, path.join(OUT, "icon-192.png"));
+  await icon(512, path.join(OUT, "icon-512.png"));
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
