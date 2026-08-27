@@ -1,11 +1,125 @@
-window.PI_I18N = {
+/** Ported from the pre-Vite public/js/i18n.js — same copy, now typed. */
+
+export type Lang = "ko" | "en" | "ja" | "zh";
+
+export const LANGS: Lang[] = ["ko", "en", "ja", "zh"];
+export const LANG_KEY = "place-inbox:lang";
+/** Pre-Vite key. Read so a returning user keeps the language they chose. */
+const LEGACY_LANG_KEY = "pi_lang";
+
+export const LANG_NAMES: Record<Lang, string> = {
+  ko: "한국어",
+  en: "English",
+  ja: "日本語",
+  zh: "中文",
+};
+
+export const HTML_LANG: Record<Lang, string> = {
+  ko: "ko",
+  en: "en",
+  ja: "ja",
+  zh: "zh",
+};
+
+export const OG_IMAGE: Record<Lang, string> = {
+  ko: "https://place-inbox.try-dabble.com/og-image.png",
+  en: "https://place-inbox.try-dabble.com/og-image-en.png",
+  ja: "https://place-inbox.try-dabble.com/og-image-ja.png",
+  zh: "https://place-inbox.try-dabble.com/og-image-en.png",
+};
+
+export type MsgKey =
+  | "title"
+  | "localOnly"
+  | "shortName"
+  | "tagline"
+  | "metaDescription"
+  | "about"
+  | "langLabel"
+  | "search"
+  | "trips"
+  | "addTrip"
+  | "inbox"
+  | "allTrips"
+  | "places"
+  | "addPlace"
+  | "emptyPlaces"
+  | "emptySearch"
+  | "emptyMap"
+  | "mapTitle"
+  | "tagAll"
+  | "tagFood"
+  | "tagHike"
+  | "tagCity"
+  | "tagBeach"
+  | "tagStay"
+  | "rankAll"
+  | "rankN"
+  | "rankFilter"
+  | "tagFilter"
+  | "tools"
+  | "exportJson"
+  | "importJson"
+  | "privacy"
+  | "terms"
+  | "placeAdd"
+  | "placeEdit"
+  | "dropHint"
+  | "pickFile"
+  | "clearPhoto"
+  | "camera"
+  | "placeName"
+  | "placeNamePh"
+  | "placeUrl"
+  | "extraLinks"
+  | "mapsUrl"
+  | "igUrl"
+  | "pinterestUrl"
+  | "why"
+  | "whyPh"
+  | "rank"
+  | "tags"
+  | "trip"
+  | "latlng"
+  | "latlngPh"
+  | "save"
+  | "update"
+  | "cancel"
+  | "delete"
+  | "open"
+  | "saved"
+  | "deleted"
+  | "exported"
+  | "imported"
+  | "importFail"
+  | "deletePlaceConfirm"
+  | "deleteTripConfirm"
+  | "needName"
+  | "tripAdd"
+  | "tripEdit"
+  | "tripName"
+  | "tripNamePh"
+  | "unmapped"
+  | "photoSkipped"
+  | "none"
+  | "stars"
+  | "editTrip"
+  | "addTripAria"
+  | "addPlaceAria"
+  | "sortHint";
+
+export type Messages = Record<MsgKey, string>;
+
+export const I18N: Record<Lang, Messages> = {
   en: {
     title: "Place Inbox",
     localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Inbox",
     tagline: "A local inbox for chaotic travel saves",
-    metaDescription: "Local inbox for travel screenshots and links. Save why you kept a place, rank 1–5, and group into candidate trips. Data stays in your browser.",
-    about: "Dump Maps, Pinterest, and social saves here with a why-note and a 1–5 want-to-go rank. Group them into named candidate trips — not a day-by-day itinerary. No account; everything stays in this browser.",
+    metaDescription:
+      "Local inbox for travel screenshots and links. Save why you kept a place, rank 1–5, and group into candidate trips. Data stays in your browser.",
+    about:
+      "Dump Maps, Pinterest, and social saves here with a why-note and a 1–5 want-to-go rank. Group them into named candidate trips — not a day-by-day itinerary. No account; everything stays in this browser.",
     langLabel: "Language",
     search: "Search places, notes, links",
     trips: "Candidate trips",
@@ -15,6 +129,7 @@ window.PI_I18N = {
     places: "Places",
     addPlace: "+ Place",
     emptyPlaces: "Nothing saved yet. Paste a URL or screenshot, or type a name.",
+    emptySearch: "No matches.",
     emptyMap: "No pins yet. Add lat,lng on a place to show it here.",
     mapTitle: "Map",
     tagAll: "All",
@@ -37,6 +152,7 @@ window.PI_I18N = {
     dropHint: "Pick a file or paste an image (Ctrl+V)",
     pickFile: "File / camera",
     clearPhoto: "Remove photo",
+    camera: "Camera",
     placeName: "Name",
     placeNamePh: "e.g. Tsukiji stall, hidden cove",
     placeUrl: "URL",
@@ -55,6 +171,7 @@ window.PI_I18N = {
     update: "Update",
     cancel: "Cancel",
     delete: "Delete",
+    open: "Open",
     saved: "Saved",
     deleted: "Deleted",
     exported: "Exported",
@@ -74,15 +191,17 @@ window.PI_I18N = {
     editTrip: "Edit trip",
     addTripAria: "Add candidate trip",
     addPlaceAria: "Add place",
-    sortHint: "Sorted by rank"
+    sortHint: "Sorted by rank",
   },
   ko: {
     title: "여행 받은편지함",
     localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "받은편지함",
     tagline: "어지러운 여행 저장을 한곳에",
-    metaDescription: "여행 스크린샷과 링크를 왜 저장했는지와 함께 모으고, 1–5 순위와 후보 여행으로 묶습니다. 데이터는 브라우저에만 남습니다.",
-    about: "지도·핀터레스트·SNS에서 쌓인 저장을 ‘왜 넣었는지’와 1–5 가고 싶은 순위와 함께 둡니다. 이름 붙인 후보 여행으로 묶을 수 있고, 일자별 일정표는 아닙니다. 계정 없이 이 브라우저에만 저장됩니다.",
+    metaDescription:
+      "여행 스크린샷과 링크를 왜 저장했는지와 함께 모으고, 1–5 순위와 후보 여행으로 묶습니다. 데이터는 브라우저에만 남습니다.",
+    about:
+      "지도·핀터레스트·SNS에서 쌓인 저장을 ‘왜 넣었는지’와 1–5 가고 싶은 순위와 함께 둡니다. 이름 붙인 후보 여행으로 묶을 수 있고, 일자별 일정표는 아닙니다. 계정 없이 이 브라우저에만 저장됩니다.",
     langLabel: "언어",
     search: "장소·메모·링크 검색",
     trips: "후보 여행",
@@ -92,6 +211,7 @@ window.PI_I18N = {
     places: "장소",
     addPlace: "+ 장소",
     emptyPlaces: "아직 없습니다. URL이나 스크린샷을 붙이거나 이름을 적어 보세요.",
+    emptySearch: "맞는 항목이 없습니다.",
     emptyMap: "핀이 없습니다. 장소에 위도,경도를 넣으면 여기 표시됩니다.",
     mapTitle: "지도",
     tagAll: "전체",
@@ -114,6 +234,7 @@ window.PI_I18N = {
     dropHint: "파일을 고르거나 이미지를 붙여넣으세요 (Ctrl+V)",
     pickFile: "파일 / 카메라",
     clearPhoto: "사진 제거",
+    camera: "카메라",
     placeName: "이름",
     placeNamePh: "예: 쓰키지 가게, 숨은 해변",
     placeUrl: "URL",
@@ -132,6 +253,7 @@ window.PI_I18N = {
     update: "수정 완료",
     cancel: "취소",
     delete: "삭제",
+    open: "열기",
     saved: "저장됨",
     deleted: "삭제됨",
     exported: "내보냄",
@@ -151,15 +273,17 @@ window.PI_I18N = {
     editTrip: "여행 수정",
     addTripAria: "후보 여행 추가",
     addPlaceAria: "장소 추가",
-    sortHint: "순위순"
+    sortHint: "순위순",
   },
   ja: {
     title: "旅の受信箱",
     localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "受信箱",
     tagline: "散らかった旅の保存をひと箱に",
-    metaDescription: "旅のスクショとリンクを「なぜ残したか」と1–5の行きたい度、候補の旅グループで整理。データはこのブラウザだけです。",
-    about: "Maps・Pinterest・SNSの保存を、理由メモと1–5の行きたい度と一緒に置きます。名前付きの候補トリップにまとめられます。日ごとのしおりではありません。アカウントなし、このブラウザだけです。",
+    metaDescription:
+      "旅のスクショとリンクを「なぜ残したか」と1–5の行きたい度、候補の旅グループで整理。データはこのブラウザだけです。",
+    about:
+      "Maps・Pinterest・SNSの保存を、理由メモと1–5の行きたい度と一緒に置きます。名前付きの候補トリップにまとめられます。日ごとのしおりではありません。アカウントなし、このブラウザだけです。",
     langLabel: "言語",
     search: "場所・メモ・リンクを検索",
     trips: "候補の旅",
@@ -169,6 +293,7 @@ window.PI_I18N = {
     places: "場所",
     addPlace: "+ 場所",
     emptyPlaces: "まだありません。URLやスクショを貼るか、名前を入力してください。",
+    emptySearch: "一致するものがありません。",
     emptyMap: "ピンはまだありません。緯度,経度を入れるとここに出ます。",
     mapTitle: "地図",
     tagAll: "すべて",
@@ -191,6 +316,7 @@ window.PI_I18N = {
     dropHint: "ファイルを選ぶか画像を貼り付け（Ctrl+V）",
     pickFile: "ファイル / カメラ",
     clearPhoto: "写真を外す",
+    camera: "カメラ",
     placeName: "名前",
     placeNamePh: "例: 築地の店、隠れビーチ",
     placeUrl: "URL",
@@ -209,6 +335,7 @@ window.PI_I18N = {
     update: "更新",
     cancel: "キャンセル",
     delete: "削除",
+    open: "開く",
     saved: "保存しました",
     deleted: "削除しました",
     exported: "書き出しました",
@@ -228,15 +355,17 @@ window.PI_I18N = {
     editTrip: "旅を編集",
     addTripAria: "候補の旅を追加",
     addPlaceAria: "場所を追加",
-    sortHint: "順位順"
+    sortHint: "順位順",
   },
   zh: {
     title: "旅行收件箱",
     localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "收件箱",
     tagline: "把乱七八糟的旅行收藏收进一处",
-    metaDescription: "把旅行截图和链接连同“为何收藏”、1–5 想去程度和候选行程分组。数据只留在浏览器。",
-    about: "把地图、Pinterest 和社交收藏连同原因备注和 1–5 想去程度放在这里。可归入命名的候选行程——不是一日行程表。无需账户，只存在此浏览器。",
+    metaDescription:
+      "把旅行截图和链接连同“为何收藏”、1–5 想去程度和候选行程分组。数据只留在浏览器。",
+    about:
+      "把地图、Pinterest 和社交收藏连同原因备注和 1–5 想去程度放在这里。可归入命名的候选行程——不是一日行程表。无需账户，只存在此浏览器。",
     langLabel: "语言",
     search: "搜索地点、备注、链接",
     trips: "候选行程",
@@ -246,6 +375,7 @@ window.PI_I18N = {
     places: "地点",
     addPlace: "+ 地点",
     emptyPlaces: "还没有收藏。请粘贴网址或截图，或输入名称。",
+    emptySearch: "没有匹配。",
     emptyMap: "还没有图钉。在地点里填写经纬度后显示在这里。",
     mapTitle: "地图",
     tagAll: "全部",
@@ -268,6 +398,7 @@ window.PI_I18N = {
     dropHint: "选择文件或粘贴图片（Ctrl+V）",
     pickFile: "文件 / 相机",
     clearPhoto: "移除照片",
+    camera: "相机",
     placeName: "名称",
     placeNamePh: "例如：筑地小摊、隐秘海湾",
     placeUrl: "网址",
@@ -286,6 +417,7 @@ window.PI_I18N = {
     update: "更新",
     cancel: "取消",
     delete: "删除",
+    open: "打开",
     saved: "已保存",
     deleted: "已删除",
     exported: "已导出",
@@ -305,66 +437,81 @@ window.PI_I18N = {
     editTrip: "编辑行程",
     addTripAria: "添加候选行程",
     addPlaceAria: "添加地点",
-    sortHint: "按排名排序"
+    sortHint: "按排名排序",
+  },
+};
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === "string" && (LANGS as string[]).includes(value);
+}
+
+export function translate(
+  lang: Lang,
+  key: MsgKey,
+  vars?: Record<string, string | number>,
+): string {
+  let out = I18N[lang]?.[key] ?? I18N.en[key] ?? key;
+  if (vars) {
+    for (const [name, value] of Object.entries(vars)) {
+      out = out.replaceAll(`{${name}}`, String(value));
+    }
   }
-};
+  return out;
+}
 
-window.PI_OG = {
-  ko: "https://place-inbox.try-dabble.com/og-image.png",
-  en: "https://place-inbox.try-dabble.com/og-image-en.png",
-  ja: "https://place-inbox.try-dabble.com/og-image-ja.png",
-  zh: "https://place-inbox.try-dabble.com/og-image-en.png"
-};
+function readCookieLang(): Lang | null {
+  if (typeof document === "undefined") return null;
+  const m = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+  return m && isLang(m[1]) ? m[1] : null;
+}
 
-window.persistLangQuery = function persistLangQuery(lang) {
+function readStoredLang(): Lang | null {
   try {
-    var u = new URL(location.href);
-    if (u.searchParams.get("lang") !== lang) {
-      u.searchParams.set("lang", lang);
-      history.replaceState(null, "", u.pathname + u.search + u.hash);
-    }
-  } catch (_) {}
-};
+    const saved = localStorage.getItem(LANG_KEY) ?? localStorage.getItem(LEGACY_LANG_KEY);
+    return isLang(saved) ? saved : null;
+  } catch {
+    return null;
+  }
+}
 
-window.detectLang = function detectLang() {
-  var lang = "ko";
+function readNavigatorLang(): Lang {
+  const nav = (navigator.language || "ko").toLowerCase();
+  if (nav.startsWith("ko")) return "ko";
+  if (nav.startsWith("ja")) return "ja";
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("en")) return "en";
+  return "ko";
+}
+
+/**
+ * ?lang= wins, then the td_lang cookie (so hops between try-dabble subdomains
+ * keep the chosen language), then the language saved by this app — the new key
+ * first, then the pre-Vite pi_lang — then the browser. The Worker only sees the
+ * query and the cookie, so those two must outrank localStorage or the first
+ * HTML and the mounted app would disagree.
+ */
+export function detectLang(searchLang?: string | null): Lang {
+  if (isLang(searchLang)) {
+    rememberLang(searchLang);
+    return searchLang;
+  }
+  const cookie = readCookieLang();
+  if (cookie) {
+    rememberLang(cookie);
+    return cookie;
+  }
+  return readStoredLang() ?? readNavigatorLang();
+}
+
+export function rememberLang(lang: Lang): void {
   try {
-    const q = new URLSearchParams(location.search).get("lang");
-    if (q && window.PI_I18N[q]) {
-      try { localStorage.setItem("pi_lang", q); } catch (_) {}
-      lang = q;
-    }
-    else {
-      var cookieLang = "";
-      try {
-        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
-        if (cm && window.PI_I18N[cm[1]]) cookieLang = cm[1];
-      } catch (_) {}
-      if (cookieLang) {
-        try { localStorage.setItem("pi_lang", cookieLang); } catch (_) {}
-        lang = cookieLang;
-      } else {
-      try {
-        const saved = localStorage.getItem("pi_lang");
-        if (saved && window.PI_I18N[saved]) lang = saved;
-        else {
-          const nav = (navigator.language || "ko").toLowerCase();
-          if (nav.startsWith("ko")) lang = "ko";
-          else if (nav.startsWith("ja")) lang = "ja";
-          else if (nav.startsWith("zh")) lang = "zh";
-          else if (nav.startsWith("en")) lang = "en";
-          else lang = "ko";
-        }
-      } catch (_) {
-        const nav = (navigator.language || "ko").toLowerCase();
-        if (nav.startsWith("ko")) lang = "ko";
-        else if (nav.startsWith("ja")) lang = "ja";
-        else if (nav.startsWith("zh")) lang = "zh";
-        else if (nav.startsWith("en")) lang = "en";
-      }
-      }
-    }
-  } catch (_) {}
-  if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
-  return lang;
-};
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    /* private mode — language just won't stick */
+  }
+}
+
+export type Translate = (
+  key: MsgKey,
+  vars?: Record<string, string | number>,
+) => string;

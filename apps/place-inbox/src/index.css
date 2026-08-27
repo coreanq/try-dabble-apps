@@ -1,0 +1,674 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "leaflet/dist/leaflet.css";
+
+/*
+  Place Inbox / 여행 받은편지함 — travel journal, light.
+  A folded paper map on the desk: seafoam page, sand-coloured pages, marine ink,
+  perforated postage stamps, red postmarks and an airmail barber stripe.
+  Deliberately NOT the old dark #111 teal utility skin, and not the warm office
+  cream of later-inbox or the kitchen kraft of leftover-box. shadcn is the kit,
+  not the look: its primitives are re-dressed as stamps, luggage tags and
+  cancellation marks.
+*/
+
+@theme {
+  --color-sea: #e4efe9;
+  --color-sea-2: #d3e6dd;
+  --color-sand: #fbf4e6;
+  --color-sand-2: #f2e7d1;
+  --color-sand-edge: #dbc8a4;
+  --color-ink: #15384c;
+  --color-muted-ink: #5a7182;
+  --color-marine: #1c5f80;
+  --color-marine-deep: #123f56;
+  --color-marine-bg: #d7e8f0;
+  --color-foam: #35a68a;
+  --color-foam-deep: #1f7c65;
+  --color-foam-bg: #d5efe5;
+  --color-postmark: #b23a2e;
+  --color-postmark-bg: #f7ded8;
+  --color-amber: #f0b429;
+  --color-amber-deep: #8a5f07;
+  --color-amber-ink: #3a2a05;
+  --color-crease: #c6d8d0;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-stamp);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.5);
+  --radius-4xl: calc(var(--radius) * 3);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Travel-poster caps, not the book serif the sibling apps use. */
+  --stack-display: "Avenir Next", "Futura", "Century Gothic", "Trebuchet MS",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-stamp: "Courier New", ui-monospace, "Noto Sans Mono CJK KR", monospace;
+
+  --background: #e4efe9;
+  --foreground: #15384c;
+  --card: #fbf4e6;
+  --card-foreground: #15384c;
+  --popover: #fbf4e6;
+  --popover-foreground: #15384c;
+  --primary: #1c5f80;
+  --primary-foreground: #fbf4e6;
+  --secondary: #f2e7d1;
+  --secondary-foreground: #15384c;
+  --muted: #dceae4;
+  --muted-foreground: #5a7182;
+  --accent: #d5efe5;
+  --accent-foreground: #1f7c65;
+  --destructive: #b23a2e;
+  --border: #dbc8a4;
+  --input: #c3d6cd;
+  --ring: #1c5f80;
+
+  --radius: 0.6rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /*
+      Signature — the page is a folded paper map: a faint survey grid, two
+      vertical creases and one horizontal crease, each a highlight hairline
+      followed by its shadow.
+    */
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0 118px,
+        rgba(255, 255, 255, 0.7) 118px 119px,
+        rgba(21, 56, 76, 0.07) 119px 120px,
+        transparent 120px 238px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0 197px,
+        rgba(255, 255, 255, 0.7) 197px 198px,
+        rgba(21, 56, 76, 0.06) 198px 199px,
+        transparent 199px 396px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0 39px,
+        rgba(28, 95, 128, 0.05) 39px 40px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0 39px,
+        rgba(28, 95, 128, 0.05) 39px 40px
+      ),
+      radial-gradient(circle at 82% 3%, rgba(53, 166, 138, 0.16), transparent 38%);
+  }
+
+  a {
+    color: var(--color-marine);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input min-content must never force horizontal scroll at 360px. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .pi-shell {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.75rem 1rem calc(1.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  /*
+    Amber customs notice with a printed number sign in the gutter. The "#" is a
+    ::before, never a child: the Worker calls setInnerContent on #local-only for
+    ?lang=, which would wipe any real element inside it.
+  */
+  .pi-notice {
+    position: relative;
+    margin: 0;
+    padding: 0.42rem 0.7rem 0.42rem 2rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: linear-gradient(180deg, #f8ca63 0%, var(--color-amber) 100%);
+    border: 1.5px solid var(--color-amber-deep);
+    border-radius: 4px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.45) inset,
+      1px 2px 0 rgba(21, 56, 76, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .pi-notice::before {
+    content: "#";
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-stamp);
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-amber-deep);
+    opacity: 0.85;
+  }
+
+  /*
+    Signature — an airmail barber stripe. Used as the masthead cap and as the
+    left edge of the candidate-trips folder.
+  */
+  .pi-airmail {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-postmark) 0 7px,
+      #fbf4e6 7px 14px,
+      var(--color-marine) 14px 21px,
+      #fbf4e6 21px 28px
+    );
+  }
+
+  /* Masthead: a strip of the map torn off the top, capped by airmail tape. */
+  .pi-masthead {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.85rem 1rem 0.8rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(213, 239, 229, 0.85) 100%);
+    border-bottom: 1.5px solid var(--color-crease);
+    box-shadow: 0 6px 12px -10px rgba(21, 56, 76, 0.5);
+  }
+  .pi-masthead::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 6px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-postmark) 0 7px,
+      #fbf4e6 7px 14px,
+      var(--color-marine) 14px 21px,
+      #fbf4e6 21px 28px
+    );
+  }
+
+  .pi-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — renders
+     identically to the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pi-tagline {
+    margin: 0.2rem 0 0;
+    font-family: var(--stack-stamp);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-foam-deep);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  /* A journal leaf: sand stock with a soft shadow and a folded top-right corner. */
+  .pi-leaf {
+    position: relative;
+    border: 1px solid var(--color-sand-edge);
+    border-radius: 4px 14px 4px 4px;
+    background:
+      linear-gradient(180deg, #fdf9ef 0%, var(--color-sand) 26%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 8px 18px -12px rgba(21, 56, 76, 0.55);
+  }
+  /* The dog-ear itself, lit from the left the way a real fold catches light. */
+  .pi-leaf::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(225deg, var(--color-sea-2) 50%, transparent 50%);
+    border-left: 1px solid var(--color-sand-edge);
+    border-bottom: 1px solid var(--color-sand-edge);
+    border-radius: 0 14px 0 0;
+    pointer-events: none;
+  }
+
+  /* Airmail spine down the filing edge of the candidate-trips leaf. */
+  .pi-leaf-trips::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    border-right: 1px solid var(--color-sand-edge);
+    border-radius: 3px 0 0 3px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-postmark) 0 7px,
+      #fbf4e6 7px 14px,
+      var(--color-marine) 14px 21px,
+      #fbf4e6 21px 28px
+    );
+    pointer-events: none;
+  }
+
+  /*
+    Signature — a real perforated postage stamp. The holes are page-coloured
+    half-circles painted over each edge, so the stamp reads as punched out of
+    the sheet it sits on. --perf-bg is whatever colour is behind it.
+  */
+  .pi-stamp {
+    --perf-bg: var(--color-sand);
+    position: relative;
+    appearance: none;
+    border: 0;
+    padding: 5px;
+    background: #fffdf7;
+    box-shadow: 0 3px 8px -5px rgba(21, 56, 76, 0.7);
+  }
+  .pi-stamp::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle 4px at 50% 0, var(--perf-bg) 97%, transparent 100%) 0 0 /
+        11px 11px repeat-x,
+      radial-gradient(circle 4px at 50% 100%, var(--perf-bg) 97%, transparent 100%) 0 100% /
+        11px 11px repeat-x,
+      radial-gradient(circle 4px at 0 50%, var(--perf-bg) 97%, transparent 100%) 0 0 /
+        11px 11px repeat-y,
+      radial-gradient(circle 4px at 100% 50%, var(--perf-bg) 97%, transparent 100%) 100% 0 /
+        11px 11px repeat-y;
+  }
+  .pi-stamp-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--color-marine-bg) 0%, var(--color-foam-bg) 100%);
+    border: 1px solid rgba(21, 56, 76, 0.16);
+  }
+  .pi-stamp-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /*
+    Signature — a postmark: double ring, knocked off-square, with cancellation
+    bars sweeping off the right edge. Carries the 1–5 want-to-go rank.
+  */
+  .pi-postmark {
+    position: relative;
+    flex: 0 0 auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 2.85rem;
+    height: 2.85rem;
+    border: 2px solid var(--color-postmark);
+    border-radius: 50%;
+    outline: 1px solid var(--color-postmark);
+    outline-offset: 2px;
+    transform: rotate(-11deg);
+    color: var(--color-postmark);
+    background: rgba(247, 222, 216, 0.55);
+    font-family: var(--stack-stamp);
+    line-height: 1;
+  }
+  .pi-postmark em {
+    font-style: normal;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+  .pi-postmark small {
+    margin-top: 1px;
+    font-size: 0.44rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  /* The cancellation bars. */
+  .pi-postmark::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 1.5rem;
+    height: 0.62rem;
+    margin-left: 3px;
+    transform: translateY(-50%);
+    background: repeating-linear-gradient(
+      0deg,
+      var(--color-postmark) 0 2px,
+      transparent 2px 5px
+    );
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* A luggage tag: rounded pill with a punched eyelet on the left. */
+  .pi-chip {
+    position: relative;
+    flex: 0 0 auto;
+    cursor: pointer;
+    appearance: none;
+    border: 1.5px solid var(--color-sand-edge);
+    border-radius: 999px;
+    background: #fffdf7;
+    color: var(--color-muted-ink);
+    padding: 0.26rem 0.7rem 0.24rem 1.25rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
+  .pi-chip::before {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    margin-top: -2.5px;
+    border-radius: 50%;
+    background: var(--color-sea-2);
+    box-shadow: 0 0 0 1px rgba(21, 56, 76, 0.25) inset;
+  }
+  .pi-chip:hover {
+    background: var(--color-sand-2);
+    color: var(--color-ink);
+  }
+  .pi-chip[aria-pressed="true"] {
+    border-color: var(--color-marine-deep);
+    background: var(--color-marine);
+    color: #fbf4e6;
+    box-shadow: 1px 1px 0 var(--color-marine-deep);
+  }
+  .pi-chip[aria-pressed="true"]::before {
+    background: var(--color-marine-bg);
+    box-shadow: 0 0 0 1px rgba(251, 244, 230, 0.7) inset;
+  }
+
+  .pi-strip {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+  .pi-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Section titles read like a travel poster: caps, tracked out, marine rule. */
+  .pi-heading {
+    font-family: var(--stack-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-marine-deep);
+  }
+
+  .pi-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1.5px solid var(--color-sand-edge);
+    background: #fffdf7;
+    color: var(--color-ink);
+    border-radius: 6px;
+    padding: 0.55rem 0.7rem;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .pi-field:focus {
+    border-color: var(--color-marine);
+    box-shadow: 0 0 0 3px rgba(28, 95, 128, 0.16);
+    outline: none;
+  }
+
+  .pi-label {
+    display: grid;
+    gap: 0.28rem;
+    font-size: 0.72rem;
+    color: var(--color-muted-ink);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    min-width: 0;
+  }
+
+  /* Search sits on the map, not on a page: a rounded window with a foam rule. */
+  .pi-search {
+    border: 1.5px solid var(--color-crease);
+    background: rgba(255, 253, 247, 0.92);
+    border-radius: 999px;
+    padding: 0.52rem 0.95rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--color-ink);
+    outline: none;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  }
+  .pi-search:focus {
+    border-color: var(--color-foam);
+    box-shadow: 0 0 0 3px rgba(53, 166, 138, 0.18);
+  }
+
+  .pi-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: #fffdf7;
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-marine-deep);
+    border-radius: 999px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 1px 1px 0 var(--color-marine-deep);
+  }
+
+  /* Ruled note paper, for the why-line and the about blurb. */
+  .pi-ruled {
+    background-image: repeating-linear-gradient(
+      180deg,
+      transparent 0 20px,
+      rgba(28, 95, 128, 0.13) 20px 21px
+    );
+    background-position: 0 0.15rem;
+  }
+
+  /* Little marine link tabs under a place: Maps / Instagram / Pinterest. */
+  .pi-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    border: 1px solid var(--color-crease);
+    border-radius: 999px;
+    background: var(--color-marine-bg);
+    color: var(--color-marine-deep);
+    padding: 0.1rem 0.5rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .pi-link:hover {
+    background: #c6dded;
+    text-decoration: none;
+  }
+
+  /* Tag written on the leaf in foam ink. */
+  .pi-tag {
+    display: inline-block;
+    border-radius: 3px;
+    background: var(--color-foam-bg);
+    color: var(--color-foam-deep);
+    padding: 0.02rem 0.34rem;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+
+  .pi-map {
+    height: 15rem;
+    width: 100%;
+    border: 1.5px solid var(--color-crease);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--color-sea-2);
+  }
+  .pi-map .leaflet-container {
+    height: 100%;
+    width: 100%;
+    background: var(--color-sea-2);
+    font-family: var(--stack-ui);
+  }
+  /* Map pins are the same postmark red as the rank stamp. */
+  .pi-pin {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--color-postmark);
+    border: 2px solid #fffdf7;
+    box-shadow: 0 2px 4px rgba(21, 56, 76, 0.45);
+  }
+}
+
+@media (min-width: 520px) {
+  .pi-shell {
+    padding-top: 1.2rem;
+    max-width: 38rem;
+  }
+}
+
+/* 390px and below: title, mark and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.14rem;
+  }
+
+  .pi-select {
+    max-width: 6.6rem;
+    padding: 0.26rem 0.45rem;
+  }
+}
