@@ -1,11 +1,100 @@
-window.PS_I18N = {
+/** Ported from the pre-Vite public/js/i18n.js — same copy, now typed. */
+
+export type Lang = "ko" | "en" | "ja" | "zh";
+
+export const LANGS: Lang[] = ["ko", "en", "ja", "zh"];
+/** Unchanged from the pre-Vite app, so a returning visitor keeps their pick. */
+export const LANG_KEY = "ps_lang";
+
+export const LANG_NAMES: Record<Lang, string> = {
+  ko: "한국어",
+  en: "English",
+  ja: "日本語",
+  zh: "中文",
+};
+
+export const HTML_LANG: Record<Lang, string> = {
+  ko: "ko",
+  en: "en",
+  ja: "ja",
+  zh: "zh",
+};
+
+export const OG_IMAGE: Record<Lang, string> = {
+  ko: "https://photo-spec.try-dabble.com/og-image.png",
+  en: "https://photo-spec.try-dabble.com/og-image-en.png",
+  ja: "https://photo-spec.try-dabble.com/og-image-ja.png",
+  zh: "https://photo-spec.try-dabble.com/og-image-en.png",
+};
+
+export type MsgKey =
+  | "title"
+  | "localOnly"
+  | "shortName"
+  | "tagline"
+  | "metaDescription"
+  | "about"
+  | "langLabel"
+  | "presets"
+  | "presetInPhoto"
+  | "presetInIbps"
+  | "presetInSsc"
+  | "presetInUpsc"
+  | "presetInSign"
+  | "presetPassport"
+  | "presetKrResume"
+  | "presetCustom"
+  | "width"
+  | "height"
+  | "minKb"
+  | "maxKb"
+  | "format"
+  | "source"
+  | "dropHint"
+  | "pickFile"
+  | "camera"
+  | "clearPhoto"
+  | "preview"
+  | "previewEmpty"
+  | "dragHint"
+  | "download"
+  | "sizeLine"
+  | "inRange"
+  | "outRange"
+  | "profile"
+  | "profileHint"
+  | "name"
+  | "dob"
+  | "phone"
+  | "email"
+  | "address"
+  | "father"
+  | "mother"
+  | "nid"
+  | "copy"
+  | "copied"
+  | "saved"
+  | "emptyCopy"
+  | "privacy"
+  | "captionHint"
+  | "terms"
+  | "specSheet"
+  | "sheetTarget"
+  | "sheetRange"
+  | "sheetFormat"
+  | "sheetFile"
+  | "close";
+
+export const I18N: Record<Lang, Record<MsgKey, string>> = {
   en: {
     title: "Photo Spec",
     localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Photo Spec",
     tagline: "Fit a photo or sign to exact px and KB",
-    metaDescription: "Fit a photo or signature to exact pixels and min/max KB for exam, visa, job, and resume uploads. Local profile cheat-sheet. Data stays in your browser.",
-    about: "Crop a photo or signature to the exact pixels and KB a form asks for — exam, visa, job, resume. No autofill of government sites. No account; everything stays in this browser.",
+    metaDescription:
+      "Fit a photo or signature to exact pixels and min/max KB for exam, visa, job, and resume uploads. Local profile cheat-sheet. Data stays in your browser.",
+    about:
+      "Crop a photo or signature to the exact pixels and KB a form asks for — exam, visa, job, resume. No autofill of government sites. No account; everything stays in this browser.",
     langLabel: "Language",
     presets: "Spec",
     presetInPhoto: "IBPS 200×230",
@@ -34,7 +123,8 @@ window.PS_I18N = {
     inRange: "In range ({min}–{max} KB)",
     outRange: "Out of range ({min}–{max} KB)",
     profile: "Applicant notes",
-    profileHint: "A cheat-sheet you copy into forms. This app does not autofill government sites. Saved only in this browser.",
+    profileHint:
+      "A cheat-sheet you copy into forms. This app does not autofill government sites. Saved only in this browser.",
     name: "Name",
     dob: "Date of birth",
     phone: "Phone",
@@ -48,16 +138,25 @@ window.PS_I18N = {
     saved: "Saved",
     emptyCopy: "Nothing to copy",
     privacy: "Privacy",
-    captionHint: "UPSC prints name + today\u2019s date on the photo. Uses the name in Applicant notes.",
-    terms: "Terms"
+    captionHint:
+      "UPSC prints name + today’s date on the photo. Uses the name in Applicant notes.",
+    terms: "Terms",
+    specSheet: "Spec sheet",
+    sheetTarget: "Target",
+    sheetRange: "File size",
+    sheetFormat: "Format",
+    sheetFile: "Saves as",
+    close: "Close",
   },
   ko: {
     title: "사진 규격",
     localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "사진규격",
     tagline: "사진·사인을 픽셀과 KB에 맞추기",
-    metaDescription: "시험·비자·이력서 업로드용 사진·사인을 정확한 픽셀과 KB에 맞춥니다. 지원자 메모는 이 브라우저에만 저장됩니다.",
-    about: "시험·비자·이력서 폼에 맞게 사진이나 사인을 정확한 픽셀과 KB로 자릅니다. 정부 사이트 자동입력은 하지 않습니다. 계정 없이 이 브라우저에서만 처리됩니다.",
+    metaDescription:
+      "시험·비자·이력서 업로드용 사진·사인을 정확한 픽셀과 KB에 맞춥니다. 지원자 메모는 이 브라우저에만 저장됩니다.",
+    about:
+      "시험·비자·이력서 폼에 맞게 사진이나 사인을 정확한 픽셀과 KB로 자릅니다. 정부 사이트 자동입력은 하지 않습니다. 계정 없이 이 브라우저에서만 처리됩니다.",
     langLabel: "언어",
     presets: "규격",
     presetInPhoto: "인도 IBPS",
@@ -86,7 +185,8 @@ window.PS_I18N = {
     inRange: "범위 안 ({min}–{max} KB)",
     outRange: "범위 밖 ({min}–{max} KB)",
     profile: "지원자 메모",
-    profileHint: "폼에 붙일 때 쓰는 치트시트입니다. 정부 사이트를 자동입력하지 않습니다. 이 브라우저에만 저장됩니다.",
+    profileHint:
+      "폼에 붙일 때 쓰는 치트시트입니다. 정부 사이트를 자동입력하지 않습니다. 이 브라우저에만 저장됩니다.",
     name: "이름",
     dob: "생년월일",
     phone: "전화",
@@ -101,15 +201,23 @@ window.PS_I18N = {
     emptyCopy: "복사할 내용이 없습니다",
     privacy: "개인정보",
     captionHint: "UPSC는 사진 하단에 이름과 오늘 날짜를 넣습니다. 지원자 메모의 이름을 씁니다.",
-    terms: "이용약관"
+    terms: "이용약관",
+    specSheet: "규격 상세",
+    sheetTarget: "목표 크기",
+    sheetRange: "파일 크기",
+    sheetFormat: "형식",
+    sheetFile: "저장 이름",
+    close: "닫기",
   },
   ja: {
     title: "写真規格",
     localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "写真規格",
     tagline: "写真・サインをピクセルとKBに合わせる",
-    metaDescription: "試験・ビザ・履歴書の写真・サインを正確なピクセルとKBに合わせます。応募者メモはこのブラウザだけに残ります。",
-    about: "試験・ビザ・履歴書のフォームに合わせて写真やサインを正確なピクセルとKBに切ります。政府サイトの自動入力はしません。アカウントなし、このブラウザだけです。",
+    metaDescription:
+      "試験・ビザ・履歴書の写真・サインを正確なピクセルとKBに合わせます。応募者メモはこのブラウザだけに残ります。",
+    about:
+      "試験・ビザ・履歴書のフォームに合わせて写真やサインを正確なピクセルとKBに切ります。政府サイトの自動入力はしません。アカウントなし、このブラウザだけです。",
     langLabel: "言語",
     presets: "規格",
     presetInPhoto: "インド IBPS",
@@ -138,7 +246,8 @@ window.PS_I18N = {
     inRange: "範囲内（{min}–{max} KB）",
     outRange: "範囲外（{min}–{max} KB）",
     profile: "応募者メモ",
-    profileHint: "フォームに貼るチートシートです。政府サイトは自動入力しません。このブラウザだけに保存します。",
+    profileHint:
+      "フォームに貼るチートシートです。政府サイトは自動入力しません。このブラウザだけに保存します。",
     name: "名前",
     dob: "生年月日",
     phone: "電話",
@@ -153,15 +262,23 @@ window.PS_I18N = {
     emptyCopy: "コピーする内容がありません",
     privacy: "プライバシー",
     captionHint: "UPSCは写真下に名前と今日の日付を入れます。応募者メモの名前を使います。",
-    terms: "利用規約"
+    terms: "利用規約",
+    specSheet: "規格の詳細",
+    sheetTarget: "目標サイズ",
+    sheetRange: "ファイルサイズ",
+    sheetFormat: "形式",
+    sheetFile: "保存名",
+    close: "閉じる",
   },
   zh: {
     title: "照片规格",
     localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "照片规格",
     tagline: "把照片或签名裁到指定像素和 KB",
-    metaDescription: "把照片或签名裁到考试、签证、简历上传所需的精确像素和 KB。申请人备忘只存在此浏览器。",
-    about: "按考试、签证、简历表格要求，把照片或签名裁到精确像素和 KB。不自动填写政府网站。无需账户，只在此浏览器处理。",
+    metaDescription:
+      "把照片或签名裁到考试、签证、简历上传所需的精确像素和 KB。申请人备忘只存在此浏览器。",
+    about:
+      "按考试、签证、简历表格要求，把照片或签名裁到精确像素和 KB。不自动填写政府网站。无需账户，只在此浏览器处理。",
     langLabel: "语言",
     presets: "规格",
     presetInPhoto: "印度 IBPS",
@@ -205,66 +322,84 @@ window.PS_I18N = {
     emptyCopy: "没有可复制的内容",
     privacy: "隐私",
     captionHint: "UPSC 会在照片底部印上姓名和今天的日期。使用申请人备忘中的姓名。",
-    terms: "条款"
+    terms: "条款",
+    specSheet: "规格详情",
+    sheetTarget: "目标尺寸",
+    sheetRange: "文件大小",
+    sheetFormat: "格式",
+    sheetFile: "保存文件名",
+    close: "关闭",
+  },
+};
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === "string" && (LANGS as string[]).includes(value);
+}
+
+export function translate(
+  lang: Lang,
+  key: MsgKey,
+  vars?: Record<string, string | number>,
+): string {
+  let out = I18N[lang]?.[key] ?? I18N.en[key] ?? key;
+  if (vars) {
+    for (const [name, value] of Object.entries(vars)) {
+      out = out.replaceAll(`{${name}}`, String(value));
+    }
   }
-};
+  return out;
+}
 
-window.PS_OG = {
-  ko: "https://photo-spec.try-dabble.com/og-image.png",
-  en: "https://photo-spec.try-dabble.com/og-image-en.png",
-  ja: "https://photo-spec.try-dabble.com/og-image-ja.png",
-  zh: "https://photo-spec.try-dabble.com/og-image-en.png"
-};
+function readCookieLang(): Lang | null {
+  if (typeof document === "undefined") return null;
+  const m = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+  return m && isLang(m[1]) ? m[1] : null;
+}
 
-window.persistLangQuery = function persistLangQuery(lang) {
+function readStoredLang(): Lang | null {
   try {
-    var u = new URL(location.href);
-    if (u.searchParams.get("lang") !== lang) {
-      u.searchParams.set("lang", lang);
-      history.replaceState(null, "", u.pathname + u.search + u.hash);
-    }
-  } catch (_) {}
-};
+    const saved = localStorage.getItem(LANG_KEY);
+    return isLang(saved) ? saved : null;
+  } catch {
+    return null;
+  }
+}
 
-window.detectLang = function detectLang() {
-  var lang = "ko";
+function readNavigatorLang(): Lang {
+  const nav = (navigator.language || "ko").toLowerCase();
+  if (nav.startsWith("ko")) return "ko";
+  if (nav.startsWith("ja")) return "ja";
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("en")) return "en";
+  return "ko";
+}
+
+/**
+ * ?lang= wins — the language combo writes it there, so a pick beats everything
+ * below — then the td_lang cookie (so hops between try-dabble subdomains keep
+ * the chosen language), then this app's saved ps_lang, then the browser. The
+ * Worker only sees the query and the cookie, so those two must outrank
+ * localStorage or the first HTML and the mounted app would disagree.
+ */
+export function detectLang(searchLang?: string | null): Lang {
+  if (isLang(searchLang)) {
+    rememberLang(searchLang);
+    return searchLang;
+  }
+  const cookie = readCookieLang();
+  if (cookie) {
+    rememberLang(cookie);
+    return cookie;
+  }
+  return readStoredLang() ?? readNavigatorLang();
+}
+
+export function rememberLang(lang: Lang): void {
   try {
-    const q = new URLSearchParams(location.search).get("lang");
-    if (q && window.PS_I18N[q]) {
-      try { localStorage.setItem("ps_lang", q); } catch (_) {}
-      lang = q;
-    }
-    else {
-      var cookieLang = "";
-      try {
-        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
-        if (cm && window.PS_I18N[cm[1]]) cookieLang = cm[1];
-      } catch (_) {}
-      if (cookieLang) {
-        try { localStorage.setItem("ps_lang", cookieLang); } catch (_) {}
-        lang = cookieLang;
-      } else {
-      try {
-        const saved = localStorage.getItem("ps_lang");
-        if (saved && window.PS_I18N[saved]) lang = saved;
-        else {
-          const nav = (navigator.language || "ko").toLowerCase();
-          if (nav.startsWith("ko")) lang = "ko";
-          else if (nav.startsWith("ja")) lang = "ja";
-          else if (nav.startsWith("zh")) lang = "zh";
-          else if (nav.startsWith("en")) lang = "en";
-          else lang = "ko";
-        }
-      } catch (_) {
-        const nav = (navigator.language || "ko").toLowerCase();
-        if (nav.startsWith("ko")) lang = "ko";
-        else if (nav.startsWith("ja")) lang = "ja";
-        else if (nav.startsWith("zh")) lang = "zh";
-        else if (nav.startsWith("en")) lang = "en";
-      }
-      }
-    }
-  } catch (_) {}
-  if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
-  return lang;
-};
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    /* private mode — language just won't stick */
+  }
+}
+
+export type Translate = (key: MsgKey, vars?: Record<string, string | number>) => string;

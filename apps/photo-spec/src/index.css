@@ -1,0 +1,646 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Photo Spec / 사진 규격 — a photo lab bench, light.
+  The page is a self-healing cutting mat: pale blue-grey with a white 24px
+  grid and heavier indigo rules every 120px. Every card is a sheet of photo
+  paper laid on the mat with indigo crop marks ruled into its corners; the
+  masthead is an indigo steel ruler with a milled tick edge, and the preview
+  sits on a light box inside a crop frame.
+  Deliberately NOT the old dark teal utility skin, and nothing like the kitchen
+  kraft of leftover-box, the manila office of later-inbox, the postage map of
+  place-inbox or the wrapping paper of gift-stash. shadcn is the kit, not the
+  look: its primitives are re-dressed as plates, tabs and crop frames.
+*/
+
+@theme {
+  --color-mat: #dae4e9;
+  --color-mat-2: #cbd8df;
+  --color-paper: #fcfdfe;
+  --color-paper-2: #eef3f6;
+  --color-edge: #b6c5ce;
+  --color-ink: #16212c;
+  --color-muted-ink: #5b6b79;
+  --color-indigo: #3a44c6;
+  --color-indigo-deep: #1f2578;
+  --color-indigo-soft: #e5e7fb;
+  --color-safe: #10653f;
+  --color-safe-bg: #d5eddf;
+  --color-flag: #b31f2d;
+  --color-flag-bg: #fbdfe1;
+  --color-amber: #f0b429;
+  --color-amber-deep: #8a5f07;
+  --color-amber-ink: #3a2a05;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-label);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.5);
+  --radius-4xl: calc(var(--radius) * 3);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Neo-grotesque lab lettering — tight, technical, and none of the book
+     serif, geometric poster or humanist gift-shop faces the siblings run on. */
+  --stack-display: "Helvetica Neue", "Arial Nova", Helvetica, Arial,
+    "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  /* Millimetres, pixels and kilobytes — machine mono, tabular so 200×230
+     and 32.4 KB never shift as the preview re-encodes. */
+  --stack-label: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "DejaVu Sans Mono", "Noto Sans Mono CJK KR", monospace;
+
+  --background: #dae4e9;
+  --foreground: #16212c;
+  --card: #fcfdfe;
+  --card-foreground: #16212c;
+  --popover: #fcfdfe;
+  --popover-foreground: #16212c;
+  --primary: #3a44c6;
+  --primary-foreground: #f7f8ff;
+  --secondary: #eef3f6;
+  --secondary-foreground: #16212c;
+  --muted: #e3ebef;
+  --muted-foreground: #5b6b79;
+  --accent: #e5e7fb;
+  --accent-foreground: #1f2578;
+  --destructive: #b31f2d;
+  --border: #b6c5ce;
+  --input: #aebeC8;
+  --ring: #3a44c6;
+
+  --radius: 0.2rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /*
+      Signature — the bench is a self-healing cutting mat: a white 24px grid
+      with a heavier indigo rule every 120px, cool light falling from the top.
+    */
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(0deg, rgba(31, 37, 120, 0.09) 0 1px, transparent 1px 120px),
+      repeating-linear-gradient(90deg, rgba(31, 37, 120, 0.09) 0 1px, transparent 1px 120px),
+      linear-gradient(180deg, #e3ecf0 0%, var(--color-mat) 38%, var(--color-mat-2) 100%);
+  }
+
+  a {
+    color: var(--color-indigo-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input min-content must never force horizontal scroll at 360px. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .ps-shell {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.75rem 1rem calc(1.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /*
+    Amber local-only notice with a printed number sign in the gutter. The "#" is
+    a ::before, never a child: the Worker calls setInnerContent on #local-only
+    for ?lang=, which would wipe any real element inside it.
+  */
+  .ps-notice {
+    position: relative;
+    margin: 0;
+    padding: 0.42rem 0.7rem 0.42rem 2rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: linear-gradient(180deg, #f8ca63 0%, var(--color-amber) 100%);
+    border: 1.5px solid var(--color-amber-deep);
+    border-radius: 2px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.45) inset,
+      1px 2px 0 rgba(22, 33, 44, 0.1);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .ps-notice::before {
+    content: "#";
+    position: absolute;
+    left: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-label);
+    font-size: 1.02rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-amber-deep);
+    opacity: 0.85;
+  }
+
+  /*
+    Signature — the masthead is a steel ruler in indigo, milled ticks along its
+    bottom edge: a hairline every 8px, a long one every 40px.
+  */
+  .ps-masthead {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.9rem 1rem 1.05rem;
+    background: linear-gradient(180deg, #39409f 0%, var(--color-indigo-deep) 100%);
+    box-shadow: 0 8px 14px -12px rgba(22, 33, 44, 0.85);
+  }
+  .ps-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 11px;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.85) 0 1.5px, transparent 1.5px 40px),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px 8px);
+    background-size:
+      100% 11px,
+      100% 5px;
+    background-repeat: no-repeat;
+    background-position:
+      left bottom,
+      left bottom;
+    pointer-events: none;
+  }
+
+  .ps-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — renders
+     identically to the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: #f4f6ff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ps-tagline {
+    margin: 0.28rem 0 0;
+    font-family: var(--stack-label);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a9b2f0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  /*
+    Signature — every card is a sheet of photo paper on the mat, with indigo
+    crop marks ruled into all four corners. The marks are painted onto an inset
+    overlay, so the sheet keeps its own border and shadow.
+  */
+  .ps-plate {
+    position: relative;
+    border: 1px solid var(--color-edge);
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--color-paper) 0%, #f6f9fb 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 8px 16px -14px rgba(22, 33, 44, 0.9);
+  }
+  .ps-plate::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0),
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0),
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0),
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0);
+    background-repeat: no-repeat;
+    background-size:
+      11px 1px, 1px 11px,
+      11px 1px, 1px 11px,
+      11px 1px, 1px 11px,
+      11px 1px, 1px 11px;
+    background-position:
+      left top, left top,
+      right top, right top,
+      left bottom, left bottom,
+      right bottom, right bottom;
+  }
+
+  /* Section titles: tracked-out lab labels. */
+  .ps-heading {
+    font-family: var(--stack-label);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-indigo-deep);
+  }
+
+  /*
+    Spec tabs — the preset picker reads as index tabs off a spec sheet: paper
+    stock with a mono size printed under the name, indigo when selected.
+  */
+  .ps-tab {
+    flex: 0 0 auto;
+    cursor: pointer;
+    appearance: none;
+    display: grid;
+    gap: 0.06rem;
+    justify-items: start;
+    text-align: left;
+    border: 1px solid var(--color-edge);
+    border-radius: 2px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-paper-2) 100%);
+    color: var(--color-muted-ink);
+    padding: 0.3rem 0.55rem;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
+  }
+  .ps-tab:hover {
+    border-color: var(--color-indigo);
+    color: var(--color-ink);
+  }
+  .ps-tab[aria-pressed="true"] {
+    border-color: var(--color-indigo-deep);
+    background: linear-gradient(180deg, #4750d4 0%, var(--color-indigo) 100%);
+    color: #f4f6ff;
+    box-shadow: 0 1px 0 rgba(31, 37, 120, 0.6);
+  }
+  .ps-tab-size {
+    font-family: var(--stack-label);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted-ink);
+  }
+  .ps-tab[aria-pressed="true"] .ps-tab-size {
+    color: #c3c9f6;
+  }
+
+  .ps-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  /*
+    Signature — the light box. The fitted photo sits on a cool-lit panel with
+    an indigo crop frame ruled around it, the way a print is checked on a
+    lab bench before it goes out.
+  */
+  .ps-lightbox {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 11rem;
+    padding: 1.15rem;
+    border: 1px solid var(--color-edge);
+    border-radius: 2px;
+    background:
+      radial-gradient(ellipse at 50% 22%, #ffffff 0%, #f2f6f9 55%, #e6edf1 100%);
+    box-shadow: inset 0 0 34px rgba(31, 37, 120, 0.07);
+    touch-action: none;
+    overflow: hidden;
+  }
+  /* Crop frame — four corner brackets, ruled in indigo. */
+  .ps-lightbox::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0),
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0),
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0),
+      linear-gradient(var(--color-indigo) 0 0), linear-gradient(var(--color-indigo) 0 0);
+    background-repeat: no-repeat;
+    background-size:
+      20px 2px, 2px 20px,
+      20px 2px, 2px 20px,
+      20px 2px, 2px 20px,
+      20px 2px, 2px 20px;
+    background-position:
+      left top, left top,
+      right top, right top,
+      left bottom, left bottom,
+      right bottom, right bottom;
+    opacity: 0.75;
+  }
+  .ps-lightbox[data-drag="true"] {
+    cursor: grabbing;
+  }
+  .ps-lightbox[data-ready="true"] {
+    cursor: grab;
+  }
+
+  /* The print itself: white margin, a hairline edge and a lifted shadow.
+     :not([hidden]) so the components layer never outranks preflight's
+     [hidden] rule while the light box is still empty. */
+  .ps-print:not([hidden]) {
+    display: block;
+    max-width: min(100%, 15rem);
+    max-height: 17rem;
+    height: auto;
+    background: #ffffff;
+    border: 1px solid var(--color-edge);
+    padding: 4px;
+    box-shadow: 0 10px 18px -12px rgba(22, 33, 44, 0.95);
+    image-rendering: auto;
+  }
+
+  .ps-empty {
+    font-size: 0.78rem;
+    color: var(--color-muted-ink);
+    text-align: center;
+    max-width: 18rem;
+  }
+
+  /*
+    The readout strip under the light box: mono, tabular, green inside the
+    KB window and safelight red outside it.
+  */
+  .ps-readout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--stack-label);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink);
+  }
+  .ps-verdict {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    border: 1px solid currentColor;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+  }
+  .ps-verdict[data-in="true"] {
+    color: var(--color-safe);
+    background: var(--color-safe-bg);
+  }
+  .ps-verdict[data-in="false"] {
+    color: var(--color-flag);
+    background: var(--color-flag-bg);
+  }
+
+  /* Drop target: a taped-out paste-up area on the mat. */
+  .ps-drop {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    padding: 0.75rem;
+    border: 1.5px dashed var(--color-edge);
+    border-radius: 2px;
+    background: repeating-linear-gradient(
+      -45deg,
+      rgba(58, 68, 198, 0.03) 0 10px,
+      transparent 10px 20px
+    );
+    transition:
+      border-color 0.12s ease,
+      background-color 0.12s ease;
+  }
+  .ps-drop[data-over="true"] {
+    border-color: var(--color-indigo);
+    background-color: var(--color-indigo-soft);
+  }
+
+  .ps-hint {
+    margin: 0;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    color: var(--color-muted-ink);
+  }
+
+  .ps-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid var(--color-edge);
+    background: #ffffff;
+    color: var(--color-ink);
+    border-radius: 2px;
+    padding: 0.5rem 0.6rem;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .ps-field:focus {
+    border-color: var(--color-indigo);
+    box-shadow: 0 0 0 3px rgba(58, 68, 198, 0.18);
+    outline: none;
+  }
+  .ps-field[type="number"],
+  .ps-num {
+    font-family: var(--stack-label);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .ps-label {
+    display: grid;
+    gap: 0.25rem;
+    font-family: var(--stack-label);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    min-width: 0;
+  }
+
+  .ps-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: rgba(255, 255, 255, 0.12);
+    color: #f4f6ff;
+    border: 1px solid rgba(244, 246, 255, 0.55);
+    border-radius: 2px;
+    padding: 0.28rem 0.5rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    font-family: inherit;
+  }
+  .ps-select option {
+    color: var(--color-ink);
+    background: #ffffff;
+  }
+
+  /* Applicant-notes rows: label + field, with the copy key at the margin. */
+  .ps-row {
+    display: flex;
+    align-items: end;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+  .ps-row > label {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ps-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.25rem;
+    font-family: var(--stack-label);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted-ink);
+  }
+
+  /* Spec sheet rows inside the dialog. */
+  .ps-sheet {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .ps-sheet dt {
+    font-family: var(--stack-label);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    align-self: center;
+  }
+  .ps-sheet dd {
+    margin: 0;
+    font-family: var(--stack-label);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink);
+  }
+}
+
+@media (min-width: 520px) {
+  .ps-shell {
+    padding-top: 1.2rem;
+    max-width: 38rem;
+  }
+}
+
+/* 390px and below: title, mark and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.12rem;
+  }
+
+  .ps-select {
+    max-width: 6.4rem;
+    padding: 0.24rem 0.4rem;
+  }
+}

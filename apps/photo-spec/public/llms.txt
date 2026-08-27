@@ -14,7 +14,7 @@ All processing happens in the browser (canvas). Photos and the applicant profile
 
 ## Features
 
-- Presets: India exam photo 200×230 20–50 KB; India exam sign 140×60 10–20 KB; passport/visa 2×2 600×600 50–200 KB; KR resume 3×4 300×400 30–100 KB; custom W/H/min/max/jpeg|png
+- Presets: India IBPS 200×230 20–50 KB; India SSC/Rail 413×531 20–50 KB; India UPSC 472×591 20–300 KB (name + date printed under the photo); India exam sign 140×60 10–20 KB; passport/visa 2×2 600×600 50–200 KB; KR resume 3×4 300×400 30–100 KB; custom W/H/min/max/jpeg|png
 - Drop, file, camera, or Ctrl+V paste
 - Cover-crop to target aspect (center, optional drag offset)
 - Binary-search JPEG quality (slight downscale if still over max KB)
