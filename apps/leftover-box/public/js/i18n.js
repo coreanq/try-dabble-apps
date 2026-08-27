@@ -241,30 +241,39 @@ window.detectLang = function detectLang() {
     if (q && window.LB_I18N[q]) {
       try { localStorage.setItem("leftover-box:lang", q); } catch (_) {}
       lang = q;
-    }
-    else {
-      var combo = document.getElementById("lang-select");
-      var cv = combo && combo.value;
-      if (cv && window.LB_I18N[cv] && document.documentElement.getAttribute("data-lang-user")) {
-        lang = cv;
+    } else {
+      var cookieLang = "";
+      try {
+        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+        if (cm && window.LB_I18N[cm[1]]) cookieLang = cm[1];
+      } catch (_) {}
+      if (cookieLang) {
+        try { localStorage.setItem("leftover-box:lang", cookieLang); } catch (_) {}
+        lang = cookieLang;
       } else {
-        try {
-          const saved = localStorage.getItem("leftover-box:lang");
-          if (saved && window.LB_I18N[saved]) lang = saved;
-          else {
+        var combo = document.getElementById("lang-select");
+        var cv = combo && combo.value;
+        if (cv && window.LB_I18N[cv] && document.documentElement.getAttribute("data-lang-user")) {
+          lang = cv;
+        } else {
+          try {
+            const saved = localStorage.getItem("leftover-box:lang");
+            if (saved && window.LB_I18N[saved]) lang = saved;
+            else {
+              const nav = (navigator.language || "ko").toLowerCase();
+              if (nav.startsWith("ko")) lang = "ko";
+              else if (nav.startsWith("ja")) lang = "ja";
+              else if (nav.startsWith("zh")) lang = "zh";
+              else if (nav.startsWith("en")) lang = "en";
+              else lang = "ko";
+            }
+          } catch (_) {
             const nav = (navigator.language || "ko").toLowerCase();
             if (nav.startsWith("ko")) lang = "ko";
             else if (nav.startsWith("ja")) lang = "ja";
             else if (nav.startsWith("zh")) lang = "zh";
             else if (nav.startsWith("en")) lang = "en";
-            else lang = "ko";
           }
-        } catch (_) {
-          const nav = (navigator.language || "ko").toLowerCase();
-          if (nav.startsWith("ko")) lang = "ko";
-          else if (nav.startsWith("ja")) lang = "ja";
-          else if (nav.startsWith("zh")) lang = "zh";
-          else if (nav.startsWith("en")) lang = "en";
         }
       }
     }

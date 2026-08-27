@@ -257,19 +257,28 @@ window.detectLang = function detectLang() {
     if (q && window.BQ_I18N[q]) {
       try { localStorage.setItem("box-qr:lang", q); } catch (_) {}
       lang = q;
-    }
-    else {
-      var combo = document.getElementById("lang-select");
-      var cv = combo && combo.value;
-      if (cv && window.BQ_I18N[cv] && document.documentElement.getAttribute("data-lang-user")) {
-        lang = cv;
+    } else {
+      var cookieLang = "";
+      try {
+        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+        if (cm && window.BQ_I18N[cm[1]]) cookieLang = cm[1];
+      } catch (_) {}
+      if (cookieLang) {
+        try { localStorage.setItem("box-qr:lang", cookieLang); } catch (_) {}
+        lang = cookieLang;
       } else {
-        try {
-          const saved = localStorage.getItem("box-qr:lang");
-          if (saved && window.BQ_I18N[saved]) lang = saved;
-          else lang = "ko";
-        } catch (_) {
-          lang = "ko";
+        var combo = document.getElementById("lang-select");
+        var cv = combo && combo.value;
+        if (cv && window.BQ_I18N[cv] && document.documentElement.getAttribute("data-lang-user")) {
+          lang = cv;
+        } else {
+          try {
+            const saved = localStorage.getItem("box-qr:lang");
+            if (saved && window.BQ_I18N[saved]) lang = saved;
+            else lang = "ko";
+          } catch (_) {
+            lang = "ko";
+          }
         }
       }
     }
