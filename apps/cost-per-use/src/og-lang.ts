@@ -39,8 +39,7 @@ const COPY: Record<
     tagline: '查看每天和每次使用的真实成本',
     description: '免费的单次使用成本与每日成本计算器。输入价格、购买日期与预期使用寿命，了解物品的真实日均与单次成本。',
     locale: 'zh_CN',
-    /* No zh sheet was ever drawn for this app, so zh shares the English one. */
-    image: 'https://cost-per-use.try-dabble.com/og-image-en.png',
+    image: 'https://cost-per-use.try-dabble.com/og-image-zh.png',
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
   },
 };

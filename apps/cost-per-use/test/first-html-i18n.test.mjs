@@ -26,7 +26,7 @@ const CASES = [
     title: "单次使用成本计算器",
     localOnly: "数据仅保存在此设备，不会上传到服务器。",
     ogLocale: "zh_CN",
-    ogImage: "https://cost-per-use.try-dabble.com/og-image-en.png",
+    ogImage: "https://cost-per-use.try-dabble.com/og-image-zh.png",
   },
   {
     lang: "ko",

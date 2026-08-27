@@ -1,6 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const OUT = path.join(__dirname, "public");
 const NAVY = { r: 11, g: 18, b: 32, alpha: 1 };
@@ -120,6 +123,7 @@ async function main() {
     { title: "사용단가 계산기", subtitle: "하루·1회 사용 비용", files: ["og-image.png", "og-image-ko.png"] },
     { title: "Cost-per-use Calculator", subtitle: "Daily & per-use cost", files: ["og-image-en.png"] },
     { title: "1回あたり費用計算機", subtitle: "1日・1回の費用", files: ["og-image-ja.png"] },
+    { title: "单次使用成本计算器", subtitle: "每天·每次的真实成本", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
     const buf = Buffer.from(svgFor(job.title, job.subtitle));
