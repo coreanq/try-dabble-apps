@@ -1,0 +1,30 @@
+# Box QR / 상자QR
+
+> A local-first moving-box log: QR/number sticker, photos, short contents list. Search “Lego” to find which box. Not the Boxes iOS app.
+
+This is a Progressive Web App (PWA) hosted at https://box-qr.try-dabble.com/
+All data stays in the browser (IndexedDB `box-qr`, localStorage key box-qr:boxes:v1). No accounts, no server-side storage, no box/photo cap.
+
+This is NOT Boxes (iOS), Sortly, MoveAdvisor, or a cloud inventory.
+
+## Pages
+
+- [Home](https://box-qr.try-dabble.com/): Add a box with photos + items, search, show/print QR, open a box via `?box=`
+- [Privacy](https://box-qr.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://box-qr.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/box-qr): How-to on try-dabble.com
+
+## Features
+
+- Add a box with no login
+- Optional room/label, contents list (one item per line), unlimited photos
+- Search by item text, room, or box number
+- Show and print a QR sticker; encoded URL is `/?box=<id>&lang=`
+- Opening that URL on this device opens that box
+- JSON export/import
+- Multi-language UI: Korean, English, Japanese, Chinese (`?lang=` wins)
+- Installable PWA with network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

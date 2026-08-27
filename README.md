@@ -30,5 +30,6 @@ npx wrangler deploy
 - [photo-spec](https://photo-spec.try-dabble.com/)
 - [later-inbox](https://later-inbox.try-dabble.com/)
 - [leftover-box](https://leftover-box.try-dabble.com/) — 반찬함 leftover eat-by tracker
+- [box-qr](https://box-qr.try-dabble.com/) — 상자QR moving-box QR + photo inventory
 - [omok](https://omok.try-dabble.com/) — Next static export; `next build` then wrangler from `out/`
 - [jump-map](https://jump-map.try-dabble.com/) — Block Jumper CSR/PWA

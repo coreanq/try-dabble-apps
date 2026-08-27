@@ -1,0 +1,13 @@
+{
+  "name": "box-qr",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "og": "node contain-og.js"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.0"
+  }
+}

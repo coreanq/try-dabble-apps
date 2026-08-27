@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>상자QR</title>
+  <meta name="description" content="이사 상자에 QR을 붙이고 사진과 내용물을 적습니다. 나중에 ‘레고’로 어느 상자인지 찾습니다. 계정 없이 이 기기에만 저장됩니다." />
+  <meta name="theme-color" content="#d6b884" />
+  <meta name="application-name" content="상자QR" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="상자QR" />
+  <link rel="canonical" href="https://box-qr.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://box-qr.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://box-qr.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://box-qr.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://box-qr.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://box-qr.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Box QR" />
+  <meta property="og:url" content="https://box-qr.try-dabble.com/" />
+  <meta property="og:title" content="상자QR" />
+  <meta property="og:description" content="이사 상자에 QR을 붙이고 사진과 내용물을 적습니다. 나중에 ‘레고’로 어느 상자인지 찾습니다." />
+  <meta property="og:image" content="https://box-qr.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="상자QR" />
+  <meta name="twitter:description" content="이사 상자에 QR을 붙이고 사진과 내용물을 적습니다. 나중에 ‘레고’로 어느 상자인지 찾습니다." />
+  <meta name="twitter:image" content="https://box-qr.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://box-qr.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://box-qr.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://box-qr.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <p class="local-only" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+  <script>
+  (function () {
+    var COPY = {
+      ko: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
+      en: "Your data stays on this device. Nothing is sent to our servers.",
+      ja: "データはこの端末にだけ保存されます。サーバーには送りません。",
+      zh: "数据仅保存在此设备，不会上传到服务器。"
+    };
+    var KEY = "box-qr:lang";
+    function apply(lang) {
+      var el = document.getElementById("local-only");
+      if (el && COPY[lang]) el.textContent = COPY[lang];
+      var sel = document.getElementById("lang-select");
+      if (sel && COPY[lang]) sel.value = lang;
+    }
+    var lang = "ko";
+    try {
+      var q = new URLSearchParams(location.search).get("lang") || "";
+      q = String(q).slice(0, 2).toLowerCase();
+      if (COPY[q]) lang = q;
+      else {
+        var combo = document.getElementById("lang-select");
+        var cv = combo && combo.value;
+        if (cv && COPY[cv]) lang = cv;
+        else {
+          var s = localStorage.getItem(KEY) || "";
+          if (COPY[s]) lang = s;
+        }
+      }
+    } catch (e) {}
+    apply(lang);
+    document.addEventListener("change", function (e) {
+      if (!e.target || e.target.id !== "lang-select") return;
+      var next = e.target.value;
+      if (!COPY[next]) return;
+      apply(next);
+      try { localStorage.setItem(KEY, next); } catch (err) {}
+    });
+  })();
+  </script>
+
+  <div class="app">
+    <header class="masthead">
+      <div class="masthead-row">
+        <svg class="box-illo" viewBox="0 0 72 56" aria-hidden="true" focusable="false">
+          <polygon points="12,18 36,8 60,18 36,30" fill="#c48a48"/>
+          <polygon points="12,18 36,30 36,50 12,38" fill="#a56b32"/>
+          <polygon points="36,30 60,18 60,38 36,50" fill="#d2a05c"/>
+          <rect x="16" y="26" width="14" height="10" fill="#f7f1e2"/>
+          <rect x="17.5" y="27.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="20.5" y="27.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="26.5" y="27.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="17.5" y="30.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="23.5" y="30.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="17.5" y="33.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="20.5" y="33.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="26.5" y="33.4" width="2.2" height="2.2" fill="#1c1408"/>
+          <rect x="44" y="36" width="14" height="7" rx="1" fill="#f0b429"/>
+        </svg>
+        <div class="brand-copy">
+          <h1 id="brand-title">상자QR</h1>
+          <p class="tagline" id="brand-tagline">짐이 어느 상자인지</p>
+        </div>
+        <label class="sr-only" id="lang-label" for="lang-select">언어</label>
+        <select id="lang-select" class="lang-select" aria-label="Language">
+          <option value="ko" selected>한국어</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+      </div>
+      <p class="unlimited" id="unlimited">계정 없음 · 상자·사진 제한 없음</p>
+    </header>
+
+    <section id="view-list">
+      <section class="card about" aria-label="About">
+        <p id="about-text">Boxes 같은 iOS 앱은 상자·사진 개수를 평생 구매나 구독 뒤에 둡니다. 상자QR은 무료입니다. 계정 없고, 상자·사진 개수 제한도 없습니다. 상자에 QR이나 번호를 붙이고 사진과 짧은 목록을 남기면, 나중에 ‘레고’나 ‘유리’로 어느 상자인지 찾습니다.</p>
+      </section>
+
+      <label class="search-wrap">
+        <span class="sr-only" id="search-label">검색</span>
+        <input id="search" type="search" enterkeyhint="search" autocomplete="off" placeholder="레고, 유리, 주방…" />
+      </label>
+
+      <section class="card label-card" id="add-card">
+        <div class="label-holes" aria-hidden="true"></div>
+        <div class="list-head">
+          <h2 id="add-title">새 상자</h2>
+        </div>
+        <form id="add-form" class="add-form" autocomplete="off">
+          <input type="hidden" id="edit-id" />
+          <label>
+            <span id="label-room">라벨 / 방 (선택)</span>
+            <input id="room" type="text" maxlength="80" placeholder="주방" />
+          </label>
+          <label>
+            <span id="label-items">내용물 (한 줄에 하나)</span>
+            <textarea id="items" rows="4" maxlength="4000" placeholder="레고&#10;유리그릇&#10;전선"></textarea>
+          </label>
+          <div>
+            <span class="field-label" id="label-photos">사진</span>
+            <div id="photo-previews" class="photo-previews"></div>
+            <label class="btn btn-ghost btn-sm file-btn">
+              <span id="add-photos-label">사진 넣기</span>
+              <input id="photo-input" type="file" accept="image/*" multiple hidden />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" id="add-save" class="btn btn-primary">상자 저장</button>
+            <button type="button" id="add-cancel" class="btn btn-ghost" hidden>취소</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2 id="list-title">상자</h2>
+          <span id="list-count" class="count-pill">0</span>
+        </div>
+        <div id="items-empty" class="empty">상자를 싸세요. 사진과 짧은 목록을 남기고 QR을 붙입니다.</div>
+        <div id="box-list" class="box-list" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <section id="view-detail" hidden>
+      <button type="button" id="back-btn" class="btn btn-ghost btn-sm back-btn">상자 목록</button>
+      <section class="card detail-card">
+        <div class="detail-head">
+          <p class="stencil-num" id="detail-number">BOX 1</p>
+          <h2 id="detail-room"></h2>
+        </div>
+        <p id="detail-missing" class="empty" hidden></p>
+        <div id="detail-photos" class="photo-grid"></div>
+        <label class="btn btn-ghost btn-sm file-btn" id="detail-add-photo-wrap">
+          <span id="detail-add-photos-label">사진 더 넣기</span>
+          <input id="detail-photo-input" type="file" accept="image/*" multiple hidden />
+        </label>
+        <h3 id="detail-contents-title">내용물</h3>
+        <ul id="detail-items" class="item-chips"></ul>
+        <div id="detail-qr" class="qr-panel">
+          <div id="detail-qr-mount" class="qr-mount"></div>
+          <label class="url-field">
+            <span id="encoded-url-label">QR에 담긴 URL</span>
+            <input id="detail-url" type="text" readonly />
+          </label>
+          <div class="tool-row">
+            <button type="button" id="copy-url-btn" class="btn btn-ghost btn-sm">URL 복사</button>
+            <button type="button" id="print-btn" class="btn btn-primary btn-sm">스티커 인쇄</button>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button type="button" id="detail-edit" class="btn btn-ghost btn-sm">수정</button>
+          <button type="button" id="detail-delete" class="btn btn-danger btn-sm">삭제</button>
+        </div>
+      </section>
+    </section>
+
+    <div class="ad-slot" id="ad-slot" role="complementary" aria-label="Advertisement">
+      <ins class="adsbygoogle"
+           style="display:block;min-height:90px;width:100%"
+           data-ad-client="ca-pub-3398336402999065"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <section class="card tools" id="tools-card">
+      <div class="list-head">
+        <h2 id="tools-title">도구</h2>
+      </div>
+      <div class="tool-row">
+        <button type="button" id="export-btn" class="btn btn-ghost btn-sm">JSON보내기</button>
+        <label class="btn btn-ghost btn-sm file-btn">
+          <span id="import-label">JSON가져오기</span>
+          <input id="import-file" type="file" accept="application/json,.json" hidden />
+        </label>
+      </div>
+      <p class="hint" id="tools-hint">기기를 옮길 때 JSON으로 가져가세요. 사진도 파일에 들어 있습니다. 서버에는 올라가지 않습니다.</p>
+    </section>
+
+    <footer class="footer">
+      <a id="link-privacy" href="/privacy.html">개인정보</a>
+      <a id="link-terms" href="/terms.html">이용약관</a>
+      <span>try-dabble.com</span>
+    </footer>
+  </div>
+
+  <div id="print-root" class="print-root" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="qr-dialog" class="dialog">
+    <form method="dialog" class="dialog-form">
+      <h2 id="qr-dialog-title">상자 스티커</h2>
+      <p class="hint" id="qr-dialog-hint">인쇄해서 상자에 붙이세요. QR을 찍거나 URL을 열면 이 기기의 그 상자가 열립니다.</p>
+      <p class="stencil-num" id="qr-dialog-number">BOX 1</p>
+      <div id="qr-dialog-mount" class="qr-mount"></div>
+      <label class="url-field">
+        <span id="qr-encoded-label">QR에 담긴 URL</span>
+        <input id="qr-dialog-url" type="text" readonly />
+      </label>
+      <div class="dialog-actions">
+        <button type="button" id="qr-copy" class="btn btn-ghost btn-sm">URL 복사</button>
+        <button type="button" id="qr-print" class="btn btn-primary btn-sm">스티커 인쇄</button>
+        <span class="grow"></span>
+        <button value="close" id="qr-close" class="btn btn-ghost btn-sm">닫기</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="confirm-dialog" class="dialog">
+    <form method="dialog" class="dialog-form">
+      <p id="confirm-text">삭제할까요?</p>
+      <div class="dialog-actions">
+        <span class="grow"></span>
+        <button value="cancel" id="confirm-cancel" class="btn btn-ghost btn-sm">취소</button>
+        <button value="confirm" id="confirm-ok" class="btn btn-danger btn-sm">삭제</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/js/qrcode.js" defer></script>
+  <script src="/js/i18n.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>
