@@ -13,8 +13,10 @@ All data stays in the browser (localStorage). No accounts, no server-side storag
 
 ## Features
 
-- Cost per day from purchase date to today
+- Cost per day from purchase date to today, or over an expected useful life when one is set
 - Cost per use when times-used is provided
+- Live preview of cost per day and cost per use while typing
+- Saved list with edit, delete and three sort orders (newest, highest per day, name)
 - Multi-language UI: Korean (default preference), English, Chinese, Japanese
 - Installable PWA with offline shell via service worker
 - Local-only persistence

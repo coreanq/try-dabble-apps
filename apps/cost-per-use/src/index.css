@@ -1,0 +1,607 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Cost-per-use / 사용단가 계산기 — a household account book, open on the desk.
+  The page is cream ledger stock ruled in faint green every 28px with a red
+  margin rule down the left edge; the masthead is a forest-ink header band
+  closed by a gold double rule; every card is a leaf of that book with its own
+  money column ruled down the right; the live figure prints on a thermal
+  receipt slip with a torn zigzag foot, and totals sit under an accountant's
+  double underline.
+  Deliberately NOT the old dark navy utility skin, and nothing like the kitchen
+  kraft of leftover-box, the manila office of later-inbox, the postage map of
+  place-inbox, the wrapping paper of gift-stash or the cutting mat of
+  photo-spec. shadcn is the kit, not the look: its primitives are re-dressed
+  as ledger leaves, brass keys and a slipped-out receipt.
+*/
+
+@theme {
+  --color-cream: #f6efdb;
+  --color-cream-2: #eee2c4;
+  --color-leaf: #fdfaf0;
+  --color-leaf-2: #f5eeda;
+  --color-edge: #d3c39b;
+  --color-ink: #23251c;
+  --color-muted-ink: #6d6650;
+  --color-forest: #1d4a35;
+  --color-forest-deep: #10301f;
+  --color-forest-soft: #dfeadd;
+  --color-gold: #bc8a1c;
+  --color-gold-deep: #8a6211;
+  --color-gold-soft: #f7e8bd;
+  --color-red-ink: #97281f;
+  --color-red-ink-bg: #f6dfda;
+  --color-amber: #edac16;
+  --color-amber-deep: #825505;
+  --color-amber-ink: #33240a;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-serif: var(--stack-display);
+  --font-mono: var(--stack-ledger);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
+}
+
+:root {
+  color-scheme: light;
+
+  /* A slab serif for the book's engraved headings — squared-off and clerical,
+     none of the old-style book serif, geometric poster, humanist gift-shop or
+     neo-grotesque lab faces the sibling apps run on. */
+  --stack-display: Rockwell, "Rockwell Nova", "Roboto Slab", "Bookman Old Style",
+    "Noto Serif KR", "Hiragino Mincho ProN", Georgia, serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  /* Every figure is typewritten into the book: Courier first, tabular so a
+     column of amounts stays a column while the preview recalculates. */
+  --stack-ledger: "Courier New", Courier, "Nimbus Mono PS", "Noto Sans Mono CJK KR",
+    ui-monospace, monospace;
+
+  --background: #f6efdb;
+  --foreground: #23251c;
+  --card: #fdfaf0;
+  --card-foreground: #23251c;
+  --popover: #fdfaf0;
+  --popover-foreground: #23251c;
+  --primary: #1d4a35;
+  --primary-foreground: #f8f4e6;
+  --secondary: #f0e7d0;
+  --secondary-foreground: #23251c;
+  --muted: #efe6cf;
+  --muted-foreground: #6d6650;
+  --accent: #f7e8bd;
+  --accent-foreground: #6b4a0a;
+  --destructive: #97281f;
+  --border: #d3c39b;
+  --input: #c6b58c;
+  --ring: #bc8a1c;
+
+  --radius: 0.15rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /*
+      Signature — the desk is an open account book: cream stock ruled in faint
+      green every 28px, a red margin rule down the left edge the way a
+      household ledger keeps its date column, warm lamplight from the top.
+    */
+    background-image:
+      repeating-linear-gradient(0deg, rgba(29, 74, 53, 0.085) 0 1px, transparent 1px 28px),
+      linear-gradient(90deg, transparent 0 26px, rgba(151, 40, 31, 0.34) 26px 27px, transparent 27px),
+      linear-gradient(90deg, transparent 0 30px, rgba(151, 40, 31, 0.16) 30px 31px, transparent 31px),
+      linear-gradient(180deg, #fbf6e6 0%, var(--color-cream) 42%, var(--color-cream-2) 100%);
+  }
+
+  a {
+    color: var(--color-forest);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input min-content must never force horizontal scroll at 360px. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .cpu-shell {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.75rem 1rem calc(1.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /*
+    Amber local-only notice with a printed number sign in the gutter. The "#" is
+    a ::before, never a child: the Worker calls setInnerContent on #local-only
+    for ?lang=, which would wipe any real element inside it.
+  */
+  .cpu-notice {
+    position: relative;
+    margin: 0;
+    padding: 0.42rem 0.7rem 0.42rem 2rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: linear-gradient(180deg, #f7c95c 0%, var(--color-amber) 100%);
+    border: 1.5px solid var(--color-amber-deep);
+    border-radius: 2px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.5) inset,
+      1px 2px 0 rgba(35, 37, 28, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .cpu-notice::before {
+    content: "#";
+    position: absolute;
+    left: 0.62rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-ledger);
+    font-size: 1.02rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-amber-deep);
+    opacity: 0.9;
+  }
+
+  /*
+    Signature — the masthead is the book's printed header band: forest ink,
+    closed underneath by a gold double rule (thick over thin) exactly the way
+    an account book separates its heading from the first entry.
+  */
+  .cpu-masthead {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.85rem 1rem 1.05rem;
+    background:
+      linear-gradient(180deg, #26593f 0%, var(--color-forest-deep) 100%);
+    box-shadow: 0 8px 14px -12px rgba(35, 37, 28, 0.9);
+  }
+  .cpu-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 6px;
+    background:
+      linear-gradient(
+        180deg,
+        var(--color-gold) 0 3px,
+        transparent 3px 5px,
+        var(--color-gold-deep) 5px 6px
+      );
+    pointer-events: none;
+  }
+
+  .cpu-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — renders
+     identically to the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.34rem;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: #f8f2df;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #brand-tagline {
+    margin: 0.3rem 0 0;
+    font-family: var(--stack-ledger);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-gold-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  /*
+    Signature — every card is a leaf of the account book: cream stock, a
+    hairline forest edge, the faint green ruling showing through, and a gold
+    hairline ruled across the head under the section title.
+  */
+  .cpu-leaf {
+    position: relative;
+    border: 1px solid var(--color-edge);
+    border-radius: 2px;
+    background:
+      repeating-linear-gradient(0deg, rgba(29, 74, 53, 0.05) 0 1px, transparent 1px 28px),
+      linear-gradient(180deg, var(--color-leaf) 0%, var(--color-leaf-2) 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.85) inset,
+      0 8px 16px -14px rgba(35, 37, 28, 0.9);
+  }
+
+  /* Section titles: engraved slab headings over the gold head rule. */
+  .cpu-heading {
+    font-family: var(--stack-display);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-forest-deep);
+  }
+
+  .cpu-headrule {
+    border-bottom: 1px solid var(--color-gold);
+    box-shadow: 0 2px 0 -1px var(--color-gold-soft);
+    padding-bottom: 0.4rem;
+  }
+
+  /*
+    Signature — a ledger entry: the item name on the ruled line, the money
+    column fenced off down the right by a gold hairline, and dot leaders
+    running from the name to the figures the way a hand-kept book does it.
+  */
+  .cpu-entry {
+    position: relative;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--color-edge);
+    border-radius: 2px;
+    background:
+      repeating-linear-gradient(0deg, rgba(29, 74, 53, 0.055) 0 1px, transparent 1px 28px),
+      linear-gradient(180deg, #fffdf6 0%, var(--color-leaf) 100%);
+  }
+  .cpu-entry + .cpu-entry {
+    margin-top: 0.5rem;
+  }
+
+  .cpu-entry-name {
+    font-family: var(--stack-display);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .cpu-entry-meta {
+    font-family: var(--stack-ledger);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--color-muted-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* Dot leaders: label at the left, figure at the right, dots between. */
+  .cpu-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .cpu-line-label {
+    flex: 0 0 auto;
+    font-family: var(--stack-ledger);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    white-space: nowrap;
+  }
+  .cpu-leader {
+    flex: 1 1 auto;
+    min-width: 0.75rem;
+    height: 0.55em;
+    border-bottom: 1.5px dotted var(--color-edge);
+  }
+  .cpu-amount {
+    flex: 0 0 auto;
+    font-family: var(--stack-ledger);
+    font-size: 0.92rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+    color: var(--color-forest-deep);
+    white-space: nowrap;
+  }
+  .cpu-amount[data-empty="true"] {
+    color: var(--color-muted-ink);
+    font-weight: 400;
+  }
+
+  /*
+    Signature — the live figure prints on a thermal receipt: paler stock, a
+    dashed tear line at the head and a zigzag torn foot cut out with a mask.
+  */
+  .cpu-receipt {
+    position: relative;
+    margin-top: 0.15rem;
+    padding: 0.7rem 0.85rem 1.15rem;
+    background: linear-gradient(180deg, #fffefa 0%, #f9f4e6 100%);
+    border: 1px solid var(--color-edge);
+    border-bottom: 0;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 6px 12px -12px rgba(35, 37, 28, 0.9);
+    --tear: 9px;
+    -webkit-mask-image:
+      linear-gradient(#000 0 0),
+      conic-gradient(from -45deg at 50% calc(100% - var(--tear)), #000 90deg, transparent 0);
+    mask-image:
+      linear-gradient(#000 0 0),
+      conic-gradient(from -45deg at 50% calc(100% - var(--tear)), #000 90deg, transparent 0);
+    -webkit-mask-size:
+      100% calc(100% - var(--tear)),
+      18px var(--tear);
+    mask-size:
+      100% calc(100% - var(--tear)),
+      18px var(--tear);
+    -webkit-mask-repeat: no-repeat, repeat-x;
+    mask-repeat: no-repeat, repeat-x;
+    -webkit-mask-position: top left, bottom left;
+    mask-position: top left, bottom left;
+  }
+  .cpu-receipt::before {
+    content: "";
+    position: absolute;
+    left: 0.6rem;
+    right: 0.6rem;
+    top: 0.32rem;
+    border-top: 1.5px dashed var(--color-edge);
+  }
+
+  .cpu-receipt-title {
+    font-family: var(--stack-ledger);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    margin: 0.2rem 0 0.45rem;
+  }
+
+  /* The big printed figure, under an accountant's double underline. */
+  .cpu-figure {
+    display: block;
+    font-family: var(--stack-ledger);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-forest-deep);
+    overflow-wrap: anywhere;
+  }
+  .cpu-figure[data-empty="true"] {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--color-muted-ink);
+  }
+  .cpu-total {
+    padding-bottom: 0.32rem;
+    border-bottom: 3px double var(--color-forest);
+  }
+
+  .cpu-figure-label {
+    font-family: var(--stack-ledger);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .cpu-hint {
+    margin: 0;
+    font-size: 0.71rem;
+    line-height: 1.45;
+    color: var(--color-muted-ink);
+  }
+  .cpu-hint[data-warn="true"] {
+    color: var(--color-gold-deep);
+    font-weight: 600;
+  }
+
+  /* Fields are boxes ruled into the book, not floating widgets. */
+  .cpu-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid var(--color-edge);
+    background: #fffdf6;
+    color: var(--color-ink);
+    border-radius: 2px;
+    padding: 0.5rem 0.6rem;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .cpu-field:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(188, 138, 28, 0.22);
+    outline: none;
+  }
+  .cpu-field[aria-invalid="true"] {
+    border-color: var(--color-red-ink);
+    background: #fffaf8;
+  }
+  .cpu-field[type="number"],
+  .cpu-field[type="date"] {
+    font-family: var(--stack-ledger);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .cpu-label {
+    display: grid;
+    gap: 0.25rem;
+    font-family: var(--stack-ledger);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    min-width: 0;
+  }
+
+  .cpu-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: rgba(248, 242, 223, 0.14);
+    color: #f8f2df;
+    border: 1px solid rgba(247, 232, 189, 0.6);
+    border-radius: 2px;
+    padding: 0.28rem 0.5rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    font-family: inherit;
+  }
+  .cpu-select option {
+    color: var(--color-ink);
+    background: #fffdf6;
+  }
+
+  .cpu-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  .cpu-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.25rem;
+    font-family: var(--stack-ledger);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-muted-ink);
+  }
+
+  /* The entry count reads as a stamped folio number on the leaf. */
+  .cpu-folio {
+    font-family: var(--stack-ledger);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-gold-deep);
+    white-space: nowrap;
+  }
+
+  .cpu-empty {
+    padding: 1.1rem 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--color-muted-ink);
+  }
+}
+
+@media (min-width: 520px) {
+  .cpu-shell {
+    padding-top: 1.2rem;
+    max-width: 38rem;
+  }
+}
+
+/* 390px and below: title, coin and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.08rem;
+  }
+
+  .cpu-select {
+    max-width: 6.4rem;
+    padding: 0.24rem 0.4rem;
+  }
+}

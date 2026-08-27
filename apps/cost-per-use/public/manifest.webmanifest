@@ -1,13 +1,13 @@
 {
   "name": "사용단가 계산기",
   "short_name": "사용단가",
-  "description": "구매 물품의 하루/1회 사용 비용을 계산합니다",
+  "description": "구매 물품의 하루·1회 사용 비용을 계산합니다",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0b1220",
-  "theme_color": "#2563eb",
+  "background_color": "#f6efdb",
+  "theme_color": "#1d4a35",
   "lang": "ko",
   "icons": [
     {
