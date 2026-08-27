@@ -1,0 +1,17 @@
+{
+  "name": "@try-dabble/feedback",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared try-dabble feedback widget. Source of truth for https://try-dabble.com/widget/feedback.js",
+  "license": "UNLICENSED",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "dist/feedback.js",
+  "scripts": {
+    "build": "mkdir -p dist && cp src/feedback.js dist/feedback.js",
+    "sync-main": "cp dist/feedback.js ../../../try-dabble-main/worker/assets/widget/feedback.js",
+    "test": "node test/copy.test.js"
+  }
+}
