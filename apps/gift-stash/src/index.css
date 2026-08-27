@@ -1,0 +1,734 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Gift Stash / 선물 서랍 — a wrapping-paper drawer, light.
+  Blush wrapping paper on the page, coral satin ribbon across the masthead,
+  cream gift tags with a snipped corner and a punched eyelet for every card,
+  and cream-painted drawer fronts with coral knobs for the dates coming up.
+  Deliberately NOT the old dark teal-and-coral utility skin, and nothing like
+  the kitchen kraft of leftover-box, the manila office of later-inbox or the
+  postage map of place-inbox. shadcn is the kit, not the look: its primitives
+  are re-dressed as tags, ribbons and drawer fronts.
+*/
+
+@theme {
+  --color-wrap: #f7e8e0;
+  --color-wrap-2: #eed6cb;
+  --color-tag: #fffaf1;
+  --color-tag-2: #fbeddc;
+  --color-tag-edge: #dcbfa5;
+  --color-ink: #4a2530;
+  --color-muted-ink: #86606b;
+  --color-ribbon: #e0574a;
+  --color-ribbon-deep: #ab3527;
+  --color-ribbon-bg: #fbdbd4;
+  --color-foil: #a97f22;
+  --color-foil-bg: #f6e9c4;
+  --color-fir: #3f7359;
+  --color-fir-bg: #dbeadf;
+  --color-amber: #f0b429;
+  --color-amber-deep: #8a5f07;
+  --color-amber-ink: #3a2a05;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-label);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.5);
+  --radius-4xl: calc(var(--radius) * 3);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Humanist gift-shop lettering — flared, warm, and none of the book serif
+     or poster geometry the sibling apps run on. */
+  --stack-display: Optima, "Gill Sans", "Gill Sans MT", Candara,
+    "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  /* Dates and counts, tracked out on the tag. Tabular so MM-DD lines up. */
+  --stack-label: Optima, "Gill Sans MT", Candara, "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
+
+  --background: #f7e8e0;
+  --foreground: #4a2530;
+  --card: #fffaf1;
+  --card-foreground: #4a2530;
+  --popover: #fffaf1;
+  --popover-foreground: #4a2530;
+  --primary: #e0574a;
+  --primary-foreground: #fffaf1;
+  --secondary: #fbeddc;
+  --secondary-foreground: #4a2530;
+  --muted: #f2ded6;
+  --muted-foreground: #86606b;
+  --accent: #fbdbd4;
+  --accent-foreground: #ab3527;
+  --destructive: #ab3527;
+  --border: #dcbfa5;
+  --input: #e3c9b4;
+  --ring: #e0574a;
+
+  --radius: 0.45rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /*
+      Signature — the page is a sheet of wrapping paper: coral pinstripes on the
+      bias, a scatter of confetti dots between them, and a warm blush wash.
+    */
+    background-image:
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0 26px,
+        rgba(224, 87, 74, 0.09) 26px 30px,
+        transparent 30px 34px,
+        rgba(224, 87, 74, 0.05) 34px 35px
+      ),
+      radial-gradient(circle at 50% 50%, rgba(169, 127, 34, 0.16) 1.6px, transparent 2px),
+      radial-gradient(circle at 90% 12%, rgba(224, 87, 74, 0.1), transparent 42%);
+    background-size:
+      auto,
+      48px 48px,
+      auto;
+  }
+
+  a {
+    color: var(--color-ribbon-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input min-content must never force horizontal scroll at 360px. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .gs-shell {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.75rem 1rem calc(1.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  /*
+    Amber local-only notice with a printed number sign in the gutter. The "#" is
+    a ::before, never a child: the Worker calls setInnerContent on #local-only
+    for ?lang=, which would wipe any real element inside it.
+  */
+  .gs-notice {
+    position: relative;
+    margin: 0;
+    padding: 0.42rem 0.7rem 0.42rem 2rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: linear-gradient(180deg, #f8ca63 0%, var(--color-amber) 100%);
+    border: 1.5px solid var(--color-amber-deep);
+    border-radius: 4px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.45) inset,
+      1px 2px 0 rgba(74, 37, 48, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .gs-notice::before {
+    content: "#";
+    position: absolute;
+    left: 0.55rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-label);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-amber-deep);
+    opacity: 0.85;
+  }
+
+  /*
+    Signature — coral satin ribbon. Two highlights down the middle give the
+    fold of real gift ribbon. Caps the masthead and edges the reminder banner.
+  */
+  .gs-ribbon {
+    background-image: linear-gradient(
+      180deg,
+      var(--color-ribbon-deep) 0%,
+      var(--color-ribbon) 22%,
+      #f0907f 45%,
+      var(--color-ribbon) 62%,
+      var(--color-ribbon-deep) 100%
+    );
+  }
+
+  /* Masthead: cream paper under the ribbon, the way a wrapped lid looks. */
+  .gs-masthead {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.95rem 1rem 0.8rem;
+    background: linear-gradient(180deg, #fffaf1 0%, rgba(251, 237, 220, 0.9) 100%);
+    border-bottom: 1.5px solid var(--color-tag-edge);
+    box-shadow: 0 6px 12px -10px rgba(74, 37, 48, 0.5);
+  }
+  .gs-masthead::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 9px;
+    background-image: linear-gradient(
+      180deg,
+      var(--color-ribbon-deep) 0%,
+      var(--color-ribbon) 22%,
+      #f0907f 45%,
+      var(--color-ribbon) 62%,
+      var(--color-ribbon-deep) 100%
+    );
+  }
+
+  .gs-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — renders
+     identically to the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.42rem;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .gs-tagline {
+    margin: 0.22rem 0 0;
+    font-family: var(--stack-label);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    color: var(--color-ribbon-deep);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  /*
+    Signature — every card is a gift tag: cream stock, a snipped top-left corner
+    and a punched eyelet beside it. The snip is painted, not clipped, so the
+    card keeps its border and shadow.
+  */
+  .gs-tag {
+    --snip: 20px;
+    position: relative;
+    border: 1.5px solid var(--color-tag-edge);
+    border-radius: 4px;
+    background: linear-gradient(158deg, var(--color-tag) 0%, var(--color-tag-2) 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 7px 16px -12px rgba(74, 37, 48, 0.6);
+  }
+  /* The snipped corner, ruled along the cut. */
+  .gs-tag::before {
+    content: "";
+    position: absolute;
+    left: -1.5px;
+    top: -1.5px;
+    width: var(--snip);
+    height: var(--snip);
+    border-top-left-radius: 4px;
+    background-image:
+      linear-gradient(
+        135deg,
+        transparent calc(50% - 1.5px),
+        var(--color-tag-edge) calc(50% - 1.5px) calc(50% - 0.5px),
+        transparent calc(50% - 0.5px)
+      ),
+      linear-gradient(135deg, var(--color-wrap-2) 0 50%, transparent 50%);
+    pointer-events: none;
+  }
+  /* The eyelet, punched where the tag narrows. */
+  .gs-tag::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--snip) + 3px);
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-wrap-2);
+    box-shadow: 0 0 0 1px var(--color-tag-edge) inset;
+    pointer-events: none;
+  }
+  /* Card headings start below the snip and the eyelet, never under them. */
+  .gs-tag > [data-slot="card-header"] {
+    padding-top: 0.5rem;
+  }
+
+  /* Poster-small section titles in ribbon red. */
+  .gs-heading {
+    font-family: var(--stack-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--color-ribbon-deep);
+  }
+
+  /*
+    Signature — the drawer itself. Each date coming up is a cream-painted
+    drawer front with a routed edge and a round coral knob; the ones inside the
+    reminder window are painted coral instead.
+  */
+  .gs-drawer {
+    position: relative;
+    flex: 0 0 auto;
+    cursor: pointer;
+    appearance: none;
+    width: 9.5rem;
+    text-align: left;
+    padding: 0.5rem 2.1rem 0.55rem 0.65rem;
+    border: 1.5px solid var(--color-tag-edge);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #fffaf1 0%, #f6e2cf 100%);
+    color: var(--color-ink);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.85) inset,
+      0 3px 0 -1px rgba(220, 191, 165, 0.85),
+      0 6px 12px -9px rgba(74, 37, 48, 0.6);
+    transition: transform 0.1s ease;
+  }
+  /* Routed groove around the front panel. */
+  .gs-drawer::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 4px;
+    border: 1px solid rgba(220, 191, 165, 0.75);
+    pointer-events: none;
+  }
+  /* The knob. */
+  .gs-drawer::after {
+    content: "";
+    position: absolute;
+    right: 0.62rem;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    margin-top: -7.5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, #f4a292 0 20%, var(--color-ribbon) 60%, var(--color-ribbon-deep) 100%);
+    box-shadow: 0 1px 2px rgba(74, 37, 48, 0.45);
+    pointer-events: none;
+  }
+  .gs-drawer:active {
+    transform: translateY(1px);
+  }
+  .gs-drawer[data-soon="true"] {
+    border-color: var(--color-ribbon-deep);
+    background: linear-gradient(180deg, #fbdbd4 0%, #f6c3b9 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 3px 0 -1px rgba(171, 53, 39, 0.5),
+      0 6px 12px -9px rgba(74, 37, 48, 0.6);
+  }
+  .gs-drawer[data-soon="true"]::before {
+    border-color: rgba(171, 53, 39, 0.3);
+  }
+  .gs-drawer[data-soon="true"]::after {
+    background: radial-gradient(circle at 34% 30%, #fff3ea 0 20%, #f0c46a 55%, var(--color-foil) 100%);
+  }
+
+  .gs-when {
+    font-family: var(--stack-label);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ribbon-deep);
+  }
+  .gs-who {
+    font-family: var(--stack-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .gs-what {
+    font-size: 0.68rem;
+    color: var(--color-muted-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .gs-strip {
+    display: flex;
+    align-items: stretch;
+    gap: 0.45rem;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 0.15rem 0.15rem 0.35rem;
+    margin: -0.15rem -0.15rem -0.35rem;
+    scrollbar-width: none;
+  }
+  .gs-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* A person: their face on a small ribbon rosette, name beside it. */
+  .gs-person {
+    position: relative;
+    flex: 0 0 auto;
+    cursor: pointer;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1.5px solid var(--color-tag-edge);
+    border-radius: 999px;
+    background: #fffaf1;
+    color: var(--color-muted-ink);
+    padding: 0.2rem 0.7rem 0.2rem 0.22rem;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
+  }
+  .gs-person:hover {
+    background: var(--color-tag-2);
+    color: var(--color-ink);
+  }
+  .gs-person[aria-pressed="true"] {
+    border-color: var(--color-ribbon-deep);
+    background: var(--color-ribbon);
+    color: #fffaf1;
+    box-shadow: 0 2px 0 -1px var(--color-ribbon-deep);
+  }
+  .gs-face {
+    display: grid;
+    place-items: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-ribbon-bg);
+    color: var(--color-ribbon-deep);
+    border: 1.5px solid var(--color-tag-edge);
+    font-family: var(--stack-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .gs-person[aria-pressed="true"] .gs-face {
+    border-color: #fffaf1;
+  }
+  .gs-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Status pip on an idea tag. */
+  .gs-pip {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 0.02rem 0.34rem;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .gs-pip[data-status="idea"] {
+    background: var(--color-ribbon-bg);
+    color: var(--color-ribbon-deep);
+  }
+  .gs-pip[data-status="bought"] {
+    background: var(--color-foil-bg);
+    color: var(--color-foil);
+  }
+  .gs-pip[data-status="given"] {
+    background: #dbeadf;
+    color: var(--color-fir);
+  }
+
+  /* Filter chips read as ribbon offcuts. */
+  .gs-chip {
+    flex: 0 0 auto;
+    cursor: pointer;
+    appearance: none;
+    border: 1.5px solid var(--color-tag-edge);
+    border-radius: 4px;
+    background: #fffaf1;
+    color: var(--color-muted-ink);
+    padding: 0.22rem 0.6rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
+  }
+  .gs-chip:hover {
+    background: var(--color-tag-2);
+    color: var(--color-ink);
+  }
+  .gs-chip[aria-pressed="true"] {
+    border-color: var(--color-ribbon-deep);
+    background: var(--color-ribbon);
+    color: #fffaf1;
+    box-shadow: 0 2px 0 -1px var(--color-ribbon-deep);
+  }
+
+  /* The window a screenshot sits in, on the idea tag. */
+  .gs-window {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-tag-edge);
+    background: linear-gradient(160deg, var(--color-ribbon-bg) 0%, var(--color-foil-bg) 100%);
+  }
+  .gs-window img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gs-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1.5px solid var(--color-tag-edge);
+    background: #fffdf8;
+    color: var(--color-ink);
+    border-radius: 5px;
+    padding: 0.55rem 0.7rem;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .gs-field:focus {
+    border-color: var(--color-ribbon);
+    box-shadow: 0 0 0 3px rgba(224, 87, 74, 0.18);
+    outline: none;
+  }
+
+  .gs-label {
+    display: grid;
+    gap: 0.28rem;
+    font-size: 0.72rem;
+    color: var(--color-muted-ink);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    min-width: 0;
+  }
+
+  /* Search sits on the wrapping paper, so it is a soft cream lozenge. */
+  .gs-search {
+    border: 1.5px solid var(--color-tag-edge);
+    background: rgba(255, 250, 241, 0.94);
+    border-radius: 999px;
+    padding: 0.52rem 0.95rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--color-ink);
+    outline: none;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  }
+  .gs-search:focus {
+    border-color: var(--color-ribbon);
+    box-shadow: 0 0 0 3px rgba(224, 87, 74, 0.18);
+  }
+
+  .gs-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: #fffaf1;
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-ribbon-deep);
+    border-radius: 999px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 0 2px 0 -1px var(--color-ribbon-deep);
+  }
+
+  /* Reminder banner: cream note with a ribbon down its filing edge. */
+  .gs-banner {
+    position: relative;
+    border: 1.5px solid var(--color-tag-edge);
+    border-radius: 5px;
+    background: linear-gradient(180deg, #fffaf1 0%, var(--color-ribbon-bg) 100%);
+    padding: 0.55rem 0.7rem 0.55rem 1.1rem;
+    font-size: 0.78rem;
+    font-weight: 650;
+    color: var(--color-ink);
+    overflow: hidden;
+  }
+  .gs-banner::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 7px;
+    background-image: linear-gradient(
+      180deg,
+      var(--color-ribbon-deep) 0%,
+      var(--color-ribbon) 22%,
+      #f0907f 45%,
+      var(--color-ribbon) 62%,
+      var(--color-ribbon-deep) 100%
+    );
+  }
+
+  .gs-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    padding: 0 0.35rem;
+    border-radius: 999px;
+    background: var(--color-ribbon-bg);
+    border: 1px solid var(--color-tag-edge);
+    color: var(--color-ribbon-deep);
+    font-family: var(--stack-label);
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gs-empty {
+    font-size: 0.78rem;
+    color: var(--color-muted-ink);
+    padding: 0.35rem 0;
+  }
+
+  .gs-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.25rem;
+    font-size: 0.72rem;
+    color: var(--color-muted-ink);
+  }
+}
+
+@media (min-width: 520px) {
+  .gs-shell {
+    padding-top: 1.2rem;
+    max-width: 38rem;
+  }
+}
+
+/* 390px and below: title, mark and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.14rem;
+  }
+
+  .gs-select {
+    max-width: 6.6rem;
+    padding: 0.26rem 0.45rem;
+  }
+}

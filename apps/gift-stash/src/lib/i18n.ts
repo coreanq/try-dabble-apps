@@ -1,11 +1,125 @@
-window.GS_I18N = {
+/** Ported from the pre-Vite public/js/i18n.js — same copy, now typed. */
+
+export type Lang = "ko" | "en" | "ja" | "zh";
+
+export const LANGS: Lang[] = ["ko", "en", "ja", "zh"];
+/** Unchanged from the pre-Vite app, so a returning visitor keeps their pick. */
+export const LANG_KEY = "gs_lang";
+
+export const LANG_NAMES: Record<Lang, string> = {
+  ko: "한국어",
+  en: "English",
+  ja: "日本語",
+  zh: "中文",
+};
+
+export const HTML_LANG: Record<Lang, string> = {
+  ko: "ko",
+  en: "en",
+  ja: "ja",
+  zh: "zh",
+};
+
+export const OG_IMAGE: Record<Lang, string> = {
+  ko: "https://gift-stash.try-dabble.com/og-image.png",
+  en: "https://gift-stash.try-dabble.com/og-image-en.png",
+  ja: "https://gift-stash.try-dabble.com/og-image-ja.png",
+  zh: "https://gift-stash.try-dabble.com/og-image-en.png",
+};
+
+export type MsgKey =
+  | "title"
+  | "localOnly"
+  | "shortName"
+  | "tagline"
+  | "metaDescription"
+  | "about"
+  | "langLabel"
+  | "search"
+  | "upcoming"
+  | "upcomingEmpty"
+  | "people"
+  | "addPerson"
+  | "everyone"
+  | "unassigned"
+  | "ideas"
+  | "addIdea"
+  | "emptyIdeas"
+  | "statusAll"
+  | "statusIdea"
+  | "statusBought"
+  | "statusGiven"
+  | "tools"
+  | "remindDays"
+  | "notifyAllow"
+  | "notifyOn"
+  | "notifyOff"
+  | "notifyDenied"
+  | "exportJson"
+  | "importJson"
+  | "privacy"
+  | "terms"
+  | "personAdd"
+  | "personEdit"
+  | "name"
+  | "namePh"
+  | "birthday"
+  | "birthdayPh"
+  | "notes"
+  | "notesPh"
+  | "occasions"
+  | "occLabel"
+  | "occDate"
+  | "anniversary"
+  | "facePhoto"
+  | "ideaAdd"
+  | "ideaEdit"
+  | "dropHint"
+  | "pickFile"
+  | "clearPhoto"
+  | "ideaTitle"
+  | "ideaTitlePh"
+  | "ideaUrl"
+  | "ideaPrice"
+  | "ideaPerson"
+  | "ideaStatus"
+  | "ideaNote"
+  | "save"
+  | "update"
+  | "cancel"
+  | "delete"
+  | "saved"
+  | "deleted"
+  | "exported"
+  | "imported"
+  | "importFail"
+  | "deletePersonConfirm"
+  | "deleteIdeaConfirm"
+  | "needName"
+  | "daysAway"
+  | "today"
+  | "tomorrow"
+  | "birthdayLabel"
+  | "bannerSoon"
+  | "bannerNotify"
+  | "yearsOld"
+  | "photoSkipped"
+  | "none"
+  | "inDays"
+  | "editPersonAria"
+  | "removeOccasion"
+  | "openLink";
+
+export const I18N: Record<Lang, Record<MsgKey, string>> = {
   en: {
     title: "Gift Stash",
     localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Gift Stash",
     tagline: "Turn screenshots into gift ideas",
-    metaDescription: "Local-first gift idea stash. Capture screenshots, tag them to a person, get reminded before their birthday. Data stays in your browser.",
-    about: "Save gift ideas from screenshots, tag them to a person, and get an on-device reminder before their birthday. No account — everything stays in this browser.",
+    metaDescription:
+      "Local-first gift idea stash. Capture screenshots, tag them to a person, get reminded before their birthday. Data stays in your browser.",
+    about:
+      "Save gift ideas from screenshots, tag them to a person, and get an on-device reminder before their birthday. No account — everything stays in this browser.",
     langLabel: "Language",
     search: "Search people or ideas",
     upcoming: "Coming up",
@@ -77,15 +191,20 @@ window.GS_I18N = {
     yearsOld: "{n} years",
     photoSkipped: "Photos were skipped in this export.",
     none: "None",
-    inDays: "{n}d"
+    inDays: "{n}d",
+    editPersonAria: "Edit {name}",
+    removeOccasion: "Remove occasion",
+    openLink: "Open link",
   },
   ko: {
     title: "선물 서랍",
     localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "선물서랍",
     tagline: "스크린샷을 선물 아이디어로",
-    metaDescription: "스크린샷을 선물 아이디어로 모으고, 사람에게 태깅하고, 생일 전에 알림을 받습니다. 데이터는 브라우저에만 저장됩니다.",
-    about: "캡처한 선물 아이디어를 사람에게 붙이고, 생일 전에 이 기기에서 알림을 받습니다. 계정 없이 브라우저에만 저장됩니다.",
+    metaDescription:
+      "스크린샷을 선물 아이디어로 모으고, 사람에게 태깅하고, 생일 전에 알림을 받습니다. 데이터는 브라우저에만 저장됩니다.",
+    about:
+      "캡처한 선물 아이디어를 사람에게 붙이고, 생일 전에 이 기기에서 알림을 받습니다. 계정 없이 브라우저에만 저장됩니다.",
     langLabel: "언어",
     search: "사람·아이디어 검색",
     upcoming: "다가오는 날",
@@ -157,15 +276,20 @@ window.GS_I18N = {
     yearsOld: "{n}세",
     photoSkipped: "이보내기에서 사진은 빠졌습니다.",
     none: "없음",
-    inDays: "{n}일"
+    inDays: "{n}일",
+    editPersonAria: "{name} 수정",
+    removeOccasion: "기념일 삭제",
+    openLink: "링크 열기",
   },
   ja: {
     title: "プレゼント引き出し",
     localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "プレゼント",
     tagline: "スクショをプレゼント案に",
-    metaDescription: "スクリーンショットをプレゼント案として保存し、人にタグ付けして誕生日前にリマインド。データはこのブラウザだけに残ります。",
-    about: "撮ったプレゼント案を人に付けて、誕生日前にこの端末でリマインドします。アカウントなし、ブラウザ内だけです。",
+    metaDescription:
+      "スクリーンショットをプレゼント案として保存し、人にタグ付けして誕生日前にリマインド。データはこのブラウザだけに残ります。",
+    about:
+      "撮ったプレゼント案を人に付けて、誕生日前にこの端末でリマインドします。アカウントなし、ブラウザ内だけです。",
     langLabel: "言語",
     search: "人・アイデアを検索",
     upcoming: "これからの日",
@@ -237,7 +361,10 @@ window.GS_I18N = {
     yearsOld: "{n}歳",
     photoSkipped: "この書き出しでは写真を省略しました。",
     none: "なし",
-    inDays: "{n}日"
+    inDays: "{n}日",
+    editPersonAria: "{name} を編集",
+    removeOccasion: "記念日を削除",
+    openLink: "リンクを開く",
   },
   zh: {
     title: "礼物抽屉",
@@ -317,66 +444,81 @@ window.GS_I18N = {
     yearsOld: "{n} 岁",
     photoSkipped: "此次导出未包含照片。",
     none: "无",
-    inDays: "{n}天"
+    inDays: "{n}天",
+    editPersonAria: "编辑{name}",
+    removeOccasion: "删除纪念日",
+    openLink: "打开链接",
+  },
+};
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === "string" && (LANGS as string[]).includes(value);
+}
+
+export function translate(
+  lang: Lang,
+  key: MsgKey,
+  vars?: Record<string, string | number>,
+): string {
+  let out = I18N[lang]?.[key] ?? I18N.en[key] ?? key;
+  if (vars) {
+    for (const [name, value] of Object.entries(vars)) {
+      out = out.replaceAll(`{${name}}`, String(value));
+    }
   }
-};
+  return out;
+}
 
-window.GS_OG = {
-  ko: "https://gift-stash.try-dabble.com/og-image.png",
-  en: "https://gift-stash.try-dabble.com/og-image-en.png",
-  ja: "https://gift-stash.try-dabble.com/og-image-ja.png",
-  zh: "https://gift-stash.try-dabble.com/og-image-en.png"
-};
+function readCookieLang(): Lang | null {
+  if (typeof document === "undefined") return null;
+  const m = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+  return m && isLang(m[1]) ? m[1] : null;
+}
 
-window.persistLangQuery = function persistLangQuery(lang) {
+function readStoredLang(): Lang | null {
   try {
-    var u = new URL(location.href);
-    if (u.searchParams.get("lang") !== lang) {
-      u.searchParams.set("lang", lang);
-      history.replaceState(null, "", u.pathname + u.search + u.hash);
-    }
-  } catch (_) {}
-};
+    const saved = localStorage.getItem(LANG_KEY);
+    return isLang(saved) ? saved : null;
+  } catch {
+    return null;
+  }
+}
 
-window.detectLang = function detectLang() {
-  var lang = "ko";
+function readNavigatorLang(): Lang {
+  const nav = (navigator.language || "ko").toLowerCase();
+  if (nav.startsWith("ko")) return "ko";
+  if (nav.startsWith("ja")) return "ja";
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("en")) return "en";
+  return "ko";
+}
+
+/**
+ * ?lang= wins — the language combo writes it there, so a pick beats everything
+ * below — then the td_lang cookie (so hops between try-dabble subdomains keep
+ * the chosen language), then this app's saved gs_lang, then the browser. The
+ * Worker only sees the query and the cookie, so those two must outrank
+ * localStorage or the first HTML and the mounted app would disagree.
+ */
+export function detectLang(searchLang?: string | null): Lang {
+  if (isLang(searchLang)) {
+    rememberLang(searchLang);
+    return searchLang;
+  }
+  const cookie = readCookieLang();
+  if (cookie) {
+    rememberLang(cookie);
+    return cookie;
+  }
+  return readStoredLang() ?? readNavigatorLang();
+}
+
+export function rememberLang(lang: Lang): void {
   try {
-    const q = new URLSearchParams(location.search).get("lang");
-    if (q && window.GS_I18N[q]) {
-      try { localStorage.setItem("gs_lang", q); } catch (_) {}
-      lang = q;
-    }
-    else {
-      var cookieLang = "";
-      try {
-        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
-        if (cm && window.GS_I18N[cm[1]]) cookieLang = cm[1];
-      } catch (_) {}
-      if (cookieLang) {
-        try { localStorage.setItem("gs_lang", cookieLang); } catch (_) {}
-        lang = cookieLang;
-      } else {
-      try {
-        const saved = localStorage.getItem("gs_lang");
-        if (saved && window.GS_I18N[saved]) lang = saved;
-        else {
-          const nav = (navigator.language || "ko").toLowerCase();
-          if (nav.startsWith("ko")) lang = "ko";
-          else if (nav.startsWith("ja")) lang = "ja";
-          else if (nav.startsWith("zh")) lang = "zh";
-          else if (nav.startsWith("en")) lang = "en";
-          else lang = "ko";
-        }
-      } catch (_) {
-        const nav = (navigator.language || "ko").toLowerCase();
-        if (nav.startsWith("ko")) lang = "ko";
-        else if (nav.startsWith("ja")) lang = "ja";
-        else if (nav.startsWith("zh")) lang = "zh";
-        else if (nav.startsWith("en")) lang = "en";
-      }
-      }
-    }
-  } catch (_) {}
-  if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
-  return lang;
-};
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    /* private mode — language just won't stick */
+  }
+}
+
+export type Translate = (key: MsgKey, vars?: Record<string, string | number>) => string;

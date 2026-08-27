@@ -1,8 +1,13 @@
 {
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "gift-stash",
-  "compatibility_date": "2026-08-24",
+  "compatibility_date": "2026-08-27",
+  "main": "src/og-lang.ts",
   "assets": {
-    "directory": "./public",
+    // Vite build output. run_worker_first lets src/og-lang.ts rewrite the very
+    // first HTML for ?lang= before the assets binding replies, so crawlers —
+    // which never run JS — still get the requested language.
+    "directory": "./dist",
     "not_found_handling": "single-page-application",
     "binding": "ASSETS",
     "run_worker_first": true
@@ -13,5 +18,7 @@
       "custom_domain": true
     }
   ],
-  "main": "src/og-lang.ts"
+  "observability": {
+    "enabled": true
+  }
 }
