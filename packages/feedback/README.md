@@ -39,7 +39,7 @@ src/widget.js    entry: state, panel, submit, mount
 ```
 npm install
 npm run build          # -> dist/feedback.js (esbuild, IIFE, es5, not minified)
-npm run publish:main   # copies it into ../../../try-dabble-main/worker/assets/widget/
+npm run sync-main      # copies it into ../../../try-dabble-main/public/widget/
 ```
 
 `npm run release` does both. If try-dabble-main is not a sibling checkout, pass
@@ -49,10 +49,11 @@ its path (`npm run publish:main -- /path/to/try-dabble-main`) or set
 Then, in try-dabble-main, commit the asset and deploy the worker:
 
 ```
-cd worker && npx wrangler deploy
+npm run deploy
 ```
 
-That worker serves `assets/` as Workers Static Assets, so the file ships as-is —
-`worker/assets/widget/feedback.js` is a build output. Edit it here, never there.
+Vite copies `public/` into `dist/client`, which the worker serves as Workers
+Static Assets, so the file ships as-is — `public/widget/feedback.js` is a build
+output. Edit it here, never there.
 
 Guide pages on try-dabble.com deliberately do **not** load the widget.

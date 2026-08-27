@@ -11,7 +11,7 @@
   "main": "dist/feedback.js",
   "scripts": {
     "build": "mkdir -p dist && cp src/feedback.js dist/feedback.js",
-    "sync-main": "cp dist/feedback.js ../../../try-dabble-main/worker/assets/widget/feedback.js",
+    "sync-main": "cp dist/feedback.js ../../../try-dabble-main/public/widget/feedback.js",
     "test": "node test/copy.test.js"
   }
 }
