@@ -1,11 +1,10 @@
-const CACHE = "box-qr-v1";
+// Bumped for the Vite build: /app.js, /styles.css and /js/*.js are gone. Their
+// replacements are hashed files under /assets/, which the fetch handler caches
+// at runtime rather than precaching by name.
+const CACHE = "box-qr-v2";
 const ASSETS = [
   "/",
   "/index.html",
-  "/styles.css",
-  "/app.js",
-  "/js/i18n.js",
-  "/js/qrcode.js",
   "/manifest.webmanifest",
   "/favicon.ico",
   "/og-image.png",
@@ -37,7 +36,8 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // HTML/JS/CSS/webmanifest: network-first so deploys show up; cache as fallback
+  // HTML/JS/CSS/webmanifest: network-first so deploys show up; cache as fallback.
+  // That covers Vite's hashed /assets/ bundles the fresh index.html points at.
   const isShell =
     req.mode === "navigate" ||
     url.pathname === "/" ||
@@ -54,7 +54,7 @@ self.addEventListener("fetch", (event) => {
           if (res.ok) caches.open(CACHE).then((cache) => cache.put(req, copy)).catch(() => {});
           return res;
         })
-        .catch(() => caches.match(req))
+        .catch(() => caches.match(req).then((hit) => hit || caches.match("/index.html")))
     );
     return;
   }

@@ -1,0 +1,715 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Box QR / 상자QR — the packing table in a half-emptied apartment.
+  The page is corrugated kraft board lit from above; the masthead is a taped
+  box flap sealed along its bottom edge with a strip of amber packing tape;
+  every card is a cream shipping label die-cut onto that board, punched with
+  two rope holes and ruled in stamp red under its heading; box numbers are
+  stencilled the way a mover sprays them on, and contents read as little tape
+  flags. Kept from the pre-Vite skin — cream label, packing tape, olive, stamp
+  red — and tightened around shadcn primitives.
+  Deliberately NOT the kitchen kraft of leftover-box, the manila office of
+  later-inbox, the postage map of place-inbox, the wrapping paper of
+  gift-stash, the cutting mat of photo-spec, the account book of cost-per-use
+  or any dark #111 utility skin. shadcn is the kit, not the look: its button,
+  card and dialog are re-dressed as tape keys, shipping labels and a sticker
+  held up to the light.
+*/
+
+@theme {
+  --color-board: #e8d3a8;
+  --color-board-2: #d6b884;
+  --color-flap: #c48a48;
+  --color-kraft-deep: #a56b32;
+  --color-kraft-dark: #7a4c22;
+  --color-label: #f7f1e2;
+  --color-label-2: #efe4cc;
+  --color-edge: #c9ab74;
+  --color-ink: #1c1408;
+  --color-muted-ink: #6b4a22;
+  --color-tape: #f0b429;
+  --color-tape-lit: #f7ce62;
+  --color-tape-deep: #b8850c;
+  --color-tape-ink: #3d2a00;
+  --color-olive: #3d5c34;
+  --color-olive-soft: #dde7d6;
+  --color-stamp: #9a1f1f;
+  --color-stamp-soft: #f3d9d5;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-serif: var(--stack-display);
+  --font-mono: var(--stack-stencil);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Stencil-condensed for anything a mover would spray on a box — the sibling
+     apps run on old-style book serifs, geometric posters, humanist gift-shop
+     faces and clerical slabs, none of them condensed. */
+  --stack-display: Impact, Haettenschweiler, "Arial Narrow Bold", "Arial Narrow",
+    "Noto Sans KR", "Hiragino Sans", sans-serif;
+  --stack-ui: "IBM Plex Sans", "Apple SD Gothic Neo", "Noto Sans KR",
+    "Hiragino Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* Box numbers, URLs and counts are typed on the label with a shipping-room
+     typewriter — tabular so a column of BOX 04 / BOX 12 stays a column. */
+  --stack-stencil: "Noto Sans Mono CJK KR", "DejaVu Sans Mono", "Courier New",
+    ui-monospace, monospace;
+
+  --background: #e8d3a8;
+  --foreground: #1c1408;
+  --card: #f7f1e2;
+  --card-foreground: #1c1408;
+  --popover: #f7f1e2;
+  --popover-foreground: #1c1408;
+  --primary: #7a4c22;
+  --primary-foreground: #fbf5e6;
+  --secondary: #efe4cc;
+  --secondary-foreground: #1c1408;
+  --muted: #e7dbc0;
+  --muted-foreground: #6b4a22;
+  --accent: #f6e3b4;
+  --accent-foreground: #5c3a16;
+  --destructive: #9a1f1f;
+  --border: #c9ab74;
+  --input: #bd9a5f;
+  --ring: #b8850c;
+
+  --radius: 0.15rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /*
+      Signature — corrugated board seen face-on: the flutes run vertically
+      every 12px, a faint horizontal liner shows through, and the light falls
+      from the top the way it does over a packing table.
+    */
+    background-image:
+      repeating-linear-gradient(90deg, rgba(122, 76, 34, 0.07) 0 2px, transparent 2px 12px),
+      repeating-linear-gradient(0deg, rgba(165, 107, 50, 0.075) 0 1px, transparent 1px 18px),
+      linear-gradient(180deg, #f0dfba 0%, var(--color-board) 46%, var(--color-board-2) 100%);
+  }
+
+  a {
+    color: var(--color-kraft-dark);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input min-content must never force horizontal scroll at 360px. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .bq-shell {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0 1rem calc(1.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  /*
+    Signature — the local-only notice is a strip of amber packing tape laid
+    across the top of the board, with a stencilled number sign in the gutter.
+    The "#" is a ::before and never a child: the Worker calls setInnerContent
+    on #local-only for ?lang=, which would wipe any real element inside it.
+  */
+  .bq-notice {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.5rem 1rem 0.5rem 2.2rem;
+    font-size: 0.73rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--color-tape-ink);
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-tape-lit) 0 10px,
+      var(--color-tape) 10px 20px
+    );
+    border-bottom: 3px solid var(--color-tape-deep);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .bq-notice::before {
+    content: "#";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-display);
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--color-tape-ink);
+    opacity: 0.72;
+  }
+
+  /*
+    Signature — the masthead is the top flap of a taped box: kraft brown,
+    sealed along the bottom by a run of amber tape over a hard ink rule.
+  */
+  .bq-masthead {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.85rem 1rem 0.8rem;
+    color: var(--color-label);
+    background: linear-gradient(180deg, var(--color-flap) 0%, var(--color-kraft-deep) 100%);
+    border-bottom: 8px solid var(--color-tape);
+    box-shadow: 0 3px 0 #3e2a12;
+  }
+
+  .bq-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    min-width: 0;
+  }
+
+  .bq-mark {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 40px;
+    display: block;
+    filter: drop-shadow(1px 2px 0 rgba(28, 20, 8, 0.25));
+  }
+
+  .bq-brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — renders
+     identically to the mounted app. */
+  #brand-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-label);
+    text-shadow: 2px 2px 0 rgba(28, 20, 8, 0.28);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #brand-tagline {
+    margin: 0.1rem 0 0;
+    font-size: 0.76rem;
+    color: #fde9b8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The no-cap promise, sprayed on the board under the flap. */
+  .bq-stencil-strip {
+    margin: 0;
+    align-self: flex-start;
+    padding: 0.2rem 0.55rem;
+    font-family: var(--stack-stencil);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--color-olive);
+    background: var(--color-olive-soft);
+    border: 1.5px solid var(--color-olive);
+    border-radius: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  /*
+    Signature — every card is a cream shipping label die-cut onto the board:
+    hard kraft edge, a dashed cut line ruled just inside it, and two punched
+    rope holes at the head where a mover would thread a tag.
+  */
+  .bq-label {
+    position: relative;
+    border: 1.5px solid var(--color-kraft-dark);
+    border-radius: 2px;
+    background: linear-gradient(180deg, #fbf7ec 0%, var(--color-label) 55%, var(--color-label-2) 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 6px 0 -3px rgba(62, 42, 18, 0.16);
+  }
+  .bq-label::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1px dashed rgba(122, 76, 34, 0.32);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .bq-label::after {
+    content: "";
+    position: absolute;
+    top: 0.42rem;
+    left: 0.55rem;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--color-board-2);
+    box-shadow:
+      0.62rem 0 0 var(--color-board-2),
+      0 0 0 1px rgba(122, 76, 34, 0.45),
+      0.62rem 0 0 1px rgba(122, 76, 34, 0.45);
+    pointer-events: none;
+  }
+
+  /* Section titles sit above a stamp-red rule, like a filled-in label field. */
+  .bq-heading {
+    font-family: var(--stack-display);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-kraft-dark);
+  }
+
+  .bq-headrule {
+    border-bottom: 2px solid var(--color-stamp);
+    padding-bottom: 0.35rem;
+  }
+
+  /* Stencilled box number — sprayed, slightly heavier than the UI face. */
+  .bq-stencil {
+    font-family: var(--stack-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+  }
+
+  /*
+    A box in the list: the stencilled number rides a kraft tag on the left,
+    its rope hole punched through the top.
+  */
+  .bq-row {
+    position: relative;
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.6rem 0.65rem;
+    border: 1.5px solid var(--color-edge);
+    border-radius: 2px;
+    background: linear-gradient(180deg, #fffdf6 0%, #f4ecd9 100%);
+    text-align: left;
+    width: 100%;
+    min-width: 0;
+  }
+  .bq-row + .bq-row {
+    margin-top: 0.55rem;
+  }
+
+  .bq-tag {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.05rem;
+    width: 3.15rem;
+    padding: 0.45rem 0.2rem 0.35rem;
+    background: linear-gradient(180deg, var(--color-flap) 0%, var(--color-kraft-deep) 100%);
+    border: 1.5px solid var(--color-kraft-dark);
+    border-radius: 2px;
+    color: #fdf6e4;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  }
+  .bq-tag small {
+    font-family: var(--stack-stencil);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    opacity: 0.9;
+  }
+  .bq-tag b {
+    font-family: var(--stack-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-shadow: 1px 1px 0 rgba(28, 20, 8, 0.3);
+  }
+
+  .bq-row-title {
+    font-family: var(--stack-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .bq-meta {
+    font-family: var(--stack-stencil);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* Contents read as little tape flags stuck to the label. */
+  .bq-chip {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-tape-ink);
+    background: var(--color-accent);
+    border: 1px solid var(--color-tape-deep);
+    border-radius: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  .bq-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1.5px solid var(--color-edge);
+    background: #fffdf6;
+    color: var(--color-ink);
+    border-radius: 2px;
+    padding: 0.5rem 0.6rem;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .bq-field:focus {
+    border-color: var(--color-tape-deep);
+    box-shadow: 0 0 0 3px rgba(184, 133, 12, 0.24);
+    outline: none;
+  }
+  .bq-field[readonly] {
+    font-family: var(--stack-stencil);
+    font-size: 0.74rem;
+    background: var(--color-muted);
+    color: var(--color-muted-ink);
+  }
+
+  .bq-label-text {
+    display: grid;
+    gap: 0.25rem;
+    font-family: var(--stack-stencil);
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    min-width: 0;
+  }
+
+  /* The search field is the one thing a mover reaches for first. */
+  .bq-search {
+    position: relative;
+  }
+  .bq-search input {
+    padding-left: 2.1rem;
+    font-weight: 600;
+  }
+  .bq-search svg {
+    position: absolute;
+    left: 0.65rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-kraft-dark);
+    pointer-events: none;
+  }
+
+  .bq-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: rgba(251, 245, 230, 0.16);
+    color: var(--color-label);
+    border: 1.5px solid rgba(251, 245, 230, 0.62);
+    border-radius: 2px;
+    padding: 0.26rem 0.5rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    font-family: inherit;
+  }
+  .bq-select option {
+    color: var(--color-ink);
+    background: #fffdf6;
+  }
+
+  /* A photo on the label: taped down at the corner, removable. */
+  .bq-photo {
+    position: relative;
+    display: block;
+    border: 1.5px solid var(--color-kraft-dark);
+    border-radius: 2px;
+    background: #fffdf6;
+    padding: 3px;
+    box-shadow: 0 2px 0 -1px rgba(62, 42, 18, 0.25);
+  }
+  .bq-photo img {
+    display: block;
+    width: 100%;
+    height: 4.6rem;
+    object-fit: cover;
+    border-radius: 1px;
+  }
+  .bq-photo-x {
+    position: absolute;
+    top: -0.42rem;
+    right: -0.42rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-stamp);
+    background: var(--color-stamp-soft);
+    color: var(--color-stamp);
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  /*
+    Signature — the QR panel is the sticker itself, still on its backing:
+    white stock, a dashed cut line, and a rotated stamp-red rubber mark to the
+    side reading like the FRAGILE stamp on the box it goes on.
+  */
+  .bq-sticker {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 0.7rem 0.65rem;
+    background: #fffdf7;
+    border: 2px dashed var(--color-kraft-dark);
+    border-radius: 3px;
+  }
+  .bq-sticker-qr {
+    width: min(11rem, 62vw);
+    height: auto;
+    display: block;
+  }
+  .bq-stamp {
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    font-family: var(--stack-display);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-stamp);
+    border: 2px solid var(--color-stamp);
+    border-radius: 2px;
+    transform: rotate(-6deg);
+    opacity: 0.85;
+  }
+
+  .bq-empty {
+    padding: 1.1rem 0.5rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--color-muted-ink);
+  }
+
+  .bq-hint {
+    margin: 0;
+    font-size: 0.73rem;
+    line-height: 1.45;
+    color: var(--color-muted-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* Count reads as a stencilled tally stamped on the label. */
+  .bq-count {
+    font-family: var(--stack-stencil);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-label);
+    background: var(--color-kraft-dark);
+    border-radius: 2px;
+    padding: 0.1rem 0.42rem;
+    white-space: nowrap;
+  }
+
+  .bq-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.25rem;
+    font-family: var(--stack-stencil);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-muted-ink);
+  }
+}
+
+/* The printed sticker: hidden on screen, the only thing on paper. */
+.bq-print {
+  display: none;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+  .bq-shell {
+    display: none !important;
+  }
+  .bq-print {
+    display: block !important;
+    position: static;
+    padding: 0;
+  }
+  .bq-print-sticker {
+    width: 72mm;
+    padding: 5mm;
+    border: 1.2mm dashed #1c1408;
+    border-radius: 2mm;
+    color: #000;
+    font-family: var(--stack-stencil);
+    text-align: center;
+  }
+  .bq-print-sticker .num {
+    margin: 0 0 2mm;
+    font-family: var(--stack-display);
+    font-size: 12mm;
+    line-height: 1;
+    letter-spacing: 0.05em;
+  }
+  .bq-print-sticker svg {
+    width: 46mm;
+    height: 46mm;
+  }
+  .bq-print-sticker .room {
+    margin: 2mm 0 0;
+    font-size: 5mm;
+    font-weight: 700;
+  }
+  .bq-print-sticker .items {
+    margin: 1.5mm 0 0;
+    font-size: 3.2mm;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .bq-print-sticker .url {
+    margin: 2mm 0 0;
+    font-size: 2.5mm;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (min-width: 520px) {
+  .bq-shell {
+    padding-top: 0;
+    max-width: 38rem;
+  }
+}
+
+/* 390px and below: title, box mark and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.35rem;
+  }
+
+  .bq-mark {
+    flex-basis: 42px;
+    width: 42px;
+    height: 33px;
+  }
+
+  .bq-select {
+    max-width: 6rem;
+    padding: 0.22rem 0.38rem;
+  }
+}
