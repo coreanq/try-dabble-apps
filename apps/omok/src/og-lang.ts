@@ -1,29 +1,33 @@
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
-const COPY: Record<Lang, { title: string; description: string; locale: string; image: string }> = {
+const COPY: Record<Lang, { title: string; description: string; locale: string; image: string; localOnly: string }> = {
   ko: {
     title: '오목',
     description: '온라인 오목 게임',
     locale: 'ko_KR',
     image: 'https://omok.try-dabble.com/og-image.png',
+    localOnly: '이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.',
   },
   en: {
     title: 'Gomoku',
     description: 'Online Gomoku (Five-in-a-Row) game',
     locale: 'en_US',
     image: 'https://omok.try-dabble.com/og-image-en.png',
+    localOnly: 'Your data stays on this device. Nothing is sent to our servers.',
   },
   ja: {
     title: '五目並べ',
     description: 'オンライン五目並べゲーム',
     locale: 'ja_JP',
     image: 'https://omok.try-dabble.com/og-image-ja.png',
+    localOnly: 'データはこの端末にだけ保存されます。サーバーには送りません。',
   },
   zh: {
     title: 'Gomoku',
     description: 'Online Gomoku (Five-in-a-Row) game',
     locale: 'zh_CN',
     image: 'https://omok.try-dabble.com/og-image-en.png',
+    localOnly: '数据仅保存在此设备，不会上传到服务器。',
   },
 };
 
@@ -50,12 +54,16 @@ export default {
       return new HTMLRewriter()
         .on('html', { element(el) { el.setAttribute('lang', lang === 'zh' ? 'zh' : lang); } })
         .on('title', { element(el) { el.setInnerContent(copy.title); } })
+        .on('#local-only', { element(el) { el.setInnerContent(copy.localOnly); } })
+        .on('h1', { element(el) { el.setInnerContent(copy.title); } })
         .on('meta', {
           element(el) {
             const key = el.getAttribute('property') || el.getAttribute('name') || '';
             if (key === 'description' || key === 'og:description' || key === 'twitter:description') {
               el.setAttribute('content', copy.description);
             } else if (key === 'og:title' || key === 'twitter:title') {
+              el.setAttribute('content', copy.title);
+            } else if (key === 'application-name' || key === 'apple-mobile-web-app-title') {
               el.setAttribute('content', copy.title);
             } else if (key === 'og:url') {
               el.setAttribute('content', shareUrl);
