@@ -57,7 +57,7 @@ const COPY: Record<Lang, {
     ariaMenu: 'メニュー',
   },
   zh: {
-    title: '方块跳跃',
+    title: '方块跳跃者',
     description: '一款横版跳跃平台游戏：穿越地下、地面、天空、宇宙四个主题，跌落后还能重新站上踏板。',
     locale: 'zh_CN',
     image: 'https://jump-map.try-dabble.com/og-image-en.png',
