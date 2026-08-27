@@ -1,0 +1,379 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Leftover Box / 반찬함 — kitchen lunchbox, light.
+  Cream paper, kraft board, chili red, sage green, tomato.
+  shadcn is the kit, not the look: the primitives are re-dressed as pantry
+  labels, wax-paper notes and rubber date stamps. No dark utility skin.
+*/
+
+@theme {
+  --color-paper: #f6efe4;
+  --color-paper-2: #fff8ee;
+  --color-note: #fff4d6;
+  --color-ink: #2a1f16;
+  --color-muted-ink: #6d5748;
+  --color-kraft: #e4d3b8;
+  --color-kraft-2: #f3e6d2;
+  --color-lid: #d9a15a;
+  --color-chili: #c45c26;
+  --color-chili-deep: #8e3e16;
+  --color-sage: #5d7a58;
+  --color-sage-bg: #dfe8d6;
+  --color-tomato: #c0392b;
+  --color-tomato-bg: #f8ddd6;
+  --color-tape: #e8b84a;
+  --color-tape-ink: #3a2a0a;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-serif: var(--stack-display);
+  --font-mono: var(--stack-stamp);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-display: "Iowan Old Style", "Palatino Linotype", "Noto Serif KR",
+    "Apple Myungjo", "Hiragino Mincho ProN", Georgia, serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-stamp: "Courier New", ui-monospace, "Noto Sans Mono CJK KR", monospace;
+
+  --background: #f6efe4;
+  --foreground: #2a1f16;
+  --card: #fff8ee;
+  --card-foreground: #2a1f16;
+  --popover: #fff8ee;
+  --popover-foreground: #2a1f16;
+  --primary: #c45c26;
+  --primary-foreground: #fff8ee;
+  --secondary: #f3e6d2;
+  --secondary-foreground: #2a1f16;
+  --muted: #f3e8d4;
+  --muted-foreground: #6d5748;
+  --accent: #dfe8d6;
+  --accent-foreground: #47603f;
+  --destructive: #c0392b;
+  --border: #e4d3b8;
+  --input: #e4d3b8;
+  --ring: #c45c26;
+
+  --radius: 0.25rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Grain + weave: butcher paper under a kitchen light. */
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(196, 92, 38, 0.06), transparent 36%),
+      radial-gradient(circle at 92% 0%, rgba(93, 122, 88, 0.07), transparent 32%),
+      repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(42, 31, 22, 0.018) 3px, rgba(42, 31, 22, 0.018) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(196, 92, 38, 0.025) 5px, rgba(196, 92, 38, 0.025) 6px);
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native date/select min-content must never force horizontal scroll at 360px */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .lb-shell {
+    max-width: 32rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.75rem 1rem calc(1.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /* Fridge-tape notice: torn masking tape, not a flat status strip. */
+  .lb-tape {
+    margin: 0;
+    padding: 0.42rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-tape-ink);
+    background: repeating-linear-gradient(-18deg, #f0c14b 0 8px, #e8b43a 8px 16px);
+    border: 1.5px dashed #8a5a12;
+    border-radius: 2px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.35) inset,
+      1px 2px 0 rgba(42, 31, 22, 0.08);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Full-bleed warm counter-top strip behind the masthead. */
+  .lb-masthead {
+    margin: 0 -1rem;
+    padding: 0.7rem 1rem 0.8rem;
+    background: linear-gradient(180deg, #f3d6b0 0%, #ead0a8 70%, #e2c492 100%);
+    border-bottom: 4px solid var(--color-chili);
+    box-shadow: 0 2px 0 var(--color-paper) inset;
+  }
+
+  /* Kraft card with a chili spine along the top edge. */
+  .lb-card {
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid var(--color-kraft);
+    box-shadow: 0 6px 16px rgba(42, 31, 22, 0.08);
+  }
+  .lb-card::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 0;
+    height: 5px;
+    background: var(--color-chili);
+    border-radius: 0 0 3px 3px;
+    pointer-events: none;
+  }
+
+  /* Signature: wax-paper note taped to the fridge door. */
+  .lb-note {
+    position: relative;
+    background: var(--color-note);
+    border: 1px solid #ecd7a2;
+    border-radius: 2px 2px 7px 2px;
+    padding: 0.85rem 0.8rem 0.7rem;
+    box-shadow: 2px 3px 0 rgba(42, 31, 22, 0.06);
+  }
+  .lb-note::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    width: 46px;
+    height: 14px;
+    transform: translateX(-50%) rotate(-2deg);
+    background: rgba(232, 184, 74, 0.72);
+    border: 1px dashed rgba(138, 90, 18, 0.45);
+  }
+  .lb-note-overdue {
+    background: #fdecea;
+    border-color: #e8b0a6;
+  }
+
+  /* Signature: rubber date stamp, knocked slightly off-square. */
+  .lb-stamp {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.6rem;
+    padding: 0.18rem 0.42rem 0.16rem;
+    border: 2px solid;
+    border-radius: 4px;
+    line-height: 1.05;
+    transform: rotate(-4deg);
+    font-family: var(--stack-stamp);
+    text-align: center;
+  }
+  .lb-stamp em {
+    font-style: normal;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+  .lb-stamp small {
+    font-size: 0.58rem;
+    font-weight: 700;
+    opacity: 0.85;
+  }
+  .lb-stamp-ok {
+    color: var(--color-sage);
+    border-color: var(--color-sage);
+    background: var(--color-sage-bg);
+  }
+  .lb-stamp-today {
+    color: var(--color-chili-deep);
+    border-color: var(--color-chili);
+    background: #f8e0cc;
+  }
+  .lb-stamp-overdue {
+    color: var(--color-tomato);
+    border-color: var(--color-tomato);
+    background: var(--color-tomato-bg);
+  }
+
+  /* Pantry-label field: crisp box, chili focus ring. */
+  .lb-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1.5px solid var(--color-kraft);
+    background: #fffdf8;
+    color: var(--color-ink);
+    border-radius: 4px;
+    padding: 0.55rem 0.7rem;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .lb-field:focus {
+    border-color: var(--color-chili);
+    box-shadow: 0 0 0 3px rgba(196, 92, 38, 0.18);
+    outline: none;
+  }
+
+  .lb-label {
+    display: grid;
+    gap: 0.28rem;
+    font-size: 0.76rem;
+    color: var(--color-muted-ink);
+    font-weight: 700;
+    min-width: 0;
+  }
+
+
+  /* Masthead type: set by id so the no-JS shell in index.html — which must stay
+     exactly <h1 id="brand-title">…</h1> for the Worker and the i18n test —
+     looks identical to the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lb-tagline {
+    margin: 0.18rem 0 0;
+    font-size: 0.74rem;
+    color: var(--color-chili-deep);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .lb-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+  }
+
+  .lb-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-chili-deep);
+    border-radius: 3px;
+    padding: 0.32rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 1px 1px 0 var(--color-chili-deep);
+  }
+}
+
+@media (min-width: 520px) {
+  .lb-shell {
+    padding-top: 1.2rem;
+    max-width: 36rem;
+  }
+}
+
+/* 390px and below: title, lunchbox and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.18rem;
+  }
+
+  .lb-select {
+    max-width: 6.8rem;
+    padding: 0.28rem 0.4rem;
+  }
+}

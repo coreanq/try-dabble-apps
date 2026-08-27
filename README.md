@@ -22,6 +22,9 @@ cd apps/<slug>
 npx wrangler deploy
 ```
 
+Apps with a build step (Vite, Next) must build first — use `npm run deploy` in
+those folders, which builds and then deploys.
+
 ## Apps
 
 - [cost-per-use](https://cost-per-use.try-dabble.com/)
@@ -29,7 +32,7 @@ npx wrangler deploy
 - [place-inbox](https://place-inbox.try-dabble.com/)
 - [photo-spec](https://photo-spec.try-dabble.com/)
 - [later-inbox](https://later-inbox.try-dabble.com/)
-- [leftover-box](https://leftover-box.try-dabble.com/) — 반찬함 leftover eat-by tracker
+- [leftover-box](https://leftover-box.try-dabble.com/) — 반찬함 leftover eat-by tracker; Vite + React + TS + Tailwind/shadcn + TanStack Router, `npm run deploy`
 - [box-qr](https://box-qr.try-dabble.com/) — 상자QR moving-box QR + photo inventory
 - [omok](https://omok.try-dabble.com/) — Next static export; `next build` then wrangler from `out/`
 - [jump-map](https://jump-map.try-dabble.com/) — Block Jumper CSR/PWA
