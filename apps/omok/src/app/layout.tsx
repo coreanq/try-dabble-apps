@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Omok AI" }],
   creator: "Omok AI",
   publisher: "Omok AI",
+  applicationName: "오목",
+  appleWebApp: {
+    title: "오목",
+  },
   category: "Games",
   classification: "Board Game",
   openGraph: {
@@ -205,6 +209,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <meta name="application-name" content="오목" />
+        <meta name="apple-mobile-web-app-title" content="오목" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <Script

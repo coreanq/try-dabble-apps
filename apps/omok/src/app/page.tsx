@@ -15,6 +15,236 @@ const LOCAL_ONLY: Record<string, string> = {
   zh: '数据仅保存在此设备，不会上传到服务器。',
 };
 
+type UiLang = 'ko' | 'en' | 'ja' | 'zh';
+
+const UI: Record<UiLang, {
+  title: string;
+  titleSub: string;
+  modeSubtitle: string;
+  vsAi: string;
+  vsAiDesc: string;
+  vsPvp: string;
+  vsPvpDesc: string;
+  undo: string;
+  restart: string;
+  mode: string;
+  changeMode: string;
+  blackTurn: string;
+  whiteTurn: string;
+  blackTurnP1: string;
+  whiteTurnP2: string;
+  easy: string;
+  medium: string;
+  hard: string;
+  difficulty: string;
+  thinking: string;
+  draw: string;
+  blackWins: string;
+  whiteWins: string;
+  blackWinShort: string;
+  whiteWinShort: string;
+  reviewBoard: string;
+  showResult: string;
+  moves: string;
+  totalMoves: string;
+  congratulations: string;
+  tryNextTime: string;
+  goodGame: string;
+  soundOff: string;
+  soundOn: string;
+  howToLi1: string;
+  howToLi2: string;
+  howToLi3: string;
+  howToLi4: string;
+  howToLi5: string;
+  howToLi6: string;
+}> = {
+  ko: {
+    title: '오목',
+    titleSub: '五目並べ',
+    modeSubtitle: '게임 모드를 선택하세요',
+    vsAi: 'AI 대결',
+    vsAiDesc: '인공지능과 대결합니다',
+    vsPvp: '2인 대결',
+    vsPvpDesc: '친구와 번갈아 둡니다',
+    undo: '무르기',
+    restart: '다시하기',
+    mode: '모드',
+    changeMode: '모드 변경',
+    blackTurn: '흑 차례',
+    whiteTurn: '백 차례',
+    blackTurnP1: '흑 차례 (1P)',
+    whiteTurnP2: '백 차례 (2P)',
+    easy: '초급',
+    medium: '중급',
+    hard: '고급',
+    difficulty: '난이도',
+    thinking: 'AI 생각중...',
+    draw: '무승부',
+    blackWins: '흑의 승리',
+    whiteWins: '백의 승리',
+    blackWinShort: '흑 승리',
+    whiteWinShort: '백 승리',
+    reviewBoard: '기보 검토',
+    showResult: '결과 보기',
+    moves: '수순',
+    totalMoves: '총 {n}수',
+    congratulations: '축하합니다!',
+    tryNextTime: '다음에는 이겨보세요',
+    goodGame: '좋은 대국이었습니다',
+    soundOff: '소리 끄기',
+    soundOn: '소리 켜기',
+    howToLi1: 'AI 대결 모드: 초급, 중급, 고급 3단계 난이도의 인공지능과 대결',
+    howToLi2: '2인 대결 모드: 한 기기에서 친구와 함께 오목 대결',
+    howToLi3: '무르기 기능: 실수한 수를 되돌릴 수 있는 무르기 지원',
+    howToLi4: '기보 검토: 게임 종료 후 기보를 다시 확인',
+    howToLi5: '반응형 디자인: PC, 태블릿, 스마트폰 모든 기기에서 최적화',
+    howToLi6: '설치 불필요: 웹 브라우저에서 바로 플레이',
+  },
+  en: {
+    title: 'Gomoku',
+    titleSub: '五目並べ',
+    modeSubtitle: 'Choose a game mode',
+    vsAi: 'vs AI',
+    vsAiDesc: 'Play against the computer',
+    vsPvp: '2-Player',
+    vsPvpDesc: 'Take turns with a friend',
+    undo: 'Undo',
+    restart: 'Restart',
+    mode: 'Mode',
+    changeMode: 'Change mode',
+    blackTurn: 'Black turn',
+    whiteTurn: 'White turn',
+    blackTurnP1: 'Black turn (1P)',
+    whiteTurnP2: 'White turn (2P)',
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    difficulty: 'Difficulty',
+    thinking: 'AI thinking',
+    draw: 'Draw',
+    blackWins: 'Black wins',
+    whiteWins: 'White wins',
+    blackWinShort: 'Black wins',
+    whiteWinShort: 'White wins',
+    reviewBoard: 'Review board',
+    showResult: 'Show result',
+    moves: 'Moves',
+    totalMoves: '{n} moves',
+    congratulations: 'Congratulations!',
+    tryNextTime: 'Try again next time',
+    goodGame: 'A fine game',
+    soundOff: 'Mute',
+    soundOn: 'Sound on',
+    howToLi1: 'vs AI: three difficulty levels (easy, medium, hard)',
+    howToLi2: '2-player mode: play with a friend on one device',
+    howToLi3: 'Undo a mistaken move',
+    howToLi4: 'Review the board after the game',
+    howToLi5: 'Responsive layout for PC, tablet, and phone',
+    howToLi6: 'No install: play in the browser',
+  },
+  ja: {
+    title: '五目並べ',
+    titleSub: 'Gomoku',
+    modeSubtitle: 'ゲームモードを選んでください',
+    vsAi: 'AI対戦',
+    vsAiDesc: 'コンピュータと対戦します',
+    vsPvp: '2人対戦',
+    vsPvpDesc: '友達と交互に打ちます',
+    undo: '待った',
+    restart: 'もう一度',
+    mode: 'モード',
+    changeMode: 'モード変更',
+    blackTurn: '黒の番',
+    whiteTurn: '白の番',
+    blackTurnP1: '黒の番 (1P)',
+    whiteTurnP2: '白の番 (2P)',
+    easy: '初級',
+    medium: '中級',
+    hard: '上級',
+    difficulty: '難易度',
+    thinking: 'AI思考中...',
+    draw: '引き分け',
+    blackWins: '黒の勝ち',
+    whiteWins: '白の勝ち',
+    blackWinShort: '黒の勝ち',
+    whiteWinShort: '白の勝ち',
+    reviewBoard: '棋譜を見る',
+    showResult: '結果を見る',
+    moves: '手数',
+    totalMoves: '計{n}手',
+    congratulations: 'おめでとうございます！',
+    tryNextTime: '次は勝ちましょう',
+    goodGame: '良い対局でした',
+    soundOff: '音を消す',
+    soundOn: '音を出す',
+    howToLi1: 'AI対戦: 初級・中級・上級の3段階',
+    howToLi2: '2人対戦: 1台の端末で友達と対局',
+    howToLi3: '待った: 打ち直しができます',
+    howToLi4: '対局後に棋譜を確認',
+    howToLi5: 'PC・タブレット・スマホに対応',
+    howToLi6: 'インストール不要。ブラウザですぐ遊べます',
+  },
+  zh: {
+    title: '五子棋',
+    titleSub: 'Gomoku',
+    modeSubtitle: '请选择游戏模式',
+    vsAi: 'AI对战',
+    vsAiDesc: '与人工智能对战',
+    vsPvp: '双人对战',
+    vsPvpDesc: '与朋友轮流落子',
+    undo: '悔棋',
+    restart: '再来一局',
+    mode: '模式',
+    changeMode: '更换模式',
+    blackTurn: '黑棋回合',
+    whiteTurn: '白棋回合',
+    blackTurnP1: '黑棋回合 (1P)',
+    whiteTurnP2: '白棋回合 (2P)',
+    easy: '初级',
+    medium: '中级',
+    hard: '高级',
+    difficulty: '难度',
+    thinking: 'AI思考中...',
+    draw: '平局',
+    blackWins: '黑棋获胜',
+    whiteWins: '白棋获胜',
+    blackWinShort: '黑棋获胜',
+    whiteWinShort: '白棋获胜',
+    reviewBoard: '查看棋谱',
+    showResult: '查看结果',
+    moves: '手数',
+    totalMoves: '共{n}手',
+    congratulations: '恭喜！',
+    tryNextTime: '下次再赢回来',
+    goodGame: '这是一盘好棋',
+    soundOff: '关闭声音',
+    soundOn: '打开声音',
+    howToLi1: 'AI对战：初级、中级、高级三档难度',
+    howToLi2: '双人对战：同一设备上与朋友对弈',
+    howToLi3: '悔棋：可以撤回走错的一步',
+    howToLi4: '对局结束后可查看棋谱',
+    howToLi5: '适配电脑、平板和手机',
+    howToLi6: '无需安装，浏览器即可游玩',
+  },
+};
+
+function readUiLang(): UiLang {
+  try {
+    if (typeof document !== 'undefined') {
+      const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
+      if (q in UI) return q as UiLang;
+      const cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+      if (cm && cm[1] in UI) return cm[1] as UiLang;
+      const htmlLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
+      if (htmlLang in UI) return htmlLang as UiLang;
+      const saved = localStorage.getItem('omok_lang') || '';
+      if (saved in UI) return saved as UiLang;
+    }
+  } catch {}
+  return 'ko';
+}
+
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -1166,21 +1396,14 @@ export default function Home() {
     setShowResult(false);
   };
 
-  const detectLocalLang = () => {
-    try {
-      const q = (new URLSearchParams(window.location.search).get('lang') || '').slice(0, 2).toLowerCase();
-      if (LOCAL_ONLY[q]) return q;
-      const saved = localStorage.getItem('omok_lang') || '';
-      if (LOCAL_ONLY[saved]) return saved;
-    } catch {}
-    return 'ko';
-  };
+  const detectLocalLang = (): UiLang => readUiLang();
 
   useEffect(() => {
     const apply = () => {
       const next = detectLocalLang();
       setUiLang(next);
       setLocalOnly(LOCAL_ONLY[next]);
+      try { document.documentElement.lang = next; } catch {}
     };
     apply();
     window.addEventListener('popstate', apply);
@@ -1188,9 +1411,10 @@ export default function Home() {
   }, []);
 
   const setLang = (next: string) => {
-    if (!LOCAL_ONLY[next]) return;
+    if (!(next in UI)) return;
     setUiLang(next);
     setLocalOnly(LOCAL_ONLY[next]);
+    try { document.documentElement.lang = next; } catch {}
     try { localStorage.setItem('omok_lang', next); } catch {}
     try {
       const u = new URL(window.location.href);
@@ -1201,16 +1425,26 @@ export default function Home() {
     } catch {}
   };
 
+  const lang: UiLang = typeof document !== 'undefined' ? readUiLang() : (uiLang in UI ? uiLang as UiLang : 'ko');
+  const t = UI[lang];
+  const diffLabel = { easy: t.easy, medium: t.medium, hard: t.hard } as const;
+  const turnKey = isThinking
+    ? 'thinking'
+    : gameMode === 'pvp'
+      ? (currentPlayer === 'black' ? 'blackTurnP1' : 'whiteTurnP2')
+      : (currentPlayer === 'black' ? 'blackTurn' : 'whiteTurn');
+  const turnText = t[turnKey];
+
   return (
     <div className={`game-container ${currentPlayer === 'black' ? 'turn-black' : 'turn-white'}`}>
       <div className="local-only-bar">
-        <p className="local-only" id="local-only" role="note">{localOnly}</p>
+        <p className="local-only" id="local-only" role="note">{LOCAL_ONLY[lang] || localOnly}</p>
         <label className="sr-only" htmlFor="local-only-lang">Language</label>
         <select
           id="local-only-lang"
           className="local-only-lang"
           aria-label="Language"
-          value={uiLang}
+          value={lang}
           onChange={(e) => setLang(e.target.value)}
         >
           <option value="ko">한국어</option>
@@ -1223,24 +1457,24 @@ export default function Home() {
       {showModeSelect && (
         <div className="mode-select-overlay">
           <div className="mode-select-modal">
-            <h1 className="mode-title">
-              <span className="title-korean">오목</span>
-              <span className="title-sub">五目並べ</span>
+            <h1 className="mode-title" suppressHydrationWarning>
+              <span className="title-korean" data-i18n="title">{t.title}</span>
+              <span className="title-sub" data-i18n="titleSub">{t.titleSub}</span>
             </h1>
-            <p className="mode-subtitle">게임 모드를 선택하세요</p>
+            <p className="mode-subtitle" data-i18n="modeSubtitle">{t.modeSubtitle}</p>
             <div className="mode-buttons">
               <button onClick={() => startGame('ai')} className="mode-btn ai-mode">
                 <div className="mode-icon">🤖</div>
                 <div className="mode-info">
-                  <span className="mode-name">AI 대결</span>
-                  <span className="mode-desc">인공지능과 대결합니다</span>
+                  <span className="mode-name" data-i18n="vsAi">{t.vsAi}</span>
+                  <span className="mode-desc" data-i18n="vsAiDesc">{t.vsAiDesc}</span>
                 </div>
               </button>
               <button onClick={() => startGame('pvp')} className="mode-btn pvp-mode">
                 <div className="mode-icon">👥</div>
                 <div className="mode-info">
-                  <span className="mode-name">2인 대결</span>
-                  <span className="mode-desc">친구와 번갈아 둡니다</span>
+                  <span className="mode-name" data-i18n="vsPvp">{t.vsPvp}</span>
+                  <span className="mode-desc" data-i18n="vsPvpDesc">{t.vsPvpDesc}</span>
                 </div>
               </button>
             </div>
@@ -1260,29 +1494,27 @@ export default function Home() {
               )}
             </div>
             <h2 className="victory-title">
-              {winner === 'draw' ? '무승부' : `${winner === 'black' ? '흑' : '백'}의 승리`}
+              {winner === 'draw' ? t.draw : winner === 'black' ? t.blackWins : t.whiteWins}
             </h2>
             <p className="victory-subtitle">
               {winner === 'draw'
-                ? '좋은 대국이었습니다'
-                : gameMode === 'pvp'
-                  ? '축하합니다!'
-                  : winner === 'black'
-                    ? '축하합니다!'
-                    : '다음에는 이겨보세요'}
+                ? t.goodGame
+                : winner === 'white' && gameMode === 'ai'
+                  ? t.tryNextTime
+                  : t.congratulations}
             </p>
             <div className="victory-stats">
-              <span>총 {moveCount}수</span>
+              <span>{t.totalMoves.replace('{n}', String(moveCount))}</span>
             </div>
             <div className="victory-buttons">
               <button onClick={reviewBoard} className="review-btn">
-                기보 검토
+                {t.reviewBoard}
               </button>
               <button onClick={reset} className="new-game-btn">
-                다시하기
+                {t.restart}
               </button>
               <button onClick={backToModeSelect} className="mode-change-btn">
-                모드 변경
+                {t.changeMode}
               </button>
             </div>
           </div>
@@ -1293,19 +1525,19 @@ export default function Home() {
       {winner && !showResult && (
         <div className="review-banner">
           <span className="review-text">
-            {winner === 'draw' ? '무승부' : `${winner === 'black' ? '흑' : '백'} 승리`} · {moveCount}수
+            {winner === 'draw' ? t.draw : winner === 'black' ? t.blackWinShort : t.whiteWinShort} · {t.totalMoves.replace('{n}', String(moveCount))}
           </span>
           <button onClick={() => setShowResult(true)} className="show-result-btn">
-            결과 보기
+            {t.showResult}
           </button>
         </div>
       )}
 
       {/* Header */}
       <header className="game-header">
-        <h1 className="game-title">
-          <span className="title-korean">오목</span>
-          <span className="title-sub">五目並べ</span>
+        <h1 className="game-title" suppressHydrationWarning>
+          <span className="title-korean" data-i18n="title">{t.title}</span>
+          <span className="title-sub" data-i18n="titleSub">{t.titleSub}</span>
         </h1>
       </header>
 
@@ -1315,17 +1547,13 @@ export default function Home() {
           <div className={`current-stone ${currentPlayer}`}>
             <div className="stone-inner" />
           </div>
-          <span className="turn-text">
-            {isThinking
-              ? 'AI 생각중...'
-              : gameMode === 'pvp'
-                ? currentPlayer === 'black' ? '흑 차례 (1P)' : '백 차례 (2P)'
-                : currentPlayer === 'black' ? '흑 차례' : '백 차례'}
+          <span className="turn-text" data-i18n={turnKey}>
+            {turnText}
           </span>
           {isThinking && <div className="thinking-dots"><span/><span/><span/></div>}
         </div>
         <div className="move-counter">
-          <span className="move-label">수순</span>
+          <span className="move-label" data-i18n="moves">{t.moves}</span>
           <span className="move-number">{moveCount}</span>
         </div>
       </div>
@@ -1346,22 +1574,23 @@ export default function Home() {
       <div className="controls-bar">
         {gameMode === 'ai' ? (
           <div className="difficulty-selector">
-            <label className="control-label">난이도</label>
+            <label className="control-label" data-i18n="difficulty">{t.difficulty}</label>
             <div className="difficulty-buttons">
               {(['easy', 'medium', 'hard'] as const).map((d) => (
                 <button
                   key={d}
                   onClick={() => setDifficulty(d)}
                   className={`diff-btn ${difficulty === d ? 'active' : ''}`}
+                  data-i18n={d}
                 >
-                  {d === 'easy' ? '초급' : d === 'medium' ? '중급' : '고급'}
+                  {diffLabel[d]}
                 </button>
               ))}
             </div>
           </div>
         ) : (
           <div className="mode-indicator">
-            <span className="mode-badge">👥 2인 대결</span>
+            <span className="mode-badge">👥 <span data-i18n="vsPvp">{t.vsPvp}</span></span>
           </div>
         )}
         <div className="right-controls">
@@ -1369,24 +1598,26 @@ export default function Home() {
             onClick={undoMove}
             className={`undo-btn ${moveHistory.length === 0 || winner || isThinking ? 'disabled' : ''}`}
             disabled={moveHistory.length === 0 || !!winner || isThinking}
-            title="무르기"
+            title={t.undo}
+            data-i18n-title="undo"
           >
             <span className="undo-icon">↩</span>
-            <span>무르기</span>
+            <span data-i18n="undo">{t.undo}</span>
           </button>
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
             className={`sound-btn ${soundEnabled ? 'active' : ''}`}
-            title={soundEnabled ? '소리 끄기' : '소리 켜기'}
+            title={soundEnabled ? t.soundOff : t.soundOn}
+            data-i18n-title={soundEnabled ? 'soundOff' : 'soundOn'}
           >
             {soundEnabled ? '🔊' : '🔇'}
           </button>
           <button onClick={reset} className="reset-btn">
             <span className="reset-icon">↻</span>
-            <span>다시하기</span>
+            <span data-i18n="restart">{t.restart}</span>
           </button>
           <button onClick={backToModeSelect} className="mode-btn-small">
-            <span>모드</span>
+            <span data-i18n="mode">{t.mode}</span>
           </button>
         </div>
       </div>
@@ -1400,12 +1631,12 @@ export default function Home() {
         </p>
         <h3>게임 특징</h3>
         <ul>
-          <li>AI 대결 모드: 초급, 중급, 고급 3단계 난이도의 인공지능과 대결</li>
-          <li>2인 대결 모드: 한 기기에서 친구와 함께 오목 대결</li>
-          <li>무르기 기능: 실수한 수를 되돌릴 수 있는 무르기 지원</li>
-          <li>기보 검토: 게임 종료 후 기보를 다시 확인</li>
-          <li>반응형 디자인: PC, 태블릿, 스마트폰 모든 기기에서 최적화</li>
-          <li>설치 불필요: 웹 브라우저에서 바로 플레이</li>
+          <li data-i18n="howToLi1">{t.howToLi1}</li>
+          <li data-i18n="howToLi2">{t.howToLi2}</li>
+          <li data-i18n="howToLi3">{t.howToLi3}</li>
+          <li data-i18n="howToLi4">{t.howToLi4}</li>
+          <li data-i18n="howToLi5">{t.howToLi5}</li>
+          <li data-i18n="howToLi6">{t.howToLi6}</li>
         </ul>
         <h3>오목 규칙</h3>
         <p>
@@ -1449,7 +1680,7 @@ export default function Home() {
           border: 0;
         }
 
-        /* 흑 차례 - 어두운 배경 */
+        /* black-turn dark background */
         .game-container.turn-black {
           background: linear-gradient(180deg, #0d0d0d 0%, #1a1815 50%, #0d0d0d 100%);
         }
