@@ -9,14 +9,17 @@
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
   <style>
-    :root { color-scheme: dark; --bg:#111111; --fg:#f4f1ea; --muted:#9aa3ad; --card:#1a1f27; --accent:#2dd4bf; }
+    :root { color-scheme: light; --bg:#f4efe1; --fg:#23201a; --muted:#6f6553; --card:#f0e3c1; --edge:#c9b177; --accent:#075e56; }
     * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    body { margin:0; font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", system-ui, -apple-system, sans-serif; background:var(--bg); color:var(--fg); line-height:1.6;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(35,32,26,0.016) 3px, rgba(35,32,26,0.016) 4px); }
     main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
     a { color: var(--accent); }
-    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    h1 { font-family: "Iowan Old Style", "Palatino Linotype", "Noto Serif KR", Georgia, serif; font-size: 1.5rem; margin: 0 0 1rem; }
     p, li { color: var(--muted); }
-    .card { background: var(--card); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
+    code { font-family: "Courier New", ui-monospace, monospace; color: var(--accent); }
+    .card { background: var(--card); border: 1px solid var(--edge); border-radius: 2px 8px 3px 3px; padding: 1.25rem; margin-top: 1rem;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.55) inset, 0 6px 14px rgba(35,32,26,0.09); }
   </style>
 </head>
 <body>
@@ -24,7 +27,7 @@
     <p><a href="/">← Later Inbox</a></p>
     <h1>Privacy Policy</h1>
     <div class="card">
-      <p>Later Inbox is local-first. Links, titles, why-notes, pins, and status are stored only in this browser (<strong>localStorage</strong> key <code>later-inbox:items:v1</code>). Language may also use localStorage (<code>li_lang</code>). Nothing is uploaded to our servers for accounts or backup.</p>
+      <p>Later Inbox is local-first. Links, titles, why-notes, pins, and status are stored only in this browser (<strong>localStorage</strong> key <code>later-inbox:items:v1</code>). Language may also use localStorage (<code>later-inbox:lang</code>). Nothing is uploaded to our servers for accounts or backup.</p>
       <p>There are no accounts, no sign-in, and no server-side stash of your reading list.</p>
       <p>The optional clipboard paste button reads the clipboard only after you tap it, in this browser, to fill the URL field. Bookmark HTML and JSON import stay on this device.</p>
       <p><strong>Advertising:</strong> Google AdSense may be active on this site. Google and its partners may use cookies or similar technologies to serve personalized or non-personalized ads and to measure performance. See <a href="https://policies.google.com/technologies/ads" rel="noopener noreferrer" target="_blank">Google’s advertising policies</a> and your browser or Google account settings to manage ad cookies.</p>

@@ -1,11 +1,120 @@
-window.LI_I18N = {
+/** Ported from the pre-Vite public/js/i18n.js — same copy, now typed. */
+
+export type Lang = "ko" | "en" | "ja" | "zh";
+
+export const LANGS: Lang[] = ["ko", "en", "ja", "zh"];
+export const LANG_KEY = "later-inbox:lang";
+/** Pre-Vite key. Read once so a returning user keeps the language they chose. */
+const LEGACY_LANG_KEY = "li_lang";
+
+export const LANG_NAMES: Record<Lang, string> = {
+  ko: "한국어",
+  en: "English",
+  ja: "日本語",
+  zh: "中文",
+};
+
+export const HTML_LANG: Record<Lang, string> = {
+  ko: "ko",
+  en: "en",
+  ja: "ja",
+  zh: "zh",
+};
+
+export const OG_IMAGE: Record<Lang, string> = {
+  ko: "https://later-inbox.try-dabble.com/og-image.png",
+  en: "https://later-inbox.try-dabble.com/og-image-en.png",
+  ja: "https://later-inbox.try-dabble.com/og-image-ja.png",
+  zh: "https://later-inbox.try-dabble.com/og-image-en.png",
+};
+
+export type MsgKey =
+  | "title"
+  | "localOnly"
+  | "shortName"
+  | "tagline"
+  | "metaDescription"
+  | "about"
+  | "langLabel"
+  | "search"
+  | "addTitle"
+  | "addUrl"
+  | "addWhy"
+  | "addWhyPh"
+  | "addTitleLabel"
+  | "addTitlePh"
+  | "pasteUrl"
+  | "save"
+  | "update"
+  | "cancel"
+  | "delete"
+  | "listInbox"
+  | "listWeek"
+  | "listDone"
+  | "listExpired"
+  | "sortHintInbox"
+  | "sortHintWeek"
+  | "sortHintDone"
+  | "sortHintExpired"
+  | "emptyInbox"
+  | "emptyWeek"
+  | "emptyDone"
+  | "emptyExpired"
+  | "emptySearch"
+  | "triage"
+  | "tools"
+  | "exportJson"
+  | "importJson"
+  | "importBookmarks"
+  | "toolsHint"
+  | "draftsTitle"
+  | "draftsHint"
+  | "draftSave"
+  | "draftSkip"
+  | "draftWhyPh"
+  | "privacy"
+  | "terms"
+  | "editTitle"
+  | "open"
+  | "keepWeek"
+  | "markDone"
+  | "expire"
+  | "pin"
+  | "unpin"
+  | "edit"
+  | "saved"
+  | "deleted"
+  | "exported"
+  | "imported"
+  | "importFail"
+  | "bookmarksImported"
+  | "bookmarksNone"
+  | "needUrl"
+  | "needWhy"
+  | "badUrl"
+  | "noClipboardUrl"
+  | "clipboardDenied"
+  | "weekFull"
+  | "weekBumped"
+  | "expiredN"
+  | "deleteConfirm"
+  | "ageDays"
+  | "ageToday"
+  | "pinned"
+  | "hostFallback";
+
+export type Messages = Record<MsgKey, string>;
+
+export const I18N: Record<Lang, Messages> = {
   en: {
     title: "Later Inbox",
     localOnly: "Your data stays on this device. Nothing is sent to our servers.",
     shortName: "Later",
     tagline: "A shrinking read-later inbox",
-    metaDescription: "Save a link with a required one-line why. Keep at most 3 for this week. Unpinned inbox items expire after 30 days. Data stays in your browser.",
-    about: "Save a link with a one-line why. Keep at most 3 for this week. Unread older than 30 days expire unless pinned. Success is a smaller list, not a library. No account — everything stays in this browser.",
+    metaDescription:
+      "Save a link with a required one-line why. Keep at most 3 for this week. Unpinned inbox items expire after 30 days. Data stays in your browser.",
+    about:
+      "Save a link with a one-line why. Keep at most 3 for this week. Unread older than 30 days expire unless pinned. Success is a smaller list, not a library. No account — everything stays in this browser.",
     langLabel: "Language",
     search: "Search title, why, or URL",
     addTitle: "Add a link",
@@ -37,7 +146,8 @@ window.LI_I18N = {
     exportJson: "Export JSON",
     importJson: "Import JSON",
     importBookmarks: "Bookmarks HTML",
-    toolsHint: "Bookmark import creates drafts. A why is required before they count as saved.",
+    toolsHint:
+      "Bookmark import creates drafts. A why is required before they count as saved.",
     draftsTitle: "Drafts — add a why to save",
     draftsHint: "Imported bookmarks. Write a why and save, or skip.",
     draftSave: "Save",
@@ -72,15 +182,17 @@ window.LI_I18N = {
     ageDays: "{n}d",
     ageToday: "today",
     pinned: "Pinned",
-    hostFallback: "untitled"
+    hostFallback: "untitled",
   },
   ko: {
     title: "나중함",
     localOnly: "이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.",
     shortName: "나중함",
     tagline: "줄어드는 나중에 읽기함",
-    metaDescription: "링크와 한 줄 이유를 남기고, 이번 주 최대 3개만 고릅니다. 핀하지 않으면 30일 후 만료됩니다. 데이터는 브라우저에만 남습니다.",
-    about: "링크와 한 줄 이유를 남깁니다. 이번 주는 최대 3개. 핀하지 않은 채 30일이 지나면 만료됩니다. 성공은 서랍이 아니라 더 짧은 목록입니다. 계정 없이 이 브라우저에만 저장됩니다.",
+    metaDescription:
+      "링크와 한 줄 이유를 남기고, 이번 주 최대 3개만 고릅니다. 핀하지 않으면 30일 후 만료됩니다. 데이터는 브라우저에만 남습니다.",
+    about:
+      "링크와 한 줄 이유를 남깁니다. 이번 주는 최대 3개. 핀하지 않은 채 30일이 지나면 만료됩니다. 성공은 서랍이 아니라 더 짧은 목록입니다. 계정 없이 이 브라우저에만 저장됩니다.",
     langLabel: "언어",
     search: "제목·이유·주소 검색",
     addTitle: "링크 넣기",
@@ -147,15 +259,17 @@ window.LI_I18N = {
     ageDays: "{n}일",
     ageToday: "오늘",
     pinned: "핀",
-    hostFallback: "제목 없음"
+    hostFallback: "제목 없음",
   },
   ja: {
     title: "あとで読む",
     localOnly: "データはこの端末にだけ保存されます。サーバーには送りません。",
     shortName: "あとで",
     tagline: "小さくなるあとで読む箱",
-    metaDescription: "リンクと一行の理由を残し、今週は最大3件。ピンなしは30日で期限切れ。データはこのブラウザだけです。",
-    about: "リンクと一行の理由を残します。今週は最大3件。ピンなしで30日を超えると期限切れ。成功はライブラリではなく、短いリストです。アカウントなし、このブラウザだけです。",
+    metaDescription:
+      "リンクと一行の理由を残し、今週は最大3件。ピンなしは30日で期限切れ。データはこのブラウザだけです。",
+    about:
+      "リンクと一行の理由を残します。今週は最大3件。ピンなしで30日を超えると期限切れ。成功はライブラリではなく、短いリストです。アカウントなし、このブラウザだけです。",
     langLabel: "言語",
     search: "タイトル・理由・URLを検索",
     addTitle: "リンクを入れる",
@@ -222,15 +336,17 @@ window.LI_I18N = {
     ageDays: "{n}日",
     ageToday: "今日",
     pinned: "ピン",
-    hostFallback: "無題"
+    hostFallback: "無題",
   },
   zh: {
     title: "稍后再读",
     localOnly: "数据仅保存在此设备，不会上传到服务器。",
     shortName: "稍后再读",
     tagline: "会变短的稍后再读收件箱",
-    metaDescription: "保存链接并写下一句理由。本周最多 3 条。未钉选超过 30 天会过期。数据只留在浏览器。",
-    about: "保存链接并写下一句理由。本周最多保留 3 条。未钉选且超过 30 天会过期。成功是更短的列表，不是资料库。无需账户，只存在此浏览器。",
+    metaDescription:
+      "保存链接并写下一句理由。本周最多 3 条。未钉选超过 30 天会过期。数据只留在浏览器。",
+    about:
+      "保存链接并写下一句理由。本周最多保留 3 条。未钉选且超过 30 天会过期。成功是更短的列表，不是资料库。无需账户，只存在此浏览器。",
     langLabel: "语言",
     search: "搜索标题、理由或网址",
     addTitle: "添加链接",
@@ -297,66 +413,80 @@ window.LI_I18N = {
     ageDays: "{n}天",
     ageToday: "今天",
     pinned: "已钉",
-    hostFallback: "无标题"
+    hostFallback: "无标题",
+  },
+};
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === "string" && (LANGS as string[]).includes(value);
+}
+
+export function translate(
+  lang: Lang,
+  key: MsgKey,
+  vars?: Record<string, string | number>,
+): string {
+  let out = I18N[lang]?.[key] ?? I18N.en[key] ?? key;
+  if (vars) {
+    for (const [name, value] of Object.entries(vars)) {
+      out = out.replaceAll(`{${name}}`, String(value));
+    }
   }
-};
+  return out;
+}
 
-window.LI_OG = {
-  ko: "https://later-inbox.try-dabble.com/og-image.png",
-  en: "https://later-inbox.try-dabble.com/og-image-en.png",
-  ja: "https://later-inbox.try-dabble.com/og-image-ja.png",
-  zh: "https://later-inbox.try-dabble.com/og-image-en.png"
-};
+function readCookieLang(): Lang | null {
+  if (typeof document === "undefined") return null;
+  const m = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+  return m && isLang(m[1]) ? m[1] : null;
+}
 
-window.persistLangQuery = function persistLangQuery(lang) {
+function readStoredLang(): Lang | null {
   try {
-    var u = new URL(location.href);
-    if (u.searchParams.get("lang") !== lang) {
-      u.searchParams.set("lang", lang);
-      history.replaceState(null, "", u.pathname + u.search + u.hash);
-    }
-  } catch (_) {}
-};
+    const saved = localStorage.getItem(LANG_KEY) ?? localStorage.getItem(LEGACY_LANG_KEY);
+    return isLang(saved) ? saved : null;
+  } catch {
+    return null;
+  }
+}
 
-window.detectLang = function detectLang() {
-  var lang = "ko";
+function readNavigatorLang(): Lang {
+  const nav = (navigator.language || "ko").toLowerCase();
+  if (nav.startsWith("ko")) return "ko";
+  if (nav.startsWith("ja")) return "ja";
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("en")) return "en";
+  return "ko";
+}
+
+/**
+ * ?lang= wins, then the td_lang cookie (so hops between try-dabble subdomains
+ * keep the chosen language), then the language saved by this app, then the
+ * browser. The Worker only sees the query and the cookie, so those two must
+ * outrank localStorage or the first HTML and the mounted app would disagree.
+ */
+export function detectLang(searchLang?: string | null): Lang {
+  if (isLang(searchLang)) {
+    rememberLang(searchLang);
+    return searchLang;
+  }
+  const cookie = readCookieLang();
+  if (cookie) {
+    rememberLang(cookie);
+    return cookie;
+  }
+  return readStoredLang() ?? readNavigatorLang();
+}
+
+export function rememberLang(lang: Lang): void {
   try {
-    const q = new URLSearchParams(location.search).get("lang");
-    if (q && window.LI_I18N[q]) {
-      try { localStorage.setItem("li_lang", q); } catch (_) {}
-      lang = q;
-    }
-    else {
-      var cookieLang = "";
-      try {
-        var cm = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
-        if (cm && window.LI_I18N[cm[1]]) cookieLang = cm[1];
-      } catch (_) {}
-      if (cookieLang) {
-        try { localStorage.setItem("li_lang", cookieLang); } catch (_) {}
-        lang = cookieLang;
-      } else {
-      try {
-        const saved = localStorage.getItem("li_lang");
-        if (saved && window.LI_I18N[saved]) lang = saved;
-        else {
-          const nav = (navigator.language || "ko").toLowerCase();
-          if (nav.startsWith("ko")) lang = "ko";
-          else if (nav.startsWith("ja")) lang = "ja";
-          else if (nav.startsWith("zh")) lang = "zh";
-          else if (nav.startsWith("en")) lang = "en";
-          else lang = "ko";
-        }
-      } catch (_) {
-        const nav = (navigator.language || "ko").toLowerCase();
-        if (nav.startsWith("ko")) lang = "ko";
-        else if (nav.startsWith("ja")) lang = "ja";
-        else if (nav.startsWith("zh")) lang = "zh";
-        else if (nav.startsWith("en")) lang = "en";
-      }
-      }
-    }
-  } catch (_) {}
-  if (typeof window.persistLangQuery === "function") window.persistLangQuery(lang);
-  return lang;
-};
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    /* private mode — language just won't stick */
+  }
+}
+
+export type Translate = (
+  key: MsgKey,
+  vars?: Record<string, string | number>,
+) => string;
