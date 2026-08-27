@@ -1,8 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+// ESM: package.json is "type": "module" since the Vite rewrite.
+import fs from "node:fs";
+import path from "node:path";
+import sharp from "sharp";
 
-const OUT = path.join(__dirname, "public");
+const OUT = path.join(import.meta.dirname, "public");
 const OLIVE = { r: 48, g: 46, b: 32, alpha: 1 };
 const FONT = "Noto Serif CJK KR, Noto Serif CJK JP, Noto Serif CJK SC, serif";
 const MONO = "Courier New, ui-monospace, monospace";
@@ -130,6 +131,7 @@ async function main() {
     { title: "오목", subtitle: "다섯을 잇다", files: ["og-image.png", "og-image-ko.png"] },
     { title: "Gomoku", subtitle: "Five in a row", files: ["og-image-en.png"] },
     { title: "五目並べ", subtitle: "五つを並べる", files: ["og-image-ja.png"] },
+    { title: "五子棋", subtitle: "连成五子", files: ["og-image-zh.png"] },
   ];
   for (const job of jobs) {
     const buf = Buffer.from(svgFor(job.title, job.subtitle));

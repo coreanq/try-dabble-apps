@@ -3,9 +3,10 @@
   "short_name": "오목",
   "description": "AI와 대결하거나 친구와 2인 대결! 설치 없이 브라우저에서 바로 즐기는 무료 오목 게임.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#1a1510",
-  "theme_color": "#d4a94c",
+  "background_color": "#f4ead6",
+  "theme_color": "#6b431d",
   "orientation": "portrait",
   "categories": ["games", "entertainment"],
   "lang": "ko",
@@ -13,12 +14,20 @@
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
