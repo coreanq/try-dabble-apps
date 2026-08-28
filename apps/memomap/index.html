@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>기억지도</title>
+  <meta name="description" content="다녀온 곳을 지도에 핀으로 남기는 개인 기억 지도. 탭해서 핀을 꽂고 한 줄 메모와 사진을 붙입니다. 로그인도, 스태미나도, 사진 개수 제한도, 구독도 없습니다. 핀은 이 기기에만 남습니다." />
+  <meta name="theme-color" content="#f2e6cf" />
+  <meta name="application-name" content="기억지도" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="기억지도" />
+  <link rel="canonical" href="https://memomap.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://memomap.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://memomap.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://memomap.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://memomap.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://memomap.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Memomap" />
+  <meta property="og:url" content="https://memomap.try-dabble.com/" />
+  <meta property="og:title" content="기억지도" />
+  <meta property="og:description" content="다녀온 곳을 지도에 핀으로 남기는 개인 기억 지도. 탭해서 핀을 꽂고 한 줄 메모와 사진을 붙입니다. 로그인도, 스태미나도, 사진 개수 제한도, 구독도 없습니다. 핀은 이 기기에만 남습니다." />
+  <meta property="og:image" content="https://memomap.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="기억지도" />
+  <meta name="twitter:description" content="다녀온 곳에 핀과 한 줄, 사진 한 장. 로그인도 구독도 없고, 핀은 이 기기에만 남습니다." />
+  <meta name="twitter:image" content="https://memomap.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://memomap.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://memomap.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://memomap.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .mm-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+  -->
+  <div id="root">
+    <div class="mm-shell">
+      <p class="mm-tape" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="mm-masthead">
+        <div class="mm-masthead-row">
+          <h1 id="brand-title">기억지도</h1>
+          <svg viewBox="0 0 72 56" aria-hidden="true" focusable="false" class="block h-8 w-[40px] shrink-0 sm:h-10 sm:w-[52px]">
+            <path d="M4 12 L25 5 L47 12 L68 5 V44 L47 51 L25 44 L4 51 Z" fill="#f6ecd8" stroke="#33291d" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M25 5 V44 M47 12 V51" stroke="#33291d" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M8 27 C18 20, 30 34, 43 25 S60 20, 65 26" fill="none" stroke="#2f6b62" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+            <path d="M56 12 l2.6 5.6 5.6 2.6 -5.6 2.6 -2.6 5.6 -2.6 -5.6 -5.6 -2.6 5.6 -2.6 Z" fill="#b98a2c"/>
+            <path d="M17 20 c5 0 9 4 9 9 0 6.5 -9 15 -9 15 s-9 -8.5 -9 -15 c0 -5 4 -9 9 -9 Z" fill="#b4472e" stroke="#8f3520" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="17" cy="29" r="3.2" fill="#f6ecd8"/>
+          </svg>
+        </div>
+        <p class="mm-tagline">다녀온 곳에 핀과 한 줄, 이 기기에만</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+# Memomap / 기억지도 / 視える記憶 / 记忆地图
+
+> A private map of the places you have already been. Tap the map to drop a pin, add a short memo and one photo. No account, no login, no subscription. Everything stays on the device.
+
+This is a Progressive Web App (PWA) hosted at https://memomap.try-dabble.com/
+Pins and memos are stored in this browser (localStorage key memomap:pins:v1); photos are stored in this device's IndexedDB database "memomap". No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a wishlist of places to visit and NOT a country-colouring map. It is a been-there memory map, and it does NOT require signing up to try.
+
+## Pages
+
+- [Home](https://memomap.try-dabble.com/): The map, the pins, the memos and the photos
+- [Privacy](https://memomap.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://memomap.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/memomap): How-to on try-dabble.com
+
+## Features
+
+- Free OpenStreetMap tiles via Leaflet. No Mapbox or Google Maps API key.
+- Tap anywhere on the map to drop a pin at that spot
+- One short memo per pin, saved as you type
+- One optional photo per pin, from the photo library or the camera, kept on-device
+- Pin list under the map; tap an entry to centre the map and open the memo
+- Substring search across memo text
+- Delete a pin, its memo and its photo in one step
+- No login, no sign-up, no stamina or energy system, no daily cap
+- No limit on how many photos you attach, no subscription, no paid tier
+- Pins never expire and are never reset by an app update
+- Private by default: no share links, no upload, nothing leaves the device
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

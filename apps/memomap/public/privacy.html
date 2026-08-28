@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Memomap</title>
+  <meta name="description" content="Privacy policy for Memomap. Pins, memos and photos stay on this device." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <style>
+    :root { color-scheme: light; --bg:#f2e6cf; --fg:#33291d; --muted:#7c6a51; --card:#fbf5e8; --accent:#b4472e; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    a { color: var(--accent); }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    p, li { color: var(--muted); }
+    .card { background: var(--card); border: 1px solid #d8c7a4; border-radius: 3px; padding: 1.25rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="/">← Memomap</a></p>
+    <h1>Privacy Policy</h1>
+    <div class="card">
+      <p>Memomap is local-first. Pin coordinates and memo text are stored only in this browser (<strong>localStorage</strong> key <code>memomap:pins:v1</code>, plus <code>memomap:view:v1</code> for the last map position). Attached photos are stored only in this device's <strong>IndexedDB</strong> database <code>memomap</code>. Language uses localStorage (<code>memomap:lang</code>) and a <code>td_lang</code> cookie shared across try-dabble.com subdomains. Nothing is uploaded to our servers.</p>
+      <p>There are no accounts, no sign-in, no subscription, and no server-side copy of your pins or photos. Pins are private by default; there is no sharing and no public profile.</p>
+      <p>Map tiles are loaded from OpenStreetMap (<a href="https://tile.openstreetmap.org" rel="noopener noreferrer" target="_blank">tile.openstreetmap.org</a>). Requesting a tile tells that service which map area is being viewed, as any web map does. Your pins, memos and photos are never sent with those requests.</p>
+      <p>Nothing expires on a timer and an app update never clears your pins. A pin is removed only when you delete it, or when you clear site data in your browser.</p>
+      <p><strong>Advertising:</strong> Google AdSense may be active on this site. Google and its partners may use cookies or similar technologies to serve personalized or non-personalized ads and to measure performance. See <a href="https://policies.google.com/technologies/ads" rel="noopener noreferrer" target="_blank">Google’s advertising policies</a> and your browser or Google account settings to manage ad cookies.</p>
+      <p>Last updated: 2026-08-28</p>
+    </div>
+  </main>
+</body>
+</html>

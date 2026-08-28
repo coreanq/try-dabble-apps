@@ -1,0 +1,32 @@
+{
+  "name": "기억지도",
+  "short_name": "기억지도",
+  "description": "다녀온 곳에 핀을 꽂고 한 줄 메모와 사진을 남기는 개인 기억 지도. 로그인도 구독도 없고, 이 기기에만 저장됩니다.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f2e6cf",
+  "theme_color": "#f2e6cf",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
