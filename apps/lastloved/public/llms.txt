@@ -1,0 +1,37 @@
+# Lastloved / 그때그곡 / あの頃の曲 / 当年那首歌
+
+> A private log for the song you are wearing out right now: title, artist, the day you last loved it, and how many years until it comes back to you. No account, no login, no streaming service, no audio files, no song-count lock. Everything stays on the device.
+
+This is a Progressive Web App (PWA) hosted at https://lastloved.try-dabble.com/
+Songs, dates, year counts and the default wait are stored in this browser only (localStorage keys lastloved:songs:v1 and lastloved:years:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a music player and NOT a streaming client. There is no play button, no audio file picker and no Spotify, Apple Music or YouTube connection. A song here is a title and an artist that you typed.
+
+## Pages
+
+- [Home](https://lastloved.try-dabble.com/): The shelf — songs that are back now, and songs still waiting
+- [Privacy](https://lastloved.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://lastloved.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/lastloved): How-to on try-dabble.com
+
+## Features
+
+- Add a song by typing a title and an artist; both are required, and that is all it takes
+- Date last loved, defaulting to today and editable at any time
+- Choose how many years until it comes back: 1, 2, 3, 5, 10, or any number up to 50
+- The number you pick is remembered as the default for the next song
+- Songs whose years have passed appear in their own "back now" list, above the ones still waiting
+- Each song carries a year stamp showing the year it returns
+- One tap to mark a song heard again, which winds the clock back to today and counts the reunion
+- Search across titles and artists
+- Delete a song, with confirmation
+- No login, no sign-up, no credit-card screen, no subscription or IAP
+- No 10-song or 100-song lock, and no music-library requirement
+- No streaming account, no play button, no audio files
+- Data survives closing the tab and closing the browser; nothing expires on a clock
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

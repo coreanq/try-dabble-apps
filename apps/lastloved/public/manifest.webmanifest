@@ -1,0 +1,32 @@
+{
+  "name": "그때그곡",
+  "short_name": "그때그곡",
+  "description": "제목과 가수, 마지막으로 사랑한 날, 그리고 N년 뒤의 재회를 적어 두는 개인 기록장. 로그인도 스트리밍 연결도 없이 이 기기에만 저장됩니다.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ded1d6",
+  "theme_color": "#ded1d6",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,606 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Lastloved / 그때그곡 — a faded mixtape and a strip of ticket stubs.
+
+  The page is the dusty rose-grey of a J-card sleeve that has sat in a drawer
+  since 2009. On it lie TICKET STUBS: cream card stock with a perforated left
+  edge, the song title written in a slanted serif, the artist stamped in small
+  caps, and a rotated YEAR STAMP punched on the right — violet ink while the
+  song is still sealed, magenta-red the moment it comes back.
+
+  Deliberately dusk-toned and printed rather than warm-kraft, so it never reads
+  as the fridge of leftover-box, the torn pad of trashpad, the parchment map of
+  memomap or the cool navy book of kinlog. And nothing here is a dark #111
+  utility: it is paper that has gone slightly pink with age.
+  shadcn is the kit, not the look — the primitives are re-dressed as card stock.
+*/
+
+@theme {
+  --color-dusk: #ded1d6;
+  --color-dusk-2: #cdbec9;
+  --color-stub: #fdf8f2;
+  --color-stub-2: #f6ece1;
+  --color-ink: #2e2733;
+  --color-muted-ink: #6f6478;
+  --color-faint-ink: #9d92a6;
+  --color-rule: #ddcfd8;
+  --color-perf: #c6b6c2;
+  --color-violet: #57407f;
+  --color-violet-bg: #e8e0f5;
+  --color-due: #a83454;
+  --color-due-bg: #f8dfe6;
+  --color-reel: #7a5a3c;
+  --color-tape: #f0c14b;
+  --color-tape-ink: #4a3405;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-title);
+  --font-mono: var(--stack-stamp);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-title: "Iowan Old Style", "Palatino Linotype", "Nanum Myeongjo",
+    "Hiragino Mincho ProN", "Songti SC", Georgia, serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-stamp: "Courier New", ui-monospace, "Noto Sans Mono CJK KR",
+    "Noto Sans Mono CJK SC", monospace;
+
+  --background: #ded1d6;
+  --foreground: #2e2733;
+  --card: #fdf8f2;
+  --card-foreground: #2e2733;
+  --popover: #fefbf7;
+  --popover-foreground: #2e2733;
+  --primary: #57407f;
+  --primary-foreground: #f7f3fb;
+  --secondary: #e6dcdf;
+  --secondary-foreground: #2e2733;
+  --muted: #d6c8cf;
+  --muted-foreground: #6f6478;
+  --accent: #e8e0f5;
+  --accent-foreground: #57407f;
+  --destructive: #a83454;
+  --border: #ddcfd8;
+  --input: #c3b2bd;
+  --ring: #57407f;
+
+  --radius: 0.18rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Tape hiss: a fine diagonal grain over a sleeve that has faded unevenly. */
+    background-image:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.66), transparent 46%),
+      radial-gradient(circle at 88% 4%, rgba(87, 64, 127, 0.1), transparent 38%),
+      radial-gradient(circle at 6% 98%, rgba(168, 52, 84, 0.08), transparent 40%),
+      repeating-linear-gradient(
+        128deg,
+        rgba(46, 39, 51, 0.045) 0 1px,
+        transparent 1px 6px
+      );
+  }
+
+  a {
+    color: var(--color-violet);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input/select min-content must never force sideways scroll. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .ll-shell {
+    max-width: 32rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.7rem 1rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  /* Amber notice. The Worker rewrites this text in the first HTML, so the
+     mounted app must render the same #local-only element. */
+  .ll-tape {
+    margin: 0;
+    padding: 0.42rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-tape-ink);
+    background: linear-gradient(180deg, #f7d071 0%, #f0c14b 55%, #e3ae2f 100%);
+    border: 1.5px solid #b9871a;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* The J-card: the printed insert that slides into a cassette case, with the
+     case's clear plastic edge down the left. */
+  .ll-jcard {
+    position: relative;
+    padding: 0.6rem 0.8rem 0.68rem 1.05rem;
+    background:
+      linear-gradient(180deg, #fdf8f2 0%, #f4e9dd 100%);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 3px var(--color-dusk),
+      0 0 0 4.5px rgba(87, 64, 127, 0.5),
+      2px 3px 0 rgba(46, 39, 51, 0.16);
+  }
+  /* The spine stripe of the insert. */
+  .ll-jcard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0.42rem;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--color-violet) 0 0.5rem,
+      var(--color-due) 0.5rem 1rem
+    );
+    opacity: 0.72;
+  }
+
+  .ll-jcard-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem 0.5rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — looks the
+     same as the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-title);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ll-tagline {
+    margin: 0.24rem 0 0;
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: var(--color-muted-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .ll-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--color-stub);
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 2px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 1px 1px 0 var(--color-ink);
+  }
+
+  /* The "what is not here" chips, right under the masthead: the whole reason
+     someone leaves the store apps. First screen, above the fold, always. */
+  .ll-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ll-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-violet);
+    background: var(--color-violet-bg);
+    border: 1.5px solid var(--color-violet);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .ll-chip::before {
+    content: "✕";
+    font-size: 0.62rem;
+    font-weight: 800;
+    opacity: 0.75;
+  }
+  .ll-chip[data-kind="yes"] {
+    color: #1f5f4d;
+    background: #dcece5;
+    border-color: #2c7a63;
+  }
+  .ll-chip[data-kind="yes"]::before {
+    content: "✓";
+  }
+
+  /* A section header printed like the SIDE A / SIDE B line on a J-card. */
+  .ll-side {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+  .ll-side-mark {
+    flex: 0 0 auto;
+    font-family: var(--stack-stamp);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-stub);
+    background: var(--color-ink);
+    padding: 0.1rem 0.34rem;
+    border-radius: 1px;
+  }
+  .ll-side-mark[data-tone="due"] {
+    background: var(--color-due);
+  }
+
+  /* ------------------------------------------------------------ the stub */
+
+  /* One ticket stub. Perforated down the left, torn from the strip. */
+  .ll-stub {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 0.55rem;
+    background: var(--color-stub);
+    border: 1px solid var(--color-rule);
+    border-radius: 2px;
+    box-shadow: 1px 2px 0 rgba(46, 39, 51, 0.08);
+    padding: 0.55rem 0.6rem 0.6rem 0.95rem;
+    overflow: hidden;
+  }
+  /* The perforation: punched holes down the tear line. */
+  .ll-stub::before {
+    content: "";
+    position: absolute;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    left: 0.42rem;
+    width: 0;
+    border-left: 2px dotted var(--color-perf);
+  }
+  /* Half-moon notches at the ends of the tear, as on a real stub. */
+  .ll-stub::after {
+    content: "";
+    position: absolute;
+    left: -0.3rem;
+    top: 50%;
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-top: -0.3rem;
+    border-radius: 999px;
+    background: var(--color-dusk);
+    box-shadow: 0 0 0 1px var(--color-rule) inset;
+  }
+  .ll-stub[data-due="true"] {
+    background: linear-gradient(96deg, #fdeef1 0%, var(--color-stub) 52%);
+    border-color: var(--color-due);
+  }
+  .ll-stub[data-open="true"] {
+    box-shadow: 2px 4px 0 rgba(46, 39, 51, 0.13);
+    border-color: var(--color-ink);
+  }
+
+  .ll-stub-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* The song title, written across the stub in a slanted hand. */
+  .ll-song {
+    margin: 0;
+    font-family: var(--stack-title);
+    font-size: 1.04rem;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* The artist, stamped rather than written. */
+  .ll-artist {
+    margin: 0.12rem 0 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* The date line, in the typewriter face a ticket is printed in. */
+  .ll-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    font-family: var(--stack-stamp);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-ink);
+    white-space: nowrap;
+  }
+
+  /* The year stamp punched into the right end of the stub. */
+  .ll-year {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 4rem;
+    padding: 0.26rem 0.34rem 0.3rem;
+    border: 2.5px solid var(--color-violet);
+    border-radius: 2px;
+    background: var(--color-violet-bg);
+    color: var(--color-violet);
+    transform: rotate(-3deg);
+  }
+  .ll-year[data-tone="due"] {
+    border-color: var(--color-due);
+    background: var(--color-due-bg);
+    color: var(--color-due);
+    transform: rotate(-6deg);
+  }
+  .ll-year-num {
+    font-family: var(--stack-stamp);
+    font-size: 1.02rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+  }
+  .ll-year-word {
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  .ll-open-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .ll-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-muted-ink);
+  }
+
+  /* 16px keeps iOS from zooming the page when the caret lands. */
+  .ll-field {
+    background: #fffdfa;
+    border: 1.5px solid var(--color-input);
+    border-radius: 2px;
+    padding: 0.5rem 0.6rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+    caret-color: var(--color-violet);
+  }
+  .ll-field::placeholder {
+    color: var(--color-faint-ink);
+  }
+  .ll-field:focus {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  /* Date inputs must not blow past 390px, and must not be 16px-zoomed away. */
+  input.ll-date {
+    font-family: var(--stack-stamp);
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* The years picker is the whole product, so it is a row of stamped keys
+     rather than a dropdown buried in a settings screen. */
+  .ll-years {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .ll-year-key {
+    flex: 0 0 auto;
+    min-width: 3rem;
+    padding: 0.32rem 0.5rem;
+    font-family: var(--stack-stamp);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+    background: var(--color-stub-2);
+    border: 1.5px solid var(--color-input);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform 75ms ease;
+  }
+  .ll-year-key:active {
+    transform: translateY(1px);
+  }
+  .ll-year-key[aria-pressed="true"] {
+    color: var(--color-violet);
+    background: var(--color-violet-bg);
+    border-color: var(--color-violet);
+    box-shadow: 1px 1px 0 var(--color-violet);
+  }
+
+  .ll-promise {
+    display: flex;
+    gap: 0.45rem;
+    align-items: flex-start;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--color-muted-ink);
+  }
+  .ll-promise::before {
+    content: "";
+    flex: 0 0 auto;
+    margin-top: 0.42rem;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: var(--color-violet);
+    box-shadow: 0 0 0 2px rgba(87, 64, 127, 0.18);
+  }
+
+  .ll-card {
+    border: 1px solid var(--color-rule);
+    border-radius: 2px;
+    box-shadow: 1px 2px 0 rgba(46, 39, 51, 0.08);
+  }
+}
+
+@media (min-width: 520px) {
+  .ll-shell {
+    padding-top: 1.1rem;
+    max-width: 36rem;
+  }
+}
+
+/* 390px and below: title, cassette and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.18rem;
+  }
+
+  .ll-select {
+    max-width: 6rem;
+    padding: 0.26rem 0.36rem;
+    font-size: 0.74rem;
+  }
+
+  .ll-chip {
+    font-size: 0.64rem;
+    padding: 0.18rem 0.4rem;
+  }
+
+  .ll-year {
+    min-width: 3.5rem;
+    padding: 0.22rem 0.26rem 0.26rem;
+  }
+  .ll-year-num {
+    font-size: 0.92rem;
+  }
+
+  .ll-song {
+    font-size: 0.98rem;
+  }
+}
