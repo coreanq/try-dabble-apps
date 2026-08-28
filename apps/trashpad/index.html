@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>휴지패드</title>
+  <meta name="description" content="저장 버튼 없는 메모장. 적는 순간 남고, 마지막으로 고친 뒤 24시간이 지나면 스스로 지워집니다. 타이머는 1시간·6시간·24시간·48시간·7일 중에 고릅니다. 계정도 구독도 없고, 탭을 닫아도 남습니다." />
+  <meta name="theme-color" content="#e9e1cd" />
+  <meta name="application-name" content="휴지패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="휴지패드" />
+  <link rel="canonical" href="https://trashpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://trashpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://trashpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://trashpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://trashpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://trashpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Trashpad" />
+  <meta property="og:url" content="https://trashpad.try-dabble.com/" />
+  <meta property="og:title" content="휴지패드" />
+  <meta property="og:description" content="저장 버튼 없는 메모장. 적는 순간 남고, 마지막으로 고친 뒤 24시간이 지나면 스스로 지워집니다. 타이머는 1시간·6시간·24시간·48시간·7일 중에 고릅니다. 계정도 구독도 없고, 탭을 닫아도 남습니다." />
+  <meta property="og:image" content="https://trashpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="휴지패드" />
+  <meta name="twitter:description" content="저장 버튼 없는 메모장. 적는 순간 남고, 마지막으로 고친 뒤 24시간이 지나면 스스로 지워집니다. 계정도 구독도 없습니다." />
+  <meta name="twitter:image" content="https://trashpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://trashpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://trashpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://trashpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .tp-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+  -->
+  <div id="root">
+    <div class="tp-shell">
+      <p class="tp-tape" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="tp-masthead">
+        <div class="tp-masthead-row">
+          <h1 id="brand-title">휴지패드</h1>
+          <svg viewBox="0 0 72 56" aria-hidden="true" focusable="false" class="block h-8 w-[40px] shrink-0 sm:h-10 sm:w-[52px]">
+            <rect x="20" y="8" width="42" height="40" rx="2" fill="#fbefbe" stroke="#c9ae5c" stroke-width="1.5"/>
+            <rect x="9" y="3" width="42" height="44" rx="2" fill="#fdf5d0" stroke="#b79a45" stroke-width="2"/>
+            <path d="M9 12 H51" stroke="#b79a45" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M17 3 V47" stroke="#cf4a3c" stroke-width="1.5"/>
+            <path d="M22 21 H44 M22 28 H44 M22 35 H37" stroke="#9db4cf" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="52" cy="41" r="11" fill="#f7dcd6" stroke="#b23a2e" stroke-width="2.5"/>
+            <path d="M52 35 V41 L57 44" fill="none" stroke="#b23a2e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="tp-tagline">적으면 남고, 시간이 지나면 지워집니다</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

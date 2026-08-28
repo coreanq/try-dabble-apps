@@ -1,0 +1,31 @@
+# Trashpad / 휴지패드 / 消えるメモ / 废纸便签
+
+> A scratch pad that deletes itself. Type and it stays; each note is deleted once its timer runs out, counted from the last edit. There is no Save button and no archive.
+
+This is a Progressive Web App (PWA) hosted at https://trashpad.try-dabble.com/
+All data stays in the browser (localStorage keys trashpad:notes:v1 and trashpad:default-ttl:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a burn-after-reading link service like privnote, and it does NOT lose your notes when the tab closes.
+
+## Pages
+
+- [Home](https://trashpad.try-dabble.com/): Write notes, pick the delete timer, watch the countdown
+- [Privacy](https://trashpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://trashpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/trashpad): How-to on try-dabble.com
+
+## Features
+
+- Auto-save as you type. There is no Save button anywhere.
+- Per-note delete timer and a default for new notes: 1h / 6h / 24h / 48h / 7d
+- Default is 24 hours measured from the LAST EDIT; editing a note restarts its countdown
+- Live countdown stamp on every note, plus a one-tap timer restart
+- Expired notes are deleted on load and while the app is open. No archive, no undo.
+- Notes survive closing the tab or the browser, until their timer expires
+- No account, no login, no subscription, no cloud sync, no share links
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

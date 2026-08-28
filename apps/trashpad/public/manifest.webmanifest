@@ -1,0 +1,32 @@
+{
+  "name": "휴지패드",
+  "short_name": "휴지패드",
+  "description": "적으면 남고, 시간이 지나면 지워집니다. 저장 버튼 없음. 기본 24시간, 1시간·6시간·24시간·48시간·7일 중에 고릅니다.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#e9e1cd",
+  "theme_color": "#e9e1cd",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

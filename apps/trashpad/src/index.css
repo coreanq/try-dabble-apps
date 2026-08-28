@@ -1,0 +1,423 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Trashpad / 휴지패드 — a tear-off legal pad on a putty desk.
+  Legal-yellow sheets, blue rules, a red margin line, a perforated header and
+  rubber-stamp countdowns. Warm and light on purpose: the job is "scribble it
+  and let it rot", not a dark utility console.
+  shadcn is the kit, not the look — the primitives are re-dressed as paper.
+*/
+
+@theme {
+  --color-desk: #e9e1cd;
+  --color-desk-2: #f1ead9;
+  --color-pad: #fdf5d0;
+  --color-pad-2: #fbefbe;
+  --color-ink: #201d17;
+  --color-muted-ink: #6a6152;
+  --color-rule: #9db4cf;
+  --color-margin: #cf4a3c;
+  --color-graphite: #3d3a33;
+  --color-fresh: #3f6f4a;
+  --color-fresh-bg: #dde9d9;
+  --color-soon: #9a6512;
+  --color-soon-bg: #f6e6c2;
+  --color-gone: #b23a2e;
+  --color-gone-bg: #f7dcd6;
+  --color-tape: #f0c14b;
+  --color-tape-ink: #4a3405;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-ui);
+  --font-mono: var(--stack-stamp);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans",
+    "Segoe UI", system-ui, -apple-system, sans-serif;
+  --stack-stamp: "Courier New", ui-monospace, "Noto Sans Mono CJK KR",
+    "Noto Sans Mono CJK SC", monospace;
+
+  --background: #e9e1cd;
+  --foreground: #201d17;
+  --card: #f6f0df;
+  --card-foreground: #201d17;
+  --popover: #fdf9ec;
+  --popover-foreground: #201d17;
+  --primary: #3d3a33;
+  --primary-foreground: #fdf5d0;
+  --secondary: #f1ead9;
+  --secondary-foreground: #201d17;
+  --muted: #ece4d0;
+  --muted-foreground: #6a6152;
+  --accent: #dde9d9;
+  --accent-foreground: #3f6f4a;
+  --destructive: #b23a2e;
+  --border: #d6cbaf;
+  --input: #d6cbaf;
+  --ring: #cf4a3c;
+
+  --radius: 0.2rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  /* One rule per line of the pad; the textarea line-height matches it. */
+  --rule-h: 1.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Putty desk blotter: linen weave plus a warm lamp from the top left. */
+    background-image:
+      radial-gradient(circle at 10% 0%, rgba(253, 245, 208, 0.65), transparent 42%),
+      radial-gradient(circle at 96% 6%, rgba(207, 74, 60, 0.06), transparent 30%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(32, 29, 23, 0.02) 3px 4px),
+      repeating-linear-gradient(90deg, transparent 0 3px, rgba(32, 29, 23, 0.02) 3px 4px);
+  }
+
+  a {
+    color: var(--color-gone);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native select/textarea min-content must never force sideways scroll. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .tp-shell {
+    max-width: 32rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.7rem 1rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Amber notice. The Worker rewrites this text in the first HTML, so the
+     mounted app must render the same #local-only element. */
+  .tp-tape {
+    margin: 0;
+    padding: 0.42rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-tape-ink);
+    background: linear-gradient(180deg, #f7d071 0%, #f0c14b 55%, #e3ae2f 100%);
+    border: 1.5px solid #b9871a;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Masthead sits on the pad's cardboard backing, torn off along a
+     perforation. The dotted rule is the app's signature edge. */
+  .tp-masthead {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.65rem 1rem 0.85rem;
+    background: linear-gradient(180deg, #f3ecda 0%, #e7dcc0 100%);
+    border-bottom: 3px dashed #b7a67e;
+  }
+  .tp-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -9px;
+    height: 6px;
+    background: radial-gradient(circle at 6px 0, rgba(32, 29, 23, 0.16) 2px, transparent 2.5px)
+      repeat-x;
+    background-size: 12px 6px;
+    pointer-events: none;
+  }
+
+  .tp-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem 0.5rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — looks the
+     same as the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1.42rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tp-tagline {
+    margin: 0.2rem 0 0;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--color-muted-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .tp-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--color-pad);
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-graphite);
+    border-radius: 2px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 1px 1px 0 var(--color-graphite);
+  }
+
+  /* THE sheet: legal-yellow paper, blue rules, red margin, torn top edge. */
+  .tp-sheet {
+    position: relative;
+    background: var(--color-pad);
+    border: 1px solid #e0cf8e;
+    border-top: none;
+    border-radius: 0 0 3px 10px;
+    box-shadow: 2px 4px 0 rgba(32, 29, 23, 0.07);
+    padding: 0.55rem 0.65rem 0.6rem;
+    margin-top: 10px;
+  }
+  /* Deckle: bumps of paper above the sheet, as if torn off the gum binding. */
+  .tp-sheet::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 0;
+    right: 0;
+    height: 9px;
+    background:
+      radial-gradient(circle at 7px 9px, var(--color-pad-2) 7px, transparent 7.5px) repeat-x;
+    background-size: 14px 9px;
+  }
+  .tp-sheet-gone {
+    background: #f6e2dc;
+    border-color: #e4b6ac;
+  }
+  .tp-sheet-gone::before {
+    background:
+      radial-gradient(circle at 7px 9px, #f0d2ca 7px, transparent 7.5px) repeat-x;
+    background-size: 14px 9px;
+  }
+
+  /* Ruled writing surface. background-attachment: local keeps the blue rules
+     pinned to the text while the textarea scrolls. */
+  .tp-write {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    resize: none;
+    overflow: hidden;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 calc(var(--rule-h) - 1px),
+        rgba(157, 180, 207, 0.55) calc(var(--rule-h) - 1px) var(--rule-h)
+      ),
+      linear-gradient(
+        to right,
+        transparent 0 34px,
+        rgba(207, 74, 60, 0.45) 34px 35px,
+        transparent 35px
+      );
+    background-attachment: local, local;
+    padding: 0 0.5rem 0 2.75rem;
+    /* 16px keeps iOS from zooming the page when the caret lands. */
+    font-size: 1rem;
+    line-height: var(--rule-h);
+    font-family: inherit;
+    color: var(--color-ink);
+    caret-color: var(--color-gone);
+  }
+  .tp-write::placeholder {
+    color: #a89a72;
+  }
+
+  /* Rubber-stamp countdown, knocked off square like a real date stamp. */
+  .tp-stamp {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.28rem;
+    padding: 0.16rem 0.42rem;
+    border: 2px solid;
+    border-radius: 3px;
+    font-family: var(--stack-stamp);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    transform: rotate(-3deg);
+    white-space: nowrap;
+  }
+  .tp-stamp small {
+    font-size: 0.6rem;
+    font-weight: 700;
+    opacity: 0.85;
+    letter-spacing: 0.04em;
+  }
+  .tp-stamp-fresh {
+    color: var(--color-fresh);
+    border-color: var(--color-fresh);
+    background: var(--color-fresh-bg);
+  }
+  .tp-stamp-soon {
+    color: var(--color-soon);
+    border-color: #c68a24;
+    background: var(--color-soon-bg);
+  }
+  .tp-stamp-gone {
+    color: var(--color-gone);
+    border-color: var(--color-gone);
+    background: var(--color-gone-bg);
+  }
+
+  /* Timer presets: little punch-card chips. */
+  .tp-chip {
+    appearance: none;
+    cursor: pointer;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-desk-2);
+    color: var(--color-muted-ink);
+    border-radius: 2px;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .tp-chip[aria-pressed="true"] {
+    border-color: var(--color-graphite);
+    background: var(--color-pad);
+    color: var(--color-ink);
+    box-shadow: 1px 1px 0 var(--color-graphite);
+  }
+
+  .tp-card {
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(32, 29, 23, 0.06);
+  }
+
+  .tp-label {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--color-muted-ink);
+  }
+}
+
+@media (min-width: 520px) {
+  .tp-shell {
+    padding-top: 1.1rem;
+    max-width: 36rem;
+  }
+}
+
+/* 390px and below: title, mark and language picker must never collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.14rem;
+  }
+
+  .tp-select {
+    max-width: 6.6rem;
+    padding: 0.26rem 0.38rem;
+    font-size: 0.74rem;
+  }
+
+  .tp-write {
+    padding-left: 2.5rem;
+  }
+}
