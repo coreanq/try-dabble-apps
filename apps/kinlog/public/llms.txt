@@ -1,0 +1,37 @@
+# Kinlog / 인연장 / 縁帳 / 亲友录
+
+> A private address book for the people you actually keep up with. Type a name, keep notes on that person's card, and record the last and next contact date. No account, no login, no credit card, no contacts permission. Everything stays on the device.
+
+This is a Progressive Web App (PWA) hosted at https://kinlog.try-dabble.com/
+People, notes, contact dates and the sort choice are stored in this browser only (localStorage key kinlog:people:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a gift-idea list and NOT a work CRM. It is a personal relationship log, and it does NOT require signing up, adding a payment method, or importing your phone's contacts to try.
+
+## Pages
+
+- [Home](https://kinlog.try-dabble.com/): The book — people, notes, last contact, next contact
+- [Privacy](https://kinlog.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://kinlog.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/kinlog): How-to on try-dabble.com
+
+## Features
+
+- Add a person by typing a name; an optional "how you met" line gives context
+- Notes on each person's card that auto-save as you type — there is no Save button
+- Notes are still on the card after a reload or after closing the browser
+- Last-contact date, with a one-tap "talked today"
+- Next-contact date, with 1 week / 1 month / 3 months presets that never reset
+- Sort by next contact (overdue first), longest since last contact, name, or recently added
+- Overdue people are stamped and float to the top
+- Search across names, context lines and note text
+- Delete a person, with confirmation
+- No login, no sign-up, no credit-card screen, no subscription or IAP
+- No contacts permission prompt and no invite spam
+- No cap on how many people or how long the notes are
+- Nothing expires and an app update never resets your dates
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
