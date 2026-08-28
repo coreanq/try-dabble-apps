@@ -167,10 +167,6 @@ function Home() {
     () => visible.filter((s) => !isDue(s, today)),
     [visible, today],
   );
-  const dueTotal = useMemo(
-    () => songs.filter((s) => isDue(s, today)).length,
-    [songs, today],
-  );
 
   function handleLang(next: Lang) {
     rememberLang(next);
@@ -336,12 +332,6 @@ function Home() {
                   ))}
                 </div>
               </section>
-            ) : null}
-
-            {dueTotal === 0 && !query ? (
-              <p className="mt-[0.75rem] mb-0 text-[0.76rem] text-muted-ink" id="none-due">
-                {t("waitingSub")}
-              </p>
             ) : null}
           </CardContent>
         </Card>
