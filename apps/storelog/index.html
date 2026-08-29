@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>가게록</title>
+  <meta name="description" content="가게 이름과 매장 번호, 그리고 짧은 메모만 적어 두는 휴대폰용 가게 명단. 스프레드시트를 열 필요가 없고, 가나다순으로 저절로 정렬되며, 이름·번호·메모를 한 칸으로 검색합니다. 로그인도 100건 잠금도 유료 잠금도 없고, 탭을 닫아도 그대로 남습니다. JSON과 CSV로 내보낼 수 있습니다." />
+  <meta name="theme-color" content="#d9e3cd" />
+  <meta name="application-name" content="가게록" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="가게록" />
+  <link rel="canonical" href="https://storelog.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://storelog.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://storelog.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://storelog.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://storelog.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://storelog.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Storelog" />
+  <meta property="og:url" content="https://storelog.try-dabble.com/" />
+  <meta property="og:title" content="가게록" />
+  <meta property="og:description" content="가게 이름과 매장 번호, 그리고 짧은 메모만 적어 두는 휴대폰용 가게 명단. 스프레드시트를 열 필요가 없고, 가나다순으로 저절로 정렬되며, 이름·번호·메모를 한 칸으로 검색합니다. 로그인도 100건 잠금도 유료 잠금도 없고, 탭을 닫아도 그대로 남습니다. JSON과 CSV로 내보낼 수 있습니다." />
+  <meta property="og:image" content="https://storelog.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="가게록" />
+  <meta name="twitter:description" content="가게 이름, 매장 번호, 메모. 가나다순 자동 정렬에 한 칸 검색. 로그인도 100건 잠금도 없이 이 기기에만." />
+  <meta name="twitter:image" content="https://storelog.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://storelog.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://storelog.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://storelog.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title, .sl-tagline and the five promise
+    chips here before any script runs, so crawlers and JS-off readers get the
+    requested ?lang= — and the fail-fix — immediately.
+    React replaces this subtree with the identical masthead on mount.
+  -->
+  <div id="root">
+    <div class="sl-shell">
+      <p class="sl-tape" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="sl-sign">
+        <div class="sl-sign-row">
+          <h1 id="brand-title">가게록</h1>
+          <svg viewBox="0 0 64 42" aria-hidden="true" focusable="false" class="block h-7 w-[42px] shrink-0 sm:h-8 sm:w-[48px]">
+            <rect x="3" y="14" width="58" height="25" rx="2" fill="#fffdf3" stroke="#23291f" stroke-width="2.4"/>
+            <path d="M2 13 L8 3 h48 l6 10 Z" fill="#1d5c3f" stroke="#23291f" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M17 3 L13 13 M31 3 L29 13 M45 3 L45 13" stroke="#fffdf3" stroke-width="2.6"/>
+            <rect x="9" y="21" width="21" height="14" rx="1.5" fill="#ffe89a" stroke="#23291f" stroke-width="2"/>
+            <path d="M13 26 h13 M13 30 h9" stroke="#23291f" stroke-width="1.6" opacity="0.55"/>
+            <g transform="translate(36,20) rotate(-6)">
+              <path d="M2 2 h15 l6 6 -6 6 H2 Z" fill="#fbe3dd" stroke="#bf3b2c" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="17.5" cy="8" r="1.7" fill="#bf3b2c"/>
+            </g>
+          </svg>
+        </div>
+        <p class="sl-tagline">가게 이름, 매장 번호, 메모. 가나다순. 이 기기에만.</p>
+      </header>
+      <ul class="sl-chips" id="promise-chips">
+        <li class="sl-chip" data-kind="no" id="chip-nologin">로그인 없음</li>
+        <li class="sl-chip" data-kind="no" id="chip-nolock">100건 잠금 없음</li>
+        <li class="sl-chip" data-kind="no" id="chip-nosheet">스프레드시트 없음</li>
+        <li class="sl-chip" data-kind="yes" id="chip-export">JSON·CSV 내보내기</li>
+        <li class="sl-chip" data-kind="yes" id="chip-persist">탭을 닫아도 남음</li>
+      </ul>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

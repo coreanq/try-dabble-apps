@@ -1,0 +1,34 @@
+# Storelog / 가게록 / 店舗帳 / 店录
+
+> A phone-first store directory: store name, store number and freeform notes. Sorted A–Z automatically, searchable across all three fields, exportable to JSON and CSV. No account, no login, no record cap, no PRO tier. Everything stays on the device.
+
+This is a Progressive Web App (PWA) hosted at https://storelog.try-dabble.com/
+Store names, numbers and notes are stored in this browser only (localStorage key storelog:stores:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a spreadsheet and NOT a CRM. There are no cells, no formulas, no sheet tabs and no column widths. A store here is a name, an optional number and an optional note that you typed on a phone.
+
+## Pages
+
+- [Home](https://storelog.try-dabble.com/): The list — every store, filed A–Z under its own aisle letter
+- [Privacy](https://storelog.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://storelog.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/storelog): How-to on try-dabble.com
+
+## Features
+
+- Add a store by typing a name; the store number and the notes are optional
+- Edit any field in place from the list, and delete with a confirmation
+- Automatic A–Z sort by name in the reader's own alphabet (가나다 in Korean, あいうえお in Japanese, pinyin in Chinese)
+- Aisle markers group the list by index letter; Korean names index by lead consonant
+- One search box filters name, store number and notes at once, ignoring dashes and spaces in phone numbers
+- A tel: link appears for numbers long enough to actually dial
+- Export the whole list as CSV (opens in Excel or Google Sheets, UTF-8 BOM) or as JSON
+- No login, no sign-up, no credit-card screen, no subscription or IAP
+- No 100-record cap and no PRO catalog unlock — the list is unlimited
+- Data survives closing the tab and closing the browser; nothing expires on a clock
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
