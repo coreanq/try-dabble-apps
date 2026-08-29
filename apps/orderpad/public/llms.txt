@@ -1,0 +1,35 @@
+# Orderpad / 주문수첩 / 注文帳 / 订货本
+
+> A phone-first order book for sellers who take orders in Instagram and WhatsApp DMs: customer, item, size/option, address, paid and shipped. Filter to what ships today and to who has not paid. No Meta login, no account, no order cap. Everything stays on the device.
+
+This is a Progressive Web App (PWA) hosted at https://orderpad.try-dabble.com/
+Customer names, items, options, addresses, the paid and shipped marks and the ship-by date are stored in this browser only (localStorage key orderpad:orders:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a shop back office and NOT a shipping platform. It does not connect to Instagram, WhatsApp, Meta or any marketplace. It is the paper order pad a seller keeps beside the phone, typed instead of written.
+
+## Pages
+
+- [Home](https://orderpad.try-dabble.com/): The pad — every order docket, still-to-ship on top
+- [Privacy](https://orderpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://orderpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/orderpad): How-to on try-dabble.com
+
+## Features
+
+- Write an order on one screen: customer (required), item, size/option, address, paid toggle, ship-by date defaulting to today
+- Mark paid and mark shipped with one tap each, straight from the docket
+- Filter views: all, unpaid, ship today (due today or already late), shipped — each with a live count
+- One search box across customer, item, option, address and docket number
+- Edit any field in place from the docket, and delete with a confirmation
+- Export the whole book as CSV (opens in Excel or Google Sheets, UTF-8 BOM) or as JSON, and import a JSON export back
+- No Meta login and no Instagram or WhatsApp account connection
+- No login, no sign-up, no credit-card screen, no subscription or IAP
+- No order cap — the book is unlimited
+- Data survives closing the tab mid-chat and closing the browser; nothing expires on a clock
+- Multi-user live sync is out of scope: this is one device, one pad
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

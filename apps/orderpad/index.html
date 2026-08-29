@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>주문수첩</title>
+  <meta name="description" content="인스타그램·왓츠앱 DM으로 받은 주문을 채팅 도중에 바로 적는 휴대폰용 주문수첩. 고객 이름, 상품, 사이즈, 주소, 입금, 발송을 한 화면에서 적고 오늘 보낼 것과 미입금만 걸러 봅니다. 메타 로그인도 회원가입도 없고, 건수 제한도 없으며, 탭을 닫아도 그대로 남습니다. JSON·CSV로 내보내고 JSON으로 되돌립니다." />
+  <meta name="theme-color" content="#d8d3c5" />
+  <meta name="application-name" content="주문수첩" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="주문수첩" />
+  <link rel="canonical" href="https://orderpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://orderpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://orderpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://orderpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://orderpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://orderpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Orderpad" />
+  <meta property="og:url" content="https://orderpad.try-dabble.com/" />
+  <meta property="og:title" content="주문수첩" />
+  <meta property="og:description" content="인스타그램·왓츠앱 DM으로 받은 주문을 채팅 도중에 바로 적는 휴대폰용 주문수첩. 고객 이름, 상품, 사이즈, 주소, 입금, 발송을 한 화면에서 적고 오늘 보낼 것과 미입금만 걸러 봅니다. 메타 로그인도 회원가입도 없고, 건수 제한도 없으며, 탭을 닫아도 그대로 남습니다. JSON·CSV로 내보내고 JSON으로 되돌립니다." />
+  <meta property="og:image" content="https://orderpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="주문수첩" />
+  <meta name="twitter:description" content="DM으로 받은 주문을 채팅 도중에 바로 적는 주문수첩. 오늘 보낼 것과 미입금만 걸러 봅니다. 메타 로그인 없이 이 기기에만." />
+  <meta name="twitter:image" content="https://orderpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://orderpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://orderpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://orderpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title, .op-tagline and the five promise
+    chips here before any script runs, so crawlers and JS-off readers get the
+    requested ?lang= — and the fail-fix — immediately.
+    React replaces this subtree with the identical masthead on mount.
+  -->
+  <div id="root">
+    <div class="op-shell">
+      <p class="op-tape" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="op-cover">
+        <div class="op-cover-row">
+          <h1 id="brand-title">주문수첩</h1>
+          <svg viewBox="0 0 64 42" aria-hidden="true" focusable="false" class="block h-7 w-[42px] shrink-0 sm:h-8 sm:w-[48px]">
+            <rect x="12" y="10" width="46" height="30" rx="2" fill="#f0cec9" stroke="#221f2c" stroke-width="2.2"/>
+            <rect x="8" y="7" width="46" height="30" rx="2" fill="#f2e2a0" stroke="#221f2c" stroke-width="2.2"/>
+            <rect x="4" y="4" width="46" height="30" rx="2" fill="#fffdf7" stroke="#221f2c" stroke-width="2.4"/>
+            <path d="M4 9 h46" stroke="#33306e" stroke-width="3"/>
+            <path d="M9 17 h26 M9 23 h20 M9 29 h14" stroke="#221f2c" stroke-width="2" opacity="0.5"/>
+            <g transform="translate(31,17) rotate(-8)">
+              <rect x="0" y="0" width="22" height="14" rx="2" fill="#d9ebdf" stroke="#1f6b4a" stroke-width="2.4"/>
+              <path d="M5 7.5 l3.5 3.5 L17 3.5" fill="none" stroke="#1f6b4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+        <p class="op-tagline">고객, 상품, 입금, 발송. 이 기기에만.</p>
+      </header>
+      <ul class="op-chips" id="promise-chips">
+        <li class="op-chip" data-kind="no" id="chip-nometa">메타 연동 없음</li>
+        <li class="op-chip" data-kind="no" id="chip-nologin">로그인 없음</li>
+        <li class="op-chip" data-kind="no" id="chip-unlimited">건수 제한 없음</li>
+        <li class="op-chip" data-kind="yes" id="chip-export">JSON·CSV 내보내기</li>
+        <li class="op-chip" data-kind="yes" id="chip-persist">탭을 닫아도 남음</li>
+      </ul>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
