@@ -2,7 +2,9 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",
-    "lib": ["ES2023", "ES2025", "DOM", "DOM.Iterable"],
+    /* ES2025.Collection: grid.ts uses ReadonlySetLike, which TS defines only in that sub-lib.
+       The original Expo app got it free from expo/tsconfig.base's "ESNext". */
+    "lib": ["ES2023", "ES2025.Collection", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
