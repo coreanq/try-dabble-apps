@@ -44,7 +44,7 @@ export function GameDialog({
     >
       <DialogContent
         aria-describedby={undefined}
-        className="flex max-h-[88%] flex-col gap-0 overflow-hidden border-walnut-light p-0 sm:max-w-[580px]"
+        className="flex max-h-[88%] flex-col gap-0 overflow-hidden rounded-[1.5rem] border-walnut-light p-0 sm:max-w-[580px]"
         onEscapeKeyDown={(event) => {
           if (!allowClose) {
             event.preventDefault();
@@ -66,7 +66,7 @@ export function GameDialog({
             <DialogClose asChild>
               <button
                 aria-label={t(locale, 'close')}
-                className="flex size-11 shrink-0 items-center justify-center rounded-full border border-cream/30 pb-1 text-[30px] leading-none font-light text-cream outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.97] active:opacity-70"
+                className="relative flex size-11 shrink-0 items-center justify-center rounded-full border border-cream/30 pb-1 text-[30px] leading-none font-light text-cream outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.97] active:opacity-70 after:absolute after:-inset-1.5 after:content-['']"
                 type="button"
               >
                 ×
