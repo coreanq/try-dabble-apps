@@ -4,6 +4,7 @@ import { createRoute } from "@tanstack/react-router";
 import { GameScreen } from "@/components/game/game-screen";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
+import { SeoCopy } from "@/components/seo-copy";
 import { t } from "@/lib/i18n";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { HTML_LANG, detectLang } from "@/lib/i18n/resolve-lang";
@@ -26,6 +27,7 @@ function Home() {
       <LocalOnlyBanner text={t(locale, "localOnly")} />
       <Masthead sub={t(locale, "brandSub")} title={t(locale, "appTitle")} />
       <GameScreen locale={locale} />
+      <SeoCopy heading={t(locale, "faq")} locale={locale} />
     </div>
   );
 }

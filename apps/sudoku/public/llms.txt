@@ -1,0 +1,40 @@
+# 3D Sudoku / 스도쿠 3D / 3D数独
+
+> A tactile 3D sudoku played on a warm wooden board with ceramic number tiles: drag a tile onto a cell or select a cell and tap a number. Five rated difficulty levels, notes, undo/redo and answer checking. No login, no account, no server storage — only the language preference is remembered on this device.
+
+This is a Progressive Web App (PWA) hosted at https://sudoku.try-dabble.com/
+The only thing this app writes to the browser is the chosen UI language (localStorage key sudoku_lang, plus a td_lang cookie shared across try-dabble.com subdomains). A puzzle in progress lives only in page memory: closing or reloading the tab starts a fresh game. No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a competitive or timed sudoku app and NOT a puzzle archive with saved history. There is no leaderboard, no streak tracker and no cloud save. It is a single wooden board on a desk: pick a difficulty, place the tiles, done.
+
+## Pages
+
+- [Home](https://sudoku.try-dabble.com/): The board — choose a size and difficulty, then play
+- [Privacy](https://sudoku.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://sudoku.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/sudoku): How-to on try-dabble.com
+
+## How it plays
+
+- Two board sizes: 6×6 (each row, column and 2×3 box holds 1–6 once) and 9×9 (each row, column and 3×3 box holds 1–9 once)
+- Five rated difficulty levels: beginner, easy, medium, hard, expert
+- Place a digit by dragging a ceramic tile onto a cell, or by selecting a cell and tapping a number
+- Notes mode for pencilling in candidates before committing to a digit
+- Undo and redo, erase, and an answer-checking mode that flags conflicts
+- Fixed clue digits cannot be changed
+- Works with a finger, a mouse, or Apple Pencil — no input method is required
+
+## Features
+
+- Rendered as a real 3D scene (three.js): the board tilts, tiles have depth and drop into place
+- Optional background music and sound effects, each with its own volume; music is not downloaded until turned on
+- Optional haptics and a reduced-motion setting
+- Timer, per-digit usage counts, and an accessible board with keyboard and screen-reader labels
+- No login, no sign-up, no payment screen, no ads-for-progress gate
+- No daily puzzle limit and no premium tier: every size and difficulty is always open
+- Multi-language UI: Korean, English, Japanese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
