@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  스도쿠 3D — a wooden puzzle board on a dark desk.
+  The page is near-black walnut; the board is oiled hardwood under a warm
+  lamp, and the digits are glazed ceramic tiles that clink into place. The
+  accent is a lacquer vermilion, used only for conflicts and the timer.
+  Deliberately NOT the washi paper of omok, the pixel night of jump-map, or
+  the cream toy tray of playset. shadcn is the kit, not the look.
+  Every value here mirrors src/lib/game/game-theme.ts, which the 3D materials
+  read from; test/board3d.test.mjs asserts the two never drift apart.
+*/
+
+@theme {
+  --color-canvas: #18120f;
+  --color-charcoal: #2a211c;
+  --color-cream: #f7f0e2;
+  --color-cream-muted: #e4dac8;
+  --color-ink: #34251e;
+  --color-ink-muted: #756257;
+  --color-vermilion: #a7342d;
+  --color-walnut: #5b321f;
+  --color-walnut-dark: #2d1a12;
+  --color-walnut-light: #8a5535;
+  --font-display: Georgia, "Noto Serif", serif;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-cream);
+}
