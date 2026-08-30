@@ -6,14 +6,7 @@ import type { PuzzleDefinition } from '../sudoku/data/puzzles.generated';
 import { createGame, gameReducer } from '../sudoku/domain/game-reducer.ts';
 import type { GameAction, GameState } from '@/lib/sudoku/domain/game-state';
 import type { BoardSize } from '@/lib/sudoku/domain/layout';
-
-/**
- * Subset of the GameEffect union that this view-model's transitions can produce.
- * The full union lands in Task 5 at src/lib/feedback/feedback-events.ts; kept local
- * here so this file has no dependency on a module that does not exist yet. The full
- * union is a superset of these values, so callers typed for it accept this too.
- */
-type GameEffect = 'place' | 'invalid' | 'redo' | 'erase' | 'note' | 'undo';
+import type { GameEffect } from '@/lib/feedback/feedback-events';
 
 export type CellMoveDirection = 'up' | 'down' | 'left' | 'right';
 
