@@ -5,6 +5,7 @@ import test from "node:test";
 import { OrthographicCamera, Ray, TextureLoader, Vector3 } from "three";
 
 import { configureBoardCamera } from "../src/lib/board3d/board-camera.ts";
+import { nextCanvasKey } from "../src/lib/board3d/canvas-key.ts";
 import {
   BOARD_FRAME_INSET,
   CELL_HIT_WORLD_SIZE,
@@ -1166,4 +1167,13 @@ test("game-theme colours and the CSS tokens in index.css are the same values", (
       `${token} in index.css must be ${value}`,
     );
   }
+});
+
+// ---------------------------------------------------------------------------
+// canvas-key — board-error-boundary bumps this on every retry (Step 5)
+// ---------------------------------------------------------------------------
+
+test("board-error-boundary — each retry asks for a fresh canvas", () => {
+  assert.equal(nextCanvasKey(0), 1);
+  assert.equal(nextCanvasKey(7), 8);
 });
