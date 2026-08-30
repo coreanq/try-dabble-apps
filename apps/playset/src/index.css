@@ -1,0 +1,750 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Playset / 놀이세트 — a toy tray of simple tap games.
+
+  The page is a shallow wooden TRAY in warm cream, the kind a play therapist
+  slides across a table. In it sit BLOCKS: fat rounded tiles in butter, sky,
+  mint, peach and lilac, each with a warm-brown rule and a hard pastel shadow
+  underneath so it reads as a solid painted block rather than a flat card.
+  Nothing is grey, nothing is dark, and nothing ever turns red — a miss is a
+  soft peach wobble, never a fail screen.
+
+  Deliberately warm cream and pastel wood so it never reads as the mint fridge
+  of leftover-box, the putty and carbon indigo of orderpad, the yellow legal
+  pad of trashpad, the manila tray of later-inbox, the navy board of kinlog,
+  the dusty rose of lastloved or the awning green of storelog. It is a toy, on
+  a table, under a window.
+
+  Everything is sized for a 390px phone held by someone helping another person:
+  tap targets never go under 3rem, and the play surface is thumb-height.
+  shadcn is the kit, not the look — the primitives are re-dressed as blocks.
+*/
+
+@theme {
+  --color-tray: #fdf3df;
+  --color-tray-2: #f6e7c6;
+  --color-felt: #fffdf6;
+  --color-felt-2: #fff7e6;
+  --color-ink: #4b3a26;
+  --color-muted-ink: #8a7458;
+  --color-faint-ink: #b09a7d;
+  --color-rule: #e6d3ac;
+  --color-sun: #ffcf5c;
+  --color-sun-2: #f6b52f;
+  --color-sky: #8fcfe8;
+  --color-mint: #9fdcc0;
+  --color-peach: #ffb59d;
+  --color-lilac: #c9b3f0;
+  --color-grass: #4f9d76;
+  --color-tape: #ffd36e;
+  --color-tape-ink: #5c4108;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-title);
+  --font-mono: var(--stack-tag);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.7);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 1.9);
+  --radius-4xl: calc(var(--radius) * 2.3);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-title: "Quicksand", "Varela Round", "Avenir Next Rounded",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Maru Gothic ProN",
+    system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-tag: "Avenir Next Rounded", "Varela Round", ui-rounded, system-ui,
+    sans-serif;
+
+  --background: #fdf3df;
+  --foreground: #4b3a26;
+  --card: #fffdf6;
+  --card-foreground: #4b3a26;
+  --popover: #fffdf6;
+  --popover-foreground: #4b3a26;
+  --primary: #f6b52f;
+  --primary-foreground: #4b3a26;
+  --secondary: #fff7e6;
+  --secondary-foreground: #4b3a26;
+  --muted: #f2e4c6;
+  --muted-foreground: #8a7458;
+  --accent: #d9f0e4;
+  --accent-foreground: #34694f;
+  /* Even "destructive" is a warm peach here. Nothing on this tray is red. */
+  --destructive: #e08a6e;
+  --border: #e6d3ac;
+  --input: #d8c39a;
+  --ring: #f6b52f;
+
+  --radius: 1.15rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+    /* Nothing in this app wants a double-tap zoom mid-game. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    /* Play mat: sunlight from the top-left, a wash of colour in the corners,
+       and the faint dot grid of a felt tray. */
+    background-image:
+      radial-gradient(circle at 8% -4%, rgba(255, 255, 255, 0.95), transparent 46%),
+      radial-gradient(circle at 98% 2%, rgba(143, 207, 232, 0.24), transparent 40%),
+      radial-gradient(circle at 2% 100%, rgba(201, 179, 240, 0.2), transparent 38%),
+      radial-gradient(circle at 100% 98%, rgba(159, 220, 192, 0.22), transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(75, 58, 38, 0.05) 1.4px, transparent 1.5px);
+    background-size: auto, auto, auto, auto, 22px 22px;
+    background-attachment: fixed;
+  }
+
+  a {
+    color: #b07f16;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  button {
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .ps-shell {
+    max-width: 32rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.75rem 0.9rem calc(1.8rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  /* Amber notice. The Worker rewrites this text in the first HTML, so the
+     mounted app must render the same #local-only element. */
+  .ps-tape {
+    margin: 0;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.74rem;
+    font-weight: 650;
+    line-height: 1.45;
+    color: var(--color-tape-ink);
+    background: linear-gradient(180deg, #ffdf94 0%, #ffd36e 60%, #f3bd45 100%);
+    border: 2px solid #d19a1e;
+    border-radius: 0.85rem;
+    box-shadow: 0 2px 0 rgba(146, 106, 18, 0.35);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* ------------------------------------------------------------- the tray */
+
+  /* The masthead is the tray itself: a shallow wooden lip with the name
+     painted on the inside face. */
+  .ps-tray {
+    position: relative;
+    padding: 0.9rem 0.9rem 0.75rem;
+    background: linear-gradient(180deg, #fffdf6 0%, #fff4dd 100%);
+    border: 2.5px solid var(--color-ink);
+    border-radius: 1.35rem;
+    box-shadow: 0 5px 0 var(--color-sun-2);
+  }
+  /* The painted stripe along the tray's lip. */
+  .ps-tray::before {
+    content: "";
+    position: absolute;
+    inset: 0.4rem 0.4rem auto;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--color-sun) 0 22%,
+      var(--color-sky) 22% 44%,
+      var(--color-mint) 44% 66%,
+      var(--color-peach) 66% 84%,
+      var(--color-lilac) 84% 100%
+    );
+    opacity: 0.85;
+  }
+
+  .ps-tray-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+    margin-top: 0.5rem;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — looks the
+     same as the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-title);
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ps-tagline {
+    margin: 0.45rem 0 0;
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-muted-ink);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .ps-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.5rem;
+    background: var(--color-felt);
+    color: var(--color-ink);
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 0 2.5px 0 var(--color-sky);
+    min-height: 2.35rem;
+  }
+
+  /* The gates this tray refuses, right under the masthead. Above the fold. */
+  .ps-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ps-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 750;
+    line-height: 1.35;
+    color: #7a4a2e;
+    background: #ffe7dc;
+    border: 2px solid #eba98e;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .ps-chip::before {
+    content: "✕";
+    font-size: 0.64rem;
+    font-weight: 800;
+    opacity: 0.8;
+  }
+  .ps-chip[data-kind="yes"] {
+    color: #2f6b4f;
+    background: #dcf2e6;
+    border-color: #7cc3a2;
+  }
+  .ps-chip[data-kind="yes"]::before {
+    content: "✓";
+  }
+
+  /* ------------------------------------------------------------- the block */
+
+  /* Every panel is a painted block off the tray. */
+  .ps-card {
+    border: 2.5px solid var(--color-ink);
+    border-radius: 1.25rem;
+    box-shadow: 0 5px 0 rgba(75, 58, 38, 0.18);
+  }
+  .ps-card[data-tone="sun"] {
+    box-shadow: 0 5px 0 var(--color-sun);
+  }
+  .ps-card[data-tone="mint"] {
+    box-shadow: 0 5px 0 var(--color-mint);
+  }
+  .ps-card[data-tone="sky"] {
+    box-shadow: 0 5px 0 var(--color-sky);
+  }
+  .ps-card[data-tone="lilac"] {
+    box-shadow: 0 5px 0 var(--color-lilac);
+  }
+
+  /* A game block in the picker. Big enough to hit without looking. */
+  .ps-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-family: inherit;
+    color: var(--color-ink);
+    background: var(--color-felt);
+    border: 2.5px solid var(--color-ink);
+    border-radius: 1.1rem;
+    box-shadow: 0 4px 0 var(--tile-shadow, var(--color-sun));
+    cursor: pointer;
+    transition: transform 90ms ease, box-shadow 90ms ease;
+  }
+  .ps-tile:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--tile-shadow, var(--color-sun));
+  }
+  .ps-tile-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-title);
+    font-size: 1.02rem;
+    font-weight: 800;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .ps-tile-how {
+    display: block;
+    margin-top: 0.1rem;
+    font-family: var(--stack-ui);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-muted-ink);
+  }
+  .ps-tile-add {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-ink);
+    background: var(--color-felt-2);
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+  }
+
+  /* The chunky picture chip that fronts every game. */
+  .ps-token {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 0.9rem;
+    background: var(--token-bg, var(--color-sun));
+  }
+  .ps-token[data-size="sm"] {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-width: 2px;
+    border-radius: 0.65rem;
+  }
+
+  /* One step in a saved queue: number, game, and the handles to move it. */
+  .ps-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    background: var(--color-felt-2);
+    border: 2px solid var(--color-rule);
+    border-radius: 0.9rem;
+  }
+  .ps-step-no {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-family: var(--stack-tag);
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--color-ink);
+    background: var(--color-tray-2);
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+  }
+  .ps-step-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.9rem;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+  }
+
+  /* 16px so iOS never zooms the page when the caregiver names a playlist. */
+  .ps-field {
+    display: block;
+    padding: 0.65rem 0.8rem;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--color-ink);
+    background: var(--color-felt);
+    border: 2.5px solid var(--color-input);
+    border-radius: 0.9rem;
+    min-height: 3rem;
+  }
+  .ps-field::placeholder {
+    color: var(--color-faint-ink);
+  }
+  .ps-field:focus {
+    border-color: var(--color-sun-2);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(246, 181, 47, 0.28);
+  }
+
+  .ps-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--color-muted-ink);
+  }
+
+  /* The loop switch, drawn as a wooden toggle. */
+  .ps-loop {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-muted-ink);
+    background: var(--color-felt-2);
+    border: 2.5px dashed var(--color-input);
+    border-radius: 0.9rem;
+    cursor: pointer;
+    min-height: 3rem;
+  }
+  .ps-loop[data-on="true"] {
+    color: var(--color-grass);
+    background: #dcf2e6;
+    border-style: solid;
+    border-color: var(--color-grass);
+  }
+  .ps-loop input {
+    width: 1.35rem;
+    height: 1.35rem;
+    flex: 0 0 auto;
+    accent-color: var(--color-grass);
+  }
+
+  /* ------------------------------------------------------------ the stage */
+
+  /* The play surface. Fills the phone, holds one game at a time, and never
+     scrolls out from under a thumb mid-round. */
+  .ps-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 800;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-tray);
+    background-image:
+      radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.95), transparent 45%),
+      radial-gradient(circle at 92% 100%, rgba(159, 220, 192, 0.28), transparent 45%);
+    padding: calc(0.6rem + env(safe-area-inset-top, 0px)) 0.75rem
+      calc(0.9rem + var(--safe-b));
+  }
+
+  .ps-stage-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+  }
+  .ps-stage-where {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-tag);
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--color-muted-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Time left as a filling bar, never as a ticking number shouting at anyone. */
+  .ps-timer {
+    height: 0.7rem;
+    margin-top: 0.5rem;
+    flex: 0 0 auto;
+    background: var(--color-tray-2);
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .ps-timer-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-mint), var(--color-sun));
+    transition: width 1s linear;
+  }
+
+  .ps-prompt {
+    margin: 0.65rem 0 0;
+    flex: 0 0 auto;
+    font-family: var(--stack-title);
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.3;
+    text-align: center;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .ps-play-area {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    padding: 0.5rem 0;
+  }
+
+  /* The row of suns that fills in as rounds go by. Not a score: there is no
+     total to fall short of, and it resets with every game. */
+  .ps-suns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+    flex: 0 0 auto;
+    min-height: 1.1rem;
+  }
+  .ps-sun {
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-sun);
+  }
+
+  /* A generic big play block: memory card, answer, bin, pad. */
+  .ps-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--stack-title);
+    font-weight: 800;
+    color: var(--color-ink);
+    background: var(--color-felt);
+    border: 3px solid var(--color-ink);
+    border-radius: 1.1rem;
+    box-shadow: 0 5px 0 rgba(75, 58, 38, 0.2);
+    cursor: pointer;
+    transition: transform 90ms ease, box-shadow 90ms ease, background 160ms ease;
+  }
+  .ps-block:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 rgba(75, 58, 38, 0.2);
+  }
+  .ps-block[data-state="down"] {
+    background: linear-gradient(150deg, var(--color-sky), #b7e2f2);
+  }
+  .ps-block[data-state="done"] {
+    background: #dcf2e6;
+    border-color: var(--color-grass);
+    box-shadow: 0 5px 0 var(--color-mint);
+  }
+  .ps-block[data-state="lit"] {
+    filter: brightness(1.22) saturate(1.25);
+    transform: translateY(2px) scale(1.03);
+  }
+  .ps-block:disabled {
+    cursor: default;
+  }
+
+  /* A miss. Peach, a small shake, and gone in half a second. Never red, never
+     a screen of its own, never a tally kept. */
+  .ps-miss {
+    animation: ps-wobble 380ms ease;
+    background: #ffe2d7 !important;
+  }
+  @keyframes ps-wobble {
+    0%, 100% { transform: translateX(0); }
+    22% { transform: translateX(-6px); }
+    48% { transform: translateX(6px); }
+    74% { transform: translateX(-3px); }
+  }
+
+  .ps-hit {
+    animation: ps-pop 320ms ease;
+  }
+  @keyframes ps-pop {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  /* The soft pause between two games. Big Next, and a ring that fills so the
+     caregiver can see the next one is coming without reading a number. */
+  .ps-pause {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    text-align: center;
+  }
+  .ps-pause-title {
+    margin: 0;
+    font-family: var(--stack-title);
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .ps-pause-next {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-muted-ink);
+  }
+
+  /* Big enough to hit with a thumb while holding a phone for someone else. */
+  .ps-big {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 3.75rem;
+    padding: 0.7rem 1.1rem;
+    font-family: var(--stack-title);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-ink);
+    background: linear-gradient(180deg, #ffdf94, var(--color-sun));
+    border: 3px solid var(--color-ink);
+    border-radius: 1.1rem;
+    box-shadow: 0 5px 0 var(--color-sun-2);
+    cursor: pointer;
+    transition: transform 90ms ease, box-shadow 90ms ease;
+  }
+  .ps-big:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 var(--color-sun-2);
+  }
+  .ps-big[data-tone="calm"] {
+    background: linear-gradient(180deg, #fffdf6, var(--color-felt-2));
+    box-shadow: 0 5px 0 var(--color-rule);
+    font-size: 1.05rem;
+    min-height: 3.25rem;
+  }
+  .ps-big[data-tone="calm"]:active {
+    box-shadow: 0 1px 0 var(--color-rule);
+  }
+  .ps-big:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .ps-note {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--color-muted-ink);
+  }
+
+  .ps-bullet {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--color-muted-ink);
+  }
+  .ps-bullet::before {
+    content: "●";
+    flex: 0 0 auto;
+    color: var(--color-sun-2);
+    font-size: 0.6rem;
+    line-height: 2.2;
+  }
+}

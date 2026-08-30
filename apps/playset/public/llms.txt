@@ -1,0 +1,42 @@
+# Playset / 놀이세트 / プレイセット / 游戏套装
+
+> A caregiver picks only the simple brain games they want from a fixed set of six, saves them as an ordered playlist, and presses play — the next game starts by itself. No login, no three-game daily lock, no subscription, and the queue survives a tab close.
+
+This is a Progressive Web App (PWA) hosted at https://playset.try-dabble.com/
+Playlists (name, ordered games, loop flag) and the place in a running queue are stored in this browser only (localStorage keys playset:playlists:v1 and playset:session:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a Lumosity clone and NOT a cognitive assessment. There is no training programme, no daily prescribed set, no score history, no percentile and no leaderboard. It is a play tray: six short tap games, and a queue someone else built for the person holding the phone.
+
+## Pages
+
+- [Home](https://playset.try-dabble.com/): The tray — your saved playlists, and play
+- [Privacy](https://playset.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://playset.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/playset): How-to on try-dabble.com
+
+## The six games
+
+- Pair matching (짝맞추기) — twelve blocks, six pairs, turn two over
+- Sequence memory (순서기억) — four pads light up, tap them back in order
+- Find the different one (다른 것 찾기) — nine blocks, one differs in colour or shape
+- Easy addition (쉬운 덧셈) — two single digits, three big answers
+- Colour & shape sort (색·모양 분류) — one item, two boxes, match colour or shape
+- Target tap (목표 탭) — a big circle appears somewhere; tap it
+
+Every game runs 60–90 seconds. Tap targets are deliberately oversized. There are no red fail screens: a wrong tap is a soft peach wobble and the round continues.
+
+## Features
+
+- Build a playlist by tapping games; the same game can be added more than once
+- Reorder or remove any step; optional loop back to the first game at the end
+- Press play once — each game hands off to the next automatically after a soft pause with a large Next button for anyone who wants to wait
+- Save as many playlists as you like; there is no cap
+- The place in a running queue is written down every step, so a locked phone or a closed tab comes back to the same game
+- No login, no sign-up, no social account, no payment screen
+- No three-games-a-day limit and no premium lock: all six games always open
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
