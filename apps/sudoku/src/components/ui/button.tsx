@@ -17,11 +17,11 @@ const buttonVariants = cva(
         default:
           "border-walnut-dark bg-walnut text-primary-foreground shadow-[0_2px_0_var(--color-walnut-dark)] hover:bg-walnut-dark active:shadow-none",
         secondary:
-          "border-border bg-secondary text-cream shadow-[0_2px_0_var(--color-border)] hover:bg-accent active:shadow-none",
+          "border-border bg-secondary text-ink shadow-[0_2px_0_var(--color-border)] hover:bg-accent active:shadow-none",
         outline:
-          "border-border bg-background text-muted-foreground hover:border-walnut hover:text-cream active:shadow-none",
+          "border-border bg-background text-muted-foreground hover:border-walnut hover:text-ink active:shadow-none",
         ghost:
-          "border-transparent bg-transparent text-muted-foreground hover:bg-accent hover:text-cream active:shadow-none",
+          "border-transparent bg-transparent text-muted-foreground hover:bg-accent hover:text-ink active:shadow-none",
         destructive:
           "border-vermilion bg-vermilion/15 text-vermilion hover:bg-vermilion/25 active:shadow-none",
         link: "border-transparent text-walnut underline-offset-4 hover:underline",

@@ -48,7 +48,7 @@ export function DifficultyDialog({
         </p>
       ) : null}
       <div className="flex flex-col gap-[9px]">
-        <span className="text-[13px] font-extrabold tracking-[1.1px] text-cream-muted uppercase">
+        <span className="text-[13px] font-extrabold tracking-[1.1px] text-ink-muted uppercase">
           {t(locale, 'boardSize')}
         </span>
         <div aria-label={t(locale, 'boardSize')} className="flex gap-2.5" role="radiogroup">
@@ -64,8 +64,8 @@ export function DifficultyDialog({
                   'focus-visible:ring-3 focus-visible:ring-ring/40 active:translate-y-0.5',
                   "after:absolute after:-inset-1.5 after:content-['']",
                   selected
-                    ? 'border-walnut-light bg-walnut text-cream'
-                    : 'border-walnut/50 text-cream-muted',
+                    ? 'border-walnut bg-walnut text-cream'
+                    : 'border-walnut/25 text-ink',
                 )}
                 key={size}
                 onClick={() => setSelectedSize(size)}
@@ -78,7 +78,7 @@ export function DifficultyDialog({
           })}
         </div>
       </div>
-      <p className="text-center text-[15px] leading-[22px] text-cream-muted">
+      <p className="text-center text-[15px] leading-[22px] text-ink-muted">
         {t(locale, 'dragHint')}
       </p>
       <div className="flex flex-wrap gap-2.5">
@@ -87,11 +87,11 @@ export function DifficultyDialog({
             aria-label={`${t(locale, difficulty)}. ${t(locale, 'startGame')}`}
             className={cn(
               'relative flex min-h-[66px] grow basis-[47%] flex-row items-center gap-[13px]',
-              'rounded-[1.125rem] border border-walnut/40 bg-cream px-[15px]',
+              'rounded-[1.125rem] border border-walnut/25 bg-parchment-light px-[15px]',
               'shadow-[0_5px_12px_rgba(43,25,17,0.22),inset_0_1px_0_rgba(255,255,255,0.7)]',
               'outline-none transition-transform duration-75 focus-visible:ring-3 focus-visible:ring-ring/40',
               "after:absolute after:-inset-1.5 after:content-['']",
-              'active:translate-y-0.5',
+              'active:translate-y-0.5 active:bg-cream-muted',
             )}
             key={difficulty}
             onClick={() => onSelect(selectedSize, difficulty)}

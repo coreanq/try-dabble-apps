@@ -27,7 +27,7 @@ export function PuzzleGenerationDialog({ attempt, locale, visible }: PuzzleGener
           className="size-10 animate-spin rounded-full border-4 border-vermilion/25 border-t-vermilion"
           role="progressbar"
         />
-        <p aria-live="polite" className="text-center text-[16px] leading-6 text-cream">
+        <p aria-live="polite" className="text-center text-[16px] leading-6 text-ink">
           {progress}
         </p>
       </div>

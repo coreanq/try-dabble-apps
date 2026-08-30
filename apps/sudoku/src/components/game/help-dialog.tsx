@@ -18,9 +18,9 @@ export function HelpDialog({ locale, onClose, visible }: HelpDialogProps) {
       title={t(locale, 'rulesTitle')}
       visible={visible}
     >
-      <p className="font-display text-[18px] leading-[30px] text-cream">{t(locale, 'rulesBody')}</p>
-      <div className="h-px w-full bg-walnut/60" />
-      <h3 className="text-[13px] font-extrabold tracking-[1.2px] text-cream-muted uppercase">
+      <p className="font-display text-[18px] leading-[30px] text-ink">{t(locale, 'rulesBody')}</p>
+      <div className="h-px w-full bg-walnut/30" />
+      <h3 className="text-[13px] font-extrabold tracking-[1.2px] text-ink-muted uppercase">
         {t(locale, 'faq')}
       </h3>
       <div className="flex flex-col gap-[17px]">
@@ -30,8 +30,8 @@ export function HelpDialog({ locale, onClose, visible }: HelpDialogProps) {
               {String(index + 1).padStart(2, '0')}
             </span>
             <div className="flex flex-1 flex-col gap-[5px]">
-              <h4 className="text-[16px] font-bold text-cream">{question}</h4>
-              <p className="text-sm leading-[22px] text-cream-muted">{answer}</p>
+              <h4 className="text-[16px] font-bold text-ink">{question}</h4>
+              <p className="text-sm leading-[22px] text-ink-muted">{answer}</p>
             </div>
           </div>
         ))}

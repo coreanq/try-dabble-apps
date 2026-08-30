@@ -22,6 +22,8 @@ interface GameDialogProps extends PropsWithChildren {
  * The shell the four game dialogs sit in — the RN Modal became a Radix one,
  * but the contract is unchanged: `visible` opens it, `onClose` is the only way
  * out, and `allowClose={false}` seals it (no escape key, no click-away, no ×).
+ * The card is a cream sheet on the parchment desk (ink body text) under a
+ * walnut title bar, which is the only part of it dressed in cream-on-wood.
  */
 export function GameDialog({
   allowClose = true,
@@ -42,7 +44,7 @@ export function GameDialog({
     >
       <DialogContent
         aria-describedby={undefined}
-        className="flex max-h-[88%] flex-col gap-0 overflow-hidden p-0 sm:max-w-[580px]"
+        className="flex max-h-[88%] flex-col gap-0 overflow-hidden border-walnut-light p-0 sm:max-w-[580px]"
         onEscapeKeyDown={(event) => {
           if (!allowClose) {
             event.preventDefault();
@@ -55,7 +57,7 @@ export function GameDialog({
         }}
         showCloseButton={false}
       >
-        <DialogHeader className="min-h-[72px] flex-row items-center justify-between gap-0 border-b border-walnut-light bg-linear-to-br from-walnut-light via-walnut to-walnut-dark px-[18px] py-3">
+        <DialogHeader className="min-h-[72px] flex-row items-center justify-between gap-0 border-b border-cream-muted/60 bg-linear-to-br from-walnut-light via-walnut to-walnut-dark px-[18px] py-3">
           <span aria-hidden="true" className="h-[26px] w-0.5 shrink-0 bg-cream-muted/70" />
           <DialogTitle className="flex-1 px-3.5 font-display text-[25px] leading-tight font-bold tracking-[0.3px] text-cream">
             {title}

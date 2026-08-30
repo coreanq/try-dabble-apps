@@ -35,7 +35,9 @@ function ToolButton({ active = false, disabled = false, glyph, label, onPress }:
         'outline-none focus-visible:ring-3 focus-visible:ring-ring/40',
         "after:absolute after:-inset-1.5 after:content-['']",
         'active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-35',
-        active ? 'border-walnut-dark bg-walnut' : 'border-walnut/40 bg-cream',
+        // These keys sit on the walnut control rack, so the tile is cream
+        // ceramic with ink lettering; pressing one turns it into the wood.
+        active ? 'border-walnut-dark bg-walnut' : 'border-walnut/25 bg-cream',
       )}
       disabled={disabled}
       onClick={onPress}

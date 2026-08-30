@@ -35,8 +35,8 @@ function SettingToggle({ enabled, label, onToggle }: SettingToggleProps) {
       aria-checked={enabled}
       aria-label={label}
       className={cn(
-        'relative flex min-h-14 w-full items-center justify-between gap-3 border-b border-walnut/30',
-        'bg-canvas/50 px-4 text-left outline-none last:border-b-0',
+        'relative flex min-h-14 w-full items-center justify-between gap-3 border-b border-walnut/20',
+        'bg-parchment-light px-4 text-left outline-none last:border-b-0',
         'focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-inset active:opacity-70',
         "after:absolute after:-inset-1.5 after:content-['']",
       )}
@@ -44,11 +44,11 @@ function SettingToggle({ enabled, label, onToggle }: SettingToggleProps) {
       role="switch"
       type="button"
     >
-      <span className="flex-1 text-[15px] font-semibold text-cream">{label}</span>
+      <span className="flex-1 text-[15px] font-semibold text-ink">{label}</span>
       <span
         className={cn(
           'flex h-[30px] w-[52px] shrink-0 items-center rounded-full p-[3px] transition-colors',
-          enabled ? 'bg-walnut-light' : 'bg-ink-muted',
+          enabled ? 'bg-walnut' : 'bg-walnut/35',
         )}
       >
         <span
@@ -73,13 +73,13 @@ function VolumeControl({ enabled, label, onChange, value }: VolumeControlProps) 
   return (
     <div
       className={cn(
-        'flex min-h-[68px] flex-col justify-center gap-1 border-b border-walnut/30 bg-canvas/70 px-4 py-2 last:border-b-0',
+        'flex min-h-[68px] flex-col justify-center gap-1 border-b border-walnut/20 bg-cream px-4 py-2 last:border-b-0',
         !enabled && 'opacity-50',
       )}
     >
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[13px] font-semibold text-cream-muted">{label}</span>
-        <span className="text-[13px] font-extrabold tabular-nums text-cream">
+        <span className="text-[13px] font-semibold text-ink-muted">{label}</span>
+        <span className="text-[13px] font-extrabold tabular-nums text-ink">
           {Math.round(value)}%
         </span>
       </div>
@@ -123,7 +123,7 @@ export function SettingsDialog({
       title={t(locale, 'settings')}
       visible={visible}
     >
-      <div className="overflow-hidden rounded-2xl border border-walnut/50">
+      <div className="overflow-hidden rounded-2xl border border-walnut/25">
         <SettingToggle
           enabled={settings.music}
           label={t(locale, 'backgroundMusic')}
@@ -164,7 +164,7 @@ export function SettingsDialog({
       </div>
 
       <div className="flex flex-col gap-2.5">
-        <span className="text-[13px] font-extrabold tracking-[1.1px] text-cream-muted uppercase">
+        <span className="text-[13px] font-extrabold tracking-[1.1px] text-ink-muted uppercase">
           {t(locale, 'language')}
         </span>
         <div aria-label={t(locale, 'language')} className="flex flex-wrap gap-2" role="radiogroup">
@@ -178,8 +178,8 @@ export function SettingsDialog({
                   'outline-none focus-visible:ring-3 focus-visible:ring-ring/40 active:opacity-70',
                   "after:absolute after:-inset-1.5 after:content-['']",
                   selected
-                    ? 'border-walnut-light bg-walnut text-cream'
-                    : 'border-walnut/50 text-cream-muted',
+                    ? 'border-walnut bg-walnut text-cream'
+                    : 'border-walnut/25 text-ink',
                 )}
                 key={option}
                 onClick={() => onLocaleChange(option)}
@@ -189,7 +189,7 @@ export function SettingsDialog({
                 <span
                   className={cn(
                     'size-3 rounded-full border',
-                    selected ? 'border-4 border-cream bg-cream' : 'border-cream-muted/60',
+                    selected ? 'border-4 border-brass bg-brass' : 'border-ink-muted',
                   )}
                 />
                 <span className="text-sm font-bold">{t(locale, LOCALE_LABELS[option])}</span>

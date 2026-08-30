@@ -3,14 +3,20 @@
 @import "shadcn/tailwind.css";
 
 /*
-  스도쿠 3D — a wooden puzzle board on a dark desk.
-  The page is near-black walnut; the board is oiled hardwood under a warm
-  lamp, and the digits are glazed ceramic tiles that clink into place. The
-  accent is a lacquer vermilion, used only for conflicts and the timer.
+  스도쿠 3D — a parchment desk with a lit board window sunk into it.
+  The page is warm parchment, brightest at the top-left corner and settling
+  into a duskier tan at the bottom-right, exactly as the Expo app painted it.
+  Sitting on that desk: a dark walnut window (canvas) holding the 3D board,
+  a walnut control rack, and cream ceramic keys with ink lettering. The accent
+  is a lacquer vermilion, used only for conflicts and small ordinals.
   Deliberately NOT the washi paper of omok, the pixel night of jump-map, or
   the cream toy tray of playset. shadcn is the kit, not the look.
-  Every value here mirrors src/lib/game/game-theme.ts, which the 3D materials
-  read from; test/board3d.test.mjs asserts the two never drift apart.
+  Only the board window is dark — chrome that sits on the desk (header,
+  dialogs, settings rows) is ink on parchment or cream; only what sits on the
+  walnut rack or inside the window is cream on wood.
+  The first ten colours below mirror src/lib/game/game-theme.ts, which the 3D
+  materials read from; test/board3d.test.mjs asserts the two never drift apart,
+  so add tokens here rather than editing those values.
 */
 
 @theme {
@@ -24,15 +30,24 @@
   --color-walnut: #5b321f;
   --color-walnut-dark: #2d1a12;
   --color-walnut-light: #8a5535;
+
+  /* The desk itself, and the fittings screwed to it. Not in game-theme.ts:
+     nothing in the 3D scene is made of these. */
+  --color-parchment: #eee6d8;
+  --color-parchment-light: #fff9ec;
+  --color-parchment-dark: #d8cbb7;
+  --color-panel: #dfd1bd;
+  --color-brass: #d7ad63;
+
   --font-display: Georgia, "Noto Serif", serif;
 }
 
 /*
-  shadcn semantic token bridge, in sudoku's own dark-walnut palette (not
-  omok's washi one): background/popover/card sit on the near-black canvas
-  and charcoal, foreground is cream, border/input/ring stay in the walnut
-  range, and destructive is the same vermilion the board uses for conflicts.
-  src/components/ui/{button,card,dialog}.tsx read these classes.
+  shadcn semantic token bridge, in sudoku's own parchment-and-walnut palette
+  (not omok's washi one): background is the desk, card/popover are the cream
+  surfaces resting on it, foreground is ink, border/input/ring stay in the
+  walnut range, and destructive is the same vermilion the board uses for
+  conflicts. src/components/ui/{button,card,dialog,slider}.tsx read these.
 */
 @theme inline {
   --font-heading: var(--font-display);
@@ -58,27 +73,32 @@
 }
 
 :root {
-  --background: var(--color-canvas);
-  --foreground: var(--color-cream);
-  --card: var(--color-charcoal);
-  --card-foreground: var(--color-cream);
-  --popover: var(--color-charcoal);
-  --popover-foreground: var(--color-cream);
+  --background: var(--color-parchment);
+  --foreground: var(--color-ink);
+  --card: var(--color-cream);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-cream);
+  --popover-foreground: var(--color-ink);
   --primary: var(--color-walnut);
   --primary-foreground: var(--color-cream);
-  --secondary: var(--color-ink);
-  --secondary-foreground: var(--color-cream);
-  --muted: var(--color-ink);
-  --muted-foreground: var(--color-cream-muted);
-  --accent: var(--color-walnut);
-  --accent-foreground: var(--color-cream);
+  --secondary: var(--color-cream-muted);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-cream-muted);
+  --muted-foreground: var(--color-ink-muted);
+  --accent: var(--color-cream-muted);
+  --accent-foreground: var(--color-ink);
   --destructive: var(--color-vermilion);
-  --border: var(--color-walnut);
-  --input: var(--color-walnut);
-  --ring: var(--color-walnut-light);
+  --border: var(--color-panel);
+  --input: var(--color-panel);
+  --ring: var(--color-walnut);
 }
 
 body {
-  background: var(--color-canvas);
-  color: var(--color-cream);
+  background-color: var(--color-parchment);
+  background-image:
+    radial-gradient(circle at 12% 8%, var(--color-parchment-light) 0%, transparent 42%),
+    linear-gradient(135deg, var(--color-parchment) 0%, var(--color-parchment-dark) 100%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  min-height: 100dvh;
 }

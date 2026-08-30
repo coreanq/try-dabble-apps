@@ -28,9 +28,10 @@ export function DigitControls({ counts, dense = false, layout, locale, onDigit }
           <button
             aria-label={digitLabel(locale, digit, count)}
             className={cn(
-              // Three keys to a row when the rack is stacked; one row when dense.
+              // Cream ceramic on the walnut rack: three keys to a row when the
+              // rack is stacked, one row when dense.
               'relative flex aspect-square grow basis-[30%] flex-col items-center justify-center',
-              'min-h-[58px] min-w-[58px] rounded-[0.9375rem] border border-walnut/40 bg-cream p-1',
+              'min-h-[58px] min-w-[58px] rounded-[0.9375rem] border border-walnut/25 bg-cream p-1',
               'shadow-[0_5px_12px_rgba(43,25,17,0.22),inset_0_1px_0_rgba(255,255,255,0.7)]',
               'outline-none transition-transform duration-75 focus-visible:ring-3 focus-visible:ring-ring/40',
               // hitSlop={6}, as a transparent ::after box around the key.
