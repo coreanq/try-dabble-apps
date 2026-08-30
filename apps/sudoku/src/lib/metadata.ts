@@ -64,7 +64,7 @@ export function localeMetadata(locale: Locale): LocaleMetadata {
 
   return {
     ...copy,
-    canonical: `${SITE_ORIGIN}/${locale}`,
+    canonical: `${SITE_ORIGIN}/?lang=${locale}`,
     alternates,
     ogImage: `/og/${locale}.png`,
     faq: localizedFaq(locale),
