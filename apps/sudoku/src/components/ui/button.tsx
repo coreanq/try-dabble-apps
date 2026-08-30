@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils"
 
 /**
  * Wooden keys off the board's edge: hard-edged, seated on a shadow that
- * flattens on press, the way a stone seats on kaya. The shadcn API is
- * untouched — only the dress changes.
+ * flattens on press, the way a ceramic tile seats into the walnut board.
+ * The shadcn API is untouched — only the dress changes.
  */
 const buttonVariants = cva(
   "group/button inline-flex shrink-0 items-center justify-center gap-1.5 rounded-[0.28rem] border font-semibold whitespace-nowrap transition-[background-color,color,box-shadow,transform] duration-75 outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/40 active:translate-y-px disabled:pointer-events-none disabled:opacity-40 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -15,15 +15,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "border-walnut-deep bg-walnut text-primary-foreground shadow-[0_2px_0_var(--color-walnut-deep)] hover:bg-walnut-deep active:shadow-none",
+          "border-walnut-dark bg-walnut text-primary-foreground shadow-[0_2px_0_var(--color-walnut-dark)] hover:bg-walnut-dark active:shadow-none",
         secondary:
-          "border-rule bg-paper-2 text-sumi shadow-[0_2px_0_var(--color-rule)] hover:bg-accent active:shadow-none",
+          "border-border bg-secondary text-cream shadow-[0_2px_0_var(--color-border)] hover:bg-accent active:shadow-none",
         outline:
-          "border-rule bg-paper text-muted-foreground hover:border-walnut hover:text-sumi active:shadow-none",
+          "border-border bg-background text-muted-foreground hover:border-walnut hover:text-cream active:shadow-none",
         ghost:
-          "border-transparent bg-transparent text-muted-foreground hover:bg-accent hover:text-walnut-deep active:shadow-none",
+          "border-transparent bg-transparent text-muted-foreground hover:bg-accent hover:text-cream active:shadow-none",
         destructive:
-          "border-shu bg-shu-soft text-shu hover:bg-[#f0cdc4] active:shadow-none",
+          "border-vermilion bg-vermilion/15 text-vermilion hover:bg-vermilion/25 active:shadow-none",
         link: "border-transparent text-walnut underline-offset-4 hover:underline",
       },
       size: {

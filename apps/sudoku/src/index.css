@@ -27,6 +27,57 @@
   --font-display: Georgia, "Noto Serif", serif;
 }
 
+/*
+  shadcn semantic token bridge, in sudoku's own dark-walnut palette (not
+  omok's washi one): background/popover/card sit on the near-black canvas
+  and charcoal, foreground is cream, border/input/ring stay in the walnut
+  range, and destructive is the same vermilion the board uses for conflicts.
+  src/components/ui/{button,card,dialog}.tsx read these classes.
+*/
+@theme inline {
+  --font-heading: var(--font-display);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --background: var(--color-canvas);
+  --foreground: var(--color-cream);
+  --card: var(--color-charcoal);
+  --card-foreground: var(--color-cream);
+  --popover: var(--color-charcoal);
+  --popover-foreground: var(--color-cream);
+  --primary: var(--color-walnut);
+  --primary-foreground: var(--color-cream);
+  --secondary: var(--color-ink);
+  --secondary-foreground: var(--color-cream);
+  --muted: var(--color-ink);
+  --muted-foreground: var(--color-cream-muted);
+  --accent: var(--color-walnut);
+  --accent-foreground: var(--color-cream);
+  --destructive: var(--color-vermilion);
+  --border: var(--color-walnut);
+  --input: var(--color-walnut);
+  --ring: var(--color-walnut-light);
+}
+
 body {
   background: var(--color-canvas);
   color: var(--color-cream);
