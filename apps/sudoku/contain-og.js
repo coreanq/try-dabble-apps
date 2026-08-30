@@ -193,7 +193,7 @@ function svgFor(job) {
 
 /** The install icon: just the 3×3 box grid, bold and cream-on-walnut, so it
  * still reads at favicon size — a full 9×9 grid turns to mud under 32px. */
-function iconSvg() {
+function iconGroup() {
   const CELL = 118;
   const SEP = 18;
   const FRAME_PAD = 34;
@@ -215,20 +215,52 @@ function iconSvg() {
     .map(({ r, c, d }) => tile(starts[c] + CELL / 2, starts[r] + CELL / 2, CELL - 10, d, "en"))
     .join("");
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  return `
+    <rect x="${-half}" y="${-half}" width="${span + FRAME_PAD * 2}" height="${span + FRAME_PAD * 2}" rx="46" fill="url(#walnutGrain)" stroke="${WALNUT_DARK}" stroke-width="5"/>
+    ${cells.join("")}
+    ${digits}`;
+}
+
+function iconDefs() {
+  return `
   <defs>
     <linearGradient id="walnutGrain" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="${WALNUT_LIGHT}"/>
       <stop offset="52%" stop-color="${WALNUT}"/>
       <stop offset="100%" stop-color="${WALNUT_DARK}"/>
     </linearGradient>
-  </defs>
+  </defs>`;
+}
+
+function iconSvg() {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  ${iconDefs()}
   <rect width="512" height="512" fill="${CANVAS}"/>
-  <g transform="translate(256,256)">
-    <rect x="${-half}" y="${-half}" width="${span + FRAME_PAD * 2}" height="${span + FRAME_PAD * 2}" rx="46" fill="url(#walnutGrain)" stroke="${WALNUT_DARK}" stroke-width="5"/>
-    ${cells.join("")}
-    ${digits}
+  <g transform="translate(256,256)">${iconGroup()}
+  </g>
+</svg>`;
+}
+
+/** Maskable variant (purpose: "maskable" in the manifest): Android and other
+ * launchers may crop this to a circle, squircle, etc. Everything meaningful
+ * must sit inside a centred circle of 80% of the icon's width — radius 204.8
+ * on this 512 canvas. iconSvg()'s frame corners reach ~324px from centre
+ * (well outside that budget), so this variant scales the same board+frame
+ * group down by 0.6 about the centre — the frame's farthest corner then
+ * lands at ~194px, a ~10px margin inside the safe circle — while keeping the
+ * canvas background full-bleed to the edges, as maskable icons expect. Used
+ * only for the "maskable" manifest entry; icon-192/apple-touch-icon/favicon
+ * and the "any" 512 icon keep the unscaled iconSvg() so the earlier 32px
+ * legibility fix is untouched.
+ */
+function iconSvgMaskable() {
+  const SAFE_SCALE = 0.6;
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  ${iconDefs()}
+  <rect width="512" height="512" fill="${CANVAS}"/>
+  <g transform="translate(256,256) scale(${SAFE_SCALE})">${iconGroup()}
   </g>
 </svg>`;
 }
@@ -277,6 +309,12 @@ async function main() {
   await sharp(iconBuf).resize(512, 512, { fit: "cover" }).png().toFile(path.join(ICONS, "icon-512.png"));
   await sharp(iconBuf).resize(180, 180, { fit: "cover" }).png().toFile(path.join(ICONS, "apple-touch-icon.png"));
   await sharp(iconBuf).resize(32, 32, { fit: "cover" }).png().toFile(path.join(OUT, "favicon.ico"));
+
+  const maskableBuf = Buffer.from(iconSvgMaskable());
+  await sharp(maskableBuf)
+    .resize(512, 512, { fit: "cover" })
+    .png()
+    .toFile(path.join(ICONS, "icon-512-maskable.png"));
   console.log("icons written");
 }
 
