@@ -115,6 +115,7 @@ export function GameScreen({ locale }: GameScreenProps) {
   const boardScrollOffset = useRef(0);
   const generationRequestRef = useRef(0);
   const seenPuzzlesRef = useRef(new Set<string>());
+  const musicLoadedRef = useRef(false);
   const startBackgroundMusic = useBackgroundMusic(settings.music, settings.musicVolume);
   const playAudio = useAudioFeedback(settings.sound, settings.soundVolume);
   const playHaptic = useHapticFeedback(settings.haptics);
@@ -267,6 +268,7 @@ export function GameScreen({ locale }: GameScreenProps) {
       // wire, so a player with background music off must never trigger it.
       if (settings.music) {
         startBackgroundMusic();
+        musicLoadedRef.current = true;
       }
       emitFeedback('newGame');
     } catch {
@@ -291,11 +293,14 @@ export function GameScreen({ locale }: GameScreenProps) {
     if (next.answerCheck !== settings.answerCheck) {
       applyGameAction({ type: 'setAnswerCheck', enabled: next.answerCheck });
     }
-    // Native resumed the track it had already loaded; here the first track is
-    // fetched at the moment the setting is switched on, so switching it on has
-    // to ask for one.
-    if (next.music && !settings.music && started) {
+    // Native resumed the track it had already loaded; here nothing is fetched
+    // until the setting is on, so the *first* switch-on has to ask for a track.
+    // Every later one must not: the controller still holds that track, and
+    // `setEnabled(true)` resumes it where it stopped for zero bytes, while
+    // `startNext()` would download a different one and restart from zero.
+    if (next.music && !settings.music && started && !musicLoadedRef.current) {
       startBackgroundMusic();
+      musicLoadedRef.current = true;
     }
     setSettings(next);
   }, [applyGameAction, settings.answerCheck, settings.music, startBackgroundMusic, started]);
