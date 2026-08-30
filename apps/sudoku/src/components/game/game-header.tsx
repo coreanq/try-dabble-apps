@@ -46,10 +46,9 @@ export function GameHeader({
 }: GameHeaderProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3.5 border-b border-walnut/30 pb-3.5">
+      {/* The app title the original printed here is the page's <h1> now — the
+          Masthead above renders it, so repeating it would say it twice. */}
       <div className="flex shrink flex-col gap-[5px]">
-        <h2 className="font-display text-[1.75rem] font-bold tracking-[0.4px] text-ink">
-          {t(locale, 'appTitle')}
-        </h2>
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-bold text-walnut">{t(locale, difficulty)}</span>
           <span

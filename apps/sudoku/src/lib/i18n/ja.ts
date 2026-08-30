@@ -66,6 +66,8 @@ const ja = {
   announcementInvalid: '注意。入力した値が重複しています。',
   announcementComplete: 'パズルが完成しました。',
   digitUsage: '数字 {digit}、{count}個使用',
+  localOnly: 'データはこの端末にだけ保存されます。サーバーには送りません。',
+  brandSub: '木製ボードとセラミックタイル',
 } as const satisfies MessageDictionary;
 
 export default ja;

@@ -64,6 +64,8 @@ const ko = {
   announcementInvalid: '주의, 입력한 값에 충돌이 있습니다.',
   announcementComplete: '퍼즐을 완성했습니다.',
   digitUsage: '숫자 {digit}, {count}개 사용',
+  localOnly: '이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.',
+  brandSub: '원목 보드와 세라믹 타일',
 } as const;
 
 export default ko;

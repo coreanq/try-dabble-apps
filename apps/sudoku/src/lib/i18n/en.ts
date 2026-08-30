@@ -66,6 +66,8 @@ const en = {
   announcementInvalid: 'Warning, the entered value has a conflict.',
   announcementComplete: 'Puzzle complete.',
   digitUsage: 'Digit {digit}, {count} used',
+  localOnly: 'Your data stays on this device. Nothing is sent to our servers.',
+  brandSub: 'A wooden board, ceramic tiles',
 } as const satisfies MessageDictionary;
 
 export default en;
