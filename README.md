@@ -51,3 +51,4 @@ those folders, which builds and then deploys.
 - [box-qr](https://box-qr.try-dabble.com/) — 상자QR moving-box QR + photo inventory
 - [omok](https://omok.try-dabble.com/) — Next static export; `next build` then wrangler from `out/`
 - [jump-map](https://jump-map.try-dabble.com/) — Block Jumper CSR/PWA
+- [sudoku](https://sudoku.try-dabble.com/) — 스도쿠 3D wooden-board sudoku; three.js + R3F, ported off Expo
