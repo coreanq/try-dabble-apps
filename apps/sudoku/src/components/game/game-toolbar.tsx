@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 interface GameToolbarProps {
   readonly canRedo: boolean;
   readonly canUndo: boolean;
+  readonly compact?: boolean;
   readonly locale: Locale;
   readonly noteMode: boolean;
   readonly onErase: () => void;
@@ -15,13 +16,21 @@ interface GameToolbarProps {
 
 interface ToolButtonProps {
   readonly active?: boolean;
+  readonly compact?: boolean;
   readonly disabled?: boolean;
   readonly glyph: string;
   readonly label: string;
   readonly onPress: () => void;
 }
 
-function ToolButton({ active = false, disabled = false, glyph, label, onPress }: ToolButtonProps) {
+function ToolButton({
+  active = false,
+  compact = false,
+  disabled = false,
+  glyph,
+  label,
+  onPress,
+}: ToolButtonProps) {
   return (
     <button
       aria-label={label}
@@ -38,17 +47,26 @@ function ToolButton({ active = false, disabled = false, glyph, label, onPress }:
         // These keys sit on the walnut control rack, so the tile is cream
         // ceramic with ink lettering; pressing one turns it into the wood.
         active ? 'border-walnut-dark bg-walnut' : 'border-walnut/25 bg-cream',
+        // Stacked under the board, the tool row gives its height back to it.
+        compact && 'min-h-13 min-w-12 gap-0 py-1',
       )}
       disabled={disabled}
       onClick={onPress}
       type="button"
     >
-      <span className={cn('text-[19px] font-bold', active ? 'text-cream' : 'text-ink')}>
+      <span
+        className={cn(
+          'font-bold',
+          compact ? 'text-[17px] leading-[19px]' : 'text-[19px]',
+          active ? 'text-cream' : 'text-ink',
+        )}
+      >
         {glyph}
       </span>
       <span
         className={cn(
-          'text-center text-[10px] font-bold',
+          'text-center font-bold',
+          compact ? 'text-[9px] leading-[11px]' : 'text-[10px]',
           active ? 'text-cream' : 'text-ink-muted',
         )}
       >
@@ -61,6 +79,7 @@ function ToolButton({ active = false, disabled = false, glyph, label, onPress }:
 export function GameToolbar({
   canRedo,
   canUndo,
+  compact = false,
   locale,
   noteMode,
   onErase,
@@ -72,13 +91,26 @@ export function GameToolbar({
     <div className="flex justify-between gap-2" role="toolbar">
       <ToolButton
         active={noteMode}
+        compact={compact}
         glyph="✎"
         label={noteMode ? t(locale, 'notesOn') : t(locale, 'notesOff')}
         onPress={onToggleNote}
       />
-      <ToolButton glyph="⌫" label={t(locale, 'erase')} onPress={onErase} />
-      <ToolButton disabled={!canUndo} glyph="↶" label={t(locale, 'undo')} onPress={onUndo} />
-      <ToolButton disabled={!canRedo} glyph="↷" label={t(locale, 'redo')} onPress={onRedo} />
+      <ToolButton compact={compact} glyph="⌫" label={t(locale, 'erase')} onPress={onErase} />
+      <ToolButton
+        compact={compact}
+        disabled={!canUndo}
+        glyph="↶"
+        label={t(locale, 'undo')}
+        onPress={onUndo}
+      />
+      <ToolButton
+        compact={compact}
+        disabled={!canRedo}
+        glyph="↷"
+        label={t(locale, 'redo')}
+        onPress={onRedo}
+      />
     </div>
   );
 }

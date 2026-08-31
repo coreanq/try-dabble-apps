@@ -390,9 +390,15 @@ export function GameScreen({ locale }: GameScreenProps) {
   }, [announce, emitFeedback, locale, state.status]);
 
   return (
-    <div className="flex flex-1 flex-col items-center overflow-y-auto" style={webSafeAreaPadding(12)}>
-      <div className="flex w-full max-w-[1400px] flex-col gap-[18px]">
+    <div
+      className="flex flex-1 flex-col items-center overflow-y-auto"
+      style={webSafeAreaPadding(isWide ? 12 : 8)}
+    >
+      {/* Stacked, every gap and pad here is counted in PORTRAIT_CHROME_HEIGHT:
+          the board is sized from whatever this chrome leaves over. */}
+      <div className={cn('flex w-full max-w-[1400px] flex-col', isWide ? 'gap-[18px]' : 'gap-3')}>
         <GameHeader
+          compact={!isWide}
           difficulty={difficulty}
           elapsedSeconds={elapsedSeconds}
           locale={locale}
@@ -403,8 +409,8 @@ export function GameScreen({ locale }: GameScreenProps) {
 
         <div
           className={cn(
-            'flex flex-col items-center gap-[18px]',
-            isWide && 'flex-row items-start justify-center',
+            'flex flex-col items-center',
+            isWide ? 'flex-row items-start justify-center gap-[18px]' : 'gap-3',
           )}
         >
           <div
@@ -490,18 +496,24 @@ export function GameScreen({ locale }: GameScreenProps) {
             className={cn(
               'flex flex-col gap-3.5 rounded-[1.375rem] border-2 border-walnut-dark p-4',
               'shadow-[0_14px_32px_rgba(45,26,18,0.3),inset_0_1px_0_rgba(255,255,255,0.16)]',
-              isWide ? 'w-[300px] shrink-0' : 'w-full max-w-[720px]',
+              isWide ? 'w-[300px] shrink-0' : 'w-full max-w-[720px] gap-2.5 p-3',
             )}
             style={{ backgroundImage: woodGradient }}
           >
             <div className="flex flex-row items-center gap-[9px]">
               <span aria-hidden="true" className="size-2 rounded border border-walnut-light bg-brass" />
-              <span className="flex-1 rounded-lg bg-cream/90 px-[7px] py-[3px] text-center text-xs leading-[17px] font-semibold text-ink">
+              <span
+                className={cn(
+                  'flex-1 rounded-lg bg-cream/90 px-[7px] py-[3px] text-center font-semibold text-ink',
+                  isWide ? 'text-xs leading-[17px]' : 'text-[11px] leading-[15px]',
+                )}
+              >
                 {t(locale, 'dragHint')}
               </span>
               <span aria-hidden="true" className="size-2 rounded border border-walnut-light bg-brass" />
             </div>
             <DigitControls
+              compact={!isWide}
               counts={digitCounts}
               dense={!isWide && width >= 620}
               layout={state.layout}
@@ -512,6 +524,7 @@ export function GameScreen({ locale }: GameScreenProps) {
             <GameToolbar
               canRedo={state.future.length > 0}
               canUndo={state.past.length > 0}
+              compact={!isWide}
               locale={locale}
               noteMode={state.noteMode}
               onErase={eraseSelected}

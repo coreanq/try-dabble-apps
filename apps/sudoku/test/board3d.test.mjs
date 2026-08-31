@@ -10,6 +10,8 @@ import {
   BOARD_FRAME_INSET,
   CELL_HIT_WORLD_SIZE,
   MIN_INTERACTIVE_CANVAS_SIZE,
+  MIN_PORTRAIT_CANVAS_SIZE,
+  PORTRAIT_CHROME_HEIGHT,
   TRAY_HIT_WORLD_SIZE,
   WEB_CANVAS_TOUCH_ACTION,
   calculateBoardViewport,
@@ -149,26 +151,29 @@ test("board-layout — projects every cell and tray digit to a visible 44px targ
 });
 
 test("board-layout — scrolls horizontally on narrow screens", () => {
-  const narrow = calculateBoardViewport(320, 720);
+  // Narrower than a phone on purpose: in portrait the board is sized to the
+  // screen now, so it only outgrows the viewport once MIN_PORTRAIT_CANVAS_SIZE
+  // is wider than the screen itself. This is what that case looks like.
+  const narrow = calculateBoardViewport(240, 720);
 
   assert.equal(narrow.horizontalOverflow, true);
 });
 
-test("board-layout — projects the last cell and minimally reveals it in a 320px viewport", () => {
-  const layout = calculateBoardViewport(320, 720);
+test("board-layout — projects the last cell and minimally reveals it in a 240px viewport", () => {
+  const layout = calculateBoardViewport(240, 720);
   const bounds = projectedCellHorizontalBounds(8, layout);
   const nextOffset = nearestBoardScrollOffset(0, bounds, layout);
 
-  assertCloseTo(bounds.left, 433.09, 2);
-  assertCloseTo(bounds.right, 480.55, 2);
-  assertCloseTo(nextOffset, 192.55, 2);
+  assertCloseTo(bounds.left, 222, 2);
+  assertCloseTo(bounds.right, 246, 2);
+  assertCloseTo(nextOffset, 38, 2);
   assert.ok(bounds.left >= nextOffset);
   assert.ok(bounds.right <= nextOffset + layout.viewportWidth);
   assert.ok(bounds.right > nextOffset - 0.01 + layout.viewportWidth);
 });
 
 test("board-layout — projects wider 6x6 cells without changing the board edge", () => {
-  const layout = calculateBoardViewport(320, 720);
+  const layout = calculateBoardViewport(240, 720);
   const sixBySix = projectedCellHorizontalBounds(5, layout, 6);
   const nineByNine = projectedCellHorizontalBounds(8, layout, 9);
 
@@ -177,7 +182,7 @@ test("board-layout — projects wider 6x6 cells without changing the board edge"
 });
 
 test("board-layout — pages outside the drag surface until every target is fully reachable by touch", () => {
-  const layout = calculateBoardViewport(320, 720);
+  const layout = calculateBoardViewport(240, 720);
   const offsets = [0];
   for (let step = 0; step < 10; step += 1) {
     const next = nextBoardScrollOffset(offsets.at(-1), "right", layout);
@@ -220,6 +225,26 @@ test("board-layout — pages outside the drag surface until every target is full
       true,
     );
   });
+});
+
+test("board-layout — leaves a phone in portrait room for the controls under the board", () => {
+  const phone = calculateBoardViewport(390, 844);
+
+  // Whole board on screen, and the chrome it shares the screen with still fits.
+  assert.equal(phone.horizontalOverflow, false);
+  assert.equal(phone.viewportWidth, phone.frameSize);
+  assert.ok(phone.frameSize + PORTRAIT_CHROME_HEIGHT <= 844);
+
+  // On a shorter screen the height decides, not the width.
+  const short = calculateBoardViewport(390, 760);
+
+  assert.ok(short.frameSize < phone.frameSize);
+  assert.ok(short.frameSize + PORTRAIT_CHROME_HEIGHT <= 760);
+
+  // Past that it stops shrinking: an unplayable board is worse than a scroll.
+  const tiny = calculateBoardViewport(390, 480);
+
+  assert.equal(tiny.canvasSize, MIN_PORTRAIT_CANVAS_SIZE);
 });
 
 test("board-layout — keeps iPad landscape and portrait boards in their responsive layouts without overflow", () => {
