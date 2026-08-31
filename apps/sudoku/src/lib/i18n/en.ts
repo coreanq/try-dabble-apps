@@ -2,6 +2,8 @@ import type { MessageDictionary } from './messages';
 
 const en = {
   appTitle: '3D Sudoku',
+  metaDescription:
+    'Play tactile 3D Sudoku on a warm wooden board with ceramic tiles, five rated difficulty levels, notes, undo, answer checking, and Pencil or finger controls.',
   difficulty: 'Choose a difficulty',
   boardSize: 'Board size',
   beginner: 'Beginner',

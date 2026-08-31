@@ -266,6 +266,11 @@ export function GameScreen({ locale }: GameScreenProps) {
       // Native could ask for a track whatever the setting said — the three
       // tracks were bundled. On the web loading one costs ~2.9MB over the
       // wire, so a player with background music off must never trigger it.
+      // settings.music is the value captured when generation started, which is
+      // safe only because PuzzleGenerationDialog is modal with allowClose={false}:
+      // Settings is unreachable while the spinner is up, so the setting cannot
+      // change under us. Give that spinner a cancel button and this goes stale —
+      // read the setting through a ref at that point.
       if (settings.music) {
         startBackgroundMusic();
         musicLoadedRef.current = true;

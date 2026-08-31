@@ -14,9 +14,11 @@
   Only the board window is dark — chrome that sits on the desk (header,
   dialogs, settings rows) is ink on parchment or cream; only what sits on the
   walnut rack or inside the window is cream on wood.
-  The first ten colours below mirror src/lib/game/game-theme.ts, which the 3D
-  materials read from; test/board3d.test.mjs asserts the two never drift apart,
-  so add tokens here rather than editing those values.
+  The first ten colours below are the palette carried over from the Expo app,
+  and they are this app's only source for it: every DOM surface reads them as
+  Tailwind tokens, while the 3D materials in src/components/board3d/ carry
+  their own separate well and tile literals. test/board3d.test.mjs pins these
+  ten byte-for-byte, so add tokens here rather than editing those values.
 */
 
 @theme {
@@ -44,18 +46,16 @@
 
 /*
   shadcn semantic token bridge, in sudoku's own parchment-and-walnut palette
-  (not omok's washi one): background is the desk, card/popover are the cream
-  surfaces resting on it, foreground is ink, border/input/ring stay in the
+  (not omok's washi one): background is the desk, popover is the cream surface
+  resting on it, foreground is ink, border/input/ring stay in the
   walnut range, and destructive is the same vermilion the board uses for
-  conflicts. src/components/ui/{button,card,dialog,slider}.tsx read these.
+  conflicts. src/components/ui/{button,dialog,slider}.tsx read these.
 */
 @theme inline {
   --font-heading: var(--font-display);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
@@ -73,10 +73,10 @@
 }
 
 :root {
+  color-scheme: light;
+
   --background: var(--color-parchment);
   --foreground: var(--color-ink);
-  --card: var(--color-cream);
-  --card-foreground: var(--color-ink);
   --popover: var(--color-cream);
   --popover-foreground: var(--color-ink);
   --primary: var(--color-walnut);

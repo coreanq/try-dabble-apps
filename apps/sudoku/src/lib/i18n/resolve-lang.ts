@@ -21,6 +21,13 @@ export const OG_IMAGE: Record<Locale, string> = {
   ja: "https://sudoku.try-dabble.com/og-image-ja.png",
 };
 
+/** Where src/og-lang.ts points canonical and og:url for a ?lang= request. */
+export const SHARE_URL: Record<Locale, string> = {
+  ko: "https://sudoku.try-dabble.com/?lang=ko",
+  en: "https://sudoku.try-dabble.com/?lang=en",
+  ja: "https://sudoku.try-dabble.com/?lang=ja",
+};
+
 function readCookieLang(): Locale | null {
   if (typeof document === "undefined") return null;
   const m = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja)(?:;|$)/);
@@ -57,11 +64,21 @@ export function detectLang(searchLang?: string | null): Locale {
   return readStoredLang() ?? "ko";
 }
 
+/**
+ * Two separate try blocks on purpose. localStorage throws in private mode and
+ * under blocked third-party storage; the cookie is what the Worker reads, so a
+ * shared `try` would let a storage failure cost us the cookie too and every
+ * reload would serve Korean HTML under a UI showing the picked language.
+ */
 export function rememberLang(locale: Locale): void {
   try {
     localStorage.setItem(LANG_KEY, locale);
+  } catch {
+    /* private mode — this app's own memory of the pick just won't stick */
+  }
+  try {
     document.cookie = `td_lang=${locale}; path=/; domain=.try-dabble.com; max-age=31536000; samesite=lax`;
   } catch {
-    /* private mode — the language just won't stick */
+    /* cookies blocked — the Worker falls back to Korean on the next load */
   }
 }

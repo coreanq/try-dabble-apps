@@ -1,32 +1,64 @@
 import { useEffect, useMemo } from "react";
 import { createRoute } from "@tanstack/react-router";
 
+import { AdSlot } from "@/components/ad-slot";
 import { GameScreen } from "@/components/game/game-screen";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
 import { SeoCopy } from "@/components/seo-copy";
 import { t } from "@/lib/i18n";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { HTML_LANG, detectLang } from "@/lib/i18n/resolve-lang";
+import { HTML_LANG, OG_IMAGE, OG_LOCALE, SHARE_URL, detectLang } from "@/lib/i18n/resolve-lang";
 import { rootRoute } from "@/routes/root";
 
 interface HomeSearch {
   lang?: Locale;
 }
 
+function setMetaContent(selector: string, value: string) {
+  document.querySelectorAll<HTMLMetaElement>(selector).forEach((el) => {
+    el.setAttribute("content", value);
+  });
+}
+
 function Home() {
   const { lang } = homeRoute.useSearch();
   const locale = useMemo(() => detectLang(lang), [lang]);
 
+  // The language picker navigates client-side, so the Worker never re-renders
+  // and every tag src/og-lang.ts wrote would otherwise keep the previous
+  // language for the rest of the session. Same tags, same strings, same tables.
   useEffect(() => {
     document.documentElement.lang = HTML_LANG[locale];
-  }, [locale]);
+    document.title = t(locale, "appTitle");
+    setMetaContent(
+      'meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]',
+      t(locale, "metaDescription"),
+    );
+    setMetaContent(
+      'meta[name="application-name"], meta[name="apple-mobile-web-app-title"], meta[property="og:title"], meta[name="twitter:title"]',
+      t(locale, "appTitle"),
+    );
+    setMetaContent('meta[property="og:image"], meta[name="twitter:image"]', OG_IMAGE[locale]);
+    setMetaContent('meta[property="og:locale"]', OG_LOCALE[locale]);
+    // og:url and canonical name the *requested* language, exactly as the Worker
+    // does: only a ?lang= URL earns the ?lang= share link, so a bare / keeps the
+    // canonical it was served with.
+    if (lang) {
+      setMetaContent('meta[property="og:url"]', SHARE_URL[lang]);
+      document
+        .querySelector<HTMLLinkElement>('link[rel="canonical"]')
+        ?.setAttribute("href", SHARE_URL[lang]);
+    }
+  }, [lang, locale]);
 
   return (
     <div className="sd-shell mx-auto flex min-h-dvh w-full max-w-[1400px] flex-col">
       <LocalOnlyBanner text={t(locale, "localOnly")} />
       <Masthead sub={t(locale, "brandSub")} title={t(locale, "appTitle")} />
       <GameScreen locale={locale} />
+      {/* Below the whole play area — never between the board and the keypad. */}
+      <AdSlot />
       <SeoCopy heading={t(locale, "faq")} locale={locale} />
     </div>
   );

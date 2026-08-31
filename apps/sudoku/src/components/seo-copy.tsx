@@ -18,12 +18,12 @@ export function SeoCopy({ locale, heading }: { readonly locale: Locale; readonly
   };
 
   return (
-    <section className="mx-auto w-full max-w-2xl px-4 py-8 text-cream-muted">
-      <h2 className="font-display text-lg text-cream">{heading}</h2>
+    <section className="mx-auto w-full max-w-2xl px-4 py-8 text-ink-muted">
+      <h2 className="font-display text-lg text-ink">{heading}</h2>
       <dl className="mt-4 space-y-4">
         {faq.map((entry) => (
           <div key={entry.question}>
-            <dt className="text-sm font-semibold text-cream">{entry.question}</dt>
+            <dt className="text-sm font-semibold text-ink">{entry.question}</dt>
             <dd className="mt-1 text-sm">{entry.answer}</dd>
           </div>
         ))}

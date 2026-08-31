@@ -54,7 +54,6 @@ import {
   nextGameAnnouncement,
 } from "../src/lib/game/game-view-model.ts";
 import { webSafeAreaPadding } from "../src/lib/game/game-safe-area.ts";
-import { gameColors } from "../src/lib/game/game-theme.ts";
 import { normalizeWebPointer } from "../src/lib/pointer.ts";
 
 import { PUZZLES } from "../src/lib/sudoku/data/puzzles.generated.ts";
@@ -1142,25 +1141,33 @@ for (const [name, pointerType, phase, buttons, hovering] of [
 }
 
 // ---------------------------------------------------------------------------
-// game-theme — pins the theme constants to the CSS custom properties they
-// must stay equal to (Step 6)
+// palette — pins the ten colours carried over from the Expo app to the exact
+// hex values index.css must keep serving (Step 6)
 // ---------------------------------------------------------------------------
 
-test("game-theme colours and the CSS tokens in index.css are the same values", () => {
+/**
+ * Written out here rather than imported, because index.css is now the only
+ * place these live: the TypeScript copy they used to be compared against had
+ * no readers, and the 3D materials never read it either. The point of the test
+ * is unchanged — these ten must not drift from the ported palette — but it now
+ * pins the live tokens to the values themselves.
+ */
+const PORTED_PALETTE = {
+  "--color-canvas": "#18120f",
+  "--color-charcoal": "#2a211c",
+  "--color-cream": "#f7f0e2",
+  "--color-cream-muted": "#e4dac8",
+  "--color-ink": "#34251e",
+  "--color-ink-muted": "#756257",
+  "--color-vermilion": "#a7342d",
+  "--color-walnut": "#5b321f",
+  "--color-walnut-dark": "#2d1a12",
+  "--color-walnut-light": "#8a5535",
+};
+
+test("index.css still carries the ten ported palette colours byte-for-byte", () => {
   const css = readFileSync(new URL("../src/index.css", import.meta.url), "utf8");
-  const expected = {
-    "--color-canvas": gameColors.canvas,
-    "--color-charcoal": gameColors.charcoal,
-    "--color-cream": gameColors.cream,
-    "--color-cream-muted": gameColors.creamMuted,
-    "--color-ink": gameColors.ink,
-    "--color-ink-muted": gameColors.inkMuted,
-    "--color-vermilion": gameColors.vermilion,
-    "--color-walnut": gameColors.walnut,
-    "--color-walnut-dark": gameColors.walnutDark,
-    "--color-walnut-light": gameColors.walnutLight,
-  };
-  for (const [token, value] of Object.entries(expected)) {
+  for (const [token, value] of Object.entries(PORTED_PALETTE)) {
     assert.match(
       css,
       new RegExp(`${token}:\\s*${value};`),

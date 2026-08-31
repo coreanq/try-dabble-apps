@@ -1,9 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { SUPPORTED_LOCALES, defaultLocale, isLocale } from "../src/lib/i18n/locales.ts";
 import { localizedFaq, messages, t } from "../src/lib/i18n/index.ts";
-import { HTML_LANG, LANG_KEY, OG_IMAGE, OG_LOCALE } from "../src/lib/i18n/resolve-lang.ts";
+import {
+  HTML_LANG,
+  LANG_KEY,
+  OG_IMAGE,
+  OG_LOCALE,
+  SHARE_URL,
+} from "../src/lib/i18n/resolve-lang.ts";
 
 test("supports exactly ko, en and ja", () => {
   assert.deepEqual(SUPPORTED_LOCALES, ["ko", "en", "ja"]);
@@ -51,4 +58,47 @@ test("the language tables cover every locale and never point zh at anything", ()
   assert.equal(OG_IMAGE.ko, "https://sudoku.try-dabble.com/og-image.png");
   assert.equal(OG_IMAGE.en, "https://sudoku.try-dabble.com/og-image-en.png");
   assert.equal(OG_IMAGE.ja, "https://sudoku.try-dabble.com/og-image-ja.png");
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.equal(SHARE_URL[locale], `https://sudoku.try-dabble.com/?lang=${locale}`);
+  }
+});
+
+// The client rewrites the head on an in-app language switch (src/routes/home.tsx).
+// If it used a different title or description from the one the Worker already
+// served, the page would contradict its own first HTML.
+test("the head strings the client writes are the ones src/og-lang.ts serves", () => {
+  const worker = readFileSync(new URL("../src/og-lang.ts", import.meta.url), "utf8");
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.ok(
+      worker.includes(`'${t(locale, "appTitle")}'`),
+      `og-lang.ts must serve ${locale} the title ${t(locale, "appTitle")}`,
+    );
+    assert.ok(
+      worker.includes(`'${t(locale, "metaDescription")}'`),
+      `og-lang.ts must serve ${locale} the same meta description`,
+    );
+    assert.ok(
+      worker.includes(`'${OG_LOCALE[locale]}'`),
+      `og-lang.ts must serve ${locale} the og:locale ${OG_LOCALE[locale]}`,
+    );
+    assert.ok(
+      worker.includes(`'${OG_IMAGE[locale]}'`),
+      `og-lang.ts must serve ${locale} the og:image ${OG_IMAGE[locale]}`,
+    );
+  }
+});
+
+// index.html is the ko default the Worker leaves alone on a bare /, so its
+// card must say the same thing /?lang=ko does.
+test("index.html's default card carries the same Korean strings as ?lang=ko", () => {
+  const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  for (const key of ["description", "og:description", "twitter:description"]) {
+    const attr = key.startsWith("og:") ? "property" : "name";
+    assert.ok(
+      html.includes(`<meta ${attr}="${key}" content="${t("ko", "metaDescription")}" />`),
+      `index.html ${key} must be the ko meta description`,
+    );
+  }
+  assert.ok(html.includes(`<title>${t("ko", "appTitle")}</title>`));
+  assert.ok(html.includes(`content="${t("en", "appTitle")}"`), "og:site_name is the English brand");
 });

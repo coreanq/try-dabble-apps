@@ -2,6 +2,8 @@ import type { MessageDictionary } from './messages';
 
 const ja = {
   appTitle: '3D数独',
+  metaDescription:
+    '温かな木製ボードとセラミックの数字タイルで楽しむ3D数独です。5段階の難易度、メモ、取り消し、答え合わせに対応し、指・マウス・Apple Pencilのどれでも遊べます。',
   difficulty: '難易度を選択',
   boardSize: '盤面サイズ',
   beginner: '入門',

@@ -1,5 +1,7 @@
 const ko = {
   appTitle: '스도쿠 3D',
+  metaDescription:
+    '따뜻한 원목 보드와 세라믹 숫자 타일로 즐기는 3D 스도쿠입니다. 다섯 단계 난이도, 메모, 실행 취소, 정답 확인을 지원하며 손가락·마우스·Apple Pencil로 플레이할 수 있습니다.',
   difficulty: '난이도 선택',
   boardSize: '보드 크기',
   beginner: '입문',
