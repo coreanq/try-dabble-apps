@@ -109,6 +109,7 @@ export function GameScreen({ locale }: GameScreenProps) {
   const [completionVisible, setCompletionVisible] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [generationAttempt, setGenerationAttempt] = useState(1);
+  const [generationElapsed, setGenerationElapsed] = useState(0);
   const [generationError, setGenerationError] = useState(false);
   const previousStatus = useRef(state.status);
   const boardScrollRef = useRef<HTMLDivElement>(null);
@@ -116,6 +117,10 @@ export function GameScreen({ locale }: GameScreenProps) {
   const generationRequestRef = useRef(0);
   const seenPuzzlesRef = useRef(new Set<string>());
   const musicLoadedRef = useRef(false);
+  // The spinner can be cancelled now, so Settings IS reachable mid-generation
+  // and settings.music can change under a long await. Read it through a ref at
+  // the moment we would load a track, never from the closure.
+  const musicEnabledRef = useRef(settings.music);
   const startBackgroundMusic = useBackgroundMusic(settings.music, settings.musicVolume);
   const playAudio = useAudioFeedback(settings.sound, settings.soundVolume);
   const playHaptic = useHapticFeedback(settings.haptics);
@@ -245,6 +250,7 @@ export function GameScreen({ locale }: GameScreenProps) {
     setCompletionVisible(false);
     setGenerationError(false);
     setGenerationAttempt(1);
+    setGenerationElapsed(0);
     setGenerating(true);
 
     try {
@@ -266,12 +272,10 @@ export function GameScreen({ locale }: GameScreenProps) {
       // Native could ask for a track whatever the setting said — the three
       // tracks were bundled. On the web loading one costs ~2.9MB over the
       // wire, so a player with background music off must never trigger it.
-      // settings.music is the value captured when generation started, which is
-      // safe only because PuzzleGenerationDialog is modal with allowClose={false}:
-      // Settings is unreachable while the spinner is up, so the setting cannot
-      // change under us. Give that spinner a cancel button and this goes stale —
-      // read the setting through a ref at that point.
-      if (settings.music) {
+      // Read through musicEnabledRef, not the closure: generation can run for
+      // half a minute, and since the spinner gained a cancel button the player
+      // can reach Settings and turn music off while we are still awaiting.
+      if (musicEnabledRef.current) {
         startBackgroundMusic();
         musicLoadedRef.current = true;
       }
@@ -284,7 +288,7 @@ export function GameScreen({ locale }: GameScreenProps) {
     } finally {
       if (generationRequestRef.current === requestId) setGenerating(false);
     }
-  }, [emitFeedback, settings.answerCheck, settings.music, startBackgroundMusic]);
+  }, [emitFeedback, settings.answerCheck, startBackgroundMusic]);
 
   const chooseDifficulty = useCallback((size: BoardSize, nextDifficulty: Difficulty) => {
     void startGeneratedGame(size, nextDifficulty);
@@ -337,11 +341,31 @@ export function GameScreen({ locale }: GameScreenProps) {
     }
   }, [applyGameAction, enterDigit, eraseSelected, revealBoardCell, selectCell, state.noteMode]);
 
+  /** Same bump the unmount cleanup uses: the generator sees shouldCancel and
+   *  resolves null, so the awaiting call returns without touching the board. */
+  const cancelGeneration = useCallback(() => {
+    generationRequestRef.current += 1;
+    setGenerating(false);
+    setDifficultyVisible(true);
+  }, []);
+
   useEffect(() => {
     return () => {
       generationRequestRef.current += 1;
     };
   }, []);
+
+  useEffect(() => {
+    musicEnabledRef.current = settings.music;
+  }, [settings.music]);
+
+  useEffect(() => {
+    if (!generating) {
+      return;
+    }
+    const timer = setInterval(() => setGenerationElapsed((seconds) => seconds + 1), 1000);
+    return () => clearInterval(timer);
+  }, [generating]);
 
   useEffect(() => {
     if (!started || state.status !== 'playing') {
@@ -517,6 +541,8 @@ export function GameScreen({ locale }: GameScreenProps) {
       />
       <PuzzleGenerationDialog
         attempt={generationAttempt}
+        elapsedSeconds={generationElapsed}
+        onCancel={cancelGeneration}
         locale={locale}
         visible={generating}
       />

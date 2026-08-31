@@ -16,9 +16,11 @@
   walnut rack or inside the window is cream on wood.
   The first ten colours below are the palette carried over from the Expo app,
   and they are this app's only source for it: every DOM surface reads them as
-  Tailwind tokens, while the 3D materials in src/components/board3d/ carry
-  their own separate well and tile literals. test/board3d.test.mjs pins these
-  ten byte-for-byte, so add tokens here rather than editing those values.
+  Tailwind tokens. The 3D materials in src/components/board3d/ carry their own
+  well and tile literals, and board-scene.tsx repeats canvas as the scene
+  background — so a change to --color-canvas has to be made there too.
+  test/board3d.test.mjs pins these ten byte-for-byte, so add tokens here rather
+  than editing those values.
 */
 
 @theme {
@@ -33,8 +35,8 @@
   --color-walnut-dark: #2d1a12;
   --color-walnut-light: #8a5535;
 
-  /* The desk itself, and the fittings screwed to it. Not in game-theme.ts:
-     nothing in the 3D scene is made of these. */
+  /* The desk itself, and the fittings screwed to it. Like the ten above, these
+     live only here — the 3D scene keeps its own literals. */
   --color-parchment: #eee6d8;
   --color-parchment-light: #fff9ec;
   --color-parchment-dark: #d8cbb7;

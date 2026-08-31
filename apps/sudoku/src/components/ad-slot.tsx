@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 
+import { t } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n/locales";
+
 declare global {
   interface Window {
     adsbygoogle?: unknown[];
@@ -7,7 +10,7 @@ declare global {
 }
 
 /** AdSense ca-pub-3398336402999065, same slot the sibling apps carry. */
-export function AdSlot() {
+export function AdSlot({ locale }: { readonly locale: Locale }) {
   const pushed = useRef(false);
 
   useEffect(() => {
@@ -25,7 +28,7 @@ export function AdSlot() {
       className="mx-auto min-h-[100px] w-full max-w-2xl overflow-hidden rounded-[1.1rem] border border-dashed border-panel bg-cream/60"
       id="ad-slot"
       role="complementary"
-      aria-label="Advertisement"
+      aria-label={t(locale, "adLabel")}
     >
       <ins
         className="adsbygoogle"

@@ -41,9 +41,13 @@ function Home() {
     );
     setMetaContent('meta[property="og:image"], meta[name="twitter:image"]', OG_IMAGE[locale]);
     setMetaContent('meta[property="og:locale"]', OG_LOCALE[locale]);
-    // og:url and canonical name the *requested* language, exactly as the Worker
-    // does: only a ?lang= URL earns the ?lang= share link, so a bare / keeps the
-    // canonical it was served with.
+    // og:url and canonical move only when the URL itself carries ?lang=, which
+    // is NARROWER than the Worker: src/og-lang.ts rewrites them for the td_lang
+    // cookie too. That is deliberate, not an oversight. The client only has to
+    // move these when it changed the URL out from under the served document; on
+    // the cookie path the Worker already wrote the right value into the very
+    // page this effect is running in, so touching them would be a no-op at
+    // best. Every URL shape ends up agreeing with its own first HTML.
     if (lang) {
       setMetaContent('meta[property="og:url"]', SHARE_URL[lang]);
       document
@@ -58,7 +62,7 @@ function Home() {
       <Masthead sub={t(locale, "brandSub")} title={t(locale, "appTitle")} />
       <GameScreen locale={locale} />
       {/* Below the whole play area — never between the board and the keypad. */}
-      <AdSlot />
+      <AdSlot locale={locale} />
       <SeoCopy heading={t(locale, "faq")} locale={locale} />
     </div>
   );
