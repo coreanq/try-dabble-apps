@@ -616,6 +616,54 @@
   .pc-add:active {
     transform: translateY(2px);
   }
+
+  /* Setlist name + JSON export/import: a label, a field, two plain keys. */
+  .pc-field-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--color-stage-muted);
+  }
+  .pc-input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    background: #120b1f;
+    color: var(--color-stage-ink);
+    border: 1px solid var(--color-rail);
+    border-radius: 6px;
+    padding: 0.45rem 0.55rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.2;
+  }
+  .pc-input::placeholder {
+    color: #6d5a93;
+    font-weight: 500;
+  }
+  .pc-file-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+    min-height: 2.35rem;
+    padding: 0 0.7rem;
+    border-radius: 7px;
+    border: 1px solid var(--color-rail);
+    background: linear-gradient(180deg, #2a1c42 0%, #1c1230 100%);
+    color: var(--color-stage-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: inherit;
+    line-height: 1.1;
+    cursor: pointer;
+    box-shadow: 0 2px 0 #120b1f;
+  }
+  .pc-file-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
 }
 
 @media (min-width: 520px) {

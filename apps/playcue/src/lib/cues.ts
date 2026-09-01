@@ -20,6 +20,7 @@ export type Cue = {
 export const CUES_KEY = "playcue:cues:v1";
 export const POS_KEY = "playcue:current:v1";
 export const LOOP_KEY = "playcue:loop-one:v1";
+export const SETLIST_NAME_KEY = "playcue:setlist-name:v1";
 const AUDIO_DIR = "playcue-audio";
 
 const AUDIO_EXT = /\.(mp3|m4a|mp4|aac|wav|wave|ogg|oga|opus|flac|weba|webm)$/i;

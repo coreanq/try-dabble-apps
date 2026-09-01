@@ -73,6 +73,11 @@ export type MsgKey =
   | "addMore"
   | "addHint"
   | "formats"
+  | "setlistNameLabel"
+  | "setlistNamePlaceholder"
+  | "setlistHint"
+  | "exportJson"
+  | "importJson"
   | "emptyTitle"
   | "emptyStep1"
   | "emptyStep2"
@@ -95,6 +100,9 @@ export type MsgKey =
   | "toastSkipped"
   | "toastStoreFail"
   | "toastPlayFail"
+  | "toastExported"
+  | "toastImported"
+  | "toastImportBad"
   | "privacy"
   | "terms";
 
@@ -153,6 +161,11 @@ export const I18N: Record<Lang, Messages> = {
     addMore: "더 넣기",
     addHint: "이 기기에 있는 파일만 씁니다. 업로드하지 않습니다.",
     formats: "mp3 · m4a · wav · ogg",
+    setlistNameLabel: "셋리스트 이름",
+    setlistNamePlaceholder: "MyShow",
+    setlistHint: "셋리스트에 이름을 붙인 다음 JSON 파일로 내보냅니다. 음악 파일은 이 기기에 그대로 있습니다.",
+    exportJson: "JSON 내보내기",
+    importJson: "JSON 가져오기",
     emptyTitle: "큐가 비었습니다",
     emptyStep1: "음악 파일을 넣습니다.",
     emptyStep2: "GO를 눌러 한 곡을 재생합니다.",
@@ -175,6 +188,9 @@ export const I18N: Record<Lang, Messages> = {
     toastSkipped: "오디오가 아닌 파일 {n}개는 건너뛰었습니다",
     toastStoreFail: "이 브라우저에는 파일을 남길 수 없습니다. 이번만 재생됩니다.",
     toastPlayFail: "이 파일은 재생할 수 없습니다.",
+    toastExported: "{name} 파일로 내보냈습니다",
+    toastImported: "{n}곡을 가져왔습니다",
+    toastImportBad: "플레이큐 셋리스트 파일이 아닙니다.",
     privacy: "개인정보",
     terms: "이용약관",
   },
@@ -230,6 +246,11 @@ export const I18N: Record<Lang, Messages> = {
     addMore: "Add more",
     addHint: "Uses files already on this device. Nothing is uploaded.",
     formats: "mp3 · m4a · wav · ogg",
+    setlistNameLabel: "Setlist name",
+    setlistNamePlaceholder: "MyShow",
+    setlistHint: "Name the setlist, then export it as a JSON file. Audio stays on this device.",
+    exportJson: "Export JSON",
+    importJson: "Import JSON",
     emptyTitle: "The cue list is empty",
     emptyStep1: "Add your audio files.",
     emptyStep2: "Tap GO to play one.",
@@ -252,6 +273,9 @@ export const I18N: Record<Lang, Messages> = {
     toastSkipped: "Skipped {n} non-audio file(s)",
     toastStoreFail: "This browser cannot keep the files. They play for this session only.",
     toastPlayFail: "This file will not play.",
+    toastExported: "Exported {name}",
+    toastImported: "Imported {n} cue(s)",
+    toastImportBad: "That file is not a Playcue setlist.",
     privacy: "Privacy",
     terms: "Terms",
   },
@@ -307,6 +331,11 @@ export const I18N: Record<Lang, Messages> = {
     addMore: "追加する",
     addHint: "この端末にあるファイルだけを使います。アップロードしません。",
     formats: "mp3 · m4a · wav · ogg",
+    setlistNameLabel: "セットリスト名",
+    setlistNamePlaceholder: "MyShow",
+    setlistHint: "セットリストに名前を付けてから JSON ファイルとして書き出します。音声はこの端末に残ります。",
+    exportJson: "JSONを書き出す",
+    importJson: "JSONを読み込む",
     emptyTitle: "キューリストは空です",
     emptyStep1: "音声ファイルを入れます。",
     emptyStep2: "GOを押して1曲を再生します。",
@@ -329,6 +358,9 @@ export const I18N: Record<Lang, Messages> = {
     toastSkipped: "音声でないファイル{n}件は飛ばしました",
     toastStoreFail: "このブラウザではファイルを残せません。今回だけ再生します。",
     toastPlayFail: "このファイルは再生できません。",
+    toastExported: "{name} を書き出しました",
+    toastImported: "{n}件読み込みました",
+    toastImportBad: "プレイキューのセットリストファイルではありません。",
     privacy: "プライバシー",
     terms: "利用規約",
   },
@@ -384,6 +416,11 @@ export const I18N: Record<Lang, Messages> = {
     addMore: "继续加入",
     addHint: "只用此设备上已有的文件，不会上传。",
     formats: "mp3 · m4a · wav · ogg",
+    setlistNameLabel: "歌单名称",
+    setlistNamePlaceholder: "MyShow",
+    setlistHint: "先给歌单起个名字，再导出为 JSON 文件。音频仍留在此设备。",
+    exportJson: "导出 JSON",
+    importJson: "导入 JSON",
     emptyTitle: "提示单是空的",
     emptyStep1: "加入音频文件。",
     emptyStep2: "按 GO 播放一首。",
@@ -406,6 +443,9 @@ export const I18N: Record<Lang, Messages> = {
     toastSkipped: "跳过 {n} 个非音频文件",
     toastStoreFail: "此浏览器无法保存文件，本次会话内可播放。",
     toastPlayFail: "这个文件无法播放。",
+    toastExported: "已导出 {name}",
+    toastImported: "已导入 {n} 条",
+    toastImportBad: "这不是点播下曲的歌单文件。",
     privacy: "隐私",
     terms: "条款",
   },

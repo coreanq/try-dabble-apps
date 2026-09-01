@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
-import { ListPlus, Rewind, Square } from "lucide-react";
+import { Download, ListPlus, Rewind, Square, Upload } from "lucide-react";
 
 import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
@@ -14,6 +14,7 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/componen
 import {
   LOOP_KEY,
   POS_KEY,
+  SETLIST_NAME_KEY,
   cueName,
   dropAudio,
   formatClock,
@@ -29,6 +30,7 @@ import {
   writeString,
   type Cue,
 } from "@/lib/cues";
+import { downloadSetlist, parseSetlist, setlistFilename } from "@/lib/setlist-json";
 import {
   HTML_LANG,
   OG_IMAGE,
@@ -81,6 +83,7 @@ function Home() {
   const [currentId, setCurrentId] = useState<string | null>(() => readString(POS_KEY));
   const [phase, setPhase] = useState<Phase>("idle");
   const [loopOne, setLoopOne] = useState<boolean>(() => readString(LOOP_KEY) === "1");
+  const [setlistName, setSetlistName] = useState<string>(() => readString(SETLIST_NAME_KEY) ?? "");
   const [missing, setMissing] = useState<string[]>([]);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [pendingRemove, setPendingRemove] = useState<Cue | null>(null);
@@ -94,6 +97,7 @@ function Home() {
   // loadedmetadata never writes its runtime onto whatever became current.
   const loadedId = useRef<string>("");
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const jsonInput = useRef<HTMLInputElement | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
   const index = useMemo(() => {
@@ -294,6 +298,46 @@ function Home() {
     }
     if (storeFailed) showToast(t("toastStoreFail"));
     else if (skipped > 0 && added.length === 0) showToast(t("toastSkipped", { n: skipped }));
+  }
+
+  function handleSetlistName(value: string) {
+    setSetlistName(value);
+    writeString(SETLIST_NAME_KEY, value);
+  }
+
+  function handleExportJson() {
+    downloadSetlist(setlistName, cues);
+    showToast(t("toastExported", { name: setlistFilename(setlistName) }));
+  }
+
+  /**
+   * The file carries names and ids, never audio. Back on the device that made
+   * it the ids still match what is stored, so the cues play; anywhere else they
+   * come up as missing-file, which is the honest answer.
+   */
+  async function handleImportJson(file: File | null) {
+    if (!file) return;
+    let parsed: ReturnType<typeof parseSetlist> = null;
+    try {
+      parsed = parseSetlist(await file.text());
+    } catch {
+      parsed = null;
+    }
+    if (!parsed) {
+      showToast(t("toastImportBad"));
+      return;
+    }
+    stopAudio();
+    setPhase("idle");
+    handleSetlistName(parsed.name);
+    commit(parsed.cues);
+    pickCurrent(parsed.cues[0]?.id ?? null);
+    const gone: string[] = [];
+    for (const cue of parsed.cues) {
+      if (!(await getAudio(cue.id))) gone.push(cue.id);
+    }
+    setMissing(gone);
+    showToast(t("toastImported", { n: parsed.cues.length }));
   }
 
   function confirmRemove() {
@@ -522,6 +566,56 @@ function Home() {
           <p className="m-0 text-[0.72rem] text-stage-muted">
             {t("addHint")} <span className="pc-slug">{t("formats")}</span>
           </p>
+
+          {/* Name the show and carry it off the device as a small JSON file.
+              Always here, empty list or not, so it never needs hunting for. */}
+          <div className="grid gap-[0.35rem] rounded-lg border border-rail bg-[#150d22]/70 px-[0.6rem] py-[0.55rem]">
+            <label className="pc-field-label" htmlFor="setlist-name">
+              {t("setlistNameLabel")}
+            </label>
+            <div className="flex flex-wrap items-center gap-[0.4rem]">
+              <input
+                id="setlist-name"
+                className="pc-input"
+                type="text"
+                value={setlistName}
+                maxLength={64}
+                placeholder={t("setlistNamePlaceholder")}
+                onChange={(e) => handleSetlistName(e.target.value)}
+              />
+              <button
+                type="button"
+                id="export-json"
+                className="pc-file-btn"
+                onClick={handleExportJson}
+              >
+                <Download className="size-4" aria-hidden />
+                {t("exportJson")}
+              </button>
+              <button
+                type="button"
+                id="import-json"
+                className="pc-file-btn"
+                onClick={() => jsonInput.current?.click()}
+              >
+                <Upload className="size-4" aria-hidden />
+                {t("importJson")}
+              </button>
+            </div>
+            <input
+              ref={jsonInput}
+              id="json-input"
+              className="sr-only"
+              type="file"
+              accept="application/json,.json"
+              style={{ fontSize: "1rem" }}
+              onChange={(e) => {
+                void handleImportJson(e.target.files?.[0] ?? null);
+                e.target.value = "";
+              }}
+            />
+            <p className="m-0 text-[0.72rem] leading-5 text-stage-muted">{t("setlistHint")}</p>
+          </div>
 
           {cues.length === 0 ? (
             <div
