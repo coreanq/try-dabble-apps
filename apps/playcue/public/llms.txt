@@ -1,0 +1,36 @@
+# Playcue / 플레이큐
+
+> A cue list of local audio files for a show or a class. When a track ends it STOPS.
+> The next cue only starts when the operator taps the giant GO button.
+
+This is a Progressive Web App (PWA) hosted at https://playcue.try-dabble.com/
+Cue names and order stay in this browser; the audio files themselves are copied into
+the Origin Private File System on this device. No accounts, no uploads, no server storage.
+
+This is NOT a music player. It does NOT auto-advance to the next track like MusicPlay
+or notevibes. There is no shuffle, no crossfade, no streaming, no YouTube, no device
+library crawl and no TV remote.
+
+## Pages
+
+- [Home](https://playcue.try-dabble.com/): Cue list, now-playing readout, giant GO button
+- [Privacy](https://playcue.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://playcue.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/playcue): How-to on try-dabble.com
+
+## Features
+
+- Add local audio files (mp3, m4a, wav, ogg) with the file picker, several at once
+- Reorder cues up and down, remove a cue, clear the whole list
+- Cue list shows current / next / how many remain
+- Now-playing name in the largest type on the page
+- Play and pause the CURRENT cue only
+- End of track: stop, arm the GO button, do not start the next track
+- Giant GO button sized for a thumb at 390px
+- Optional loop-one, off by default
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

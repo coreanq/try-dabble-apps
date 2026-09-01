@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>플레이큐</title>
+  <meta name="description" content="공연·수업용 큐 목록. 한 곡이 끝나면 멈춥니다. 다음 곡은 큰 GO 버튼을 눌러야 시작합니다. 자동 넘김 없음, 로그인 없음, 이 기기의 파일만." />
+  <meta name="theme-color" content="#0b0710" />
+  <meta name="application-name" content="플레이큐" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="플레이큐" />
+  <link rel="canonical" href="https://playcue.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://playcue.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://playcue.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://playcue.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://playcue.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://playcue.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Playcue" />
+  <meta property="og:url" content="https://playcue.try-dabble.com/" />
+  <meta property="og:title" content="플레이큐" />
+  <meta property="og:description" content="한 곡이 끝나면 멈춥니다. 누르면 다음. 자동으로 다음 곡을 틀지 않습니다." />
+  <meta property="og:image" content="https://playcue.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="플레이큐" />
+  <meta name="twitter:description" content="한 곡이 끝나면 멈춥니다. 누르면 다음. 이 기기에만." />
+  <meta name="twitter:image" content="https://playcue.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://playcue.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://playcue.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://playcue.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .pc-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+  -->
+  <div id="root">
+    <div class="pc-stage">
+      <p class="pc-tape" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="pc-masthead">
+        <div class="pc-masthead-row">
+          <h1 id="brand-title">플레이큐</h1>
+          <svg viewBox="0 0 72 56" aria-hidden="true" focusable="false" class="block h-8 w-[40px] shrink-0 sm:h-9 sm:w-[46px]">
+            <path d="M36 2 L58 26 H14 Z" fill="#ffb020" opacity="0.22"/>
+            <rect x="28" y="0" width="16" height="7" rx="2" fill="#3b2a58"/>
+            <circle cx="36" cy="6" r="2.6" fill="#ffd487"/>
+            <rect x="8" y="28" width="56" height="24" rx="9" fill="#0c6c3d"/>
+            <rect x="8" y="26" width="56" height="24" rx="9" fill="#35e07d"/>
+            <rect x="13" y="29" width="46" height="8" rx="4" fill="#9bffcb" opacity="0.55"/>
+            <path d="M31.5 33.5h-4.2v3.2h1.6a2.2 2.2 0 1 1-2.2-2.9" fill="none" stroke="#04240f" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="41.5" cy="36.5" r="4.6" fill="none" stroke="#04240f" stroke-width="2.6"/>
+            <circle cx="8" cy="18" r="3" fill="#ff2f8e"/>
+            <circle cx="64" cy="18" r="3" fill="#3ad7f0"/>
+          </svg>
+        </div>
+        <p class="pc-tagline">한 곡이 끝나면 멈춥니다. 누르면 다음. 이 기기에만.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

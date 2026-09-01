@@ -1,0 +1,646 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Playcue / 플레이큐 — a stage cue deck, not a music player.
+  Plum-black house, one warm followspot, gel-coloured cue lights, and a GO
+  button the size of a thumb. shadcn is the kit, not the look: card, dialog and
+  button are re-dressed as a rack panel, a backstage note and a lit console key.
+  Never a Spotify list, never a pastel toy, never a flat #111 utility.
+*/
+
+@theme {
+  --color-house: #0b0710;
+  --color-house-2: #150d20;
+  --color-panel: #1d1430;
+  --color-panel-2: #271a3f;
+  --color-rail: #3b2a58;
+  --color-stage-ink: #f5edff;
+  --color-stage-muted: #a795c4;
+  --color-amber: #ffb020;
+  --color-amber-deep: #7a4d00;
+  --color-go: #35e07d;
+  --color-go-deep: #0c6c3d;
+  --color-standby: #ff3b52;
+  --color-gel-magenta: #ff2f8e;
+  --color-gel-cyan: #3ad7f0;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-console);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Condensed signage for the console, wide mono for cue numbers and clocks. */
+  --stack-display: "Bahnschrift", "DIN Alternate", "Avenir Next Condensed",
+    "Oswald", "Arial Narrow", "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-console: ui-monospace, "SFMono-Regular", "Roboto Mono", "Menlo",
+    "Noto Sans Mono CJK KR", monospace;
+
+  --background: #0b0710;
+  --foreground: #f5edff;
+  --card: #1d1430;
+  --card-foreground: #f5edff;
+  --popover: #1d1430;
+  --popover-foreground: #f5edff;
+  --primary: #35e07d;
+  --primary-foreground: #04240f;
+  --secondary: #271a3f;
+  --secondary-foreground: #f5edff;
+  --muted: #241735;
+  --muted-foreground: #a795c4;
+  --accent: #2f1f4a;
+  --accent-foreground: #ffd487;
+  --destructive: #ff3b52;
+  --border: #3b2a58;
+  --input: #3b2a58;
+  --ring: #ffb020;
+
+  --radius: 0.5rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* One warm followspot from the grid, two cold side gels, and a gobo haze. */
+    background-color: #0b0710;
+    background-image:
+      radial-gradient(120% 58% at 50% -12%, rgba(255, 176, 32, 0.20), transparent 62%),
+      radial-gradient(70% 40% at 4% 12%, rgba(255, 47, 142, 0.14), transparent 70%),
+      radial-gradient(70% 44% at 98% 20%, rgba(58, 215, 240, 0.12), transparent 70%),
+      repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.022) 0 2px, transparent 2px 9px),
+      linear-gradient(180deg, #150d20 0%, #0b0710 46%, #08050c 100%);
+    background-attachment: fixed;
+  }
+
+  a {
+    color: var(--color-amber);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native file/select min-content must never force horizontal scroll at 360px */
+  input,
+  select,
+  button {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .pc-stage {
+    max-width: 32rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.6rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  /* Stage-edge caution tape: the amber local-only banner, hazard-striped. */
+  .pc-tape {
+    margin: 0;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.4;
+    color: #2a1a00;
+    background: var(--color-amber);
+    border-radius: 4px;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-image: repeating-linear-gradient(
+        135deg,
+        #1a1005 0 9px,
+        #ffb020 9px 18px
+      )
+      4;
+    box-shadow: 0 0 22px rgba(255, 176, 32, 0.28);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Lighting-grid header: a truss bar over the house. */
+  .pc-masthead {
+    margin: 0 -0.85rem;
+    padding: 0.6rem 0.85rem 0.7rem;
+    background:
+      linear-gradient(180deg, rgba(255, 176, 32, 0.16), rgba(11, 7, 16, 0)) ,
+      linear-gradient(180deg, #241738 0%, #150d22 100%);
+    border-bottom: 1px solid var(--color-rail);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+    position: relative;
+  }
+  .pc-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 176, 32, 0.75),
+      rgba(255, 47, 142, 0.5),
+      transparent
+    );
+  }
+
+  .pc-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem 0.55rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html and the mounted app match. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--color-stage-ink);
+    text-shadow: 0 0 26px rgba(255, 176, 32, 0.4);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pc-tagline {
+    margin: 0.22rem 0 0;
+    font-size: 0.74rem;
+    line-height: 1.35;
+    color: var(--color-amber);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .pc-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: #150d22;
+    color: var(--color-stage-ink);
+    border: 1px solid var(--color-rail);
+    border-radius: 5px;
+    padding: 0.34rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.1;
+  }
+
+  /* Rack panel: brushed dark face, screw-line top, faint scanline. */
+  .pc-panel {
+    position: relative;
+    border: 1px solid var(--color-rail);
+    border-radius: 10px;
+    background:
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.016) 0 1px, transparent 1px 4px),
+      linear-gradient(180deg, #241737 0%, #1a1129 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 12px 28px rgba(0, 0, 0, 0.5);
+  }
+  .pc-panel::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 0;
+    height: 2px;
+    border-radius: 0 0 2px 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 176, 32, 0.55),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  /* Cue light: a lamp in a housing, lit or dark. */
+  .pc-lamp {
+    display: inline-block;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background: #241735;
+    border: 1px solid #4a3670;
+  }
+  .pc-lamp-on-air {
+    background: var(--color-go);
+    border-color: #9bffcb;
+    box-shadow: 0 0 12px 2px rgba(53, 224, 125, 0.75);
+  }
+  .pc-lamp-standby {
+    background: var(--color-amber);
+    border-color: #ffd487;
+    box-shadow: 0 0 12px 2px rgba(255, 176, 32, 0.7);
+  }
+  .pc-lamp-stopped {
+    background: var(--color-standby);
+    border-color: #ff9aa6;
+    box-shadow: 0 0 12px 2px rgba(255, 59, 82, 0.65);
+  }
+
+  /* THE button. Thumb-sized at 390px and lit like a console key. */
+  .pc-go {
+    display: block;
+    width: 100%;
+    min-height: 8.25rem;
+    border-radius: 18px;
+    border: 2px solid;
+    padding: 0.9rem 1rem;
+    font-family: var(--stack-display);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition:
+      transform 90ms ease,
+      filter 140ms ease;
+  }
+  .pc-go:active:not(:disabled) {
+    transform: translateY(3px) scale(0.995);
+    filter: brightness(0.94);
+  }
+  .pc-go:disabled {
+    cursor: not-allowed;
+  }
+  .pc-go-label {
+    display: block;
+    font-size: 2.9rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    line-height: 1;
+  }
+  .pc-go-sub {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--stack-ui);
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    opacity: 0.9;
+  }
+
+  /* Armed: the track stopped, the next cue is waiting on a tap. */
+  .pc-go-armed {
+    color: #04240f;
+    border-color: #a6ffd0;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #7bf5b0 0%, #35e07d 46%, #12a95c 100%);
+    box-shadow:
+      0 0 0 6px rgba(53, 224, 125, 0.16),
+      0 0 46px rgba(53, 224, 125, 0.5),
+      0 12px 0 #0c6c3d,
+      0 18px 34px rgba(0, 0, 0, 0.55);
+    animation: pc-breathe 2.1s ease-in-out infinite;
+  }
+  /* Ready: a cue is loaded and standing by. */
+  .pc-go-ready {
+    color: #2a1a00;
+    border-color: #ffdb9a;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #ffd487 0%, #ffb020 48%, #d98600 100%);
+    box-shadow:
+      0 0 34px rgba(255, 176, 32, 0.4),
+      0 12px 0 #8a5600,
+      0 18px 34px rgba(0, 0, 0, 0.55);
+  }
+  /* On air: the same key becomes the hold, so a thumb never hunts. */
+  .pc-go-live {
+    color: #f5edff;
+    border-color: #6b4f9c;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #40295f 0%, #2a1a44 55%, #1b1030 100%);
+    box-shadow:
+      0 0 26px rgba(58, 215, 240, 0.18),
+      0 10px 0 #150c26,
+      0 18px 30px rgba(0, 0, 0, 0.5);
+  }
+  .pc-go-dead {
+    color: #6f5f8c;
+    border-color: #2f2148;
+    background: linear-gradient(180deg, #1a1129 0%, #140c20 100%);
+    box-shadow: none;
+  }
+
+  @keyframes pc-breathe {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 6px rgba(53, 224, 125, 0.14),
+        0 0 34px rgba(53, 224, 125, 0.38),
+        0 12px 0 #0c6c3d,
+        0 18px 34px rgba(0, 0, 0, 0.55);
+    }
+    50% {
+      box-shadow:
+        0 0 0 12px rgba(53, 224, 125, 0.1),
+        0 0 62px rgba(53, 224, 125, 0.62),
+        0 12px 0 #0c6c3d,
+        0 18px 34px rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  /* Now-playing readout: the name is the biggest thing on the deck. */
+  .pc-now-name {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.72rem;
+    font-weight: 700;
+    line-height: 1.16;
+    letter-spacing: 0.005em;
+    color: var(--color-stage-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .pc-slug {
+    font-family: var(--stack-console);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-stage-muted);
+  }
+
+  .pc-clock {
+    font-family: var(--stack-console);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-gel-cyan);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Travel bar under the readout — a fader throw, not a Spotify scrubber. */
+  .pc-throw {
+    height: 6px;
+    border-radius: 3px;
+    background: #150d22;
+    border: 1px solid #33244f;
+    overflow: hidden;
+  }
+  .pc-throw-fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-gel-cyan), var(--color-amber));
+    transition: width 220ms linear;
+  }
+
+  /* A cue in the rack. */
+  .pc-cue {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.55rem;
+    border: 1px solid #33244f;
+    border-left: 4px solid #33244f;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #1e1433 0%, #180f28 100%);
+    min-width: 0;
+  }
+  .pc-cue-now {
+    border-color: var(--color-amber);
+    border-left-color: var(--color-amber);
+    background: linear-gradient(180deg, #33220f 0%, #1d1329 100%);
+    box-shadow: 0 0 20px rgba(255, 176, 32, 0.22);
+  }
+  .pc-cue-next {
+    border-color: rgba(53, 224, 125, 0.55);
+    border-left-color: var(--color-go);
+    background: linear-gradient(180deg, #12281e 0%, #171029 100%);
+  }
+  .pc-cue-missing {
+    border-color: rgba(255, 59, 82, 0.5);
+    border-left-color: var(--color-standby);
+  }
+
+  .pc-q {
+    font-family: var(--stack-console);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-amber);
+    min-width: 2.1rem;
+  }
+
+  .pc-cue-name {
+    font-size: 0.92rem;
+    font-weight: 650;
+    line-height: 1.25;
+    color: var(--color-stage-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* Square hardware keys for reorder / remove: 44px thumb targets. */
+  .pc-key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    flex: 0 0 auto;
+    border-radius: 7px;
+    border: 1px solid var(--color-rail);
+    background: linear-gradient(180deg, #2a1c42 0%, #1c1230 100%);
+    color: var(--color-stage-muted);
+    cursor: pointer;
+    box-shadow: 0 2px 0 #120b1f;
+  }
+  .pc-key:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+  .pc-key:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+  }
+  .pc-key-danger {
+    color: #ff8e9c;
+    border-color: #5c2338;
+  }
+
+  /* Chips that carry the promise: stops at end, tap for next, no login. */
+  .pc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 176, 32, 0.4);
+    background: rgba(255, 176, 32, 0.09);
+    color: #ffd487;
+    padding: 0.16rem 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  /* Toggle switch styled as a console rocker. */
+  .pc-rocker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--color-stage-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: inherit;
+  }
+  .pc-rocker-track {
+    width: 2.6rem;
+    height: 1.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-rail);
+    background: #150d22;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .pc-rocker-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    background: #5b4785;
+    transition: transform 130ms ease, background 130ms ease;
+  }
+  .pc-rocker-on .pc-rocker-track {
+    border-color: var(--color-gel-cyan);
+    background: rgba(58, 215, 240, 0.16);
+  }
+  .pc-rocker-on .pc-rocker-knob {
+    transform: translateX(1.15rem);
+    background: var(--color-gel-cyan);
+  }
+
+  /* The file picker, dressed as a stage-door plate. */
+  .pc-add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 10px;
+    border: 1px dashed rgba(255, 176, 32, 0.55);
+    background: rgba(255, 176, 32, 0.08);
+    color: #ffd487;
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .pc-add:active {
+    transform: translateY(2px);
+  }
+}
+
+@media (min-width: 520px) {
+  .pc-stage {
+    max-width: 34rem;
+    padding-top: 1rem;
+  }
+  .pc-now-name {
+    font-size: 2rem;
+  }
+}
+
+/* 390px and below: nothing on the truss bar may collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.24rem;
+  }
+  .pc-select {
+    max-width: 6.6rem;
+    padding: 0.3rem 0.4rem;
+  }
+  .pc-go-label {
+    font-size: 2.5rem;
+  }
+  .pc-now-name {
+    font-size: 1.5rem;
+  }
+}
