@@ -90,6 +90,9 @@ function Home() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const objectUrl = useRef<string>("");
+  // Which cue the <audio> element is actually holding, so a late
+  // loadedmetadata never writes its runtime onto whatever became current.
+  const loadedId = useRef<string>("");
   const fileInput = useRef<HTMLInputElement | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -188,6 +191,7 @@ function Home() {
       }
       if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
       objectUrl.current = URL.createObjectURL(file);
+      loadedId.current = cue.id;
       el.src = objectUrl.current;
       el.loop = loopOne;
       el.currentTime = 0;
@@ -598,10 +602,12 @@ function Home() {
         onTimeUpdate={(e) => setElapsedMs(Math.round(e.currentTarget.currentTime * 1000))}
         onLoadedMetadata={(e) => {
           const secs = e.currentTarget.duration;
-          if (!current || !Number.isFinite(secs) || secs <= 0) return;
+          const id = loadedId.current;
+          const loaded = cues.find((c) => c.id === id);
+          if (!loaded || !Number.isFinite(secs) || secs <= 0) return;
           const ms = Math.round(secs * 1000);
-          if (Math.abs(ms - current.durationMs) < 1000) return;
-          commit(cues.map((c) => (c.id === current.id ? { ...c, durationMs: ms } : c)));
+          if (Math.abs(ms - loaded.durationMs) < 1000) return;
+          commit(cues.map((c) => (c.id === id ? { ...c, durationMs: ms } : c)));
         }}
         onEnded={() => {
           const el = audioRef.current;
