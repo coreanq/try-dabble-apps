@@ -1,0 +1,768 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Scanprice / 스캔가격 — the supermarket aisle, seen from a phone held at
+  shelf height.
+
+  The page is the cool steel grey of a shelf gondola, with the faint vertical
+  uprights of the rack behind it. On it sit SHELF-EDGE LABELS: white ticket
+  card, a yellow price sticker flagged off the right edge, the real printed
+  barcode drawn in bars underneath, the store written on as a small blue rubber
+  stamp, and a channel of sticker yellow running down the left edge the way a
+  price rail clips onto a shelf. The scan control is a SCAN WINDOW — a dark
+  viewfinder with yellow corner brackets and a red laser line, which becomes
+  the live camera when it opens.
+
+  Deliberately steel-and-lemon so it never reads as the kraft fridge of
+  leftover-box, the manila tray of later-inbox, the putty counter of orderpad,
+  the awning green of storelog, the dusty rose of lastloved or a dark #111
+  utility. It is a lit aisle, not an app chrome.
+  shadcn is the kit, not the look — the primitives are re-dressed as shelf
+  ticket stock.
+*/
+
+@theme {
+  --color-aisle: #dfe4e7;
+  --color-aisle-2: #c6d0d6;
+  --color-label: #ffffff;
+  --color-label-2: #f2f5f7;
+  --color-sticker: #ffe01a;
+  --color-sticker-2: #ffc400;
+  --color-sticker-ink: #1c1600;
+  --color-ink: #141a1f;
+  --color-muted-ink: #5c6a73;
+  --color-faint-ink: #8d99a2;
+  --color-rule: #ccd5da;
+  --color-scan: #101519;
+  --color-scan-2: #22303a;
+  --color-laser: #ff3b30;
+  --color-tag: #0b5cab;
+  --color-tag-bg: #dfeaf7;
+  --color-up: #c62828;
+  --color-up-bg: #fbe0e0;
+  --color-down: #17703a;
+  --color-down-bg: #dcefe2;
+  --color-tape: #f5c445;
+  --color-tape-ink: #4a3405;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-title);
+  --font-mono: var(--stack-tag);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-title: "Avenir Next Condensed", "HelveticaNeueLT Std Cn", "Arial Narrow",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-tag: "DIN Alternate", "Roboto Mono", ui-monospace, "Courier New",
+    "Noto Sans Mono CJK KR", "Noto Sans Mono CJK SC", monospace;
+
+  --background: #dfe4e7;
+  --foreground: #141a1f;
+  --card: #ffffff;
+  --card-foreground: #141a1f;
+  --popover: #ffffff;
+  --popover-foreground: #141a1f;
+  --primary: #141a1f;
+  --primary-foreground: #ffe01a;
+  --secondary: #eef2f4;
+  --secondary-foreground: #141a1f;
+  --muted: #d4dce0;
+  --muted-foreground: #5c6a73;
+  --accent: #fff3ad;
+  --accent-foreground: #1c1600;
+  --destructive: #c62828;
+  --border: #ccd5da;
+  --input: #a9b6bd;
+  --ring: #0b5cab;
+
+  --radius: 0.2rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* The gondola: overhead strip light at the top, the shelf uprights of the
+       rack behind, and a shadow where the aisle floor meets the base. */
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9), transparent 26%),
+      linear-gradient(0deg, rgba(20, 26, 31, 0.1), transparent 18%),
+      repeating-linear-gradient(
+        90deg,
+        rgba(20, 26, 31, 0.05) 0 2px,
+        transparent 2px 46px
+      );
+  }
+
+  a {
+    color: var(--color-tag);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Native input/select min-content must never force sideways scroll. */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .sp-shell {
+    max-width: 32rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.7rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  /* Amber notice. The Worker rewrites this text in the first HTML, so the
+     mounted app must render the same #local-only element. */
+  .sp-tape {
+    margin: 0;
+    padding: 0.42rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.4;
+    color: var(--color-tape-ink);
+    background: linear-gradient(180deg, #fbd868 0%, #f5c445 55%, #e2ab22 100%);
+    border: 1.5px solid #a97f14;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* --------------------------------------------------------- the shelf rail */
+
+  /* The masthead is the price rail clipped along the front of a shelf: a
+     yellow channel, the ticket card sitting in it, a hard shadow under. */
+  .sp-rail {
+    position: relative;
+    padding: 0.75rem 0.8rem 0.65rem 1.15rem;
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 66%, #f2f5f7 100%);
+    border: 2px solid var(--color-ink);
+    border-radius: 2px 4px 4px 2px;
+    box-shadow: 0 3px 0 rgba(20, 26, 31, 0.22);
+  }
+  /* The clip channel down the left edge. */
+  .sp-rail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0.5rem;
+    background: linear-gradient(90deg, var(--color-sticker-2), var(--color-sticker));
+    border-right: 1.5px solid var(--color-ink);
+  }
+
+  .sp-rail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem 0.5rem;
+    min-width: 0;
+  }
+
+  /* Set by id so the no-JS shell in index.html — which must stay exactly
+     <h1 id="brand-title">…</h1> for the Worker and the i18n test — looks the
+     same as the mounted app. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-title);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.005em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sp-tagline {
+    margin: 0.4rem 0 0;
+    padding-top: 0.35rem;
+    border-top: 1.5px dashed var(--color-rule);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--color-muted-ink);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .sp-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--color-label);
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 2px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 1px 1.5px 0 var(--color-ink);
+  }
+
+  /* The five things this app does and does not do, right under the masthead. */
+  .sp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-sticker-ink);
+    background: var(--color-sticker);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 2px;
+    box-shadow: 1px 1px 0 rgba(20, 26, 31, 0.35);
+    white-space: nowrap;
+  }
+  .sp-chip::before {
+    content: "✓";
+    font-size: 0.64rem;
+    font-weight: 900;
+  }
+  .sp-chip[data-kind="no"] {
+    color: var(--color-ink);
+    background: var(--color-label);
+  }
+  .sp-chip[data-kind="no"]::before {
+    content: "✕";
+    color: var(--color-up);
+  }
+
+  /* --------------------------------------------------------- the scan window */
+
+  /* A viewfinder cut into the page: dark glass, yellow corner brackets, a red
+     line sweeping it. Idle it is the button; open it holds the live camera. */
+  .sp-scanwin {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    max-height: 15rem;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 130% at 50% -10%, var(--color-scan-2) 0%, var(--color-scan) 62%);
+    border: 2px solid var(--color-ink);
+    border-radius: 5px;
+    box-shadow:
+      0 3px 0 rgba(20, 26, 31, 0.25),
+      inset 0 0 44px rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    color: var(--color-sticker);
+  }
+  /* The dialog reuses the frame as the live viewfinder, where it is not a
+     button and must not offer a pointer. */
+  div.sp-scanwin {
+    cursor: default;
+  }
+  .sp-scanwin[data-live="true"] {
+    cursor: default;
+    aspect-ratio: 4 / 3;
+    max-height: 20rem;
+  }
+  .sp-scanwin video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sp-bracket {
+    position: absolute;
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 3px solid var(--color-sticker);
+    pointer-events: none;
+  }
+  .sp-bracket[data-c="tl"] {
+    top: 0.55rem;
+    left: 0.55rem;
+    border-right: 0;
+    border-bottom: 0;
+    border-radius: 3px 0 0 0;
+  }
+  .sp-bracket[data-c="tr"] {
+    top: 0.55rem;
+    right: 0.55rem;
+    border-left: 0;
+    border-bottom: 0;
+    border-radius: 0 3px 0 0;
+  }
+  .sp-bracket[data-c="bl"] {
+    bottom: 0.55rem;
+    left: 0.55rem;
+    border-right: 0;
+    border-top: 0;
+    border-radius: 0 0 0 3px;
+  }
+  .sp-bracket[data-c="br"] {
+    bottom: 0.55rem;
+    right: 0.55rem;
+    border-left: 0;
+    border-top: 0;
+    border-radius: 0 0 3px 0;
+  }
+
+  /* The red line a handheld scanner throws across a barcode. */
+  .sp-laser {
+    position: absolute;
+    left: 1.6rem;
+    right: 1.6rem;
+    top: 50%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-laser) 12%,
+      #ff8a80 50%,
+      var(--color-laser) 88%,
+      transparent
+    );
+    box-shadow: 0 0 10px 1px rgba(255, 59, 48, 0.8);
+    pointer-events: none;
+    animation: sp-sweep 2.6s ease-in-out infinite;
+  }
+  @keyframes sp-sweep {
+    0%,
+    100% {
+      transform: translateY(-2.6rem);
+    }
+    50% {
+      transform: translateY(2.6rem);
+    }
+  }
+
+  .sp-scanwin-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 1rem;
+    text-align: center;
+    pointer-events: none;
+  }
+  .sp-scanwin-title {
+    font-family: var(--stack-title);
+    font-size: 1.16rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: var(--color-sticker);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+  }
+  .sp-scanwin-sub {
+    font-family: var(--stack-tag);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.62);
+  }
+  /* Ghost bars behind the face, so the idle window still reads as a barcode. */
+  .sp-scanwin-bars {
+    position: absolute;
+    inset: auto 2.6rem 1.15rem;
+    height: 2.1rem;
+    opacity: 0.22;
+    background-image: repeating-linear-gradient(
+      90deg,
+      #ffffff 0 3px,
+      transparent 3px 6px,
+      #ffffff 6px 8px,
+      transparent 8px 14px,
+      #ffffff 14px 15px,
+      transparent 15px 19px
+    );
+    pointer-events: none;
+  }
+
+  /* ----------------------------------------------------- the shelf-edge label */
+
+  /* One saved code, drawn as the ticket that clips to the shelf in front of
+     the product: yellow rail down the left, price flag on the right. */
+  .sp-label {
+    position: relative;
+    padding: 0.55rem 0.6rem 0.55rem 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 78%, #f2f5f7 100%);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 2px 3px 3px 2px;
+    box-shadow: 0 2px 0 rgba(20, 26, 31, 0.2);
+  }
+  .sp-label::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0.42rem;
+    background: linear-gradient(90deg, var(--color-sticker-2), var(--color-sticker));
+    border-right: 1.5px solid var(--color-ink);
+  }
+
+  .sp-label-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .sp-name {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-title);
+    font-size: 1.06rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+  .sp-name[data-empty="true"] {
+    color: var(--color-faint-ink);
+    font-style: italic;
+  }
+
+  /* The price sticker: lemon square, hard black rule, knocked off square the
+     way a price gun leaves it. */
+  .sp-sticker {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0.22rem 0.45rem 0.28rem;
+    background: linear-gradient(180deg, var(--color-sticker) 0%, var(--color-sticker-2) 100%);
+    border: 2px solid var(--color-ink);
+    border-radius: 2px;
+    box-shadow: 1.5px 2px 0 rgba(20, 26, 31, 0.4);
+    transform: rotate(-1.6deg);
+  }
+  .sp-sticker-cap {
+    font-family: var(--stack-tag);
+    font-size: 0.5rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(28, 22, 0, 0.62);
+  }
+  .sp-sticker-value {
+    font-family: var(--stack-title);
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--color-sticker-ink);
+    white-space: nowrap;
+  }
+
+  /* The real printed bars, drawn from the code itself. */
+  .sp-bars {
+    display: block;
+    width: 100%;
+    height: 1.9rem;
+    margin-top: 0.45rem;
+  }
+  .sp-bars rect {
+    fill: var(--color-ink);
+  }
+
+  .sp-code {
+    margin-top: 0.1rem;
+    font-family: var(--stack-tag);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-ink);
+  }
+
+  .sp-metarow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+
+  /* The store, stamped on in ink the way a shop marks its own ticket. */
+  .sp-store {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.22rem;
+    max-width: 100%;
+    padding: 0.1rem 0.4rem;
+    font-family: var(--stack-tag);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-tag);
+    background: var(--color-tag-bg);
+    border: 1.5px solid var(--color-tag);
+    border-radius: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sp-store[data-empty="true"] {
+    color: var(--color-faint-ink);
+    background: transparent;
+    border-color: var(--color-rule);
+    border-style: dashed;
+    text-transform: none;
+  }
+
+  .sp-when {
+    font-family: var(--stack-tag);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--color-muted-ink);
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------- the history */
+
+  /* Old stickers, stacked newest first, each with the move from the one below. */
+  .sp-hist {
+    margin-top: 0.5rem;
+    padding-top: 0.45rem;
+    border-top: 1.5px dashed var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .sp-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.35rem;
+    background: var(--color-label-2);
+    border: 1px solid var(--color-rule);
+    border-left: 3px solid var(--color-sticker-2);
+    border-radius: 2px;
+    min-width: 0;
+  }
+  .sp-row-price {
+    flex: 0 0 auto;
+    font-family: var(--stack-title);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .sp-row-mid {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.35rem;
+  }
+
+  .sp-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.02rem 0.32rem;
+    font-family: var(--stack-tag);
+    font-size: 0.64rem;
+    font-weight: 800;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .sp-delta[data-kind="up"] {
+    color: var(--color-up);
+    background: var(--color-up-bg);
+  }
+  .sp-delta[data-kind="down"] {
+    color: var(--color-down);
+    background: var(--color-down-bg);
+  }
+  .sp-delta[data-kind="same"],
+  .sp-delta[data-kind="first"] {
+    color: var(--color-muted-ink);
+    background: transparent;
+    border-color: var(--color-rule);
+  }
+
+  /* --------------------------------------------------------------- fields */
+
+  .sp-field-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-ink);
+  }
+  .sp-optional {
+    margin-left: 0.3rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--color-faint-ink);
+  }
+
+  /* 16px so iOS never zooms the aisle when a field is focused. */
+  .sp-field {
+    display: block;
+    padding: 0.55rem 0.6rem;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--color-ink);
+    background: var(--color-label);
+    border: 1.5px solid var(--color-input);
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(20, 26, 31, 0.08);
+  }
+  .sp-field::placeholder {
+    color: var(--color-faint-ink);
+    font-size: 0.88rem;
+  }
+  .sp-field:focus {
+    border-color: var(--color-tag);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 92, 171, 0.18);
+  }
+  /* The price is the number the whole app is about, so it is set big and mono. */
+  .sp-field[data-role="price"] {
+    font-family: var(--stack-tag);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .sp-field[data-role="code"] {
+    font-family: var(--stack-tag);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  /* One-tap shops, from the rows already written. */
+  .sp-storechip {
+    padding: 0.24rem 0.5rem;
+    font-family: var(--stack-tag);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--color-tag);
+    background: var(--color-label);
+    border: 1.5px solid var(--color-tag);
+    border-radius: 999px;
+    cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sp-storechip[data-on="true"] {
+    color: var(--color-label);
+    background: var(--color-tag);
+  }
+
+  /* A ticket card off the same stock, used for every panel. */
+  .sp-card {
+    border: 1.5px solid var(--color-ink);
+    border-radius: 2px;
+    box-shadow: 0 2px 0 rgba(20, 26, 31, 0.18);
+  }
+
+  .sp-step {
+    display: flex;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-muted-ink);
+  }
+}

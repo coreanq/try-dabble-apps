@@ -1,0 +1,36 @@
+# Scanprice / 스캔가격 / スキャン価格 / 扫码记价
+
+> Scan a barcode in the aisle, type the price on the shelf and tag the store. Scan the same code again later and your own dated price history for that product comes back. No login, no crowd prices, no supermarket API — everything stays on the device.
+
+This is a Progressive Web App (PWA) hosted at https://scanprice.try-dabble.com/
+Barcodes, product names, prices, store tags and the dates they were seen are stored in this browser only (localStorage key scanprice:items:v1). No accounts, no subscription, no server-side storage, no sharing.
+
+This is NOT a supermarket's own app and NOT a price-comparison service. It shows no crowd-sourced prices and connects to no retailer API. It is the price you saw on the shelf edge, written down, with the barcode as the key.
+
+## Pages
+
+- [Home](https://scanprice.try-dabble.com/): The aisle — scan a code, log a price, see the history
+- [Privacy](https://scanprice.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://scanprice.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/scanprice): How-to on try-dabble.com
+
+## Features
+
+- Camera barcode scan using the browser's BarcodeDetector: EAN-13, UPC-A and EAN-8
+- Fallbacks when the live camera cannot read: a single photo decoded in the page, and a typed barcode number with a checksum check
+- UPC-A is filed as its EAN-13 form, so one product never files itself twice
+- A store tag on every price row, typed once and then offered back as one-tap chips
+- Rescan an existing code and the last price, the store and the date come up first, above a big Add-today's-price
+- Price history per code, newest first, each row showing how far the price moved from the row before it
+- Search by product name, by barcode digits or by store
+- Delete a single price row, or the whole code
+- No login, no sign-up, no account, no paywall
+- No crowd-sourced prices and no supermarket API — only what you saw on the shelf
+- Data survives closing the tab and closing the browser; nothing expires on a clock
+- Export the whole book as JSON or CSV, and import a JSON export back
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

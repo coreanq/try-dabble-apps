@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Scanprice</title>
+  <meta name="description" content="Privacy policy for Scanprice. Barcodes, prices, store tags and dates stay on this device. Camera frames are never uploaded." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <style>
+    :root { color-scheme: light; --bg:#dfe4e7; --fg:#141a1f; --muted:#5c6a73; --card:#ffffff; --accent:#0b5cab; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    a { color: var(--accent); }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    p, li { color: var(--muted); }
+    .card { background: var(--card); border: 1px solid #ccd5da; border-radius: 3px; padding: 1.25rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="/">← Scanprice</a></p>
+    <h1>Privacy Policy</h1>
+    <div class="card">
+      <p>Scanprice is local-first. The barcodes you scan, the product names, the prices, the store tags and the dates they were seen are stored only in this browser (<strong>localStorage</strong> key <code>scanprice:items:v1</code>). Language uses localStorage (<code>scanprice:lang</code>) and a <code>td_lang</code> cookie shared across try-dabble.com subdomains. Nothing is uploaded to our servers.</p>
+      <p><strong>The camera.</strong> When you open the scan window the page asks your browser for the back camera and looks at the frames for a barcode using the browser's own barcode reader. The video never leaves the page, no frame is recorded, and nothing is sent anywhere. If you read a barcode from a photo instead, that photo is decoded in this tab and is not uploaded either. Closing the scan window stops the camera.</p>
+      <p>There are no accounts of any kind, no sign-in, no payment step, and no server-side copy of your prices. There is no crowd-sourced price feed, no retailer API and no price sharing — the only prices here are the ones you typed.</p>
+      <p>Export is local too. The JSON and CSV files are built inside this page and handed straight to your browser's download — they are never sent anywhere first. A JSON import is read in this page with the browser's own file reader; the file is not uploaded.</p>
+      <p>Nothing expires on a timer. A code or a price row is removed only when you remove it, or when you clear site data in your browser.</p>
+      <p><strong>Advertising:</strong> Google AdSense may be active on this site. Google and its partners may use cookies or similar technologies to serve personalized or non-personalized ads and to measure performance. See <a href="https://policies.google.com/technologies/ads" rel="noopener noreferrer" target="_blank">Google’s advertising policies</a> and your browser or Google account settings to manage ad cookies.</p>
+      <p>Last updated: 2026-09-01</p>
+    </div>
+  </main>
+</body>
+</html>
