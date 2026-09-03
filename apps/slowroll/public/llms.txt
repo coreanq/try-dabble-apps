@@ -1,0 +1,38 @@
+# Slowroll / 슬로우롤
+
+> A disposable film camera on the web. Shoot a 24-frame roll, never see a shot,
+> and the whole roll develops at once after a real 3-day (72-hour) wait.
+
+This is a Progressive Web App (PWA) hosted at https://slowroll.try-dabble.com/
+Frames are stored only on this device; the roll state and the absolute unlock time
+stay in this browser. No accounts, no uploads, no server storage of any image.
+
+This is NOT a photo editor, a gallery, or a filter app. There is NO preview of a
+captured shot, NO per-frame delete or retake, and NO way to see a frame before the
+countdown reaches zero (other than one explicit, confirmed "develop early" control).
+
+## Pages
+
+- [Home](https://slowroll.try-dabble.com/): Camera body, film counter, shutter, darkroom countdown, developed rolls
+- [Privacy](https://slowroll.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://slowroll.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/slowroll): How-to on try-dabble.com
+
+## Features
+
+- Live viewfinder from the device camera (rear camera preferred) before the shutter
+- 24-frame roll with a mechanical film-counter dial showing frames left at all times
+- Two develop modes chosen when a roll is loaded: when the roll is full (default), or 3 days after the first shot
+- Finish roll now: seals the roll early and starts the same real 72-hour wait
+- Absolute unlock timestamp: reloading or closing the tab never resets or shortens the wait
+- Live darkroom countdown in days, hours, minutes and seconds
+- The whole roll appears at once when the timer ends, printed with a warm tone and light grain
+- Download each print or all of them to the device
+- Discard is only ever the whole roll, behind a confirm dialog
+- Fallback: add photos from this device when no camera is available (still no preview)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
