@@ -39,7 +39,6 @@
   <link rel="icon" type="image/png" sizes="192x192" href="https://outcheck.try-dabble.com/icons/icon-192.png" />
   <link rel="apple-touch-icon" href="https://outcheck.try-dabble.com/icons/apple-touch-icon.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3398336402999065" crossorigin="anonymous"></script>
 </head>
 <body>
   <!--
@@ -64,8 +63,81 @@
         </div>
         <p class="oc-tagline">문·가스·차고를 원탭으로 확인하고 자정에 리셋. 계정·광고 없음.</p>
       </header>
+      <!--
+        Today shell. The classic script right below paints this device's
+        check times from storage before the module bundle is even requested,
+        so a returning reader never sees "Tap to check" flash on a row they
+        already checked. React mounts over it with the same times.
+      -->
+      <section id="today" class="oc-shell-today">
+        <p id="checked-at" class="oc-when oc-when-summary"></p>
+        <ul id="check-list" class="oc-shell-list">
+          <li class="oc-row" data-item-id="door"><span class="oc-when" id="checked-at-door"></span></li>
+          <li class="oc-row" data-item-id="gas"><span class="oc-when" id="checked-at-gas"></span></li>
+          <li class="oc-row" data-item-id="garage"><span class="oc-when" id="checked-at-garage"></span></li>
+        </ul>
+      </section>
     </div>
   </div>
+  <!--
+    First paint of today's check times. Classic, blocking, inline on purpose:
+    it must run before /src/main.tsx is fetched. Reads the same keys as
+    src/lib/store.ts (outcheck:day, outcheck:checks) and the same local day key
+    as src/lib/day.ts. Any failure (no storage, private mode, bad JSON) is a
+    silent no-op; React repaints the same text on mount anyway.
+  -->
+  <script>
+    (function () {
+      try {
+        var ls = window.localStorage;
+        if (!ls) return;
+        var now = new Date();
+        var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+        var today = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+        if (ls.getItem("outcheck:day") !== today) return;
+        var checks = JSON.parse(ls.getItem("outcheck:checks") || "null");
+        if (!checks || typeof checks !== "object") return;
+
+        var LANGS = /^(ko|en|ja|zh)$/;
+        var lang = null;
+        try {
+          var q = new URLSearchParams(location.search).get("lang");
+          if (q && LANGS.test(q)) lang = q;
+        } catch (e) {}
+        if (!lang) {
+          var m = document.cookie.match(/(?:^|;\s*)td_lang=(ko|en|ja|zh)(?:;|$)/);
+          if (m) lang = m[1];
+        }
+        if (!lang) {
+          var h = (document.documentElement.lang || "").slice(0, 2).toLowerCase();
+          lang = LANGS.test(h) ? h : "ko";
+        }
+        var LOCALE = { ko: "ko-KR", en: "en-US", ja: "ja-JP", zh: "zh-CN" };
+        var TEXT = { ko: "{time} 확인", en: "Checked {time}", ja: "{time} 確認", zh: "{time} 已确认" };
+        var fmt = new Intl.DateTimeFormat(LOCALE[lang], { hour: "numeric", minute: "2-digit" });
+        var say = function (d) { return TEXT[lang].replace("{time}", fmt.format(d)); };
+
+        var latest = null;
+        for (var id in checks) {
+          if (!Object.prototype.hasOwnProperty.call(checks, id)) continue;
+          var at = checks[id];
+          if (typeof at !== "string") continue;
+          var d = new Date(at);
+          if (isNaN(d.getTime())) continue;
+          if (!latest || d > latest) latest = d;
+          var row = document.getElementById("checked-at-" + id);
+          if (row) {
+            row.textContent = say(d);
+            var li = row.parentNode;
+            if (li && li.setAttribute) li.setAttribute("data-checked-at", at);
+          }
+        }
+        if (!latest) return;
+        var sum = document.getElementById("checked-at");
+        if (sum) sum.textContent = say(latest);
+      } catch (e) {}
+    })();
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

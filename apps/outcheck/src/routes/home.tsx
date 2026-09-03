@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
-import { CheckCheck } from "lucide-react";
+import { CheckCheck, Download, Upload } from "lucide-react";
 
 import { AddItemDialog } from "@/components/add-item-dialog";
 import { CheckRow } from "@/components/check-row";
@@ -10,6 +10,7 @@ import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
 import { Toast } from "@/components/toast";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { downloadBackup, parseBackup } from "@/lib/backup-json";
 import { localDayKey, msUntilMidnight, rollover, type DayState } from "@/lib/day";
 import {
   HTML_LANG,
@@ -102,6 +103,7 @@ function Home() {
   const [toastMsg, setToastMsg] = useState("");
   const [toastOn, setToastOn] = useState(false);
   const toastTimer = useRef<number | undefined>(undefined);
+  const jsonInput = useRef<HTMLInputElement>(null);
 
   const showToast = useCallback((msg: string) => {
     setToastMsg(msg);
@@ -125,6 +127,10 @@ function Home() {
     document.title = t("title");
     setMetaContent('meta[name="description"]', t("metaDescription"));
     setMetaContent('meta[property="og:image"], meta[name="twitter:image"]', OG_IMAGE[lang]);
+    // Manifest fetches omit cookies, so the language has to ride on the URL.
+    document
+      .querySelector('link[rel="manifest"]')
+      ?.setAttribute("href", `/manifest.webmanifest?lang=${lang}`);
   }, [lang, t]);
 
   /**
@@ -231,6 +237,38 @@ function Home() {
     commitItems(moveItem(items, id, delta));
   }
 
+  function handleExportJson() {
+    downloadBackup(day.day, items, day.checks);
+    showToast(t("toastExported"));
+  }
+
+  /**
+   * A backup from another day brings its items back but not its checks: a
+   * check only ever counts for the local day it was made on.
+   */
+  async function handleImportJson(file: File | null) {
+    if (!file) return;
+    let parsed: ReturnType<typeof parseBackup> = null;
+    try {
+      parsed = parseBackup(await file.text());
+    } catch {
+      parsed = null;
+    }
+    if (!parsed) {
+      showToast(t("toastImportBad"));
+      return;
+    }
+    const nextItems: Item[] = parsed.items.map((it) => ({ id: it.id, label: it.label }));
+    const nextDay = rollover({ day: parsed.day, checks: parsed.checks }, localDayKey());
+    setItems(nextItems);
+    saveItems(nextItems);
+    setDay(nextDay);
+    saveDayState(nextDay);
+    setEditingId(null);
+    setPendingRemove(null);
+    showToast(t("toastImported"));
+  }
+
   function confirmRemove() {
     const id = pendingRemove;
     if (!id) return;
@@ -241,6 +279,14 @@ function Home() {
   }
 
   const doneCount = items.filter((it) => Boolean(day.checks[it.id])).length;
+  // Most recent check of the day: the same text the inline script in
+  // index.html painted into #checked-at before React mounted.
+  const latestCheck = items.reduce<string | null>((best, it) => {
+    const at = day.checks[it.id];
+    if (!at || Number.isNaN(new Date(at).getTime())) return best;
+    return !best || new Date(at) > new Date(best) ? at : best;
+  }, null);
+  const latestWhen = formatWhen(latestCheck ?? undefined);
   const allClear = items.length > 0 && doneCount === items.length;
   const editing = editingId ? items.find((it) => it.id === editingId) ?? null : null;
   const editingIndex = editing ? items.indexOf(editing) : -1;
@@ -281,6 +327,9 @@ function Home() {
               {t("resetsAtMidnight")}
             </span>
           </CardAction>
+          <p className="oc-when oc-when-summary col-span-full" id="checked-at">
+            {latestWhen ? t("checkedAt", { time: latestWhen }) : ""}
+          </p>
         </CardHeader>
 
         <CardContent className="grid gap-[0.55rem]">
@@ -302,6 +351,7 @@ function Home() {
                   id={item.id}
                   label={labelOf(item)}
                   checkedAt={formatWhen(day.checks[item.id])}
+                  checkedIso={day.checks[item.id] ?? null}
                   t={t}
                   onToggle={handleToggle}
                   onEdit={setEditingId}
@@ -311,6 +361,34 @@ function Home() {
           )}
 
           <AddItemDialog t={t} onAdd={handleAdd} />
+
+          <div className="oc-file-row" id="backup-row">
+            <button type="button" id="export-json" className="oc-file-btn" onClick={handleExportJson}>
+              <Download className="size-4" aria-hidden />
+              {t("exportJson")}
+            </button>
+            <button
+              type="button"
+              id="import-json"
+              className="oc-file-btn"
+              onClick={() => jsonInput.current?.click()}
+            >
+              <Upload className="size-4" aria-hidden />
+              {t("importJson")}
+            </button>
+            <input
+              ref={jsonInput}
+              id="json-input"
+              className="sr-only"
+              type="file"
+              accept="application/json,.json"
+              style={{ fontSize: "1rem" }}
+              onChange={(e) => {
+                void handleImportJson(e.target.files?.[0] ?? null);
+                e.target.value = "";
+              }}
+            />
+          </div>
 
           <p className="m-0 text-[0.76rem] leading-5 text-ink-muted" id="about-text">
             {t("about")}

@@ -11,6 +11,7 @@ export function CheckRow({
   id,
   label,
   checkedAt,
+  checkedIso,
   t,
   onToggle,
   onEdit,
@@ -19,13 +20,15 @@ export function CheckRow({
   label: string;
   /** Already formatted for the active locale, or null when unchecked today. */
   checkedAt: string | null;
+  /** The raw ISO stamp behind `checkedAt`, exposed as data-checked-at. */
+  checkedIso?: string | null;
   t: Translate;
   onToggle: (id: string) => void;
   onEdit: (id: string) => void;
 }) {
   const on = checkedAt !== null;
   return (
-    <li className="oc-row" data-item-id={id}>
+    <li className="oc-row" data-item-id={id} data-checked-at={on ? checkedIso ?? undefined : undefined}>
       <button
         type="button"
         className={`oc-check ${on ? "oc-check-on" : ""}`}
@@ -39,7 +42,12 @@ export function CheckRow({
         </span>
         <span className="min-w-0 flex-1">
           <span className="oc-label">{label}</span>
-          <span className="oc-when" data-testid={`when-${id}`}>
+          {/* Same id the inline first-paint script in index.html targets. */}
+          <span
+            className="oc-when"
+            id={on ? `checked-at-${id}` : undefined}
+            data-testid={`when-${id}`}
+          >
             {on ? t("checkedAt", { time: checkedAt }) : t("tapToCheck")}
           </span>
         </span>

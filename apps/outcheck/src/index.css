@@ -376,6 +376,56 @@
   .oc-check-on .oc-when {
     color: var(--color-sage-deep);
   }
+  /* Latest check of the day, painted first by the inline script in index.html. */
+  .oc-when-summary {
+    margin-top: 0;
+    color: var(--color-sage-deep);
+  }
+  .oc-when-summary:empty {
+    display: none;
+  }
+  /* Pre-React shell: only the painted times are visible, never empty rows. */
+  .oc-shell-today {
+    padding: 0.2rem 0.2rem 0;
+  }
+  .oc-shell-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .oc-shell-list .oc-when:empty {
+    display: none;
+  }
+
+  /* JSON backup row: two plain buttons, always visible under the list. */
+  .oc-file-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .oc-file-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+    min-height: 2.35rem;
+    padding: 0 0.75rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgba(29, 43, 54, 0.06);
+  }
+  .oc-file-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
 
   /* Pencil at the end of a row: opens the edit sheet, never toggles the check. */
   .oc-edit {

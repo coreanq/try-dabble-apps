@@ -80,6 +80,11 @@ export type MsgKey =
   | "toastRenamed"
   | "toastRemoved"
   | "toastNewDay"
+  | "exportJson"
+  | "importJson"
+  | "toastExported"
+  | "toastImported"
+  | "toastImportBad"
   | "privacy"
   | "terms";
 
@@ -137,6 +142,11 @@ export const I18N: Record<Lang, Messages> = {
     toastRenamed: "이름을 바꿨습니다",
     toastRemoved: "뺐습니다",
     toastNewDay: "새 날입니다. 확인이 비워졌습니다.",
+    exportJson: "JSON 내보내기",
+    importJson: "JSON 가져오기",
+    toastExported: "내보냈습니다",
+    toastImported: "가져왔습니다",
+    toastImportBad: "나갔어체크 백업 파일이 아닙니다.",
     privacy: "개인정보",
     terms: "이용약관",
   },
@@ -191,6 +201,11 @@ export const I18N: Record<Lang, Messages> = {
     toastRenamed: "Renamed",
     toastRemoved: "Removed",
     toastNewDay: "New day. Checks cleared.",
+    exportJson: "Export JSON",
+    importJson: "Import JSON",
+    toastExported: "Exported",
+    toastImported: "Imported",
+    toastImportBad: "That file is not an Outcheck backup.",
     privacy: "Privacy",
     terms: "Terms",
   },
@@ -245,6 +260,11 @@ export const I18N: Record<Lang, Messages> = {
     toastRenamed: "名前を変えました",
     toastRemoved: "外しました",
     toastNewDay: "新しい日です。確認を空にしました。",
+    exportJson: "JSONを書き出す",
+    importJson: "JSONを読み込む",
+    toastExported: "書き出しました",
+    toastImported: "読み込みました",
+    toastImportBad: "外出チェックのバックアップファイルではありません。",
     privacy: "プライバシー",
     terms: "利用規約",
   },
@@ -299,6 +319,11 @@ export const I18N: Record<Lang, Messages> = {
     toastRenamed: "已改名",
     toastRemoved: "已删除",
     toastNewDay: "新的一天，确认已清空。",
+    exportJson: "导出 JSON",
+    importJson: "导入 JSON",
+    toastExported: "已导出",
+    toastImported: "已导入",
+    toastImportBad: "这不是出门核对的备份文件。",
     privacy: "隐私",
     terms: "条款",
   },
