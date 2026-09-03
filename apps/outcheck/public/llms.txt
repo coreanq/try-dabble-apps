@@ -1,0 +1,36 @@
+# Outcheck / 나갔어체크
+
+> A one-tap "did I lock / turn off / close it?" checklist for leaving home.
+> Door, gas, garage by default, plus any custom items. A tap stamps today's time
+> on the row; the whole list clears at local midnight.
+
+This is a Progressive Web App (PWA) hosted at https://outcheck.try-dabble.com/
+The item list and today's checks stay in this browser on this device. No accounts,
+no uploads, no server storage, no ads, no in-app purchases, no cap on items.
+
+This is NOT a chore-history app and NOT a smart-lock controller. It does not
+talk to any lock, sensor or hub. It is a confirmation you make with your thumb
+on the way out, and it forgets yesterday at midnight so old checks never blur
+into today's.
+
+## Pages
+
+- [Home](https://outcheck.try-dabble.com/): The leave-home checklist
+- [Privacy](https://outcheck.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://outcheck.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/outcheck): How-to on try-dabble.com
+
+## Features
+
+- Three starter rows: Door locked, Gas off, Garage closed (labels editable)
+- One big tap target per row: tap to check with a timestamp, tap again to uncheck
+- Short vibration on check where the device supports it, silent otherwise
+- Resets at local midnight, also while the tab stays open
+- Add, rename, reorder and remove custom items with no limit
+- Calm "all clear" band when every row is checked
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

@@ -1,0 +1,515 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Outcheck / 나갔어체크 — the hallway at dawn, on your way out the door.
+  Cool pale slate walls, a strip of first light along the top, a door-frame
+  card, and check rows tall enough to hit with a thumb while holding keys.
+  Checked rows settle into a quiet sage. shadcn is the kit, not the look:
+  card, dialog and button are re-dressed as a doorplate, a note on the
+  hall table and a soft pill. Never a darkroom, never a stage, never #111.
+*/
+
+@theme {
+  --color-dawn: #eef3f6;
+  --color-dawn-2: #e2eaef;
+  --color-paper: #fbfcfd;
+  --color-ink: #1d2b36;
+  --color-ink-muted: #5b6b78;
+  --color-line: #ccd7de;
+  --color-line-2: #b7c5ce;
+  --color-sage: #4f8a6e;
+  --color-sage-soft: #dcefe4;
+  --color-sage-deep: #2f6a50;
+  --color-peach: #f6dfcc;
+  --color-amber: #f2b632;
+  --color-amber-ink: #3b2a05;
+  --color-night: #2b3e55;
+  --color-danger: #b8433a;
+  --color-danger-soft: #f7dedb;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-clock);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Rounded humanist sans for the whole hall; tabular figures for the clock. */
+  --stack-display: "Avenir Next", "Nunito", "Segoe UI Variable Display", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-clock: ui-rounded, "SF Pro Rounded", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --background: #eef3f6;
+  --foreground: #1d2b36;
+  --card: #fbfcfd;
+  --card-foreground: #1d2b36;
+  --popover: #fbfcfd;
+  --popover-foreground: #1d2b36;
+  --primary: #4f8a6e;
+  --primary-foreground: #f4faf6;
+  --secondary: #e2eaef;
+  --secondary-foreground: #1d2b36;
+  --muted: #e6edf1;
+  --muted-foreground: #5b6b78;
+  --accent: #dcefe4;
+  --accent-foreground: #2f6a50;
+  --destructive: #b8433a;
+  --border: #ccd7de;
+  --input: #ccd7de;
+  --ring: #4f8a6e;
+
+  --radius: 0.85rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* First light along the top of the wall, cool slate below. */
+    background-color: #eef3f6;
+    background-image:
+      linear-gradient(180deg, rgba(246, 223, 204, 0.55) 0%, rgba(246, 223, 204, 0) 22%),
+      radial-gradient(120% 60% at 50% -10%, rgba(255, 255, 255, 0.9), transparent 60%),
+      linear-gradient(180deg, #eef3f6 0%, #e6edf2 60%, #dfe8ee 100%);
+    background-attachment: fixed;
+  }
+
+  a {
+    color: var(--color-sage-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Every control: 16px so iOS never zooms, and no double-tap zoom delay. */
+  input,
+  select,
+  button,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sage);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .oc-hall {
+    max-width: 30rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.6rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Sticky note on the door: the amber local-only banner. */
+  .oc-notice {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: var(--color-amber);
+    border-radius: 6px 6px 10px 10px;
+    box-shadow: 0 6px 16px rgba(29, 43, 54, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Door frame header: a lintel line with a thin sage keyline under it. */
+  .oc-masthead {
+    margin: 0 -0.85rem;
+    padding: 0.55rem 0.85rem 0.7rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.2));
+    border-bottom: 1px solid var(--color-line);
+    position: relative;
+  }
+  .oc-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-sage), transparent 70%);
+    border-radius: 2px;
+  }
+
+  .oc-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+  }
+
+  .oc-mark {
+    display: block;
+    width: 2.1rem;
+    height: 2.1rem;
+    flex: 0 0 auto;
+  }
+
+  /* Set by id so the no-JS shell in index.html and the mounted app match. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .oc-tagline {
+    margin: 0.3rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--color-ink-muted);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .oc-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-2);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.1;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  }
+
+  /* Doorplate: the card. Soft white with a faint cool shadow, no hairline glow. */
+  .oc-plate {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-paper);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 10px 24px rgba(29, 43, 54, 0.08);
+  }
+
+  /* Small print under the list title: "Resets at midnight" with a moon dot. */
+  .oc-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--color-night);
+    white-space: nowrap;
+  }
+  .oc-reset::before {
+    content: "";
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background: radial-gradient(circle at 35% 35%, #ffffff 0 30%, var(--color-night) 32%);
+    box-shadow: 0 0 0 2px rgba(43, 62, 85, 0.12);
+  }
+
+  /* One check row: the whole thing is a button, tall as a thumb. */
+  .oc-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .oc-check {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 4.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-line);
+    background: linear-gradient(180deg, #ffffff 0%, #f5f8fa 100%);
+    color: var(--color-ink);
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(29, 43, 54, 0.06);
+    transition:
+      background 140ms ease,
+      border-color 140ms ease,
+      transform 90ms ease;
+  }
+  .oc-check:active {
+    transform: translateY(1px);
+  }
+  .oc-check-on {
+    border-color: rgba(79, 138, 110, 0.55);
+    background: linear-gradient(180deg, #e7f3ec 0%, var(--color-sage-soft) 100%);
+  }
+
+  /* The ring: an empty circle, filled sage when checked. */
+  .oc-ring {
+    flex: 0 0 auto;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-line-2);
+    background: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    transition:
+      background 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease;
+  }
+  .oc-check-on .oc-ring {
+    border-color: var(--color-sage);
+    background: var(--color-sage);
+    color: #f4faf6;
+  }
+
+  .oc-label {
+    display: block;
+    font-family: var(--stack-display);
+    font-size: 1.18rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+  .oc-check-on .oc-label {
+    color: var(--color-sage-deep);
+  }
+  .oc-when {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--stack-clock);
+    font-size: 0.86rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .oc-check-on .oc-when {
+    color: var(--color-sage-deep);
+  }
+
+  /* Pencil at the end of a row: opens the edit sheet, never toggles the check. */
+  .oc-edit {
+    flex: 0 0 auto;
+    width: 2.9rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 2px 0 rgba(29, 43, 54, 0.06);
+  }
+  .oc-edit:active {
+    transform: translateY(1px);
+  }
+
+  /* All clear: a calm sage band, not a modal, not confetti. */
+  .oc-clear {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    border: 1px solid rgba(79, 138, 110, 0.45);
+    background: linear-gradient(180deg, #e6f3ec 0%, #d9ede2 100%);
+    color: var(--color-sage-deep);
+  }
+  .oc-clear-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .oc-clear-sub {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--color-sage-deep);
+    opacity: 0.9;
+  }
+
+  /* Add item: a dashed door-mat below the list. */
+  .oc-add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    width: 100%;
+    min-height: 3.4rem;
+    border-radius: 14px;
+    border: 1.5px dashed rgba(79, 138, 110, 0.6);
+    background: rgba(79, 138, 110, 0.07);
+    color: var(--color-sage-deep);
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .oc-add:active {
+    transform: translateY(1px);
+  }
+
+  /* Promise chips: the fail-fix line, rendered as a wrap of small pills. */
+  .oc-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-2);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--color-ink-muted);
+    padding: 0.18rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .oc-field-label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.3rem;
+  }
+  .oc-input {
+    width: 100%;
+    min-width: 0;
+    background: #ffffff;
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-2);
+    border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.2;
+    touch-action: manipulation;
+  }
+  .oc-input::placeholder {
+    color: #97a6b1;
+    font-weight: 500;
+  }
+
+  /* Progress line under the list title. */
+  .oc-progress {
+    font-family: var(--stack-clock);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (min-width: 520px) {
+  .oc-hall {
+    max-width: 32rem;
+    padding-top: 1rem;
+  }
+}
+
+/* 390px and below: nothing in the header may collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.25rem;
+  }
+  .oc-select {
+    max-width: 6.6rem;
+    padding: 0.34rem 0.6rem;
+  }
+  .oc-label {
+    font-size: 1.1rem;
+  }
+}
