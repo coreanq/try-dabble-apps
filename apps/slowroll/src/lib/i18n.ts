@@ -274,8 +274,8 @@ export const I18N: Record<Lang, Messages> = {
     camRetry: "Try again",
     camFallback: "Add a photo from this device",
     camFallbackHint: "Added photos go straight into the roll. They are not previewed either.",
-    filesAdded: "{n} photo(s) went into the roll. {left} left.",
-    filesSkipped: "{n} photo(s) did not fit in the roll.",
+    filesAdded: "{n} photos went into the roll. {left} left.",
+    filesSkipped: "{n} photos did not fit in the roll.",
     notImage: "That was not an image file.",
     storeFail: "This browser cannot keep photos. That frame was not saved.",
     finishRoll: "Finish roll now",
@@ -549,12 +549,33 @@ export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
 }
 
+/**
+ * English singular forms, used when the {n} passed to translate() is exactly 1
+ * ("1 frame sealed", never "1 frames sealed"). ko / ja / zh do not inflect, so
+ * only English needs this table.
+ */
+export const EN_ONE: Partial<Record<MsgKey, string>> = {
+  framesPerRoll: "1-frame roll",
+  filesAdded: "1 photo went into the roll. {left} left.",
+  filesSkipped: "1 photo did not fit in the roll.",
+  finishBody:
+    "The remaining frame is given up. The roll goes into the darkroom and the real 72-hour wait begins. Nothing is revealed early.",
+  discardBody:
+    "The only frame in this roll (1 so far) is deleted for good. Single frames cannot be deleted, only the whole roll.",
+  discardBtn: "Discard 1 frame",
+  sealedWith: "1 frame sealed",
+  downloadedAll: "Saved 1 photo to this device.",
+  shelfLocked: "Sealed · 1 frame",
+  shelfDeveloped: "Developed · 1 frame",
+};
+
 export function translate(
   lang: Lang,
   key: MsgKey,
   vars?: Record<string, string | number>,
 ): string {
-  let out = I18N[lang]?.[key] ?? I18N.en[key] ?? key;
+  const one = lang === "en" && vars && Number(vars.n) === 1 ? EN_ONE[key] : undefined;
+  let out = one ?? I18N[lang]?.[key] ?? I18N.en[key] ?? key;
   if (vars) {
     for (const [k, v] of Object.entries(vars)) {
       out = out.replaceAll(`{${k}}`, String(v));

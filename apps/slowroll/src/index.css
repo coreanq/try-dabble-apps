@@ -583,25 +583,56 @@ html[data-sr-mode="paper"] {
   }
 
   /* The "load a roll" card, shown inside the finder when the camera is empty. */
+  /* Packed from the top and scrollable, never centred: a centred grid that
+     overflows a short 4:3 finder (about 240px tall at 390px wide) clips the
+     question and the first mode title above the reachable scroll range. The
+     primary CTA sits sticky at the bottom so it is on-screen without a scroll. */
   .sr-loader {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
-    padding: 0.7rem 0.75rem;
+    min-width: 0;
+    padding: 0.5rem 0.6rem 0;
     display: grid;
-    align-content: center;
-    gap: 0.45rem;
+    align-content: start;
+    gap: 0.35rem;
     color: #f5e9cf;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  .sr-loader-q {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .sr-loader-cta {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    margin-top: 0.1rem;
+    padding: 0.35rem 0 0.5rem;
+    background: linear-gradient(180deg, rgba(13, 11, 9, 0), #0d0b09 40%);
+  }
+  .sr-loader-cta > #load-roll {
+    width: 100%;
+    height: auto;
+    min-height: 2.75rem;
+    padding-block: 0.45rem;
+    white-space: normal;
+    line-height: 1.2;
   }
   .sr-mode {
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
     width: 100%;
+    min-width: 0;
     text-align: left;
-    padding: 0.45rem 0.55rem;
+    padding: 0.35rem 0.5rem;
     border-radius: 8px;
     border: 1px solid rgba(245, 233, 207, 0.3);
     background: rgba(245, 233, 207, 0.06);
@@ -634,14 +665,17 @@ html[data-sr-mode="paper"] {
   .sr-mode-title {
     display: block;
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
   }
   .sr-mode-hint {
     display: block;
-    margin-top: 0.15rem;
-    font-size: 0.72rem;
-    line-height: 1.35;
+    margin-top: 0.1rem;
+    font-size: 0.7rem;
+    line-height: 1.3;
     opacity: 0.85;
+    overflow-wrap: anywhere;
   }
   .sr-mode-default {
     display: inline-block;
@@ -1106,5 +1140,26 @@ html[data-sr-mode="paper"] {
   .sr-shutter-cap {
     width: 4.5rem;
     height: 4.5rem;
+  }
+  .sr-loader {
+    padding: 0.4rem 0.5rem 0;
+    gap: 0.3rem;
+  }
+  .sr-loader-q {
+    font-size: 0.84rem;
+  }
+  .sr-mode {
+    padding: 0.3rem 0.45rem;
+    gap: 0.4rem;
+  }
+  .sr-mode-title {
+    font-size: 0.84rem;
+  }
+  .sr-mode-hint {
+    font-size: 0.68rem;
+  }
+  .sr-loader-cta > #load-roll {
+    font-size: 0.98rem;
+    min-height: 2.6rem;
   }
 }

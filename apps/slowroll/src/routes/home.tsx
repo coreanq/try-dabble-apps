@@ -444,7 +444,7 @@ function Home() {
             </>
           ) : (
             <div className="sr-loader" id="loader" role="radiogroup" aria-label={t("modeQuestion")}>
-              <p className="m-0 text-[0.92rem] font-extrabold">{t("modeQuestion")}</p>
+              <p className="sr-loader-q">{t("modeQuestion")}</p>
               {(["full", "first"] as DevelopMode[]).map((m) => (
                 <button
                   type="button"
@@ -465,10 +465,12 @@ function Home() {
                   </span>
                 </button>
               ))}
-              <Button id="load-roll" size="lg" onClick={handleLoadRoll}>
-                <Camera className="size-5" aria-hidden />
-                {t("loadBtn")} · {t("framesPerRoll", { n: DEFAULT_CAPACITY })}
-              </Button>
+              <div className="sr-loader-cta">
+                <Button id="load-roll" size="lg" onClick={handleLoadRoll}>
+                  <Camera className="size-5" aria-hidden />
+                  {t("loadBtn")} · {t("framesPerRoll", { n: DEFAULT_CAPACITY })}
+                </Button>
+              </div>
             </div>
           )}
         </CameraBody>

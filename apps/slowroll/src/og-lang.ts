@@ -76,9 +76,47 @@ function pickLang(request: Request, url: URL): Lang | null {
   return null;
 }
 
+/**
+ * The shipped manifest is Korean. Installed as a PWA from ?lang=en it must
+ * say "Slowroll", so the Worker rewrites name / lang / start_url per request.
+ * Unknown language falls back to English, not Korean.
+ */
+export function localizeManifest(manifest: Record<string, unknown>, lang: Lang): Record<string, unknown> {
+  const copy = COPY[lang];
+  return {
+    ...manifest,
+    name: copy.title,
+    short_name: copy.title,
+    description: copy.tagline,
+    lang,
+    start_url: `/?lang=${lang}`,
+  };
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === '/manifest.webmanifest') {
+      const lang = pickLang(request, url) ?? 'en';
+      const raw = await env.ASSETS.fetch(new Request(`${url.origin}/manifest.webmanifest`, { method: 'GET' }));
+      if (!raw.ok) return raw;
+      let manifest: Record<string, unknown>;
+      try {
+        manifest = (await raw.json()) as Record<string, unknown>;
+      } catch {
+        return raw;
+      }
+      return new Response(JSON.stringify(localizeManifest(manifest, lang), null, 2), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/manifest+json',
+          'Cache-Control': 'public, max-age=0, must-revalidate',
+          Vary: 'Cookie',
+        },
+      });
+    }
+
     const asset = await env.ASSETS.fetch(request);
     const ct = asset.headers.get('content-type') || '';
     if (!ct.includes('text/html') || !isHome(url.pathname)) return asset;
@@ -115,8 +153,12 @@ export default {
         })
         .on('link', {
           element(el) {
-            if ((el.getAttribute('rel') || '').toLowerCase() === 'canonical') {
+            const rel = (el.getAttribute('rel') || '').toLowerCase();
+            if (rel === 'canonical') {
               el.setAttribute('href', shareUrl);
+            } else if (rel === 'manifest') {
+              // Manifest fetches omit cookies, so the language rides on the URL.
+              el.setAttribute('href', `/manifest.webmanifest?lang=${lang}`);
             }
           },
         })
