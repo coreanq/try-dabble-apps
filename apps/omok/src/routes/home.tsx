@@ -338,9 +338,10 @@ function Home() {
 
       <p className="gb-footer">15 × 15 · {t("freeBadge")}</p>
       <footer className="flex flex-wrap items-center justify-center gap-3 px-4 py-2 text-xs opacity-70">
-        <a href={`https://try-dabble.com/privacy?lang=${lang}`}>Privacy</a>
-        <a href={`https://try-dabble.com/terms?lang=${lang}`}>Terms</a>
-        <span>try-dabble.com</span>
+        <a href={`https://try-dabble.com/${lang}/privacy`}>Privacy</a>
+        <a href={`https://try-dabble.com/${lang}/terms`}>Terms</a>
+        <a href={`https://try-dabble.com/${lang}/guides/omok`}>Guide</a>
+        <a href={`https://try-dabble.com/${lang}`}>try-dabble.com</a>
       </footer>
 
       <SeoCopy />

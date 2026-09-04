@@ -74,6 +74,7 @@ export type MsgKey =
   | "draftWhyPh"
   | "privacy"
   | "terms"
+  | "guide"
   | "editTitle"
   | "open"
   | "keepWeek"
@@ -155,6 +156,7 @@ export const I18N: Record<Lang, Messages> = {
     draftWhyPh: "Why keep this?",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     editTitle: "Edit",
     open: "Open",
     keepWeek: "This week",
@@ -232,6 +234,7 @@ export const I18N: Record<Lang, Messages> = {
     draftWhyPh: "왜 남기지?",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     editTitle: "수정",
     open: "열기",
     keepWeek: "이번 주",
@@ -309,6 +312,7 @@ export const I18N: Record<Lang, Messages> = {
     draftWhyPh: "なぜ残す？",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     editTitle: "編集",
     open: "開く",
     keepWeek: "今週",
@@ -386,6 +390,7 @@ export const I18N: Record<Lang, Messages> = {
     draftWhyPh: "为什么留下？",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     editTitle: "编辑",
     open: "打开",
     keepWeek: "本周",

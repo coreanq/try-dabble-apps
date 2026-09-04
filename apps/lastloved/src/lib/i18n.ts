@@ -105,7 +105,8 @@ export type MsgKey =
   | "howTitle"
   | "howBody"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 const I18N: Record<Lang, Record<MsgKey, string>> = {
   ko: {
@@ -184,6 +185,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "곡, 날짜, 년수는 모두 이 브라우저에만 저장됩니다. 계정도 서버도 없습니다. 시간이 지나 저절로 지워지는 규칙도 없고, N년은 '다시 만나는 날'이지 '지워지는 날'이 아닙니다. 직접 빼거나, 브라우저의 사이트 데이터를 지우거나, 기기를 바꿀 때만 사라집니다.",
     privacy: "개인정보",
     terms: "약관",
+    guide: "가이드",
   },
   en: {
     title: "Lastloved",
@@ -261,6 +263,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "Songs, dates and year counts are kept in this browser only. There is no account and no server. Nothing expires on a timer: the N years is when a song comes BACK, not when it is deleted. A song leaves only when you remove it, when you clear the browser's site data, or when you switch devices.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "あの頃の曲",
@@ -338,6 +341,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "曲、日付、年数はこのブラウザにだけ保存されます。アカウントもサーバーもありません。時間で勝手に消える仕組みはなく、N年は「また会う日」であって「消える日」ではありません。自分で外すか、ブラウザのサイトデータを消すか、端末を替えたときだけ消えます。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "当年那首歌",
@@ -415,6 +419,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "歌曲、日期和年数只保存在这个浏览器里。没有账号，也没有服务器。没有到期自动删除的规则：N 年是“再相见的日子”，不是“被删除的日子”。只有你自己拿走、清除浏览器站点数据，或者换设备时才会消失。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

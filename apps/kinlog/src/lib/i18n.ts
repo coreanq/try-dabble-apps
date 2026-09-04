@@ -107,7 +107,8 @@ export type MsgKey =
   | "howTitle"
   | "howBody"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 export type Messages = Record<MsgKey, string>;
 
@@ -189,6 +190,7 @@ export const I18N: Record<Lang, Messages> = {
       "사람, 메모, 연락 날짜, 정렬 방식은 모두 이 브라우저 안에만 저장됩니다. 시간이 지나도 지워지지 않고, 앱을 고쳐도 초기화되지 않습니다. 지워지는 건 직접 지울 때, 그리고 브라우저의 사이트 데이터를 지우거나 기기를 바꿀 때뿐입니다. 서버로는 아무것도 올라가지 않습니다.",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
   },
   en: {
     title: "Kinlog",
@@ -267,6 +269,7 @@ export const I18N: Record<Lang, Messages> = {
       "People, notes, contact dates and your sort choice live in this browser only. Nothing expires on a clock and an app update never resets it. It goes away only when you delete it, or when you clear the browser's site data or move to another device. Nothing is uploaded to our servers.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "縁帳",
@@ -345,6 +348,7 @@ export const I18N: Record<Lang, Messages> = {
       "人、メモ、連絡日、並び順はすべてこのブラウザの中だけに保存されます。時間で消えることはなく、アプリを更新しても初期化されません。なくなるのは自分で消したとき、そしてブラウザのサイトデータを消すか端末を替えたときだけです。サーバーには何も上がりません。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "亲友录",
@@ -423,6 +427,7 @@ export const I18N: Record<Lang, Messages> = {
       "人、备注、联系日期和排序方式都只存在这个浏览器里。不会到期消失，更新应用也不会重置。只有你自己删除，或清除浏览器站点数据、更换设备时才会消失。什么都不会上传到服务器。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

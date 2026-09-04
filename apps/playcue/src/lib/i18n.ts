@@ -104,7 +104,8 @@ export type MsgKey =
   | "toastImported"
   | "toastImportBad"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 export type Messages = Record<MsgKey, string>;
 
@@ -193,6 +194,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "플레이큐 셋리스트 파일이 아닙니다.",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
   },
   en: {
     title: "Playcue",
@@ -278,6 +280,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "That file is not a Playcue setlist.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "プレイキュー",
@@ -363,6 +366,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "プレイキューのセットリストファイルではありません。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "点播下曲",
@@ -448,6 +452,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "这不是点播下曲的歌单文件。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

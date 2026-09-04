@@ -114,9 +114,10 @@ function Home() {
       <TouchPad t={t} />
       <PortraitHint t={t} />
       <footer className="pj-chrome flex flex-wrap items-center justify-center gap-3 px-4 py-3 text-xs opacity-70">
-        <a href={`https://try-dabble.com/privacy?lang=${lang}`}>Privacy</a>
-        <a href={`https://try-dabble.com/terms?lang=${lang}`}>Terms</a>
-        <span>try-dabble.com</span>
+        <a href={`https://try-dabble.com/${lang}/privacy`}>Privacy</a>
+        <a href={`https://try-dabble.com/${lang}/terms`}>Terms</a>
+        <a href={`https://try-dabble.com/${lang}/guides/jump-map`}>Guide</a>
+        <a href={`https://try-dabble.com/${lang}`}>try-dabble.com</a>
       </footer>
     </div>
   );

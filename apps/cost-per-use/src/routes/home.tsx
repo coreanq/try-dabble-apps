@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { EntryFormCard, type Draft, type DraftErrors } from "@/components/entry-form-card";
 import { EntryListCard } from "@/components/entry-list-card";
@@ -276,12 +275,11 @@ function Home() {
         onDelete={setPendingDelete}
       />
 
-      <AdSlot />
-
       <footer className="cpu-footer">
-        <a href={`https://try-dabble.com/privacy?lang=${lang}`}>{t("privacy")}</a>
-        <a href={`https://try-dabble.com/terms?lang=${lang}`}>{t("terms")}</a>
-        <span>try-dabble.com</span>
+        <a href={`https://try-dabble.com/${lang}/privacy`}>{t("privacy")}</a>
+        <a href={`https://try-dabble.com/${lang}/terms`}>{t("terms")}</a>
+        <a href={`https://try-dabble.com/${lang}/guides/cost-per-use`}>{t("guide")}</a>
+        <a href={`https://try-dabble.com/${lang}`}>try-dabble.com</a>
       </footer>
 
       <DeleteDialog

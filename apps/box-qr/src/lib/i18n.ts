@@ -76,6 +76,7 @@ export type MsgKey =
   | "toolsHint"
   | "privacy"
   | "terms"
+  | "guide"
   | "edit"
   | "saved"
   | "deleted"
@@ -140,6 +141,7 @@ const en: Sheet = {
     "Take a JSON file when you change devices. Photos stay in the file. Nothing is uploaded.",
   privacy: "Privacy",
   terms: "Terms",
+  guide: "Guide",
   edit: "Edit",
   saved: "Saved",
   deleted: "Deleted",
@@ -203,6 +205,7 @@ const ko: Sheet = {
     "기기를 옮길 때 JSON으로 가져가세요. 사진도 파일에 들어 있습니다. 서버에는 올라가지 않습니다.",
   privacy: "개인정보",
   terms: "이용약관",
+  guide: "가이드",
   edit: "수정",
   saved: "저장됨",
   deleted: "삭제됨",
@@ -266,6 +269,7 @@ const ja: Sheet = {
     "端末を移すときはJSONを持っていってください。写真もファイルに入ります。サーバーには上がりません。",
   privacy: "プライバシー",
   terms: "利用規約",
+  guide: "ガイド",
   edit: "編集",
   saved: "保存しました",
   deleted: "削除しました",
@@ -328,6 +332,7 @@ const zh: Sheet = {
   toolsHint: "换设备时带走 JSON。照片也在文件里。不会上传到服务器。",
   privacy: "隐私",
   terms: "条款",
+  guide: "指南",
   edit: "编辑",
   saved: "已保存",
   deleted: "已删除",

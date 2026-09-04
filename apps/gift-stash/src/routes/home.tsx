@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { IdeaDialog, type IdeaDraft } from "@/components/idea-dialog";
 import { IdeaTag } from "@/components/idea-tag";
@@ -576,8 +575,6 @@ function Home() {
         </CardContent>
       </Card>
 
-      <AdSlot />
-
       <ToolsCard
         remindDays={settings.remindDays}
         notifyStatus={notifyStatus}
@@ -593,13 +590,16 @@ function Home() {
       />
 
       <footer className="gs-footer">
-        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
+        <a id="link-privacy" href={`https://try-dabble.com/${lang}/privacy`}>
           {t("privacy")}
         </a>
-        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
+        <a id="link-terms" href={`https://try-dabble.com/${lang}/terms`}>
           {t("terms")}
         </a>
-        <span>try-dabble.com</span>
+        <a id="link-guide" href={`https://try-dabble.com/${lang}/guides/gift-stash`}>
+          {t("guide")}
+        </a>
+        <a href={`https://try-dabble.com/${lang}`}>try-dabble.com</a>
       </footer>
 
       <PersonDialog

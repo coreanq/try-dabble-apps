@@ -125,7 +125,8 @@ export type MsgKey =
   | "promisePersist"
   | "promiseCalm"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 export type Messages = Record<MsgKey, string>;
 
@@ -247,6 +248,7 @@ export const I18N: Record<Lang, Messages> = {
 
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
   },
 
   en: {
@@ -366,6 +368,7 @@ export const I18N: Record<Lang, Messages> = {
 
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
 
   ja: {
@@ -485,6 +488,7 @@ export const I18N: Record<Lang, Messages> = {
 
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
 
   zh: {
@@ -604,6 +608,7 @@ export const I18N: Record<Lang, Messages> = {
 
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

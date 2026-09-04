@@ -62,6 +62,7 @@ export type MsgKey =
   | "importJson"
   | "privacy"
   | "terms"
+  | "guide"
   | "placeAdd"
   | "placeEdit"
   | "dropHint"
@@ -147,6 +148,7 @@ export const I18N: Record<Lang, Messages> = {
     importJson: "Import JSON",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     placeAdd: "Add place",
     placeEdit: "Edit place",
     dropHint: "Pick a file or paste an image (Ctrl+V)",
@@ -229,6 +231,7 @@ export const I18N: Record<Lang, Messages> = {
     importJson: "JSON가져오기",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     placeAdd: "장소 추가",
     placeEdit: "장소 수정",
     dropHint: "파일을 고르거나 이미지를 붙여넣으세요 (Ctrl+V)",
@@ -311,6 +314,7 @@ export const I18N: Record<Lang, Messages> = {
     importJson: "JSON読み込み",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     placeAdd: "場所を追加",
     placeEdit: "場所を編集",
     dropHint: "ファイルを選ぶか画像を貼り付け（Ctrl+V）",
@@ -393,6 +397,7 @@ export const I18N: Record<Lang, Messages> = {
     importJson: "导入 JSON",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     placeAdd: "添加地点",
     placeEdit: "编辑地点",
     dropHint: "选择文件或粘贴图片（Ctrl+V）",

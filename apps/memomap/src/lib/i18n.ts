@@ -87,7 +87,8 @@ export type MsgKey =
   | "promiseSub"
   | "promisePrivate"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 export type Messages = Record<MsgKey, string>;
 
@@ -149,6 +150,7 @@ export const I18N: Record<Lang, Messages> = {
     promisePrivate: "기본이 비공개 — 공유 링크도, 서버 업로드도 없습니다",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
   },
   en: {
     title: "Memomap",
@@ -207,6 +209,7 @@ export const I18N: Record<Lang, Messages> = {
     promisePrivate: "Private by default — no share links, no upload",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "視える記憶",
@@ -265,6 +268,7 @@ export const I18N: Record<Lang, Messages> = {
     promisePrivate: "既定で非公開 — 共有リンクもアップロードもありません",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "记忆地图",
@@ -323,6 +327,7 @@ export const I18N: Record<Lang, Messages> = {
     promisePrivate: "默认私密 — 没有分享链接，不上传",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

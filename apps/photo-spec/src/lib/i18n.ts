@@ -78,6 +78,7 @@ export type MsgKey =
   | "privacy"
   | "captionHint"
   | "terms"
+  | "guide"
   | "specSheet"
   | "sheetTarget"
   | "sheetRange"
@@ -141,6 +142,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     captionHint:
       "UPSC prints name + today’s date on the photo. Uses the name in Applicant notes.",
     terms: "Terms",
+    guide: "Guide",
     specSheet: "Spec sheet",
     sheetTarget: "Target",
     sheetRange: "File size",
@@ -202,6 +204,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     privacy: "개인정보",
     captionHint: "UPSC는 사진 하단에 이름과 오늘 날짜를 넣습니다. 지원자 메모의 이름을 씁니다.",
     terms: "이용약관",
+    guide: "가이드",
     specSheet: "규격 상세",
     sheetTarget: "목표 크기",
     sheetRange: "파일 크기",
@@ -263,6 +266,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     privacy: "プライバシー",
     captionHint: "UPSCは写真下に名前と今日の日付を入れます。応募者メモの名前を使います。",
     terms: "利用規約",
+    guide: "ガイド",
     specSheet: "規格の詳細",
     sheetTarget: "目標サイズ",
     sheetRange: "ファイルサイズ",
@@ -323,6 +327,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     privacy: "隐私",
     captionHint: "UPSC 会在照片底部印上姓名和今天的日期。使用申请人备忘中的姓名。",
     terms: "条款",
+    guide: "指南",
     specSheet: "规格详情",
     sheetTarget: "目标尺寸",
     sheetRange: "文件大小",

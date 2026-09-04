@@ -127,7 +127,8 @@ export type MsgKey =
   | "howTitle"
   | "howBody"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 export type Messages = Record<MsgKey, string>;
 
@@ -235,6 +236,7 @@ export const I18N: Record<Lang, Messages> = {
       "가격은 숫자만 적습니다. 통화도 단위 계산도 없습니다. 가게는 짧게 쓰는 이름표입니다 — 한 번 쓰면 다음부터는 눌러서 고를 수 있습니다. 같은 바코드에 가격을 여러 번 넣으면 날짜순으로 쌓이고, 바로 위 기록과의 차이가 함께 표시됩니다.",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
   },
   en: {
     title: "Scanprice",
@@ -339,6 +341,7 @@ export const I18N: Record<Lang, Messages> = {
       "The price is just a number — no currency picker and no unit maths. The store is a short tag you type once and then pick from the recent list. Add a price to the same code more than once and the rows stack up by date, each showing how far it moved from the row above it.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "スキャン価格",
@@ -443,6 +446,7 @@ export const I18N: Record<Lang, Messages> = {
       "値段は数字だけを書きます。通貨の選択も単価の計算もありません。店は短く付ける名札で、一度書けば次からは押して選べます。同じバーコードに何度も値段を入れると日付順に積み上がり、すぐ上の記録との差も一緒に出ます。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "扫码记价",
@@ -546,6 +550,7 @@ export const I18N: Record<Lang, Messages> = {
       "价格只写数字，不用选货币，也不算单价。店是一个短标签，写过一次以后就能点着选。同一个条码多次记价会按日期叠起来，每一条还会显示比上一条涨了还是降了。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

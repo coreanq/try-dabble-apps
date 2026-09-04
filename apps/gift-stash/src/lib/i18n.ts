@@ -59,6 +59,7 @@ export type MsgKey =
   | "importJson"
   | "privacy"
   | "terms"
+  | "guide"
   | "personAdd"
   | "personEdit"
   | "name"
@@ -145,6 +146,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     importJson: "Import JSON",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     personAdd: "Add person",
     personEdit: "Edit person",
     name: "Name",
@@ -230,6 +232,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     importJson: "JSON가져오기",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     personAdd: "사람 추가",
     personEdit: "사람 수정",
     name: "이름",
@@ -315,6 +318,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     importJson: "JSON読み込み",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     personAdd: "人を追加",
     personEdit: "人を編集",
     name: "名前",
@@ -398,6 +402,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     importJson: "导入 JSON",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     personAdd: "添加人物",
     personEdit: "编辑人物",
     name: "姓名",

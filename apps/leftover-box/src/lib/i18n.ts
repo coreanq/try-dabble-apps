@@ -55,6 +55,7 @@ export type MsgKey =
   | "toolsHint"
   | "privacy"
   | "terms"
+  | "guide"
   | "edit"
   | "eaten"
   | "saved"
@@ -114,6 +115,7 @@ export const I18N: Record<Lang, Messages> = {
     toolsHint: "Take a JSON file when you change devices. Nothing is uploaded.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     edit: "Edit",
     eaten: "Eaten",
     saved: "Saved",
@@ -170,6 +172,7 @@ export const I18N: Record<Lang, Messages> = {
     toolsHint: "기기를 옮길 때 JSON으로 가져가세요. 서버에는 올라가지 않습니다.",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     edit: "수정",
     eaten: "먹음",
     saved: "저장됨",
@@ -227,6 +230,7 @@ export const I18N: Record<Lang, Messages> = {
       "端末を移すときはJSONを持っていってください。サーバーには上がりません。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     edit: "編集",
     eaten: "食べた",
     saved: "保存しました",
@@ -282,6 +286,7 @@ export const I18N: Record<Lang, Messages> = {
     toolsHint: "换设备时带走 JSON。不会上传到服务器。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     edit: "编辑",
     eaten: "已吃",
     saved: "已保存",

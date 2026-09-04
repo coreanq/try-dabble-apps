@@ -134,7 +134,8 @@ export type MsgKey =
   | "howTitle"
   | "howBody"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 const I18N: Record<Lang, Record<MsgKey, string>> = {
   ko: {
@@ -243,6 +244,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "고객 이름, 상품, 주소, 입금·발송 표시는 모두 이 기기의 브라우저에만 저장됩니다. 계정도 서버도 동기화도 없어서 여러 사람이 같이 보는 실시간 공유는 되지 않습니다. 직접 버리거나, 브라우저의 사이트 데이터를 지우거나, 기기를 바꿀 때만 사라지니 중요한 장부는 CSV나 JSON으로 내보내 두세요.",
     privacy: "개인정보",
     terms: "약관",
+    guide: "가이드",
   },
   en: {
     title: "Orderpad",
@@ -352,6 +354,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "Customer names, items, addresses and the paid and shipped marks stay in this browser on this device. There is no account, no server and no sync, so there is no live shared view for two people at once. It goes away only when you bin it, clear site data, or switch devices — so export a CSV or JSON copy of anything you cannot lose.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "注文帳",
@@ -459,6 +462,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "顧客名、商品、住所、入金・発送の印は、すべてこの端末のブラウザにだけ保存されます。アカウントもサーバーも同期もないので、複数人で同時に見る共有はできません。自分で捨てるか、サイトデータを消すか、端末を替えたときにだけ消えます。大事な帳面はCSVかJSONで書き出しておいてください。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "订货本",
@@ -566,6 +570,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "客户名称、商品、地址以及付款和发货的标记，都只保存在这台设备的浏览器里。没有账号、没有服务器、也没有同步，所以做不到两个人同时看同一份。只有你自己删除、清除站点数据或更换设备时才会消失，所以重要的账目请导出一份 CSV 或 JSON。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

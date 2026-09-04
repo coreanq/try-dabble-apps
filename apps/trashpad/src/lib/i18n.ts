@@ -69,6 +69,7 @@ export type MsgKey =
   | "preset7d"
   | "privacy"
   | "terms"
+  | "guide"
   | "howTitle"
   | "howBody";
 
@@ -120,6 +121,7 @@ export const I18N: Record<Lang, Messages> = {
     preset7d: "7일",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     howTitle: "지워지는 규칙",
     howBody:
       "타이머는 마지막으로 고친 시각부터 셉니다. 고칠 때마다 처음부터 다시 셉니다. 시간이 끝난 메모는 앱을 열 때와 열려 있는 동안 자동으로 지워집니다. 보관함은 없습니다.",
@@ -169,6 +171,7 @@ export const I18N: Record<Lang, Messages> = {
     preset7d: "7d",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     howTitle: "How it disappears",
     howBody:
       "The timer counts from your last edit, and every edit restarts it. Expired notes are deleted when you open the app and while it stays open. There is no archive.",
@@ -218,6 +221,7 @@ export const I18N: Record<Lang, Messages> = {
     preset7d: "7日",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     howTitle: "消えるしくみ",
     howBody:
       "タイマーは最後に直した時刻から数え、直すたびに数え直します。期限切れのメモは、アプリを開いたときと開いている間に自動で消えます。保管庫はありません。",
@@ -267,6 +271,7 @@ export const I18N: Record<Lang, Messages> = {
     preset7d: "7 天",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     howTitle: "怎么消失",
     howBody:
       "计时从最后一次修改算起，每次修改都会重新开始。过期的便签会在你打开应用时以及应用开着的时候自动删除。没有归档。",

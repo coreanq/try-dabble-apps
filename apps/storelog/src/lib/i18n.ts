@@ -101,7 +101,8 @@ export type MsgKey =
   | "howTitle"
   | "howBody"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 const I18N: Record<Lang, Record<MsgKey, string>> = {
   ko: {
@@ -177,6 +178,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "가게 이름, 번호, 메모는 모두 이 기기의 브라우저에만 저장됩니다. 계정도 서버도 동기화도 없습니다. 직접 빼거나, 브라우저의 사이트 데이터를 지우거나, 기기를 바꿀 때만 사라집니다. 오래 남기고 싶다면 CSV나 JSON으로 내보내 두세요.",
     privacy: "개인정보",
     terms: "약관",
+    guide: "가이드",
   },
   en: {
     title: "Storelog",
@@ -252,6 +254,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "Store names, numbers and notes are kept in this browser on this device only. No account, no server, no sync. They disappear only when you remove them, when you clear the browser's site data, or when you change device. Export a CSV or JSON copy if the list is one you cannot lose.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "店舗帳",
@@ -326,6 +329,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "店名、番号、メモはこの端末のブラウザにだけ保存されます。アカウントもサーバーも同期もありません。自分で外すか、ブラウザのサイトデータを消すか、端末を替えたときにだけ消えます。長く残したい一覧はCSVかJSONで書き出しておいてください。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     // zh has its own card. Never point it at the en file.
@@ -401,6 +405,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
       "店名、号码和备注只保存在这台设备的浏览器里。没有账号，没有服务器，也没有同步。只有你自己移除、清除浏览器站点数据，或者换设备时才会消失。重要的名录记得导出一份 CSV 或 JSON。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

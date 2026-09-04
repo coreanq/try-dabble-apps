@@ -83,6 +83,7 @@ export type MsgKey =
   | "deleted"
   | "privacy"
   | "terms"
+  | "guide"
   | "adPlaceholder"
   | "langLabel"
   | "invalid"
@@ -146,6 +147,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     deleted: "Deleted",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     adPlaceholder: "Ad",
     langLabel: "Language",
     invalid: "Please enter a name, price, and purchase date.",
@@ -207,6 +209,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     deleted: "삭제됨",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     adPlaceholder: "광고",
     langLabel: "언어",
     invalid: "이름, 가격, 구매일을 입력해 주세요.",
@@ -268,6 +271,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     deleted: "已删除",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     adPlaceholder: "广告",
     langLabel: "语言",
     invalid: "请填写名称、价格和购买日期。",
@@ -329,6 +333,7 @@ export const I18N: Record<Lang, Record<MsgKey, string>> = {
     deleted: "削除しました",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     adPlaceholder: "広告",
     langLabel: "言語",
     invalid: "名前・価格・購入日を入力してください。",

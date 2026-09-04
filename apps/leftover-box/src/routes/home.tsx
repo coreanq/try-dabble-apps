@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { LeftoverForm, type LeftoverDraft } from "@/components/leftover-form";
 import { LeftoverNote } from "@/components/leftover-note";
@@ -304,18 +303,19 @@ function Home() {
         </CardContent>
       </Card>
 
-      <AdSlot />
-
       <ToolsCard t={t} onExport={handleExport} onImport={handleImport} />
 
       <footer className="flex flex-wrap justify-center gap-3 px-0 pt-1 pb-2 text-[0.78rem] text-muted-ink">
-        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
+        <a id="link-privacy" href={`https://try-dabble.com/${lang}/privacy`}>
           {t("privacy")}
         </a>
-        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
+        <a id="link-terms" href={`https://try-dabble.com/${lang}/terms`}>
           {t("terms")}
         </a>
-        <span>try-dabble.com</span>
+        <a id="link-guide" href={`https://try-dabble.com/${lang}/guides/leftover-box`}>
+          {t("guide")}
+        </a>
+        <a href={`https://try-dabble.com/${lang}`}>try-dabble.com</a>
       </footer>
 
       <Toast message={toastMsg} visible={toastOn} />

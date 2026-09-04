@@ -86,7 +86,8 @@ export type MsgKey =
   | "toastImported"
   | "toastImportBad"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "guide";
 
 export type Messages = Record<MsgKey, string>;
 
@@ -149,6 +150,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "나갔어체크 백업 파일이 아닙니다.",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
   },
   en: {
     title: "Outcheck",
@@ -208,6 +210,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "That file is not an Outcheck backup.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
   },
   ja: {
     title: "外出チェック",
@@ -267,6 +270,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "外出チェックのバックアップファイルではありません。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
   },
   zh: {
     title: "出门核对",
@@ -326,6 +330,7 @@ export const I18N: Record<Lang, Messages> = {
     toastImportBad: "这不是出门核对的备份文件。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
   },
 };
 

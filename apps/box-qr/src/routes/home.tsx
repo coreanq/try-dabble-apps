@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 
-import { AdSlot } from "@/components/ad-slot";
 import { BoxDetail } from "@/components/box-detail";
 import { BoxFormCard, emptyDraft, type Draft } from "@/components/box-form-card";
 import { BoxListCard } from "@/components/box-list-card";
@@ -384,14 +383,13 @@ function Home() {
           </section>
         )}
 
-        <AdSlot />
-
         <ToolsCard t={t} onExport={onExport} onImport={onImport} />
 
         <footer className="bq-footer">
-          <a href={`https://try-dabble.com/privacy?lang=${lang}`}>{t("privacy")}</a>
-          <a href={`https://try-dabble.com/terms?lang=${lang}`}>{t("terms")}</a>
-          <span>try-dabble.com</span>
+          <a href={`https://try-dabble.com/${lang}/privacy`}>{t("privacy")}</a>
+          <a href={`https://try-dabble.com/${lang}/terms`}>{t("terms")}</a>
+          <a href={`https://try-dabble.com/${lang}/guides/box-qr`}>{t("guide")}</a>
+          <a href={`https://try-dabble.com/${lang}`}>try-dabble.com</a>
         </footer>
 
         <QrDialog
