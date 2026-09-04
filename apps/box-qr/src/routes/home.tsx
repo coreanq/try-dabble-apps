@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 
+import { AdSlot } from "@/components/ad-slot";
 import { BoxDetail } from "@/components/box-detail";
 import { BoxFormCard, emptyDraft, type Draft } from "@/components/box-form-card";
 import { BoxListCard } from "@/components/box-list-card";
@@ -383,6 +384,7 @@ function Home() {
           </section>
         )}
 
+        <AdSlot />
 
         <ToolsCard t={t} onExport={onExport} onImport={onImport} />
 

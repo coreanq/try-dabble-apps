@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { Download, ListPlus, Rewind, Square, Upload } from "lucide-react";
 
+import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { CueRow } from "@/components/cue-row";
 import { GoButton, type GoState } from "@/components/go-button";
@@ -672,6 +673,7 @@ function Home() {
         </CardContent>
       </Card>
 
+      <AdSlot />
 
       <footer className="flex flex-wrap justify-center gap-3 px-0 pt-1 pb-2 text-[0.78rem] text-stage-muted">
         <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>

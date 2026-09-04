@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
+import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { IdeaDialog, type IdeaDraft } from "@/components/idea-dialog";
 import { IdeaTag } from "@/components/idea-tag";
@@ -575,6 +576,7 @@ function Home() {
         </CardContent>
       </Card>
 
+      <AdSlot />
 
       <ToolsCard
         remindDays={settings.remindDays}
