@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
 import { AddForm, type NewLink } from "@/components/add-form";
-import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DraftsCard } from "@/components/drafts-card";
 import { EditDialog, type ItemEdit } from "@/components/edit-dialog";
@@ -437,7 +436,6 @@ function Home() {
         </Card>
       </div>
 
-      <AdSlot />
 
       <ToolsCard
         t={t}
