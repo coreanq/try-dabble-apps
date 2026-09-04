@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { AddStoreForm } from "@/components/add-store-form";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { EmptyState } from "@/components/empty-state";
@@ -289,7 +288,6 @@ function Home() {
         </CardContent>
       </Card>
 
-      <AdSlot />
 
       <footer className="flex flex-wrap justify-center gap-3 px-0 pt-1 pb-2 text-[0.78rem] text-muted-ink">
         <a id="link-privacy" href="/privacy.html">

@@ -8,7 +8,6 @@ import {
 } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
 import { PreviewCard, type Readout } from "@/components/preview-card";
@@ -380,7 +379,6 @@ function Home() {
         onPointerUp={onPointerUp}
       />
 
-      <AdSlot />
 
       <ProfileCard t={t} profile={profile} onChange={changeProfile} onCopy={copyField} />
 

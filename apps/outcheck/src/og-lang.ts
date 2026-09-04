@@ -97,6 +97,15 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
+    if (url.pathname === '/ads.txt' || url.pathname === '/app-ads.txt') {
+      return new Response('google.com, pub-1343411537040925, DIRECT, f08c47fec0942fa0\n', {
+        headers: {
+          'content-type': 'text/plain; charset=utf-8',
+          'cache-control': 'public, max-age=86400',
+        },
+      });
+    }
+
     if (url.pathname === '/manifest.webmanifest') {
       const lang = pickLang(request, url) ?? 'en';
       const raw = await env.ASSETS.fetch(new Request(`${url.origin}/manifest.webmanifest`, { method: 'GET' }));

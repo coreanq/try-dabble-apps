@@ -1,7 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
@@ -569,7 +568,6 @@ function Home() {
         </CardContent>
       </Card>
 
-      <AdSlot />
 
       <ToolsCard t={t} onExport={handleExport} onImport={handleImport} />
 

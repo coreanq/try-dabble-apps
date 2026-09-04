@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { LeftoverForm, type LeftoverDraft } from "@/components/leftover-form";
 import { LeftoverNote } from "@/components/leftover-note";
@@ -304,7 +303,6 @@ function Home() {
         </CardContent>
       </Card>
 
-      <AdSlot />
 
       <ToolsCard t={t} onExport={handleExport} onImport={handleImport} />
 
