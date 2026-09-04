@@ -405,10 +405,10 @@ function Home() {
       </div>
 
       <footer className="flex flex-wrap justify-center gap-3 px-0 pt-1 pb-2 text-[0.78rem] text-ink-muted">
-        <a id="link-privacy" href="/privacy.html">
+        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
           {t("privacy")}
         </a>
-        <a id="link-terms" href="/terms.html">
+        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
           {t("terms")}
         </a>
         <span>try-dabble.com</span>

@@ -1,6 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
+import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
@@ -568,14 +569,15 @@ function Home() {
         </CardContent>
       </Card>
 
+      <AdSlot />
 
       <ToolsCard t={t} onExport={handleExport} onImport={handleImport} />
 
       <footer className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 pb-2 font-mono text-[0.68rem] tracking-wide text-muted-ink">
-        <a id="link-privacy" href="/privacy.html">
+        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
           {t("privacy")}
         </a>
-        <a id="link-terms" href="/terms.html">
+        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
           {t("terms")}
         </a>
         <span>try-dabble.com</span>

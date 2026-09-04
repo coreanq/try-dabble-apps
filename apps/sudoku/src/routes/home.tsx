@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { createRoute } from "@tanstack/react-router";
 
+import { AdSlot } from "@/components/ad-slot";
 import { GameScreen } from "@/components/game/game-screen";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
@@ -61,6 +62,12 @@ function Home() {
       <Masthead sub={t(locale, "brandSub")} title={t(locale, "appTitle")} />
       <GameScreen locale={locale} />
       {/* Below the whole play area — never between the board and the keypad. */}
+      <AdSlot locale={locale} />
+      <footer className="flex flex-wrap items-center justify-center gap-3 px-4 py-3 text-xs opacity-70">
+        <a href={`https://try-dabble.com/privacy?lang=${locale}`}>Privacy</a>
+        <a href={`https://try-dabble.com/terms?lang=${locale}`}>Terms</a>
+        <span>try-dabble.com</span>
+      </footer>
       <SeoCopy heading={t(locale, "faq")} locale={locale} />
     </div>
   );

@@ -8,6 +8,7 @@ import {
 } from "react";
 import { createRoute } from "@tanstack/react-router";
 
+import { AdSlot } from "@/components/ad-slot";
 import { LocalOnlyBanner } from "@/components/local-only-banner";
 import { Masthead } from "@/components/masthead";
 import { PreviewCard, type Readout } from "@/components/preview-card";
@@ -379,12 +380,13 @@ function Home() {
         onPointerUp={onPointerUp}
       />
 
+      <AdSlot />
 
       <ProfileCard t={t} profile={profile} onChange={changeProfile} onCopy={copyField} />
 
       <footer className="ps-footer">
-        <a href="/privacy.html">{t("privacy")}</a>
-        <a href="/terms.html">{t("terms")}</a>
+        <a href={`https://try-dabble.com/privacy?lang=${lang}`}>{t("privacy")}</a>
+        <a href={`https://try-dabble.com/terms?lang=${lang}`}>{t("terms")}</a>
         <span>try-dabble.com</span>
       </footer>
 

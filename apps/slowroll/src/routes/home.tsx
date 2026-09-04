@@ -647,8 +647,8 @@ function Home() {
       </Card>
 
       <footer className="sr-footer">
-        <a href="/privacy.html">{t("privacy")}</a>
-        <a href="/terms.html">{t("terms")}</a>
+        <a href={`https://try-dabble.com/privacy?lang=${lang}`}>{t("privacy")}</a>
+        <a href={`https://try-dabble.com/terms?lang=${lang}`}>{t("terms")}</a>
         <a href={`https://try-dabble.com/guides/slowroll?lang=${lang}`}>try-dabble.com</a>
       </footer>
 

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
 import { AddForm, type NewLink } from "@/components/add-form";
+import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DraftsCard } from "@/components/drafts-card";
 import { EditDialog, type ItemEdit } from "@/components/edit-dialog";
@@ -436,6 +437,7 @@ function Home() {
         </Card>
       </div>
 
+      <AdSlot />
 
       <ToolsCard
         t={t}
@@ -445,10 +447,10 @@ function Home() {
       />
 
       <footer className="flex flex-wrap justify-center gap-3 px-0 pt-1 pb-2 text-[0.78rem] text-muted-ink">
-        <a id="link-privacy" href="/privacy.html">
+        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
           {t("privacy")}
         </a>
-        <a id="link-terms" href="/terms.html">
+        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
           {t("terms")}
         </a>
         <span>try-dabble.com</span>

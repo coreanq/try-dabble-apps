@@ -337,6 +337,11 @@ function Home() {
       <HowToCard t={t} />
 
       <p className="gb-footer">15 × 15 · {t("freeBadge")}</p>
+      <footer className="flex flex-wrap items-center justify-center gap-3 px-4 py-2 text-xs opacity-70">
+        <a href={`https://try-dabble.com/privacy?lang=${lang}`}>Privacy</a>
+        <a href={`https://try-dabble.com/terms?lang=${lang}`}>Terms</a>
+        <span>try-dabble.com</span>
+      </footer>
 
       <SeoCopy />
 

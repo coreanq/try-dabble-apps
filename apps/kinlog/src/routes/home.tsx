@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
+import { AdSlot } from "@/components/ad-slot";
 import { AddPersonForm } from "@/components/add-person-form";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { EmptyState } from "@/components/empty-state";
@@ -323,12 +324,13 @@ function Home() {
         </CardContent>
       </Card>
 
+      <AdSlot />
 
       <footer className="flex flex-wrap justify-center gap-3 px-0 pt-1 pb-2 text-[0.78rem] text-muted-ink">
-        <a id="link-privacy" href="/privacy.html">
+        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
           {t("privacy")}
         </a>
-        <a id="link-terms" href="/terms.html">
+        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
           {t("terms")}
         </a>
         <span>try-dabble.com</span>
