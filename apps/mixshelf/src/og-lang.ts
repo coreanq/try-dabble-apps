@@ -205,7 +205,9 @@ export default {
           element(el) {
             el.setInnerContent(copy.tagline);
           },
-        });
+        })
+        .on('#link-privacy', { element(el) { el.setAttribute('href', `https://try-dabble.com/privacy?lang=${lang}`); } })
+        .on('#link-terms', { element(el) { el.setAttribute('href', `https://try-dabble.com/terms?lang=${lang}`); } });
 
       CHIP_IDS.forEach((selector, i) => {
         rewriter = rewriter.on(selector, {
