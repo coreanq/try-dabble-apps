@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>믹선반</title>
+  <meta name="description" content="책·게임·영화·TV를 한 선반에 모아 두고, 내가 만든 태그로 골라 보는 개인 도서관. 바코드도 카탈로그 계정도 없고, 제목을 직접 적습니다. 로그인·구독·유형별 무료 한도 없이 이 기기에만 저장되며 JSON으로 내보내기와 가져오기가 됩니다." />
+  <meta name="theme-color" content="#f6f0e6" />
+  <meta name="application-name" content="믹선반" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="믹선반" />
+  <link rel="canonical" href="https://mixshelf.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://mixshelf.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://mixshelf.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://mixshelf.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://mixshelf.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://mixshelf.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mixshelf" />
+  <meta property="og:url" content="https://mixshelf.try-dabble.com/" />
+  <meta property="og:title" content="믹선반" />
+  <meta property="og:description" content="책·게임·영화·TV를 한 선반에 모아 두고, 내가 만든 태그로 골라 보는 개인 도서관. 바코드도 카탈로그 계정도 없고, 제목을 직접 적습니다. 로그인·구독·유형별 무료 한도 없이 이 기기에만 저장되며 JSON으로 내보내기와 가져오기가 됩니다." />
+  <meta property="og:image" content="https://mixshelf.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="믹선반" />
+  <meta name="twitter:description" content="책·게임·영화·TV를 한 선반에. 내가 만든 태그로 골라 본다. 계정 없음." />
+  <meta name="twitter:image" content="https://mixshelf.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://mixshelf.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://mixshelf.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://mixshelf.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1343411537040925" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root">
+    <div class="ms-shell">
+      <p class="ms-tape" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="ms-sign">
+        <div class="ms-sign-row">
+          <h1 id="brand-title">믹선반</h1>
+        </div>
+        <p class="ms-tagline">책·게임·영화·TV를 한 선반에. 내가 만든 태그로 골라 본다. 계정 없음.</p>
+      </header>
+      <ul class="ms-chips" id="promise-chips">
+        <li class="ms-chip" data-kind="no" id="chip-nologin">로그인 없음</li>
+        <li class="ms-chip" data-kind="no" id="chip-nocap">구독/캡 없음</li>
+        <li class="ms-chip" data-kind="yes" id="chip-multitype">책·게임·영화·TV 한 선반</li>
+        <li class="ms-chip" data-kind="yes" id="chip-tags">커스텀 다중 태그</li>
+        <li class="ms-chip" data-kind="yes" id="chip-filter">태그·유형 필터</li>
+        <li class="ms-chip" data-kind="yes" id="chip-manual">수동 제목</li>
+        <li class="ms-chip" data-kind="yes" id="chip-persist">이 기기 저장</li>
+        <li class="ms-chip" data-kind="yes" id="chip-json">JSON 내보내기/가져오기</li>
+      </ul>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

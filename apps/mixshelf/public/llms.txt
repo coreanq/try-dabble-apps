@@ -1,0 +1,11 @@
+# Mixshelf / 믹선반 / ミックス棚 / 混架
+
+> A personal library for books, games, movies and TV on one shelf, with custom multi-tags and filters. Manual titles. No login, no subscription, no per-type lock. Data stays on this device; JSON export/import.
+
+This is a Progressive Web App (PWA) hosted at https://mixshelf.try-dabble.com/
+
+## Links
+- [App](https://mixshelf.try-dabble.com/): Mixshelf
+- [Guide](https://try-dabble.com/en/guides/mixshelf): How to use Mixshelf
+- [Privacy](https://mixshelf.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://mixshelf.try-dabble.com/terms.html): Terms of use
