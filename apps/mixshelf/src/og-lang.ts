@@ -12,6 +12,8 @@ type Copy = {
   locale: string;
   image: string;
   localOnly: string;
+  privacy: string;
+  terms: string;
   chips: [string, string, string, string, string, string, string, string];
 };
 
@@ -24,6 +26,8 @@ const COPY: Record<Lang, Copy> = {
     locale: 'ko_KR',
     image: 'https://mixshelf.try-dabble.com/og-image.png',
     localOnly: '이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.',
+    privacy: '개인정보',
+    terms: '이용약관',
     chips: [
       '로그인 없음',
       '구독/캡 없음',
@@ -43,6 +47,8 @@ const COPY: Record<Lang, Copy> = {
     locale: 'en_US',
     image: 'https://mixshelf.try-dabble.com/og-image-en.png',
     localOnly: 'Your data stays on this device. Nothing is sent to our servers.',
+    privacy: 'Privacy',
+    terms: 'Terms',
     chips: [
       'No login',
       'No sub/cap',
@@ -62,6 +68,8 @@ const COPY: Record<Lang, Copy> = {
     locale: 'ja_JP',
     image: 'https://mixshelf.try-dabble.com/og-image-ja.png',
     localOnly: 'データはこの端末にだけ保存されます。サーバーには送りません。',
+    privacy: 'プライバシー',
+    terms: '利用規約',
     chips: [
       'ログインなし',
       '定額・上限なし',
@@ -81,6 +89,8 @@ const COPY: Record<Lang, Copy> = {
     locale: 'zh_CN',
     image: 'https://mixshelf.try-dabble.com/og-image-zh.png',
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
+    privacy: '隐私政策',
+    terms: '服务条款',
     chips: [
       '无需登录',
       '无订阅/上限',
@@ -140,7 +150,7 @@ export default {
 
     // Lang-aware web manifest name
     if (url.pathname === '/manifest.webmanifest' || url.pathname === '/manifest.json') {
-      const lang = pickLang(request, url) || 'ko';
+      const lang = pickLang(request, url) || 'en';
       const copy = COPY[lang];
       const manifest = {
         name: copy.title,
@@ -206,8 +216,18 @@ export default {
             el.setInnerContent(copy.tagline);
           },
         })
-        .on('#link-privacy', { element(el) { el.setAttribute('href', `https://try-dabble.com/privacy?lang=${lang}`); } })
-        .on('#link-terms', { element(el) { el.setAttribute('href', `https://try-dabble.com/terms?lang=${lang}`); } });
+        .on('#link-privacy', {
+          element(el) {
+            el.setAttribute('href', `https://try-dabble.com/privacy?lang=${lang}`);
+            el.setInnerContent(copy.privacy);
+          },
+        })
+        .on('#link-terms', {
+          element(el) {
+            el.setAttribute('href', `https://try-dabble.com/terms?lang=${lang}`);
+            el.setInnerContent(copy.terms);
+          },
+        });
 
       CHIP_IDS.forEach((selector, i) => {
         rewriter = rewriter.on(selector, {
@@ -242,8 +262,13 @@ export default {
         })
         .on('link', {
           element(el) {
-            if ((el.getAttribute('rel') || '').toLowerCase() === 'canonical') {
+            const rel = (el.getAttribute('rel') || '').toLowerCase();
+            if (rel === 'canonical') {
               el.setAttribute('href', shareUrl);
+            } else if (rel === 'manifest') {
+              // Bare /manifest.webmanifest would be fetched without ?lang= and fall
+              // back to the default; pin it so the installed PWA matches the page lang.
+              el.setAttribute('href', `/manifest.webmanifest?lang=${lang}`);
             }
           },
         })
