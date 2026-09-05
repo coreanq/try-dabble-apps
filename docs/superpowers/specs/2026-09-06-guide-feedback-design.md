@@ -54,7 +54,7 @@
 - 본문 `slug` 검증: Origin이 `https://try-dabble.com`이면 `originSlug`가 없으므로 본문 `slug`를 그대로 쓰되, 기존 조건(`findService(slug) || findGuide(slug) || slug === 'try-dabble'`)은 그대로 적용.
 - `pageMatchesSlug`: Origin이 `https://try-dabble.com`일 때는 `pageUrl`의 host가 `try-dabble.com`이고 path가 `/{lang}/guides/{slug}`(lang은 `ko|en|ja|zh`)인지 검사. 서브도메인 Origin일 때의 기존 검사는 그대로.
 - 저장 레코드는 변경 없음. `origin` 필드에 `https://try-dabble.com`이 들어가는 것만 달라진다.
-- 테스트: 기존 워커 테스트 파일에 (a) `try-dabble.com` Origin + 올바른 가이드 pageUrl → 200, (b) `try-dabble.com` Origin + 다른 slug의 pageUrl → 400 `url`, (c) `try-dabble.com` Origin + 존재하지 않는 slug → 400 `app` 케이스 추가.
+- 테스트: 워커 테스트는 아직 없다. `test/feedback.test.tsx`를 새로 만들고(기존 `npm test`의 `node --test test/*.test.tsx`에 자동 포함), `FEEDBACK` KV를 인메모리 Map으로 흉내 내 `acceptFeedback`을 직접 호출한다. 케이스: (a) `try-dabble.com` Origin + 올바른 가이드 pageUrl → 200, (b) `try-dabble.com` Origin + 다른 slug의 pageUrl → 400 `url`, (c) `try-dabble.com` Origin + 존재하지 않는 slug → 400 `app` 케이스 추가.
 
 ## 4. "가이드에 feedback 섹션 없음" 규칙 삭제
 
@@ -63,17 +63,16 @@
 - `try-dabble-main/src/content/guides/*.ts` 상단의 `// New guides must not include a feedback section or posts.` 주석 삭제(22개 파일).
 - `try-dabble-main/src/content/guides/types.ts`: `posts?: GuidePost[]` 필드와 deprecated 주석, 아무 데서도 안 쓰는 `GuidePost`/`FeedbackKind` 타입 삭제. 삭제 전 `grep`으로 사용처 없음을 확인한다.
 - `try-dabble-main/docs/feedback-widget.md`: 마지막 줄 "Guide pages have no feedback section or posts…" 삭제. 위젯 설명("앱에서 열리는 패널")을 새 동작(가이드로 이동, 폼은 가이드 페이지)으로 고친다.
-- `try-dabble-main/CLAUDE.md`에 같은 규칙이 있으면 함께 삭제.
 
 ## 5. mixshelf 가이드·서비스 추가 — `try-dabble-main`
 
 mixshelf는 서비스 등록도 가이드도 없다. 둘 다 추가한다.
 
 - `src/content/services/mixshelf.ts`: 다른 서비스 파일과 같은 형식.
-  - `url: https://mixshelf.try-dabble.com`, `appLangs: ['ko','en','ja','zh']`, `category`는 다른 기록형 도구(storelog 등)와 같은 값.
+  - `url: https://mixshelf.try-dabble.com`, `appLangs: ['ko','en','ja','zh']`, `category: 'EntertainmentApplication'`(책·게임·영화 선반이므로 gift-stash와 같은 분류).
   - `ogImage`: `https://try-dabble.com/og/mixshelf-{ko|en|ja|zh}.png`.
   - `src/content/services/index.ts` 목록에 추가.
-- OG 이미지: `apps/mixshelf/public/og-image.png`, `og-image-en.png`, `og-image-ja.png`, `og-image-zh.png`를 `try-dabble-main/public/og/mixshelf-{lang}.png`로 복사.
+- OG 이미지: `apps/mixshelf/public/og-image-{ko,en,ja,zh}.png`를 `try-dabble-main/public/og/mixshelf-{lang}.png`로 복사.
 - `src/content/guides/mixshelf.ts`: 다른 가이드와 같은 구조(`title`/`description`/`keywords`/`sections`, 4개 언어).
   - 섹션: "이 앱이 하는 일", "쓰는 법", FAQ(`faq: true`).
   - 내용은 `apps/mixshelf/src/lib/i18n.ts`의 문구와 `README`/라우트 코드에서 실제 기능만 뽑아 쓴다(여러 유형의 항목을 한 선반에, 커스텀 태그, 필터, JSON 내보내기, 로그인 없음, 로컬 저장).
