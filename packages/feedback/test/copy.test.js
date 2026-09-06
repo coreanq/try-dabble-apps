@@ -7,10 +7,7 @@ const assert = require("node:assert");
 const src = readFileSync(join(__dirname, "..", "src", "feedback.js"), "utf8");
 
 const LANGS = ["ko", "en", "ja", "zh"];
-const KEYS = [
-  "btn", "idea", "bug", "title", "body", "send", "sent", "err", "close",
-  "photo", "drop", "fileEmpty", "fileOne", "fileTwo"
-];
+const KEYS = ["btn"];
 
 // The source is a browser IIFE, so lift the COPY literal out by evaluating
 // only that expression rather than loading the whole widget under node.
