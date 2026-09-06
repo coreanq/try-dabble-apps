@@ -89,7 +89,11 @@ for (const lang of Object.keys(EXPECT)) {
     assert.match(html, new RegExp(`og:locale" content="${exp.locale}"`));
     assert.match(html, new RegExp(`og:image" content="https://mixshelf\\.try-dabble\\.com/${exp.image}"`));
     assert.match(html, /data-app="mixshelf"/);
-    assert.match(html, /ca-pub-1343411537040925/);
+    assert.doesNotMatch(html, /adsbygoogle|ca-pub-1343411537040925/);
+    assert.match(html, new RegExp(`id="link-privacy"[^>]*href="https://try-dabble\\.com/${lang}/privacy"`));
+    assert.match(html, new RegExp(`id="link-terms"[^>]*href="https://try-dabble\\.com/${lang}/terms"`));
+    assert.match(html, new RegExp(`id="link-guide"[^>]*href="https://try-dabble\\.com/${lang}/guides/mixshelf"`));
+    assert.match(html, new RegExp(`id="link-hub"[^>]*href="https://try-dabble\\.com/${lang}"`));
     if (lang === "zh") {
       assert.doesNotMatch(html, /og-image-en\.png/);
     }

@@ -14,6 +14,7 @@ type Copy = {
   localOnly: string;
   privacy: string;
   terms: string;
+  guide: string;
   chips: [string, string, string, string, string, string, string, string];
 };
 
@@ -28,6 +29,7 @@ const COPY: Record<Lang, Copy> = {
     localOnly: '이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.',
     privacy: '개인정보',
     terms: '이용약관',
+    guide: '가이드',
     chips: [
       '로그인 없음',
       '구독/캡 없음',
@@ -49,6 +51,7 @@ const COPY: Record<Lang, Copy> = {
     localOnly: 'Your data stays on this device. Nothing is sent to our servers.',
     privacy: 'Privacy',
     terms: 'Terms',
+    guide: 'Guide',
     chips: [
       'No login',
       'No sub/cap',
@@ -70,6 +73,7 @@ const COPY: Record<Lang, Copy> = {
     localOnly: 'データはこの端末にだけ保存されます。サーバーには送りません。',
     privacy: 'プライバシー',
     terms: '利用規約',
+    guide: 'ガイド',
     chips: [
       'ログインなし',
       '定額・上限なし',
@@ -91,6 +95,7 @@ const COPY: Record<Lang, Copy> = {
     localOnly: '数据仅保存在此设备，不会上传到服务器。',
     privacy: '隐私政策',
     terms: '服务条款',
+    guide: '指南',
     chips: [
       '无需登录',
       '无订阅/上限',
@@ -218,14 +223,25 @@ export default {
         })
         .on('#link-privacy', {
           element(el) {
-            el.setAttribute('href', `https://try-dabble.com/privacy?lang=${lang}`);
+            el.setAttribute('href', `https://try-dabble.com/${lang}/privacy`);
             el.setInnerContent(copy.privacy);
           },
         })
         .on('#link-terms', {
           element(el) {
-            el.setAttribute('href', `https://try-dabble.com/terms?lang=${lang}`);
+            el.setAttribute('href', `https://try-dabble.com/${lang}/terms`);
             el.setInnerContent(copy.terms);
+          },
+        })
+        .on('#link-guide', {
+          element(el) {
+            el.setAttribute('href', `https://try-dabble.com/${lang}/guides/mixshelf`);
+            el.setInnerContent(copy.guide);
+          },
+        })
+        .on('#link-hub', {
+          element(el) {
+            el.setAttribute('href', `https://try-dabble.com/${lang}`);
           },
         });
 

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 
-import { AdSlot } from "@/components/ad-slot";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { ExportBar } from "@/components/export-bar";
@@ -259,7 +258,6 @@ function Home() {
       </section>
 
       <ExportBar t={t} onExport={handleExport} onImportFile={handleImportText} />
-      <AdSlot />
 
       <footer className="ms-footer">
         <a id="link-privacy" href={`https://try-dabble.com/${lang}/privacy`}>
