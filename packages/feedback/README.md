@@ -1,8 +1,9 @@
 # @try-dabble/feedback
 
 Source of truth for the shared feedback widget — the floating "가이드 & 의견 / Guide & Feedback"
-button that every try-dabble app injects. It opens the app's guide page on try-dabble.com in a new tab; the feedback form lives on that page, not in the widget. Shared infrastructure, not an app: it
-is the one thing under `packages/`, and apps consume it over HTTP, never by import.
+button that every try-dabble app injects, which opens the app's guide page on try-dabble.com in a new tab; the feedback form lives on that page, not in the widget.
+
+Shared infrastructure, not an app: it is the one thing under `packages/`, and apps consume it over HTTP, never by import.
 
 Built to a single self-contained IIFE and served from the try-dabble-main worker
 at <https://try-dabble.com/widget/feedback.js>.
@@ -33,7 +34,7 @@ src/feedback.js   single self-contained IIFE: copy, styles, host-page detection,
 
 ```
 npm install
-npm run build          # -> dist/feedback.js (esbuild, IIFE, es5, not minified)
+npm run build          # -> dist/feedback.js (plain copy of src/feedback.js; no bundler)
 npm run sync-main      # copies it into ../../../try-dabble-main/public/widget/
 ```
 

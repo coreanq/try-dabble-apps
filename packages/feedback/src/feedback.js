@@ -57,7 +57,8 @@
   btn.type = "button";
   btn.textContent = t.btn;
   btn.addEventListener("click", function () {
-    window.open(href, "_blank", "noopener");
+    var w = window.open(href, "_blank", "noopener");
+    if (!w) location.href = href;
   });
   function mount() {
     root.appendChild(btn);
