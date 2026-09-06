@@ -108,6 +108,7 @@ export type MsgKey =
   | "exportEmpty"
   | "privacy"
   | "terms"
+  | "guide"
   | "noTagsYet"
   | "filteredEmpty";
 
@@ -190,6 +191,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
     exportEmpty: "내보낼 작품이 없습니다.",
     privacy: "개인정보",
     terms: "이용약관",
+    guide: "가이드",
     noTagsYet: "아직 태그가 없습니다",
     filteredEmpty: "이 필터에 맞는 작품이 없습니다.",
   },
@@ -271,6 +273,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
     exportEmpty: "Nothing to export yet.",
     privacy: "Privacy",
     terms: "Terms",
+    guide: "Guide",
     noTagsYet: "No tags yet",
     filteredEmpty: "Nothing matches these filters.",
   },
@@ -352,6 +355,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
     exportEmpty: "書き出す作品がありません。",
     privacy: "プライバシー",
     terms: "利用規約",
+    guide: "ガイド",
     noTagsYet: "まだタグがありません",
     filteredEmpty: "この条件に合う作品はありません。",
   },
@@ -433,6 +437,7 @@ const I18N: Record<Lang, Record<MsgKey, string>> = {
     exportEmpty: "还没有可导出的作品。",
     privacy: "隐私",
     terms: "条款",
+    guide: "指南",
     noTagsYet: "还没有标签",
     filteredEmpty: "没有符合这些筛选的作品。",
   },

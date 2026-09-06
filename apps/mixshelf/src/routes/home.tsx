@@ -262,12 +262,20 @@ function Home() {
       <AdSlot />
 
       <footer className="ms-footer">
-        <a id="link-privacy" href={`https://try-dabble.com/privacy?lang=${lang}`}>
+        <a id="link-privacy" href={`https://try-dabble.com/${lang}/privacy`}>
           {t("privacy")}
         </a>
         <span aria-hidden="true"> · </span>
-        <a id="link-terms" href={`https://try-dabble.com/terms?lang=${lang}`}>
+        <a id="link-terms" href={`https://try-dabble.com/${lang}/terms`}>
           {t("terms")}
+        </a>
+        <span aria-hidden="true"> · </span>
+        <a id="link-guide" href={`https://try-dabble.com/${lang}/guides/mixshelf`}>
+          {t("guide")}
+        </a>
+        <span aria-hidden="true"> · </span>
+        <a id="link-hub" href={`https://try-dabble.com/${lang}`}>
+          try-dabble.com
         </a>
       </footer>
 
