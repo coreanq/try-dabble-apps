@@ -1,0 +1,70 @@
+{
+  "id": "sample-arena",
+  "name": "샘플 아레나",
+  "units": "m",
+  "stage": { "center": [0, 0, 0], "size": [20, 1.2, 12], "facing": [0, 0, 1] },
+  "sections": [
+    {
+      "id": "F1", "label": "플로어 F1",
+      "shape": { "type": "polygon", "points": [[-12, 8], [12, 8], [12, 20], [-12, 20]] },
+      "rows": 12, "rowDepth": 1.0, "riser": 0, "baseHeight": 0, "seatsPerRow": 24
+    },
+    {
+      "id": "F2", "label": "플로어 F2",
+      "shape": { "type": "polygon", "points": [[-12, 21], [12, 21], [12, 33], [-12, 33]] },
+      "rows": 12, "rowDepth": 1.0, "riser": 0, "baseHeight": 0, "seatsPerRow": 24
+    },
+    {
+      "id": "101", "label": "1층 101",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 36, "angleStart": -50, "angleEnd": -17 },
+      "rows": 18, "rowDepth": 0.9, "riser": 0.4, "baseHeight": 1.5, "seatsPerRow": 22
+    },
+    {
+      "id": "102", "label": "1층 102",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 36, "angleStart": -16, "angleEnd": 16 },
+      "rows": 18, "rowDepth": 0.9, "riser": 0.4, "baseHeight": 1.5, "seatsPerRow": 22
+    },
+    {
+      "id": "103", "label": "1층 103",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 36, "angleStart": 17, "angleEnd": 50 },
+      "rows": 18, "rowDepth": 0.9, "riser": 0.4, "baseHeight": 1.5, "seatsPerRow": 22
+    },
+    {
+      "id": "201", "label": "2층 201",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 54, "angleStart": -60, "angleEnd": -31 },
+      "rows": 14, "rowDepth": 0.85, "riser": 0.5, "baseHeight": 10, "seatsPerRow": 20
+    },
+    {
+      "id": "202", "label": "2층 202",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 54, "angleStart": -30, "angleEnd": -1 },
+      "rows": 14, "rowDepth": 0.85, "riser": 0.5, "baseHeight": 10, "seatsPerRow": 20
+    },
+    {
+      "id": "203", "label": "2층 203",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 54, "angleStart": 1, "angleEnd": 30 },
+      "rows": 14, "rowDepth": 0.85, "riser": 0.5, "baseHeight": 10, "seatsPerRow": 20
+    },
+    {
+      "id": "204", "label": "2층 204",
+      "shape": { "type": "arc", "center": [0, 0], "radiusStart": 54, "angleStart": 31, "angleEnd": 60 },
+      "rows": 14, "rowDepth": 0.85, "riser": 0.5, "baseHeight": 10, "seatsPerRow": 20
+    },
+    {
+      "id": "BOX-1", "label": "박스 1",
+      "shape": { "type": "explicit" },
+      "seats": [
+        { "row": "1", "seat": 1, "position": [-22, 1.0, 24] },
+        { "row": "1", "seat": 2, "position": [-21.2, 1.0, 24] },
+        { "row": "1", "seat": 3, "position": [-20.4, 1.0, 24] },
+        { "row": "1", "seat": 4, "position": [-19.6, 1.0, 24] }
+      ]
+    }
+  ],
+  "obstacles": [
+    { "type": "pillar", "position": [-23.1, 0, 26.6], "radius": 0.5, "height": 14 },
+    { "type": "railing", "from": [-26.75, 10, 46.33], "to": [-13.85, 10, 51.68], "height": 1.0 },
+    { "type": "railing", "from": [-13.85, 10, 51.68], "to": [0, 10, 53.5], "height": 1.0 },
+    { "type": "railing", "from": [0, 10, 53.5], "to": [13.85, 10, 51.68], "height": 1.0 },
+    { "type": "railing", "from": [13.85, 10, 51.68], "to": [26.75, 10, 46.33], "height": 1.0 }
+  ]
+}

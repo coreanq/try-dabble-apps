@@ -1,0 +1,38 @@
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; font-family: system-ui, -apple-system, sans-serif; color: #1c1c22; background: #fff; font-size: 14px; }
+#app { height: 100%; display: grid; grid-template-rows: 48px 1fr 280px; }
+
+.topbar { display: flex; align-items: center; gap: 12px; padding: 0 12px; border-bottom: 1px solid #e3e3e8; }
+.topbar h1 { font-size: 16px; margin: 0 8px 0 0; }
+.topbar label { display: flex; align-items: center; gap: 4px; }
+.topbar input:not([type=file]) { width: 140px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }
+.topbar .danger { margin-left: auto; }
+
+.body { display: grid; grid-template-columns: 320px 1fr; min-height: 0; }
+.tools { overflow-y: auto; border-right: 1px solid #e3e3e8; padding: 8px 12px; }
+.tools section { margin-bottom: 14px; }
+.tools h2 { font-size: 13px; margin: 8px 0 6px; color: #444; }
+.tools button { display: block; width: 100%; margin: 4px 0; padding: 6px 8px; border: 1px solid #ccc; background: #fafafc; border-radius: 4px; cursor: pointer; text-align: left; }
+.tools button.active { border-color: #7c4dff; background: #efe9ff; }
+.tools button.primary { background: #7c4dff; color: #fff; border-color: #7c4dff; }
+.tools button.danger { color: #c0392b; }
+.tools label { display: block; margin: 4px 0; }
+.tools input[type=number], .tools input[type=text], .tools input:not([type]) { width: 100%; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }
+.tools select { width: 100%; padding: 4px; }
+.status { color: #555; font-size: 12px; white-space: pre-line; }
+.error { color: #c0392b; font-size: 12px; white-space: pre-line; }
+.section-list { list-style: none; padding: 0; margin: 6px 0; }
+.section-list li { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
+.section-list li button { width: auto; margin: 0; padding: 2px 6px; font-size: 12px; }
+.section-form fieldset { border: 1px solid #ddd; padding: 6px; margin: 6px 0; }
+.section-form .actions { display: flex; gap: 6px; }
+.section-form .actions button { width: auto; }
+.form-error { color: #c0392b; font-size: 12px; }
+
+.work { position: relative; min-height: 0; }
+#image { width: 100%; height: 100%; display: block; cursor: crosshair; }
+.hint { position: absolute; left: 8px; top: 8px; margin: 0; padding: 6px 10px; background: rgba(255,255,255,0.92); border: 1px solid #ddd; border-radius: 6px; font-size: 13px; pointer-events: none; }
+
+.preview { position: relative; border-top: 1px solid #e3e3e8; background: #1b1b20; min-height: 0; }
+.preview canvas { width: 100%; height: 100%; display: block; user-select: none; }
