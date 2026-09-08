@@ -6,7 +6,9 @@ import frame as fr
 class FrameTest(unittest.TestCase):
     def test_stage_direction_maps_to_minus_z_and_center_to_plus_z(self):
         # 모델: 아레나 중심 (100, 50), 무대는 중심에서 각도 90°(=+X 방향) 40 m 지점
-        chairs = np.array([[100 + 30, 50 + 0, 1.0], [100 - 30, 50, 1.0], [100, 50 + 30, 1.0], [100, 50 - 30, 1.0]])
+        # 의자는 반지름 30 m 원 위 한 열(같은 높이)에 있되 한쪽(각도 0~120°)만 있어 평균은 중심에서 벗어난다
+        t = np.radians(np.arange(0, 121, 5))
+        chairs = np.column_stack([100 + 30 * np.cos(t), 50 + 30 * np.sin(t), np.full(t.size, 1.0)])
         f = fr.make_frame(chairs, stage_angle_deg=90, stage_radius_m=40, floor_z=0.0)
         self.assertAlmostEqual(f['center_model'][0], 100); self.assertAlmostEqual(f['center_model'][1], 50)
         sv = fr.apply_frame(f, np.array([[140.0, 50.0, 0.0], [100.0, 50.0, 2.0], [60.0, 50.0, 0.0]]))
@@ -16,6 +18,11 @@ class FrameTest(unittest.TestCase):
         # 무대를 보고 오른쪽(+X_sv)은 모델에서 어느 쪽인지: 각도 90°에서 시계 방향으로 90° 더 간 180°(-Y 방향)
         right = fr.apply_frame(f, np.array([[100.0, 50.0 - 30.0, 0.0]]))[0]
         self.assertGreater(right[0], 0)
+
+    def test_fit_circle_recovers_centre_and_radius(self):
+        t = np.radians(np.arange(0, 360, 10))
+        cx, cy, R = fr.fit_circle(np.column_stack([5 + 12 * np.cos(t), -3 + 12 * np.sin(t)]))
+        self.assertAlmostEqual(cx, 5.0, places=6); self.assertAlmostEqual(cy, -3.0, places=6); self.assertAlmostEqual(R, 12.0, places=6)
 
     def test_angle_deg_zero_faces_stage(self):
         pts = np.array([[0, 0, 80.0], [10, 0, 40.0], [-10, 0, 40.0]])

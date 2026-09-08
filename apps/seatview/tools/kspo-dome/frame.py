@@ -5,9 +5,32 @@
 import argparse, json, os
 import numpy as np
 
+def fit_circle(xy):
+    """Kasa 대수 원 피팅: (cx, cy, R). 점들이 한 원 위에 있을 때 최소제곱 해."""
+    xy = np.asarray(xy, dtype=np.float64)
+    A = np.column_stack([2 * xy[:, 0], 2 * xy[:, 1], np.ones(len(xy))])
+    b = (xy ** 2).sum(1)
+    sol = np.linalg.lstsq(A, b, rcond=None)[0]
+    cx, cy = sol[0], sol[1]
+    return float(cx), float(cy), float(np.sqrt(sol[2] + cx * cx + cy * cy))
+
+def arena_center(chairs_model):
+    """아레나 중심. 의자 평균은 구역이 빠진 쪽으로 끌려가므로(이 모델에서 8 m) 쓰지 않는다.
+    가장 많은 점이 있는 높이 띠(±0.1 m)의 의자 = 한 열 고리에 원을 맞춘다."""
+    P = np.asarray(chairs_model, dtype=np.float64)
+    z = P[:, 2]
+    edges = np.arange(z.min(), z.max() + 0.2, 0.2)
+    band = P                       # 모든 점이 한 띠 안에 있으면(높이 차 < 0.2 m) 그대로 쓴다
+    if edges.size >= 2:
+        hist, edges = np.histogram(z, bins=edges)
+        zc = edges[hist.argmax()] + 0.1
+        band = P[np.abs(z - zc) < 0.1]
+    cx, cy, _ = fit_circle(band[:, :2])
+    return cx, cy
+
 def make_frame(chairs_model, stage_angle_deg, stage_radius_m, floor_z=0.0):
-    c = np.asarray(chairs_model)[:, :2].mean(0)
-    return {'center_model': [float(c[0]), float(c[1])], 'stage_angle_deg': float(stage_angle_deg),
+    cx, cy = arena_center(chairs_model)
+    return {'center_model': [cx, cy], 'stage_angle_deg': float(stage_angle_deg),
             'stage_radius_m': float(stage_radius_m), 'floor_z': float(floor_z)}
 
 def _rot(frame):
