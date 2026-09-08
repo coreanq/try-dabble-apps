@@ -26,7 +26,7 @@
     <div class="card">
       <p>Fxpad is local-first. The exchange-rate snapshot you sync, your last amount, your From / To currencies and your text-size choice are stored only in this browser (<strong>localStorage</strong> keys <code>fxpad:rates:v1</code> and <code>fxpad:prefs:v1</code>). Language uses localStorage (<code>fxpad:lang</code>) and the shared <code>td_lang</code> cookie on try-dabble.com.</p>
       <p>Nothing you type is uploaded. There are no accounts, no sign-in, no cloud sync and no server-side copy of your conversions.</p>
-      <p><strong>Rates provider:</strong> When you tap “Refresh rates” (and once on open while online), the app requests <code>https://api.frankfurter.app/latest</code> directly from your browser. That request carries no amount, currency choice or identifier from the app; the provider sees only an ordinary HTTP request from your device. Everything after that happens offline from the saved snapshot.</p>
+      <p><strong>Rates provider:</strong> When you tap “Refresh rates” (and once on open while online), the app requests <code>https://api.frankfurter.dev/v1/latest</code> directly from your browser. That request carries no amount, currency choice or identifier from the app; the provider sees only an ordinary HTTP request from your device. Everything after that happens offline from the saved snapshot.</p>
       <p><strong>Advertising:</strong> This app has no ads. It loads no advertising scripts and sets no third-party advertising cookies. The only cookie is <code>td_lang</code>, which remembers your language across try-dabble.com apps.</p>
       <p>Clear site data in your browser settings to erase the snapshot and your preferences.</p>
       <p>Last updated: 2026-09-08</p>

@@ -11,7 +11,13 @@
  */
 
 export const RATES_KEY = "fxpad:rates:v1";
-export const RATES_URL = "https://api.frankfurter.app/latest";
+/** Primary host. `.app` 301s HTML to `.dev` — browsers/fetch often fail on that. */
+export const RATES_URL = "https://api.frankfurter.dev/v1/latest";
+
+/** Tried in order if the primary fails (network, non-JSON, bad shape). */
+export const RATES_URL_FALLBACKS: readonly string[] = [
+  "https://api.frankfurter.app/latest", // legacy host; only accepted if final body is JSON
+];
 
 export interface RatesSnapshot {
   base: string;
@@ -163,15 +169,24 @@ export class RatesFetchError extends Error {
   }
 }
 
-/** Pulls /latest. Throws RatesFetchError on any network or shape problem. */
-export async function fetchSnapshot(signal?: AbortSignal): Promise<RatesSnapshot> {
+function isJsonContentType(ct: string | null): boolean {
+  if (!ct) return false;
+  const base = ct.split(";")[0].trim().toLowerCase();
+  return base === "application/json" || base.endsWith("+json");
+}
+
+async function fetchSnapshotFrom(url: string, signal?: AbortSignal): Promise<RatesSnapshot> {
   let res: Response;
   try {
-    res = await fetch(RATES_URL, { signal, cache: "no-store" });
+    res = await fetch(url, { signal, cache: "no-store", redirect: "follow" });
   } catch (e) {
     throw new RatesFetchError(e instanceof Error ? e.message : "network");
   }
   if (!res.ok) throw new RatesFetchError(`http ${res.status}`);
+  const ct = res.headers.get("content-type");
+  if (!isJsonContentType(ct)) {
+    throw new RatesFetchError(`non-json content-type: ${ct ?? "missing"}`);
+  }
   let body: unknown;
   try {
     body = await res.json();
@@ -181,4 +196,19 @@ export async function fetchSnapshot(signal?: AbortSignal): Promise<RatesSnapshot
   const snap = snapshotFromApi(body);
   if (!snap) throw new RatesFetchError("bad shape");
   return snap;
+}
+
+/** Pulls /latest (primary, then fallbacks). Throws RatesFetchError on total failure. */
+export async function fetchSnapshot(signal?: AbortSignal): Promise<RatesSnapshot> {
+  const urls = [RATES_URL, ...RATES_URL_FALLBACKS.filter((u) => u !== RATES_URL)];
+  let last: RatesFetchError | null = null;
+  for (const url of urls) {
+    try {
+      return await fetchSnapshotFrom(url, signal);
+    } catch (e) {
+      last = e instanceof RatesFetchError ? e : new RatesFetchError(String(e));
+      if (signal?.aborted) throw last;
+    }
+  }
+  throw last ?? new RatesFetchError("fetch failed");
 }

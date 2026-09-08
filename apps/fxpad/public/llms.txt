@@ -24,7 +24,7 @@ not.
 
 ## Features
 
-- One tap "Refresh rates" pulls https://api.frankfurter.app/latest (no API key)
+- One tap "Refresh rates" pulls https://api.frankfurter.dev/v1/latest (no API key)
 - Rates persist in localStorage (fxpad:rates:v1) and convert fully offline
 - Online / Offline status, "using cached rates" note, last-updated time and rates date
 - Amount, From / To pickers with flags and searchable names, Swap button
