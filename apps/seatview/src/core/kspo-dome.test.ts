@@ -17,9 +17,27 @@ describe('kspo-dome', () => {
     const r = validateVenue(loadJson('../../public/venues/kspo-dome/venue.json'))
     expect(r.ok, r.ok ? '' : r.errors.join('\n')).toBe(true)
     if (!r.ok) return
-    expect(seatCount(r.venue)).toBe(14160) // tools/kspo-dome/fit-report.txt의 TOTAL
+    expect(seatCount(r.venue)).toBe(13776) // tools/kspo-dome/fit-report.txt의 TOTAL
     expect(r.venue.credit).toContain('공공누리')
     expect(r.venue.shell?.glb).toBe('/venues/kspo-dome/shell.glb')
+  })
+
+  it('플로어 좌석이 1층 좌석과 수평으로 1 m 이상 떨어져 있다', () => {
+    const r = validateVenue(loadJson('../../public/venues/kspo-dome/venue.json'))
+    if (!r.ok) throw new Error(r.errors.join('\n'))
+    const seats = allSeats(r.venue)
+    const floor = seats.filter((s) => s.sectionId.startsWith('FLOOR'))
+    const tier1 = seats.filter((s) => /^([1-9]|1[0-5])$/.test(s.sectionId))
+    expect(floor.length).toBeGreaterThan(0)
+    expect(tier1.length).toBeGreaterThan(0)
+    let worst = Infinity
+    for (const f of floor) {
+      for (const t of tier1) {
+        const d = Math.hypot(f.position[0] - t.position[0], f.position[2] - t.position[2])
+        if (d < worst) worst = d
+      }
+    }
+    expect(worst).toBeGreaterThanOrEqual(1.0)
   })
 
   it('모든 좌석이 아레나 안(무대 중심에서 120 m 이내)에 있고 높이가 -0.5 이상 40 m 미만이다', () => {
