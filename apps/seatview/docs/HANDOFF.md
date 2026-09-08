@@ -5,7 +5,7 @@
 ## 현재 상태
 
 - MVP 완성, 이 폴더(`apps/seatview`)가 배포용 원본. 로컬 사본 `D:\lsis\1git\test\seatview`는 같은 내용이며 더 이상 갱신하지 않아도 됨.
-- `npm run dev` → `/` 뷰어, `/admin/` 디지타이징 도구. `npm test` 108개, `npm run build`, `npm run deploy`(wrangler, seatview.try-dabble.com, 아직 배포 안 함).
+- `npm run dev` → `/` 뷰어, `/admin/` 디지타이징 도구. `npm test` 111개, `npm run build`, `npm run deploy`(wrangler, seatview.try-dabble.com, 아직 배포 안 함).
 - 데이터는 샘플 아레나(가상, 2,888석)와 실제 공연장 KSPO DOME(58구역, 13,776석, `shell.glb` 1.61 MB/181,120 삼각형, 2·3층 12구역 maxErr 1.0 m 초과). 공식 3D 모델 기반 파이프라인은 `tools/kspo-dome/`.
 - 구조: `src/core`(순수 계산, 테스트 대상) / `src/three`(렌더링) / `src/ui`(2D 좌석도) / `src/viewer` / `src/admin`. 좌표계: 미터, 원점 무대 중앙 바닥, Y 위, 관중석 +Z, arc 0° = +Z.
 
@@ -34,4 +34,4 @@
 
 - 핀치 줌 없음(현재 휠만), 15k석 30fps 실측 안 함, `/admin/` 무인증 공개(로컬 저장·다운로드만이라 위험 낮음), `disposeVenueGroup`이 glb 텍스처는 해제하지 않음, `venue-list`가 목록마다 venue.json을 전부 받음(공연장 많아지면 index.json에 좌석 수 넣기).
 - 스펙 §9 검증(관객 후기 사진 비교)은 실제 공연장 데이터가 있어야 가능.
-- KSPO DOME: 플로어 배치는 대표 구성 1개(FLOOR-B/C/D 3블록 1,776석)뿐, 실제 이벤트별 배치 반영 안 함. 슬라이드 스탠드 16~22구역은 무대 쪽이라 제외했고 5~11구역은 모델에 의자가 없어 이웃 구역을 본뜬 템플릿이다. 실사 사진 비교(스펙 §9)는 아직 안 했다. 2·3층 12구역(29·30·33·34·37·38·45~47·50~52)은 포탈·가로통로 때문에 maxErr가 1.0 m를 넘지만(구조적 원인, `tools/kspo-dome/fit-report.txt` 참고) 티켓 구역 번호를 지키려고 구역을 쪼개지 않았다. 48·49구역(explicit)은 2D 좌석도에서 AABB 사각형으로 그려진다.
+- KSPO DOME: 플로어 배치는 대표 구성 1개(FLOOR-B/C/D 3블록 1,776석)뿐, 실제 이벤트별 배치 반영 안 함. 슬라이드 스탠드 16~22구역은 무대 쪽이라 제외했고 5~11구역은 모델에 의자가 없어 이웃 구역을 본뜬 템플릿이다. 실사 사진 비교(스펙 §9)는 아직 안 했다. 2·3층 12구역(29·30·33·34·37·38·45~47·50~52)은 포탈·가로통로 때문에 maxErr가 1.0 m를 넘지만(구조적 원인, `tools/kspo-dome/fit-report.txt` 참고) 티켓 구역 번호를 지키려고 구역을 쪼개지 않았다. explicit 구역(48·49·Box·장애인석)은 2D 좌석도에서 열을 따라가는 띠로 그려진다(한 줄짜리 장애인석은 좌석선 양옆 0.5 m 띠).
