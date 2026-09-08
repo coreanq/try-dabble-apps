@@ -50,6 +50,51 @@ def tiny_dae(chair_at_x_inch: float) -> str:
  </library_effects>
 </COLLADA>'''
 
+def two_chairs_dae(tx2_inch: float, owned: bool) -> str:
+    """20x20 inch 의자 쿠션 박스 두 개(geometry 2개, 재질 yellow_chair). owned=True면 둘 다 같은
+    instance_* 조상 아래, False면 instance_* 조상 없이(owner=None) 나란히 놓는다. 두 번째 박스는
+    X로 tx2_inch만큼 옮겨져 있다."""
+    inner = f'''
+     <node id="NA"><matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+      <instance_geometry url="#ID_A"><bind_material><technique_common>
+       <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
+     </node>
+     <node id="NB"><matrix>1 0 0 {tx2_inch} 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+      <instance_geometry url="#ID_B"><bind_material><technique_common>
+       <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
+     </node>'''
+    wrapper_name = 'instance_1' if owned else 'group_0'
+    scene_body = f'<node id="N1" name="{wrapper_name}">{inner}\n    </node>'
+    return f'''<?xml version="1.0"?>
+<COLLADA xmlns="{NS}" version="1.4.1">
+ <asset><unit meter="0.0254" name="inch"/><up_axis>Z_UP</up_axis></asset>
+ <library_visual_scenes><visual_scene id="S">
+  <node name="SketchUp">
+   {scene_body}
+  </node>
+ </visual_scene></library_visual_scenes>
+ <library_geometries>
+  <geometry id="ID_A"><mesh>
+   <source id="PA"><float_array id="AA" count="12">0 0 0 20 0 0 20 20 0 0 20 0</float_array>
+    <technique_common><accessor count="4" source="#AA" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
+   <vertices id="VA"><input semantic="POSITION" source="#PA"/></vertices>
+   <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VA"/><p>0 1 2 0 2 3</p></triangles>
+  </mesh></geometry>
+  <geometry id="ID_B"><mesh>
+   <source id="PB"><float_array id="AB" count="12">0 0 0 20 0 0 20 20 0 0 20 0</float_array>
+    <technique_common><accessor count="4" source="#AB" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
+   <vertices id="VB"><input semantic="POSITION" source="#PB"/></vertices>
+   <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VB"/><p>0 1 2 0 2 3</p></triangles>
+  </mesh></geometry>
+ </library_geometries>
+ <library_materials>
+  <material id="M_CHAIR" name="yellow_chair__1"><instance_effect url="#E_CHAIR"/></material>
+ </library_materials>
+ <library_effects>
+  <effect id="E_CHAIR"><profile_COMMON><technique sid="COMMON"><lambert><diffuse><color>1 0.8 0 1</color></diffuse></lambert></technique></profile_COMMON></effect>
+ </library_effects>
+</COLLADA>'''
+
 class ExtractTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
@@ -100,6 +145,27 @@ class ExtractTest(unittest.TestCase):
         chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
         self.assertEqual(len(chairs), round(118 * 0.0254 / 0.55))   # 5
         self.assertTrue(all(abs(c[1] - 10 * 0.0254) < 1e-6 for c in chairs))
+
+    def test_two_chair_blocks_under_one_owner_merge_into_one_chair(self):
+        # 같은 instance_* 아래의 의자 쿠션 geometry 두 개는 owner 기준으로 이미 하나의 박스로 합쳐진다.
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=0.0, owned=True))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 1)
+
+    def test_overlapping_orphan_chair_boxes_merge_into_one_chair(self):
+        # owner(instance_* 조상)가 없는 의자 쿠션 박스 두 개가 겹치면 merge_boxes가 하나로 합친다.
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=5.0, owned=False))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 1)
+
+    def test_separated_orphan_chair_boxes_stay_as_two_chairs(self):
+        # owner가 없는 의자 쿠션 박스 두 개가 1 m 가량 떨어져 있으면 합쳐지지 않고 좌석 두 개로 남는다.
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=60.0, owned=False))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 2)
 
 if __name__ == '__main__':
     unittest.main()

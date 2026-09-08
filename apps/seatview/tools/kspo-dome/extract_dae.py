@@ -60,8 +60,12 @@ def run(dae_path, out_dir):
         if n_geom % 10000 == 0:
             print(f'  {n_geom} geometries, {time.time()-t0:.1f}s', flush=True)
 
+    print(f'orphan chair boxes: {len(orphan_chairs)}', flush=True)
+    merged_orphans = merge_boxes(orphan_chairs)
+    print(f'orphan chair boxes merged: {len(merged_orphans)}', flush=True)
+
     chairs = []
-    boxes = list(zip(chair_min.values(), chair_max.values())) + orphan_chairs
+    boxes = list(zip(chair_min.values(), chair_max.values())) + merged_orphans
     for lo, hi in boxes:
         chairs.extend(split_box(lo, hi))
     chairs.sort()
@@ -91,6 +95,25 @@ def run(dae_path, out_dir):
     with open(os.path.join(out_dir, 'materials.json'), 'w') as f:
         json.dump(safe_colors, f, ensure_ascii=False, indent=1)
     print(f'done in {time.time()-t0:.1f}s', flush=True)
+
+def merge_boxes(boxes, gap=0.1):
+    """owner가 없는 의자 바운딩박스들 중 겹치거나 각 축 간격이 gap(m) 이하인 것들을 하나로 합친다.
+    (같은 좌석의 쿠션이 서로 다른 geometry/instance 두 개로 나뉘어 owner 없이 들어오는 경우 중복 집계를 막는다.)
+    """
+    ordered = sorted(boxes, key=lambda b: b[0][0])
+    merged = []   # [lo, hi] 쌍의 리스트
+    for lo, hi in ordered:
+        clo, chi = lo, hi
+        rest = []
+        for mlo, mhi in merged:
+            axis_gap = np.maximum(clo, mlo) - np.minimum(chi, mhi)
+            if np.all(axis_gap <= gap):
+                clo, chi = np.minimum(clo, mlo), np.maximum(chi, mhi)   # 새 박스가 기존 두 클러스터를 다리처럼 이어줄 수도 있음
+            else:
+                rest.append((mlo, mhi))
+        rest.append((clo, chi))
+        merged = rest
+    return merged
 
 def split_box(lo, hi):
     """바운딩박스 하나를 좌석 중심 목록으로. 수평 최장변이 SEAT_PITCH보다 길면 등간격으로 나눈다."""
