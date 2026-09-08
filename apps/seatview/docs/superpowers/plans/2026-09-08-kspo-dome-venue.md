@@ -124,6 +124,8 @@ git commit -m "seatview: Add optional venue credit field and show it in the view
 
 ### Task 2: Draco 압축 glb 로더
 
+> **최종 리뷰 후 되돌림(2026-09-09, 커밋 05fdd27):** three.js의 DRACOLoader는 `import.meta.url`로 디코더를 찾고 Vite가 `dist/assets`에 함께 내보내므로 `public/draco/` 복사와 `setDecoderPath`, `src/core/assets.ts` 이동은 불필요했다. 현재 코드는 `GLTFLoader.setDRACOLoader(new DRACOLoader())`만 쓴다. 아래 단계는 기록용이다.
+
 **Files:**
 - Modify: `src/three/shell-loader.ts`
 - Create: `public/draco/draco_decoder.js`, `public/draco/draco_decoder.wasm`, `public/draco/draco_wasm_wrapper.js` (복사)
