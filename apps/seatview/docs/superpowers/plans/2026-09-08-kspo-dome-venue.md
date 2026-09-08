@@ -921,7 +921,7 @@ git commit -m "seatview: Chair-cloud analysis and model-to-SeatView frame for KS
 **Interfaces:**
 - Consumes: `frame.py`의 `load_chairs_with_materials`, `load_frame`, `apply_frame`, `angle_deg`; `analyze_chairs.clusters_1d`. `frame.json`의 `materials`.
 - Produces: `fit_sections.py`: `fit_arc(section_cfg, pts_sv, center_sv) -> (section_dict, report_dict)`, `place_arc(section_dict) -> (N,3)`(seat-engine의 arcPlacer를 그대로 옮긴 것), `template_section(cfg, base_section) -> section_dict`(모델에 의자가 없는 구역을 본뜨기), `explicit_section(cfg, pts, center)`, `run(work, sections_path, out_path)`.
-- 모델에 의자가 없는 구역(슬라이드석 5~11, 2·3층 일부)은 `"like": "<구역 id>"`로 같은 층의 피팅된 구역을 본뜬다: rows·rowDepth·riser·baseHeight·radiusStart·center를 복사하고 각도 범위는 자기 것, `seatsPerRow`는 `expected`를 열 수로 고르게 나눈다(나머지는 뒷열부터 1석씩).
+- 모델에 의자가 없는 구역(슬라이드석 5~11, 2·3층 일부)은 `"like": "<구역 id>"`로 같은 층의 피팅된 구역을 본뜬다: rows·rowDepth·riser·baseHeight·radiusStart·center를 복사하고 각도 범위는 자기 것, `seatsPerRow`는 base의 열별 좌석 비율을 `expected`에 맞춰 늘려 쓴다(고르게 나누면 base의 부채꼴이 사라지므로 최종 구현에서 바꿨다. 내림 후 나머지는 소수부가 큰 열부터 1석씩).
 - `sections.json` 형식:
 
 ```json
@@ -1038,7 +1038,7 @@ def select(pts_sv, mats, center, cfg, tiers):
     return pts_sv[m], r[m], ang[m]
 
 def template_section(cfg, base):
-    """의자가 없는 구역: base(피팅된 구역)의 열 구조를 복사하고 expected를 열에 고르게 나눈다. 나머지는 뒷열부터 1석씩."""
+    """의자가 없는 구역: base(피팅된 구역)의 열 구조를 복사하고 base의 열별 좌석 비율대로 expected를 나눈다(최종 구현. 계획 당시의 균등 분배는 base의 부채꼴을 지웠다)."""
     rows = base['rows']; exp = int(cfg['expected'])
     per = [exp // rows] * rows
     for i in range(exp - sum(per)):

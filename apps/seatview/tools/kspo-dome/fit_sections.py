@@ -17,11 +17,17 @@ def select(pts_sv, mats, center, cfg, tiers):
     return pts_sv[m], r[m], ang[m]
 
 def template_section(cfg, base):
-    """의자가 없는 구역: base(피팅된 구역)의 열 구조를 복사하고 expected를 열에 고르게 나눈다. 나머지는 뒷열부터 1석씩."""
+    """의자가 없는 구역: base(피팅된 구역)의 열 구조를 복사하고 base의 열별 좌석 비율대로 expected를 나눈다.
+    열 수로 고르게 나누면 앞뒤 열이 같아져 base의 부채꼴(뒤로 갈수록 넓어짐)이 사라진다.
+    내림한 뒤 나머지는 소수부가 큰 열부터(같으면 뒷열부터) 1석씩 준다."""
     rows = base['rows']; exp = int(cfg['expected'])
-    per = [exp // rows] * rows
-    for i in range(exp - sum(per)):
-        per[rows - 1 - i] += 1
+    spr = base['seatsPerRow']
+    prof = list(spr) if isinstance(spr, list) else [spr] * rows
+    exact = [v * exp / sum(prof) for v in prof]
+    per = [int(v) for v in exact]
+    order = sorted(range(rows), key=lambda i: (exact[i] - per[i], i), reverse=True)
+    for i in order[:exp - sum(per)]:
+        per[i] += 1
     return {**base, 'id': cfg['id'], 'label': cfg['label'], 'seatsPerRow': per if len(set(per)) > 1 else per[0],
             'shape': {**base['shape'], 'angleStart': cfg['angleStart'], 'angleEnd': cfg['angleEnd']}}
 

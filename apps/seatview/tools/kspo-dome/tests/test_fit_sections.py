@@ -44,7 +44,7 @@ class FitTest(unittest.TestCase):
         sec = fs.template_section({'id': '5', 'label': '1층 5구역', 'angleStart': -49.0, 'angleEnd': -39.0, 'expected': 90}, base)
         self.assertEqual(sec['id'], '5')
         self.assertEqual(sec['rows'], 4)
-        self.assertEqual(sec['seatsPerRow'], [22, 22, 23, 23])       # 90 = 22*4 + 2, 나머지는 뒷열부터
+        self.assertEqual(sec['seatsPerRow'], [21, 22, 23, 24])       # base 비율 × 90/86, 나머지는 소수부 큰 열부터
         self.assertEqual(sec['shape']['angleStart'], -49.0)
         self.assertEqual(sec['shape']['radiusStart'], 30.0)
         self.assertEqual(base['shape']['angleStart'], -60.0)          # 원본은 그대로
