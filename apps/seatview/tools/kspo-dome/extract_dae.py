@@ -22,8 +22,8 @@ def run(dae_path, out_dir):
     obj_faces = defaultdict(list)     # name -> list of (M,3) index arrays (0-based, 버퍼 내 상대)
     obj_count = defaultdict(int)
     # 의자: owner(컴포넌트 인스턴스)별 바운딩박스
-    chair_min, chair_max = {}, {}
-    orphan_chairs = []                # owner가 없는 의자 geometry는 자체 bbox 사용
+    chair_min, chair_max, chair_mat = {}, {}, {}   # chair_mat: owner -> 재질 이름(진단용)
+    orphan_chairs = []                # owner가 없는 의자 geometry는 자체 bbox 사용: (재질 이름, lo, hi)
 
     n_geom = 0
     for geom in dc.iter_geometries(dae_path):
@@ -44,12 +44,13 @@ def run(dae_path, out_dir):
                     lo, hi = pts.min(0), pts.max(0)
                     key = inst.owner
                     if key is None:
-                        orphan_chairs.append((lo, hi))
+                        orphan_chairs.append((name, lo, hi))
                     elif key in chair_min:
                         chair_min[key] = np.minimum(chair_min[key], lo)
                         chair_max[key] = np.maximum(chair_max[key], hi)
                     else:
                         chair_min[key], chair_max[key] = lo, hi
+                        chair_mat[key] = name
                 else:
                     used = np.unique(idx)
                     remap = np.full(geom.positions.shape[0], -1, dtype=np.int64)
@@ -60,18 +61,50 @@ def run(dae_path, out_dir):
         if n_geom % 10000 == 0:
             print(f'  {n_geom} geometries, {time.time()-t0:.1f}s', flush=True)
 
-    boxes = list(zip(chair_min.values(), chair_max.values())) + orphan_chairs
+    mat_boxes = defaultdict(list)   # 재질 이름 -> [(lo, hi), ...] (병합 전, 진단용)
+    for key in chair_min:
+        mat_boxes[chair_mat[key]].append((chair_min[key], chair_max[key]))
+    for name, lo, hi in orphan_chairs:
+        mat_boxes[name].append((lo, hi))
+    print('chair material breakdown (before merge):', flush=True)
+    for name in sorted(mat_boxes):
+        blist = mat_boxes[name]
+        hext = np.array([max(hi[0] - lo[0], hi[1] - lo[1]) for lo, hi in blist])
+        height = np.array([hi[2] - lo[2] for lo, hi in blist])
+        print(f'  {name}: {len(blist)} boxes, median horiz extent {np.median(hext):.3f} m, '
+              f'median height {np.median(height):.3f} m', flush=True)
+
+    boxes = list(zip(chair_min.values(), chair_max.values())) + [(lo, hi) for _, lo, hi in orphan_chairs]
     print(f'chair boxes before merge: {len(boxes)}', flush=True)
     merged_boxes = merge_boxes(boxes)
     print(f'chair boxes after merge: {len(merged_boxes)}', flush=True)
 
-    chairs = []
+    kept_boxes, dropped = [], 0
     for lo, hi in merged_boxes:
+        ext = hi - lo
+        if max(ext[0], ext[1]) < 0.3:
+            dropped += 1
+        else:
+            kept_boxes.append((lo, hi))
+    print(f'chair boxes dropped (armrest/bracket, horizontal extent < 0.3m): {dropped}', flush=True)
+
+    chairs = []
+    for lo, hi in kept_boxes:
         chairs.extend(split_box(lo, hi))
     chairs.sort()
     with open(os.path.join(out_dir, 'chairs.json'), 'w') as f:
         json.dump({'units': 'm', 'frame': 'model', 'chairs': [[round(float(v), 4) for v in c] for c in chairs]}, f)
-    print(f'chairs: {len(chairs)} (from {len(merged_boxes)} chair boxes)', flush=True)
+    print(f'chairs: {len(chairs)} (from {len(kept_boxes)} chair boxes)', flush=True)
+
+    if chairs:
+        nn = nearest_neighbor_distances(np.array(chairs))
+        edges = (0, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 1.0)
+        counts = nn_histogram(nn, edges)
+        print('nearest-neighbour distance histogram (final chairs):', flush=True)
+        bounds = list(edges) + [float('inf')]
+        for i, c in enumerate(counts):
+            hi_label = bounds[i + 1] if bounds[i + 1] != float('inf') else 'inf'
+            print(f'  [{bounds[i]}, {hi_label}): {c}', flush=True)
 
     with open(os.path.join(out_dir, 'shell.obj'), 'w') as f:
         f.write('# KSPO DOME shell, metres, model frame (Z-up)\n')
@@ -96,12 +129,14 @@ def run(dae_path, out_dir):
         json.dump(safe_colors, f, ensure_ascii=False, indent=1)
     print(f'done in {time.time()-t0:.1f}s', flush=True)
 
-def merge_boxes(boxes, max_center_dist=0.2):
-    """의자 바운딩박스들 중 중심이 max_center_dist(m) 이내인 것들을 하나(합집합)로 합친다.
-    같은 물리 좌석이 서로 다른 instance_* owner(또는 owner 없음)로 나뉘어 별도 박스로 잡히는
-    경우를 병합한다. 실제 인접 좌석은 중심 간격이 ~0.45 m 이상이라 오탐하지 않는다.
-    중심 x로 정렬한 뒤 한 번 훑으며, x가 max_center_dist만큼 뒤처진 클러스터는(정렬 순서상
-    이후 어떤 박스와도 다시 가까워질 수 없으므로) 확정 짓고 활성 목록에서 뺀다.
+def merge_boxes(boxes, max_xy_dist=0.2, max_z_dist=0.6):
+    """의자 바운딩박스들 중 중심의 수평 거리(xy)가 max_xy_dist(m) 이내이고 높이 차(z)가
+    max_z_dist(m) 이내인 것들을 하나(합집합)로 합친다. 같은 물리 좌석이 서로 다른 instance_*
+    owner(또는 owner 없음)로 나뉘어 별도 박스로 잡히는 경우(등받이가 다른 owner 아래 쿠션
+    바로 위에 있는 경우 포함)를 병합한다. 실제 인접 좌석은 중심 수평 간격이 ~0.45 m 이상이라
+    오탐하지 않는다.
+    중심 x로 정렬한 뒤 한 번 훑으며, x가 max_xy_dist만큼 뒤처진 클러스터는(정렬 순서상 이후
+    어떤 박스와도 다시 가까워질 수 없으므로) 확정 짓고 활성 목록에서 뺀다.
     """
     def center(lo, hi):
         return (lo + hi) / 2.0
@@ -112,9 +147,9 @@ def merge_boxes(boxes, max_center_dist=0.2):
         clo, chi, cc = lo, hi, center(lo, hi)
         kept = []
         for ac, alo, ahi in active:
-            if cc[0] - ac[0] > max_center_dist:
+            if cc[0] - ac[0] > max_xy_dist:
                 done.append((alo, ahi))
-            elif np.linalg.norm(cc - ac) <= max_center_dist:
+            elif np.linalg.norm(cc[:2] - ac[:2]) <= max_xy_dist and abs(cc[2] - ac[2]) <= max_z_dist:
                 clo, chi = np.minimum(clo, alo), np.maximum(chi, ahi)
                 cc = center(clo, chi)   # 병합된 박스의 중심은 합집합에서 다시 계산
             else:
@@ -123,6 +158,33 @@ def merge_boxes(boxes, max_center_dist=0.2):
         active.append((cc, clo, chi))
     done.extend((lo, hi) for _, lo, hi in active)
     return done
+
+def nearest_neighbor_distances(points, cell=0.5):
+    """각 점에서 가장 가까운 다른 점까지의 3D 거리(그리드 버킷 방식의 근사치, 진단용)."""
+    keys = np.floor(points / cell).astype(np.int64)
+    grid = defaultdict(list)
+    for i, k in enumerate(map(tuple, keys)):
+        grid[k].append(i)
+    dists = np.full(len(points), np.inf)
+    for i, (kx, ky, kz) in enumerate(keys):
+        best = np.inf
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    for j in grid.get((kx + dx, ky + dy, kz + dz), ()):
+                        if j == i:
+                            continue
+                        d = float(np.linalg.norm(points[i] - points[j]))
+                        if d < best:
+                            best = d
+        dists[i] = best
+    return dists
+
+def nn_histogram(dists, edges):
+    """dists를 edges(오름차순)로 정의된 구간([e0,e1),[e1,e2),...,[e_last,inf))에 나눠 센다."""
+    bounds = np.array(list(edges) + [np.inf])
+    idx = np.clip(np.searchsorted(bounds, dists, side='right') - 1, 0, len(bounds) - 2)
+    return np.bincount(idx, minlength=len(bounds) - 1).tolist()
 
 def split_box(lo, hi):
     """바운딩박스 하나를 좌석 중심 목록으로. 수평 최장변이 SEAT_PITCH보다 길면 등간격으로 나눈다."""

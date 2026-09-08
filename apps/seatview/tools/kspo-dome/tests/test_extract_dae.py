@@ -50,24 +50,24 @@ def tiny_dae(chair_at_x_inch: float) -> str:
  </library_effects>
 </COLLADA>'''
 
-def two_chairs_dae(tx2_inch: float, owner_mode: str) -> str:
-    """20x20 inch 의자 쿠션 박스 두 개(geometry 2개, 재질 yellow_chair). owner_mode:
+def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size_inch: float = 20.0) -> str:
+    """size_inch x size_inch 의자 쿠션/부품 박스 두 개(geometry 2개, 재질 yellow_chair). owner_mode:
     'shared'    둘 다 같은 instance_* 조상 아래(owner가 같음)
     'none'      instance_* 조상 없음(owner=None, 오르판)
     'different' 각각 다른 instance_* 조상 아래(owner가 서로 다름)
-    두 번째 박스는 X로 tx2_inch만큼 옮겨져 있다."""
-    def node(node_id, geom_id, tx, name=None):
+    두 번째 박스는 X로 tx2_inch, Z로 tz2_inch만큼 옮겨져 있다."""
+    def node(node_id, geom_id, tx, tz=0.0, name=None):
         name_attr = f' name="{name}"' if name else ''
         return f'''
-     <node id="{node_id}"{name_attr}><matrix>1 0 0 {tx} 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+     <node id="{node_id}"{name_attr}><matrix>1 0 0 {tx} 0 1 0 0 0 0 1 {tz} 0 0 0 1</matrix>
       <instance_geometry url="#{geom_id}"><bind_material><technique_common>
        <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
      </node>'''
     if owner_mode == 'different':
-        inner = node('NA', 'ID_A', 0.0, name='instance_1') + node('NB', 'ID_B', tx2_inch, name='instance_2')
+        inner = node('NA', 'ID_A', 0.0, name='instance_1') + node('NB', 'ID_B', tx2_inch, tz2_inch, name='instance_2')
         wrapper_name = 'group_0'
     else:
-        inner = node('NA', 'ID_A', 0.0) + node('NB', 'ID_B', tx2_inch)
+        inner = node('NA', 'ID_A', 0.0) + node('NB', 'ID_B', tx2_inch, tz2_inch)
         wrapper_name = 'instance_1' if owner_mode == 'shared' else 'group_0'
     scene_body = f'<node id="N1" name="{wrapper_name}">{inner}\n    </node>'
     return f'''<?xml version="1.0"?>
@@ -80,16 +80,47 @@ def two_chairs_dae(tx2_inch: float, owner_mode: str) -> str:
  </visual_scene></library_visual_scenes>
  <library_geometries>
   <geometry id="ID_A"><mesh>
-   <source id="PA"><float_array id="AA" count="12">0 0 0 20 0 0 20 20 0 0 20 0</float_array>
+   <source id="PA"><float_array id="AA" count="12">0 0 0 {size_inch} 0 0 {size_inch} {size_inch} 0 0 {size_inch} 0</float_array>
     <technique_common><accessor count="4" source="#AA" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
    <vertices id="VA"><input semantic="POSITION" source="#PA"/></vertices>
    <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VA"/><p>0 1 2 0 2 3</p></triangles>
   </mesh></geometry>
   <geometry id="ID_B"><mesh>
-   <source id="PB"><float_array id="AB" count="12">0 0 0 20 0 0 20 20 0 0 20 0</float_array>
+   <source id="PB"><float_array id="AB" count="12">0 0 0 {size_inch} 0 0 {size_inch} {size_inch} 0 0 {size_inch} 0</float_array>
     <technique_common><accessor count="4" source="#AB" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
    <vertices id="VB"><input semantic="POSITION" source="#PB"/></vertices>
    <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VB"/><p>0 1 2 0 2 3</p></triangles>
+  </mesh></geometry>
+ </library_geometries>
+ <library_materials>
+  <material id="M_CHAIR" name="yellow_chair__1"><instance_effect url="#E_CHAIR"/></material>
+ </library_materials>
+ <library_effects>
+  <effect id="E_CHAIR"><profile_COMMON><technique sid="COMMON"><lambert><diffuse><color>1 0.8 0 1</color></diffuse></lambert></technique></profile_COMMON></effect>
+ </library_effects>
+</COLLADA>'''
+
+def single_chair_dae(size_inch: float) -> str:
+    """size_inch x size_inch 의자 재질 박스 하나(geometry 1개, owner 없음)."""
+    return f'''<?xml version="1.0"?>
+<COLLADA xmlns="{NS}" version="1.4.1">
+ <asset><unit meter="0.0254" name="inch"/><up_axis>Z_UP</up_axis></asset>
+ <library_visual_scenes><visual_scene id="S">
+  <node name="SketchUp">
+   <node id="N1" name="group_0">
+    <node id="NA"><matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+     <instance_geometry url="#ID_A"><bind_material><technique_common>
+      <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
+    </node>
+   </node>
+  </node>
+ </visual_scene></library_visual_scenes>
+ <library_geometries>
+  <geometry id="ID_A"><mesh>
+   <source id="PA"><float_array id="AA" count="12">0 0 0 {size_inch} 0 0 {size_inch} {size_inch} 0 0 {size_inch} 0</float_array>
+    <technique_common><accessor count="4" source="#AA" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
+   <vertices id="VA"><input semantic="POSITION" source="#PA"/></vertices>
+   <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VA"/><p>0 1 2 0 2 3</p></triangles>
   </mesh></geometry>
  </library_geometries>
  <library_materials>
@@ -188,6 +219,37 @@ class ExtractTest(unittest.TestCase):
         # 인접 좌석 간격 ~0.45 m 이상과 같은 자릿수) 합쳐지지 않고 좌석 두 개로 남는다.
         tx2_inch = 0.5 / 0.0254
         with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=tx2_inch, owner_mode='different'))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 2)
+
+    def test_lone_small_chair_box_is_dropped_as_armrest(self):
+        # 가로/세로 0.1 m짜리 의자 재질 박스 하나는 팔걸이/브래킷 크기(< 0.3 m)로 간주되어
+        # 걸러진다 -- 좌석 0개.
+        with open(self.dae, 'w') as f: f.write(single_chair_dae(size_inch=0.1 / 0.0254))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 0)
+
+    def test_cushion_and_backrest_under_different_owners_merge_into_one_chair(self):
+        # 쿠션(0.4 m)과 그 바로 위 0.3 m 높이의 등받이(0.4 m, 같은 xy)가 서로 다른 instance_*
+        # owner 아래에 있어도 xy+z 병합 규칙(수평 0.2 m 이내, 높이차 0.6 m 이내)으로 좌석 하나로
+        # 합쳐진다.
+        size_inch = 0.4 / 0.0254
+        tz2_inch = 0.3 / 0.0254
+        with open(self.dae, 'w') as f:
+            f.write(two_chairs_dae(tx2_inch=0.0, owner_mode='different', tz2_inch=tz2_inch, size_inch=size_inch))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 1)
+
+    def test_two_small_cushions_half_meter_apart_stay_as_two_chairs(self):
+        # 0.4 m짜리 쿠션 두 개가 중심 0.5 m 떨어져 있으면(수평 병합 기준 0.2 m 초과) 여전히
+        # 좌석 두 개로 남는다 -- 팔걸이 필터(< 0.3 m)에도 걸리지 않는다.
+        size_inch = 0.4 / 0.0254
+        tx2_inch = 0.5 / 0.0254
+        with open(self.dae, 'w') as f:
+            f.write(two_chairs_dae(tx2_inch=tx2_inch, owner_mode='different', size_inch=size_inch))
         extract_dae.run(self.dae, self.dir)
         chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
         self.assertEqual(len(chairs), 2)
