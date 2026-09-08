@@ -7,6 +7,7 @@ import numpy as np
 import dae_common as dc
 
 SEAT_PITCH = 0.55   # 한 geometry가 이보다 넓으면 여러 좌석으로 나눈다(m)
+PART_MATERIALS = {'chair_1'}   # 이 모델에서 팔걸이·레일·브래킷 부품에만 쓰이는 재질(좌석이 아니다)
 
 def run(dae_path, out_dir):
     t0 = time.time()
@@ -139,14 +140,24 @@ def run(dae_path, out_dir):
         json.dump(safe_colors, f, ensure_ascii=False, indent=1)
     print(f'done in {time.time()-t0:.1f}s', flush=True)
 
+def beats(name_a, ext_a, name_b, ext_b):
+    """병합된 박스의 재질로 a가 b보다 적합한가. 좌석 재질은 PART_MATERIALS(팔걸이·레일·
+    브래킷)를 항상 이긴다 -- 이 모델에는 쿠션보다 넓은 부품이 있다(장애인석 프레임 0.47 m,
+    좌석열 레일 4.5 m). 같은 부류끼리는 수평 크기가 큰 쪽이 이긴다."""
+    a_part, b_part = name_a in PART_MATERIALS, name_b in PART_MATERIALS
+    if a_part != b_part:
+        return b_part
+    return ext_a > ext_b
+
 def merge_boxes(boxes, max_xy_dist=0.2, max_z_dist=0.6):
     """의자 바운딩박스들 중 중심의 수평 거리(xy)가 max_xy_dist(m) 이내이고 높이 차(z)가
     max_z_dist(m) 이내인 것들을 하나(합집합)로 합친다. 같은 물리 좌석이 서로 다른 instance_*
     owner(또는 owner 없음)로 나뉘어 별도 박스로 잡히는 경우(등받이가 다른 owner 아래 쿠션
     바로 위에 있는 경우 포함)를 병합한다. 실제 인접 좌석은 중심 수평 간격이 ~0.45 m 이상이라
     오탐하지 않는다.
-    입력·출력 모두 (lo, hi, 재질 이름) 삼중항이다. 병합된 박스는 수평 크기가 가장 큰 부품의
-    재질을 물려받는다(쿠션이 브래킷을 이긴다).
+    입력·출력 모두 (lo, hi, 재질 이름) 삼중항이다. 병합된 박스의 재질은 `beats`가 고른다:
+    좌석 재질이 PART_MATERIALS(팔걸이·레일·브래킷)를 항상 이기고, 같은 부류끼리는 수평
+    크기가 큰 쪽이 이긴다(쿠션이 브래킷을 이긴다).
     중심 x로 정렬한 뒤 한 번 훑으며, x가 max_xy_dist만큼 뒤처진 클러스터는(정렬 순서상 이후
     어떤 박스와도 다시 가까워질 수 없으므로) 확정 짓고 활성 목록에서 뺀다.
     """
@@ -165,7 +176,7 @@ def merge_boxes(boxes, max_xy_dist=0.2, max_z_dist=0.6):
             if cc[0] - ac[0] > max_xy_dist:
                 done.append((alo, ahi, aname))
             elif np.linalg.norm(cc[:2] - ac[:2]) <= max_xy_dist and abs(cc[2] - ac[2]) <= max_z_dist:
-                if aext > cext:
+                if beats(aname, aext, cname, cext):
                     cname, cext = aname, aext
                 clo, chi = np.minimum(clo, alo), np.maximum(chi, ahi)
                 cc = center(clo, chi)   # 병합된 박스의 중심은 합집합에서 다시 계산

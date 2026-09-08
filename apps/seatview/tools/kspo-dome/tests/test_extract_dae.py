@@ -288,5 +288,38 @@ class ExtractTest(unittest.TestCase):
         self.assertEqual(len(chairs['chairs']), 1)
         self.assertEqual(chairs['materials'], ['chair_orange'])
 
+    def test_seat_material_beats_a_wider_armrest_part(self):
+        # 0.4 m 장애인석 쿠션(yellow_chair__3)이 같은 xy 중심의 더 넓은 0.47 m chair_1
+        # 프레임과 합쳐져도, 좌석 재질이 부품 재질(PART_MATERIALS)을 이겨서 좌석 재질을
+        # 보고한다 -- 실물 파일의 장애인석 84석이 이 경우다.
+        size_inch = 0.4 / 0.0254
+        size2_inch = 0.47 / 0.0254
+        offset_inch = -0.035 / 0.0254      # 넓은 박스를 작은 박스 중심에 맞춘다
+        with open(self.dae, 'w') as f:
+            f.write(two_chairs_dae(tx2_inch=offset_inch, owner_mode='different', size_inch=size_inch,
+                                   ty2_inch=offset_inch, size2_inch=size2_inch,
+                                   mat_a='yellow_chair__3', mat_b='chair_1'))
+        extract_dae.run(self.dae, self.dir)
+        with open(os.path.join(self.dir, 'chairs.json')) as f:
+            chairs = json.load(f)
+        self.assertEqual(len(chairs['chairs']), 1)
+        self.assertEqual(chairs['materials'], ['yellow_chair__3'])
+
+    def test_wider_part_still_wins_between_two_seat_materials(self):
+        # 부품/좌석 부류가 같으면(둘 다 좌석 재질) 기존 규칙대로 수평 크기가 큰 쪽이 이긴다:
+        # 0.4 m chair_orange 쿠션 + 같은 중심의 0.1 m yellow_chair__1 조각 -> chair_orange.
+        size_inch = 0.4 / 0.0254
+        size2_inch = 0.1 / 0.0254
+        offset_inch = 0.15 / 0.0254
+        with open(self.dae, 'w') as f:
+            f.write(two_chairs_dae(tx2_inch=offset_inch, owner_mode='different', size_inch=size_inch,
+                                   ty2_inch=offset_inch, size2_inch=size2_inch,
+                                   mat_a='chair_orange', mat_b='yellow_chair__1'))
+        extract_dae.run(self.dae, self.dir)
+        with open(os.path.join(self.dir, 'chairs.json')) as f:
+            chairs = json.load(f)
+        self.assertEqual(len(chairs['chairs']), 1)
+        self.assertEqual(chairs['materials'], ['chair_orange'])
+
 if __name__ == '__main__':
     unittest.main()
