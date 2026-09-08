@@ -17,6 +17,7 @@ Blender 5.2에는 Collada 임포터가 없어 DAE를 직접 파싱한다. 모든
    (`$BPY analyze_chairs.py work/ --frame`로 확인. 값의 근거는 아래 "결정값")
 5. `$BPY fit_sections.py work/ sections.json ../../public/venues/kspo-dome/venue.json` → venue.json + `work/fit-report.txt`
 6. `$BLENDER -b --python build_shell.py -- work/ ../../public/venues/kspo-dome/shell.glb`
+   결과: 1.61 MB, 181,120 삼각형 (Draco 압축, 디코더는 `/draco/`에서 서빙).
 7. `$BPY -m unittest discover -s tests -v`
 
 ## 결정값 (frame.json)

@@ -16,6 +16,7 @@
 2. `/admin/`에서 이미지를 올리고 순서대로 입력한다: 스케일(실제 거리를 아는 두 점) → 원점(무대 중앙) → 관중석 방향 → 무대 모서리 → 구역(다각형은 무대에 가까운 변의 두 점을 먼저 클릭, 호는 숫자 입력) → 방해물. 다각형 구역의 좌석은 첫 두 점(앞변) 기준으로 열 수 × 열 간격만큼 뒤로 배치되므로, 그린 다각형의 깊이를 그 값에 맞춘다. 층별 이미지가 다르면 새 이미지에서 스케일·원점을 다시 잡는다. 박스석 같은 explicit 구역은 JSON에서 직접 작성한다. 하단 3D 미리보기에서 "시야 보기"로 즉시 확인한다. 작업 중 상태는 브라우저 localStorage에 자동 저장된다.
 3. "venue.json 다운로드" → `public/venues/<id>/venue.json`에 두고 `public/venues/index.json`에 `{ "id": "<id>", "name": "..." }`을 추가한다.
 4. (선택) Blender로 만든 외형 glb를 `public/venues/<id>/shell.glb`에 두고 venue.json에 `"shell": { "glb": "/venues/<id>/shell.glb" }`를 추가한다. glb 원점은 무대 중앙 바닥, Y 위, +Z가 관중석 방향.
+5. 공식 3D 모델이 있으면 좌석배치도 대신 모델에서 만든다. 예시는 `tools/kspo-dome/`(KSPO DOME): DAE를 파싱해 의자 점군과 외형 OBJ를 뽑고, 점군을 구역 arc 파라미터로 피팅해 `venue.json`을, 외형은 Blender 헤드리스로 Draco glb를 만든다. 출처 표시가 필요한 데이터는 `venue.json`의 `credit`에 적으면 뷰어 하단에 표시된다.
 
 ## 데이터 모델
 
