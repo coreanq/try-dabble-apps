@@ -2,7 +2,7 @@
 사용: $BPY extract_dae.py work/temp_export.dae work/
 """
 import json, os, sys, time
-from collections import defaultdict
+from collections import Counter, defaultdict
 import numpy as np
 import dae_common as dc
 
@@ -22,7 +22,7 @@ def run(dae_path, out_dir):
     obj_faces = defaultdict(list)     # name -> list of (M,3) index arrays (0-based, 버퍼 내 상대)
     obj_count = defaultdict(int)
     # 의자: owner(컴포넌트 인스턴스)별 바운딩박스
-    chair_min, chair_max, chair_mat = {}, {}, {}   # chair_mat: owner -> 재질 이름(진단용)
+    chair_min, chair_max, chair_mat = {}, {}, {}   # chair_mat: owner -> 첫 부품의 재질 이름
     orphan_chairs = []                # owner가 없는 의자 geometry는 자체 bbox 사용: (재질 이름, lo, hi)
 
     n_geom = 0
@@ -74,27 +74,37 @@ def run(dae_path, out_dir):
         print(f'  {name}: {len(blist)} boxes, median horiz extent {np.median(hext):.3f} m, '
               f'median height {np.median(height):.3f} m', flush=True)
 
-    boxes = list(zip(chair_min.values(), chair_max.values())) + [(lo, hi) for _, lo, hi in orphan_chairs]
+    boxes = [(chair_min[k], chair_max[k], chair_mat[k]) for k in chair_min] + \
+            [(lo, hi, name) for name, lo, hi in orphan_chairs]
     print(f'chair boxes before merge: {len(boxes)}', flush=True)
     merged_boxes = merge_boxes(boxes)
     print(f'chair boxes after merge: {len(merged_boxes)}', flush=True)
 
     kept_boxes, dropped = [], 0
-    for lo, hi in merged_boxes:
+    for lo, hi, name in merged_boxes:
         ext = hi - lo
         if max(ext[0], ext[1]) < 0.3:
             dropped += 1
         else:
-            kept_boxes.append((lo, hi))
+            kept_boxes.append((lo, hi, name))
     print(f'chair boxes dropped (armrest/bracket, horizontal extent < 0.3m): {dropped}', flush=True)
 
-    chairs = []
-    for lo, hi in kept_boxes:
-        chairs.extend(split_box(lo, hi))
-    chairs.sort()
+    seats = []                        # (좌표, 재질 이름) -- 분할된 점은 박스의 재질을 물려받는다
+    for lo, hi, name in kept_boxes:
+        seats.extend((c, name) for c in split_box(lo, hi))
+    seats.sort(key=lambda s: s[0])
+    chairs = [c for c, _ in seats]
+    chair_materials = [name for _, name in seats]
     with open(os.path.join(out_dir, 'chairs.json'), 'w') as f:
-        json.dump({'units': 'm', 'frame': 'model', 'chairs': [[round(float(v), 4) for v in c] for c in chairs]}, f)
+        json.dump({'units': 'm', 'frame': 'model',
+                   'chairs': [[round(float(v), 4) for v in c] for c in chairs],
+                   'materials': chair_materials}, f)
     print(f'chairs: {len(chairs)} (from {len(kept_boxes)} chair boxes)', flush=True)
+
+    final_counts = Counter(chair_materials)
+    print('final chair counts by material:', flush=True)
+    for name, n in sorted(final_counts.items(), key=lambda kv: (-kv[1], kv[0])):
+        print(f'  {name}: {n}', flush=True)
 
     if chairs:
         nn = nearest_neighbor_distances(np.array(chairs))
@@ -135,28 +145,35 @@ def merge_boxes(boxes, max_xy_dist=0.2, max_z_dist=0.6):
     owner(또는 owner 없음)로 나뉘어 별도 박스로 잡히는 경우(등받이가 다른 owner 아래 쿠션
     바로 위에 있는 경우 포함)를 병합한다. 실제 인접 좌석은 중심 수평 간격이 ~0.45 m 이상이라
     오탐하지 않는다.
+    입력·출력 모두 (lo, hi, 재질 이름) 삼중항이다. 병합된 박스는 수평 크기가 가장 큰 부품의
+    재질을 물려받는다(쿠션이 브래킷을 이긴다).
     중심 x로 정렬한 뒤 한 번 훑으며, x가 max_xy_dist만큼 뒤처진 클러스터는(정렬 순서상 이후
     어떤 박스와도 다시 가까워질 수 없으므로) 확정 짓고 활성 목록에서 뺀다.
     """
     def center(lo, hi):
         return (lo + hi) / 2.0
+    def hext(lo, hi):
+        return max(hi[0] - lo[0], hi[1] - lo[1])
     ordered = sorted(boxes, key=lambda b: center(b[0], b[1])[0])
-    active = []    # 아직 병합될 수 있는 클러스터: [center, lo, hi]
-    done = []      # 더 이상 병합 대상이 아닌 확정 클러스터: (lo, hi)
-    for lo, hi in ordered:
+    active = []    # 아직 병합될 수 있는 클러스터: (center, lo, hi, 재질, 그 재질을 준 부품의 수평 크기)
+    done = []      # 더 이상 병합 대상이 아닌 확정 클러스터: (lo, hi, 재질)
+    for lo, hi, name in ordered:
         clo, chi, cc = lo, hi, center(lo, hi)
+        cname, cext = name, hext(lo, hi)
         kept = []
-        for ac, alo, ahi in active:
+        for ac, alo, ahi, aname, aext in active:
             if cc[0] - ac[0] > max_xy_dist:
-                done.append((alo, ahi))
+                done.append((alo, ahi, aname))
             elif np.linalg.norm(cc[:2] - ac[:2]) <= max_xy_dist and abs(cc[2] - ac[2]) <= max_z_dist:
+                if aext > cext:
+                    cname, cext = aname, aext
                 clo, chi = np.minimum(clo, alo), np.maximum(chi, ahi)
                 cc = center(clo, chi)   # 병합된 박스의 중심은 합집합에서 다시 계산
             else:
-                kept.append((ac, alo, ahi))
+                kept.append((ac, alo, ahi, aname, aext))
         active = kept
-        active.append((cc, clo, chi))
-    done.extend((lo, hi) for _, lo, hi in active)
+        active.append((cc, clo, chi, cname, cext))
+    done.extend((lo, hi, name) for _, lo, hi, name, _ in active)
     return done
 
 def nearest_neighbor_distances(points, cell=0.5):

@@ -50,24 +50,33 @@ def tiny_dae(chair_at_x_inch: float) -> str:
  </library_effects>
 </COLLADA>'''
 
-def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size_inch: float = 20.0) -> str:
-    """size_inch x size_inch 의자 쿠션/부품 박스 두 개(geometry 2개, 재질 yellow_chair). owner_mode:
+def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size_inch: float = 20.0,
+                   ty2_inch: float = 0.0, size2_inch: float = None, mat_a: str = 'yellow_chair__1',
+                   mat_b: str = None) -> str:
+    """의자 쿠션/부품 박스 두 개(geometry 2개). 첫 번째는 size_inch 정사각형에 재질 mat_a,
+    두 번째는 size2_inch(기본값 size_inch) 정사각형에 재질 mat_b(기본값 mat_a). owner_mode:
     'shared'    둘 다 같은 instance_* 조상 아래(owner가 같음)
     'none'      instance_* 조상 없음(owner=None, 오르판)
     'different' 각각 다른 instance_* 조상 아래(owner가 서로 다름)
-    두 번째 박스는 X로 tx2_inch, Z로 tz2_inch만큼 옮겨져 있다."""
-    def node(node_id, geom_id, tx, tz=0.0, name=None):
+    두 번째 박스는 X로 tx2_inch, Y로 ty2_inch, Z로 tz2_inch만큼 옮겨져 있다."""
+    if size2_inch is None:
+        size2_inch = size_inch
+    if mat_b is None:
+        mat_b = mat_a
+    def node(node_id, geom_id, mat_id, tx, ty=0.0, tz=0.0, name=None):
         name_attr = f' name="{name}"' if name else ''
         return f'''
-     <node id="{node_id}"{name_attr}><matrix>1 0 0 {tx} 0 1 0 0 0 0 1 {tz} 0 0 0 1</matrix>
+     <node id="{node_id}"{name_attr}><matrix>1 0 0 {tx} 0 1 0 {ty} 0 0 1 {tz} 0 0 0 1</matrix>
       <instance_geometry url="#{geom_id}"><bind_material><technique_common>
-       <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
+       <instance_material symbol="Material2" target="#{mat_id}"/></technique_common></bind_material></instance_geometry>
      </node>'''
     if owner_mode == 'different':
-        inner = node('NA', 'ID_A', 0.0, name='instance_1') + node('NB', 'ID_B', tx2_inch, tz2_inch, name='instance_2')
+        inner = (node('NA', 'ID_A', 'M_CHAIR', 0.0, name='instance_1')
+                 + node('NB', 'ID_B', 'M_CHAIR2', tx2_inch, ty2_inch, tz2_inch, name='instance_2'))
         wrapper_name = 'group_0'
     else:
-        inner = node('NA', 'ID_A', 0.0) + node('NB', 'ID_B', tx2_inch, tz2_inch)
+        inner = (node('NA', 'ID_A', 'M_CHAIR', 0.0)
+                 + node('NB', 'ID_B', 'M_CHAIR2', tx2_inch, ty2_inch, tz2_inch))
         wrapper_name = 'instance_1' if owner_mode == 'shared' else 'group_0'
     scene_body = f'<node id="N1" name="{wrapper_name}">{inner}\n    </node>'
     return f'''<?xml version="1.0"?>
@@ -86,14 +95,15 @@ def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size
    <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VA"/><p>0 1 2 0 2 3</p></triangles>
   </mesh></geometry>
   <geometry id="ID_B"><mesh>
-   <source id="PB"><float_array id="AB" count="12">0 0 0 {size_inch} 0 0 {size_inch} {size_inch} 0 0 {size_inch} 0</float_array>
+   <source id="PB"><float_array id="AB" count="12">0 0 0 {size2_inch} 0 0 {size2_inch} {size2_inch} 0 0 {size2_inch} 0</float_array>
     <technique_common><accessor count="4" source="#AB" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
    <vertices id="VB"><input semantic="POSITION" source="#PB"/></vertices>
    <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VB"/><p>0 1 2 0 2 3</p></triangles>
   </mesh></geometry>
  </library_geometries>
  <library_materials>
-  <material id="M_CHAIR" name="yellow_chair__1"><instance_effect url="#E_CHAIR"/></material>
+  <material id="M_CHAIR" name="{mat_a}"><instance_effect url="#E_CHAIR"/></material>
+  <material id="M_CHAIR2" name="{mat_b}"><instance_effect url="#E_CHAIR"/></material>
  </library_materials>
  <library_effects>
   <effect id="E_CHAIR"><profile_COMMON><technique sid="COMMON"><lambert><diffuse><color>1 0.8 0 1</color></diffuse></lambert></technique></profile_COMMON></effect>
@@ -253,6 +263,30 @@ class ExtractTest(unittest.TestCase):
         extract_dae.run(self.dae, self.dir)
         chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
         self.assertEqual(len(chairs), 2)
+
+    def test_chairs_json_carries_a_parallel_material_list(self):
+        # chairs.json에는 chairs와 길이가 같은 materials 목록이 있고, 각 좌석의 재질 이름을 담는다.
+        extract_dae.run(self.dae, self.dir)
+        with open(os.path.join(self.dir, 'chairs.json')) as f:
+            chairs = json.load(f)
+        self.assertEqual(len(chairs['materials']), len(chairs['chairs']))
+        self.assertEqual(chairs['materials'], ['yellow_chair__1'])
+
+    def test_merged_box_reports_the_material_of_the_wider_part(self):
+        # 0.4 m 쿠션(chair_orange)과 같은 xy 중심의 0.1 m 브래킷(chair_1)이 하나로 합쳐지면
+        # 수평 크기가 더 큰 쿠션의 재질을 보고한다.
+        size_inch = 0.4 / 0.0254
+        size2_inch = 0.1 / 0.0254
+        offset_inch = 0.15 / 0.0254        # 작은 박스를 큰 박스 중심에 맞춘다
+        with open(self.dae, 'w') as f:
+            f.write(two_chairs_dae(tx2_inch=offset_inch, owner_mode='different', size_inch=size_inch,
+                                   ty2_inch=offset_inch, size2_inch=size2_inch,
+                                   mat_a='chair_orange', mat_b='chair_1'))
+        extract_dae.run(self.dae, self.dir)
+        with open(os.path.join(self.dir, 'chairs.json')) as f:
+            chairs = json.load(f)
+        self.assertEqual(len(chairs['chairs']), 1)
+        self.assertEqual(chairs['materials'], ['chair_orange'])
 
 if __name__ == '__main__':
     unittest.main()
