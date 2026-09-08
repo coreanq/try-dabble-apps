@@ -60,18 +60,18 @@ def run(dae_path, out_dir):
         if n_geom % 10000 == 0:
             print(f'  {n_geom} geometries, {time.time()-t0:.1f}s', flush=True)
 
-    print(f'orphan chair boxes: {len(orphan_chairs)}', flush=True)
-    merged_orphans = merge_boxes(orphan_chairs)
-    print(f'orphan chair boxes merged: {len(merged_orphans)}', flush=True)
+    boxes = list(zip(chair_min.values(), chair_max.values())) + orphan_chairs
+    print(f'chair boxes before merge: {len(boxes)}', flush=True)
+    merged_boxes = merge_boxes(boxes)
+    print(f'chair boxes after merge: {len(merged_boxes)}', flush=True)
 
     chairs = []
-    boxes = list(zip(chair_min.values(), chair_max.values())) + merged_orphans
-    for lo, hi in boxes:
+    for lo, hi in merged_boxes:
         chairs.extend(split_box(lo, hi))
     chairs.sort()
     with open(os.path.join(out_dir, 'chairs.json'), 'w') as f:
         json.dump({'units': 'm', 'frame': 'model', 'chairs': [[round(float(v), 4) for v in c] for c in chairs]}, f)
-    print(f'chairs: {len(chairs)} (from {len(boxes)} chair boxes)', flush=True)
+    print(f'chairs: {len(chairs)} (from {len(merged_boxes)} chair boxes)', flush=True)
 
     with open(os.path.join(out_dir, 'shell.obj'), 'w') as f:
         f.write('# KSPO DOME shell, metres, model frame (Z-up)\n')
@@ -96,24 +96,33 @@ def run(dae_path, out_dir):
         json.dump(safe_colors, f, ensure_ascii=False, indent=1)
     print(f'done in {time.time()-t0:.1f}s', flush=True)
 
-def merge_boxes(boxes, gap=0.1):
-    """owner가 없는 의자 바운딩박스들 중 겹치거나 각 축 간격이 gap(m) 이하인 것들을 하나로 합친다.
-    (같은 좌석의 쿠션이 서로 다른 geometry/instance 두 개로 나뉘어 owner 없이 들어오는 경우 중복 집계를 막는다.)
+def merge_boxes(boxes, max_center_dist=0.2):
+    """의자 바운딩박스들 중 중심이 max_center_dist(m) 이내인 것들을 하나(합집합)로 합친다.
+    같은 물리 좌석이 서로 다른 instance_* owner(또는 owner 없음)로 나뉘어 별도 박스로 잡히는
+    경우를 병합한다. 실제 인접 좌석은 중심 간격이 ~0.45 m 이상이라 오탐하지 않는다.
+    중심 x로 정렬한 뒤 한 번 훑으며, x가 max_center_dist만큼 뒤처진 클러스터는(정렬 순서상
+    이후 어떤 박스와도 다시 가까워질 수 없으므로) 확정 짓고 활성 목록에서 뺀다.
     """
-    ordered = sorted(boxes, key=lambda b: b[0][0])
-    merged = []   # [lo, hi] 쌍의 리스트
+    def center(lo, hi):
+        return (lo + hi) / 2.0
+    ordered = sorted(boxes, key=lambda b: center(b[0], b[1])[0])
+    active = []    # 아직 병합될 수 있는 클러스터: [center, lo, hi]
+    done = []      # 더 이상 병합 대상이 아닌 확정 클러스터: (lo, hi)
     for lo, hi in ordered:
-        clo, chi = lo, hi
-        rest = []
-        for mlo, mhi in merged:
-            axis_gap = np.maximum(clo, mlo) - np.minimum(chi, mhi)
-            if np.all(axis_gap <= gap):
-                clo, chi = np.minimum(clo, mlo), np.maximum(chi, mhi)   # 새 박스가 기존 두 클러스터를 다리처럼 이어줄 수도 있음
+        clo, chi, cc = lo, hi, center(lo, hi)
+        kept = []
+        for ac, alo, ahi in active:
+            if cc[0] - ac[0] > max_center_dist:
+                done.append((alo, ahi))
+            elif np.linalg.norm(cc - ac) <= max_center_dist:
+                clo, chi = np.minimum(clo, alo), np.maximum(chi, ahi)
+                cc = center(clo, chi)   # 병합된 박스의 중심은 합집합에서 다시 계산
             else:
-                rest.append((mlo, mhi))
-        rest.append((clo, chi))
-        merged = rest
-    return merged
+                kept.append((ac, alo, ahi))
+        active = kept
+        active.append((cc, clo, chi))
+    done.extend((lo, hi) for _, lo, hi in active)
+    return done
 
 def split_box(lo, hi):
     """바운딩박스 하나를 좌석 중심 목록으로. 수평 최장변이 SEAT_PITCH보다 길면 등간격으로 나눈다."""

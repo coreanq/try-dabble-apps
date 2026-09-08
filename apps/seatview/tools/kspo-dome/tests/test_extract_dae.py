@@ -50,20 +50,25 @@ def tiny_dae(chair_at_x_inch: float) -> str:
  </library_effects>
 </COLLADA>'''
 
-def two_chairs_dae(tx2_inch: float, owned: bool) -> str:
-    """20x20 inch 의자 쿠션 박스 두 개(geometry 2개, 재질 yellow_chair). owned=True면 둘 다 같은
-    instance_* 조상 아래, False면 instance_* 조상 없이(owner=None) 나란히 놓는다. 두 번째 박스는
-    X로 tx2_inch만큼 옮겨져 있다."""
-    inner = f'''
-     <node id="NA"><matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-      <instance_geometry url="#ID_A"><bind_material><technique_common>
-       <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
-     </node>
-     <node id="NB"><matrix>1 0 0 {tx2_inch} 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-      <instance_geometry url="#ID_B"><bind_material><technique_common>
+def two_chairs_dae(tx2_inch: float, owner_mode: str) -> str:
+    """20x20 inch 의자 쿠션 박스 두 개(geometry 2개, 재질 yellow_chair). owner_mode:
+    'shared'    둘 다 같은 instance_* 조상 아래(owner가 같음)
+    'none'      instance_* 조상 없음(owner=None, 오르판)
+    'different' 각각 다른 instance_* 조상 아래(owner가 서로 다름)
+    두 번째 박스는 X로 tx2_inch만큼 옮겨져 있다."""
+    def node(node_id, geom_id, tx, name=None):
+        name_attr = f' name="{name}"' if name else ''
+        return f'''
+     <node id="{node_id}"{name_attr}><matrix>1 0 0 {tx} 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+      <instance_geometry url="#{geom_id}"><bind_material><technique_common>
        <instance_material symbol="Material2" target="#M_CHAIR"/></technique_common></bind_material></instance_geometry>
      </node>'''
-    wrapper_name = 'instance_1' if owned else 'group_0'
+    if owner_mode == 'different':
+        inner = node('NA', 'ID_A', 0.0, name='instance_1') + node('NB', 'ID_B', tx2_inch, name='instance_2')
+        wrapper_name = 'group_0'
+    else:
+        inner = node('NA', 'ID_A', 0.0) + node('NB', 'ID_B', tx2_inch)
+        wrapper_name = 'instance_1' if owner_mode == 'shared' else 'group_0'
     scene_body = f'<node id="N1" name="{wrapper_name}">{inner}\n    </node>'
     return f'''<?xml version="1.0"?>
 <COLLADA xmlns="{NS}" version="1.4.1">
@@ -148,21 +153,41 @@ class ExtractTest(unittest.TestCase):
 
     def test_two_chair_blocks_under_one_owner_merge_into_one_chair(self):
         # 같은 instance_* 아래의 의자 쿠션 geometry 두 개는 owner 기준으로 이미 하나의 박스로 합쳐진다.
-        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=0.0, owned=True))
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=0.0, owner_mode='shared'))
         extract_dae.run(self.dae, self.dir)
         chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
         self.assertEqual(len(chairs), 1)
 
     def test_overlapping_orphan_chair_boxes_merge_into_one_chair(self):
-        # owner(instance_* 조상)가 없는 의자 쿠션 박스 두 개가 겹치면 merge_boxes가 하나로 합친다.
-        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=5.0, owned=False))
+        # owner(instance_* 조상)가 없는 의자 쿠션 박스 두 개의 중심이 0.2 m 이내(여기서는 겹치기도
+        # 함)면 merge_boxes가 중심 거리 기준으로 하나로 합친다.
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=5.0, owner_mode='none'))
         extract_dae.run(self.dae, self.dir)
         chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
         self.assertEqual(len(chairs), 1)
 
     def test_separated_orphan_chair_boxes_stay_as_two_chairs(self):
-        # owner가 없는 의자 쿠션 박스 두 개가 1 m 가량 떨어져 있으면 합쳐지지 않고 좌석 두 개로 남는다.
-        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=60.0, owned=False))
+        # owner가 없는 의자 쿠션 박스 두 개의 중심이 0.2 m 병합 기준보다 훨씬 멀면(~1 m) 합쳐지지
+        # 않고 좌석 두 개로 남는다.
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=60.0, owner_mode='none'))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 2)
+
+    def test_two_chair_blocks_under_different_owners_with_coincident_centers_merge_into_one_chair(self):
+        # 서로 다른 instance_* owner 아래에 있어도(owner-keyed 병합으로는 안 합쳐짐) 박스 중심이
+        # 겹치면(0.2 m 이내) merge_boxes가 하나로 합친다. 이것이 KSPO DOME 실물 파일에서 관찰된
+        # 중복 좌석의 실제 원인(서로 다른 component instance가 같은 물리 좌석을 가리키는 경우)이다.
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=0.0, owner_mode='different'))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 1)
+
+    def test_two_chair_blocks_under_different_owners_half_meter_apart_stay_as_two_chairs(self):
+        # 서로 다른 instance_* owner 아래의 의자 박스 두 개라도 중심이 0.5 m 떨어져 있으면(실제
+        # 인접 좌석 간격 ~0.45 m 이상과 같은 자릿수) 합쳐지지 않고 좌석 두 개로 남는다.
+        tx2_inch = 0.5 / 0.0254
+        with open(self.dae, 'w') as f: f.write(two_chairs_dae(tx2_inch=tx2_inch, owner_mode='different'))
         extract_dae.run(self.dae, self.dir)
         chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
         self.assertEqual(len(chairs), 2)
