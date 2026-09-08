@@ -52,15 +52,17 @@ def tiny_dae(chair_at_x_inch: float) -> str:
 
 def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size_inch: float = 20.0,
                    ty2_inch: float = 0.0, size2_inch: float = None, mat_a: str = 'yellow_chair__1',
-                   mat_b: str = None) -> str:
+                   mat_b: str = None, size2y_inch: float = None) -> str:
     """의자 쿠션/부품 박스 두 개(geometry 2개). 첫 번째는 size_inch 정사각형에 재질 mat_a,
-    두 번째는 size2_inch(기본값 size_inch) 정사각형에 재질 mat_b(기본값 mat_a). owner_mode:
+    두 번째는 size2_inch x size2y_inch(기본값 size2_inch) 직사각형에 재질 mat_b(기본값 mat_a). owner_mode:
     'shared'    둘 다 같은 instance_* 조상 아래(owner가 같음)
     'none'      instance_* 조상 없음(owner=None, 오르판)
     'different' 각각 다른 instance_* 조상 아래(owner가 서로 다름)
     두 번째 박스는 X로 tx2_inch, Y로 ty2_inch, Z로 tz2_inch만큼 옮겨져 있다."""
     if size2_inch is None:
         size2_inch = size_inch
+    if size2y_inch is None:
+        size2y_inch = size2_inch
     if mat_b is None:
         mat_b = mat_a
     def node(node_id, geom_id, mat_id, tx, ty=0.0, tz=0.0, name=None):
@@ -95,7 +97,7 @@ def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size
    <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VA"/><p>0 1 2 0 2 3</p></triangles>
   </mesh></geometry>
   <geometry id="ID_B"><mesh>
-   <source id="PB"><float_array id="AB" count="12">0 0 0 {size2_inch} 0 0 {size2_inch} {size2_inch} 0 0 {size2_inch} 0</float_array>
+   <source id="PB"><float_array id="AB" count="12">0 0 0 {size2_inch} 0 0 {size2_inch} {size2y_inch} 0 0 {size2y_inch} 0</float_array>
     <technique_common><accessor count="4" source="#AB" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
    <vertices id="VB"><input semantic="POSITION" source="#PB"/></vertices>
    <triangles count="2" material="Material2"><input offset="0" semantic="VERTEX" source="#VB"/><p>0 1 2 0 2 3</p></triangles>
@@ -110,8 +112,8 @@ def two_chairs_dae(tx2_inch: float, owner_mode: str, tz2_inch: float = 0.0, size
  </library_effects>
 </COLLADA>'''
 
-def single_chair_dae(size_inch: float) -> str:
-    """size_inch x size_inch 의자 재질 박스 하나(geometry 1개, owner 없음)."""
+def single_chair_dae(size_inch: float, mat: str = 'yellow_chair__1') -> str:
+    """size_inch x size_inch 의자 재질(mat) 박스 하나(geometry 1개, owner 없음)."""
     return f'''<?xml version="1.0"?>
 <COLLADA xmlns="{NS}" version="1.4.1">
  <asset><unit meter="0.0254" name="inch"/><up_axis>Z_UP</up_axis></asset>
@@ -134,7 +136,7 @@ def single_chair_dae(size_inch: float) -> str:
   </mesh></geometry>
  </library_geometries>
  <library_materials>
-  <material id="M_CHAIR" name="yellow_chair__1"><instance_effect url="#E_CHAIR"/></material>
+  <material id="M_CHAIR" name="{mat}"><instance_effect url="#E_CHAIR"/></material>
  </library_materials>
  <library_effects>
   <effect id="E_CHAIR"><profile_COMMON><technique sid="COMMON"><lambert><diffuse><color>1 0.8 0 1</color></diffuse></lambert></technique></profile_COMMON></effect>
@@ -272,26 +274,37 @@ class ExtractTest(unittest.TestCase):
         self.assertEqual(len(chairs['materials']), len(chairs['chairs']))
         self.assertEqual(chairs['materials'], ['yellow_chair__1'])
 
-    def test_merged_box_reports_the_material_of_the_wider_part(self):
-        # 0.4 m 쿠션(chair_orange)과 같은 xy 중심의 0.1 m 브래킷(chair_1)이 하나로 합쳐지면
-        # 수평 크기가 더 큰 쿠션의 재질을 보고한다.
+    def test_lone_part_material_box_is_dropped(self):
+        # 팔걸이·레일 재질(chair_1 = PART_MATERIALS)의 박스는 쿠션만 한 크기(0.4 m)라도
+        # 좌석이 아니므로 병합 전에 버린다 -- 좌석 0개.
+        with open(self.dae, 'w') as f: f.write(single_chair_dae(size_inch=0.4 / 0.0254, mat='chair_1'))
+        extract_dae.run(self.dae, self.dir)
+        chairs = json.load(open(os.path.join(self.dir, 'chairs.json')))['chairs']
+        self.assertEqual(len(chairs), 0)
+
+    def test_long_part_rail_does_not_fuse_with_a_cushion(self):
+        # 좌석열 레일(chair_1, 4.5 m)이 쿠션(chair_orange, 0.4 m)과 중심이 겹쳐도 병합 전에
+        # 버려지므로 쿠션 박스가 늘어나지 않는다 -- 좌석 1개(레일과 합쳐졌다면 4.5/0.55 ≈ 8개로
+        # 쪼개졌을 것이다. 실물 파일의 yellow_chair__1 176열이 이 경우였다).
         size_inch = 0.4 / 0.0254
-        size2_inch = 0.1 / 0.0254
-        offset_inch = 0.15 / 0.0254        # 작은 박스를 큰 박스 중심에 맞춘다
+        rail_x_inch = 4.5 / 0.0254
+        rail_y_inch = 0.3 / 0.0254
         with open(self.dae, 'w') as f:
-            f.write(two_chairs_dae(tx2_inch=offset_inch, owner_mode='different', size_inch=size_inch,
-                                   ty2_inch=offset_inch, size2_inch=size2_inch,
+            f.write(two_chairs_dae(tx2_inch=(0.4 - 4.5) / 2 / 0.0254, owner_mode='different',
+                                   size_inch=size_inch, ty2_inch=0.05 / 0.0254,
+                                   size2_inch=rail_x_inch, size2y_inch=rail_y_inch,
                                    mat_a='chair_orange', mat_b='chair_1'))
         extract_dae.run(self.dae, self.dir)
         with open(os.path.join(self.dir, 'chairs.json')) as f:
             chairs = json.load(f)
         self.assertEqual(len(chairs['chairs']), 1)
         self.assertEqual(chairs['materials'], ['chair_orange'])
+        self.assertAlmostEqual(chairs['chairs'][0][0], 0.2, places=3)   # 쿠션 중심 그대로
 
-    def test_seat_material_beats_a_wider_armrest_part(self):
+    def test_wide_part_frame_does_not_replace_a_disabled_seat_cushion(self):
         # 0.4 m 장애인석 쿠션(yellow_chair__3)이 같은 xy 중심의 더 넓은 0.47 m chair_1
-        # 프레임과 합쳐져도, 좌석 재질이 부품 재질(PART_MATERIALS)을 이겨서 좌석 재질을
-        # 보고한다 -- 실물 파일의 장애인석 84석이 이 경우다.
+        # 프레임과 겹쳐 있어도 프레임이 병합 전에 버려지므로 쿠션 하나만 남는다 -- 실물 파일의
+        # 장애인석 84석이 이 경우다.
         size_inch = 0.4 / 0.0254
         size2_inch = 0.47 / 0.0254
         offset_inch = -0.035 / 0.0254      # 넓은 박스를 작은 박스 중심에 맞춘다

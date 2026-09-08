@@ -75,8 +75,13 @@ def run(dae_path, out_dir):
         print(f'  {name}: {len(blist)} boxes, median horiz extent {np.median(hext):.3f} m, '
               f'median height {np.median(height):.3f} m', flush=True)
 
-    boxes = [(chair_min[k], chair_max[k], chair_mat[k]) for k in chair_min] + \
-            [(lo, hi, name) for name, lo, hi in orphan_chairs]
+    all_boxes = [(chair_min[k], chair_max[k], chair_mat[k]) for k in chair_min] + \
+                [(lo, hi, name) for name, lo, hi in orphan_chairs]
+    # 팔걸이·레일 부품(PART_MATERIALS)은 좌석이 아니므로 병합 전에 버린다. 남겨 두면 좌석열
+    # 레일(최대 4.5 m)이 쿠션과 하나로 합쳐져 그 박스가 여러 좌석으로 쪼개진다.
+    boxes = [b for b in all_boxes if b[2] not in PART_MATERIALS]
+    print(f'part boxes dropped before merge ({",".join(sorted(PART_MATERIALS))}): '
+          f'{len(all_boxes) - len(boxes)}', flush=True)
     print(f'chair boxes before merge: {len(boxes)}', flush=True)
     merged_boxes = merge_boxes(boxes)
     print(f'chair boxes after merge: {len(merged_boxes)}', flush=True)
