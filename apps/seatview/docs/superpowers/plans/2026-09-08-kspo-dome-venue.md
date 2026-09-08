@@ -646,7 +646,7 @@ git commit -m "seatview: Stream-parse the KSPO DOME Collada file into a chair po
 
 **Interfaces:**
 - Produces:
-  - `frame.py`: `make_frame(chairs_model, stage_angle_deg, stage_radius_m, floor_z=0.0) -> dict`, `apply_frame(frame, pts_model) -> pts_seatview` ((N,3) → (N,3) SeatView 좌표 [x, y(높이), z]), `load_frame(work_dir)`, `load_chairs(work_dir, materials=None) -> (N,3)`, `load_chairs_with_materials(work_dir) -> ((N,3), (N,) str)`. `frame.json`: `{"center_model":[cx,cy], "stage_angle_deg":A, "stage_radius_m":R, "floor_z":f, "materials":[...]}`.
+  - `frame.py`: `fit_circle(xy) -> (cx, cy, R)`, `arena_center(chairs_model) -> (cx, cy)`(가장 점이 많은 높이 띠의 의자 고리에 원 피팅), `make_frame(chairs_model, stage_angle_deg, stage_radius_m, floor_z=0.0) -> dict`, `apply_frame(frame, pts_model) -> pts_seatview` ((N,3) → (N,3) SeatView 좌표 [x, y(높이), z]), `load_frame(work_dir)`, `load_chairs(work_dir, materials=None) -> (N,3)`, `load_chairs_with_materials(work_dir) -> ((N,3), (N,) str)`. `frame.json`: `{"center_model":[cx,cy], "stage_angle_deg":A, "stage_radius_m":R, "floor_z":f, "materials":[...]}`.
 - Consumes: `work/chairs.json`은 `{"units","frame","chairs":[[x,y,z],...],"materials":[name,...]}` — `materials`는 `chairs`와 같은 길이의 병렬 목록(Task 3 fix round 4). 좌석 재질은 `chair_orange`(2·3층 일부), `yellow_chair__1`(1층 1~4·12~15), `yellow_chair__3`(장애인석 84), `red_charir`(Box객석 121). `chair_1`은 팔걸이·레일이므로 항상 제외한다. 모델에는 슬라이드석(1층 5~11, 16~22)이 접혀 있어 의자가 없고 2·3층도 일부 구역만 의자가 있다.
   - SeatView 각도: `angle_deg(pts_sv, center_sv)` = `degrees(atan2(x - cx, z - cz))`, 아레나 중심 `center_sv = [0, R]` (2D [x, z]).
 
@@ -661,7 +661,9 @@ import frame as fr
 class FrameTest(unittest.TestCase):
     def test_stage_direction_maps_to_minus_z_and_center_to_plus_z(self):
         # 모델: 아레나 중심 (100, 50), 무대는 중심에서 각도 90°(=+X 방향) 40 m 지점
-        chairs = np.array([[100 + 30, 50 + 0, 1.0], [100 - 30, 50, 1.0], [100, 50 + 30, 1.0], [100, 50 - 30, 1.0]])
+        # 의자는 반지름 30 m 원 위 한 열(같은 높이)에 있되 한쪽(각도 0~120°)만 있어 평균은 중심에서 벗어난다
+        t = np.radians(np.arange(0, 121, 5))
+        chairs = np.column_stack([100 + 30 * np.cos(t), 50 + 30 * np.sin(t), np.full(t.size, 1.0)])
         f = fr.make_frame(chairs, stage_angle_deg=90, stage_radius_m=40, floor_z=0.0)
         self.assertAlmostEqual(f['center_model'][0], 100); self.assertAlmostEqual(f['center_model'][1], 50)
         sv = fr.apply_frame(f, np.array([[140.0, 50.0, 0.0], [100.0, 50.0, 2.0], [60.0, 50.0, 0.0]]))
@@ -671,6 +673,11 @@ class FrameTest(unittest.TestCase):
         # 무대를 보고 오른쪽(+X_sv)은 모델에서 어느 쪽인지: 각도 90°에서 시계 방향으로 90° 더 간 180°(-Y 방향)
         right = fr.apply_frame(f, np.array([[100.0, 50.0 - 30.0, 0.0]]))[0]
         self.assertGreater(right[0], 0)
+
+    def test_fit_circle_recovers_centre_and_radius(self):
+        t = np.radians(np.arange(0, 360, 10))
+        cx, cy, R = fr.fit_circle(np.column_stack([5 + 12 * np.cos(t), -3 + 12 * np.sin(t)]))
+        self.assertAlmostEqual(cx, 5.0, places=6); self.assertAlmostEqual(cy, -3.0, places=6); self.assertAlmostEqual(R, 12.0, places=6)
 
     def test_angle_deg_zero_faces_stage(self):
         pts = np.array([[0, 0, 80.0], [10, 0, 40.0], [-10, 0, 40.0]])
@@ -703,9 +710,29 @@ if __name__ == '__main__':
 import argparse, json, os
 import numpy as np
 
+def fit_circle(xy):
+    """Kasa 대수 원 피팅: (cx, cy, R). 점들이 한 원 위에 있을 때 최소제곱 해."""
+    xy = np.asarray(xy, dtype=np.float64)
+    A = np.column_stack([2 * xy[:, 0], 2 * xy[:, 1], np.ones(len(xy))])
+    b = (xy ** 2).sum(1)
+    sol = np.linalg.lstsq(A, b, rcond=None)[0]
+    cx, cy = sol[0], sol[1]
+    return float(cx), float(cy), float(np.sqrt(sol[2] + cx * cx + cy * cy))
+
+def arena_center(chairs_model):
+    """아레나 중심. 의자 평균은 구역이 빠진 쪽으로 끌려가므로(이 모델에서 8 m) 쓰지 않는다.
+    가장 많은 점이 있는 높이 띠(±0.1 m)의 의자 = 한 열 고리에 원을 맞춘다."""
+    P = np.asarray(chairs_model, dtype=np.float64)
+    z = P[:, 2]
+    hist, edges = np.histogram(z, bins=np.arange(z.min(), z.max() + 0.2, 0.2))
+    zc = edges[hist.argmax()] + 0.1
+    band = P[np.abs(z - zc) < 0.1]
+    cx, cy, _ = fit_circle(band[:, :2])
+    return cx, cy
+
 def make_frame(chairs_model, stage_angle_deg, stage_radius_m, floor_z=0.0):
-    c = np.asarray(chairs_model)[:, :2].mean(0)
-    return {'center_model': [float(c[0]), float(c[1])], 'stage_angle_deg': float(stage_angle_deg),
+    cx, cy = arena_center(chairs_model)
+    return {'center_model': [cx, cy], 'stage_angle_deg': float(stage_angle_deg),
             'stage_radius_m': float(stage_radius_m), 'floor_z': float(floor_z)}
 
 def _rot(frame):
@@ -758,7 +785,7 @@ if __name__ == '__main__':
     print('seatview bbox min', sv.min(0).round(2), 'max', sv.max(0).round(2))
 ```
 
-- [ ] **Step 4: 통과 확인** — `$BPY -m unittest tests.test_frame -v` → 3개 PASS. (첫 테스트의 "오른쪽" 단언이 실패하면 `_rot`의 부호가 뒤집힌 것이다. 규약을 바꾸지 말고 행렬을 고친다.)
+- [ ] **Step 4: 통과 확인** — `$BPY -m unittest tests.test_frame -v` → 4개 PASS. (첫 테스트의 "오른쪽" 단언이 실패하면 `_rot`의 부호가 뒤집힌 것이다. 규약을 바꾸지 말고 행렬을 고친다.)
 
 - [ ] **Step 5: `analyze_chairs.py` 작성** — 모델 좌표 점군을 층·열·각도 덩어리로 요약하고 SVG 평면도를 만든다.
 
@@ -862,7 +889,7 @@ cd tools/kspo-dome && $BPY analyze_chairs.py work/ | tee work/analyze-model.txt
 `work/chairs.svg`를 PNG로 바꿔(`/Applications/Blender.app/Contents/MacOS/Blender`가 필요 없다. `qlmanage -t -s 1400 -o work work/chairs.svg` 또는 브라우저) `work/popimg_acro_seat.jpg`(좌석배치도)와 나란히 본다. 결정할 것:
 
 1. **무대 각도 A(모델 좌표, 0° = 모델 +Y, 시계 방향 +)**: 좌석배치도에서 1층 16~22구역(왼쪽, 7개 구역이 가장 깊은 블록)과 Box객석(오른쪽 위·아래 바깥)의 위치를 SVG의 덩어리 패턴과 맞춰, 16~22구역 블록 중앙 방향을 A로 정한다. 모델에 16~22구역 의자가 펼쳐진 상태로 들어 있으면 그 블록의 각도 중앙, 접혀 있으면 1층 고리에서 가장 넓게 비는 각도 범위의 중앙이다.
-2. **무대 반경 R**: 아레나 바닥에서 무대 앞면이 1층 첫 열보다 2 m 안쪽에 오도록 `R = (tier 0의 최소 반경, A 방향 ±15° 안) - 2 - 6` (무대 깊이 12의 절반). 소수 첫째 자리까지.
+2. **무대 반경 R**: 아레나는 원형이다(2·3층 orange 열과 1층 yellow 열 모두 같은 중심의 원호, 잔차 < 0.1 m). 무대 뒷면이 1층 첫 열보다 2 m 안쪽에 오도록 `R = (1층 첫 열 반경) - 2 - 6` (무대 깊이 12의 절반). 1층 첫 열 반경은 `yellow_chair__1`의 가장 낮은 열(z 최소 ±0.06)을 `arena_center`에 원 피팅한 R이다(약 24.3 m). 소수 첫째 자리까지.
 3. **바닥 높이 F**: 모델에서 아레나 바닥 z. 1층 첫 열 의자 높이 − 0.45(의자 쿠션 높이)가 0에 가까우면 0, 아니면 그 값.
 
 ```bash
