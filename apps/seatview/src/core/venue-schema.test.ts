@@ -17,6 +17,14 @@ function venue(overrides: Record<string, unknown> = {}) {
   return { id: 'test-venue', name: '테스트', units: 'm', stage, sections: [arcSection], ...overrides }
 }
 
+function minimalVenue() {
+  return {
+    id: 'v', name: 'V', units: 'm',
+    stage: { center: [0, 0, 0], size: [10, 1, 6], facing: [0, 0, 1] },
+    sections: [{ id: 'A', shape: { type: 'polygon', points: [[-5, 5], [5, 5], [5, 10], [-5, 10]] }, rows: 2, rowDepth: 1, riser: 0, baseHeight: 0, seatsPerRow: 4 }],
+  }
+}
+
 describe('validateVenue', () => {
   it('유효한 최소 공연장을 통과시키고 기본값을 채운다', () => {
     const r = validateVenue(venue())
@@ -139,5 +147,17 @@ describe('validateVenue', () => {
     expect(r.ok).toBe(false)
     if (r.ok) return
     expect(r.errors.join('\n')).toContain('points')
+  })
+})
+
+describe('credit', () => {
+  it('credit 문자열을 받아들인다', () => {
+    const r = validateVenue({ ...minimalVenue(), credit: '3D 모델: 테스트' })
+    expect(r.ok).toBe(true)
+    if (r.ok) expect(r.venue.credit).toBe('3D 모델: 테스트')
+  })
+  it('빈 credit은 거부한다', () => {
+    const r = validateVenue({ ...minimalVenue(), credit: '' })
+    expect(r.ok).toBe(false)
   })
 })

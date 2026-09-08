@@ -50,6 +50,7 @@ a { color: var(--accent); }
 }
 #seatLabel { font-weight: 600; }
 .nav { display: flex; gap: 4px; }
+.credit { color: #888; font-size: 12px; }
 .message { color: #c0392b; margin-left: auto; font-size: 13px; }
 
 .fatal { padding: 48px 16px; text-align: center; white-space: pre-line; }
@@ -61,5 +62,6 @@ a { color: var(--accent); }
   .split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
   .pane.map { border-right: none; border-bottom: 1px solid var(--border); }
   .infobar { height: auto; flex-wrap: wrap; padding: 8px 12px; gap: 8px; }
+  .credit { width: 100%; }
   .message { margin-left: 0; width: 100%; }
 }

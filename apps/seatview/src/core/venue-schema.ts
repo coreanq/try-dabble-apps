@@ -129,6 +129,7 @@ export const venueSchema = z
     sections: z.array(sectionSchema).min(1),
     obstacles: z.array(obstacleSchema).default([]),
     shell: z.strictObject({ glb: z.string().min(1) }).optional(),
+    credit: z.string().min(1).optional(),
   })
   .superRefine((v, ctx) => {
     const seen = new Set<string>()

@@ -47,6 +47,7 @@ function layout(): string {
         <button data-dir="left" disabled>◀ 좌</button>
         <button data-dir="right" disabled>우 ▶</button>
       </span>
+      <span id="credit" class="credit"></span>
       <span id="message" class="message"></span>
     </footer>`
 }
@@ -138,6 +139,7 @@ export function renderVenuePage(root: HTMLElement, route: VenueRoute): PageHandl
     seats = allSeats(venue)
     $('#venueName').textContent = venue.name
     document.title = `${venue.name} · SeatView`
+    $('#credit').textContent = venue.credit ?? ''
 
     map = new SeatMap2D($('#map'), venue, seats, { onSeat: selectSeat })
 
