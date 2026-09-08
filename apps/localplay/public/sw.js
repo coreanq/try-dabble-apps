@@ -1,0 +1,77 @@
+// Network-first for the shell so a deploy shows up on the next open. The
+// library, playlists and queue live in localStorage and the audio bytes in the
+// app's private file storage, never in this HTTP cache. Once the shell is
+// cached the player opens and plays with no connection at all.
+const CACHE = "localplay-v1";
+const ASSETS = [
+  "/",
+  "/index.html",
+  "/manifest.webmanifest",
+  "/favicon.ico",
+  "/og-image.png",
+  "/icons/icon-192.png",
+  "/icons/icon-512.png",
+  "/icons/apple-touch-icon.png",
+  "/privacy.html",
+  "/terms.html",
+  "/llms.txt"
+];
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+  // blob: object URLs (the audio being played) never reach here, but be explicit.
+  if (url.protocol !== "https:" && url.protocol !== "http:") return;
+
+  // HTML/JS/CSS/webmanifest: network-first so deploys show up; cache as fallback.
+  // That covers Vite's hashed /assets/ bundles the fresh index.html points at.
+  const isShell =
+    req.mode === "navigate" ||
+    url.pathname === "/" ||
+    url.pathname.endsWith(".html") ||
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css") ||
+    url.pathname.endsWith(".webmanifest");
+
+  if (isShell) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          if (res.ok) caches.open(CACHE).then((cache) => cache.put(req, copy)).catch(() => {});
+          return res;
+        })
+        .catch(() => caches.match(req).then((hit) => hit || caches.match("/index.html")))
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      const fetched = fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          if (res.ok) caches.open(CACHE).then((cache) => cache.put(req, copy)).catch(() => {});
+          return res;
+        })
+        .catch(() => cached);
+      return cached || fetched;
+    })
+  );
+});

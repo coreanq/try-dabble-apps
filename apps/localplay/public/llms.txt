@@ -1,0 +1,39 @@
+# Localplay / 로컬플레이
+
+> An on-device music player for the MP3 and audio files you already own.
+> Pick files or a whole folder into a library, browse by track, album or
+> artist, build playlists, queue songs, mark favorites, shuffle and repeat,
+> shape the sound with a three-band equalizer and set playback speed.
+
+This is a Progressive Web App (PWA) hosted at https://localplay.try-dabble.com/
+The library, playlists, queue and settings stay in this browser on this device,
+and the audio bytes are copied into the app's private storage on the same
+device. No accounts, no uploads, no server storage, no subscription, no ads
+during playback, no in-app purchases, no cap on tracks or playlists.
+
+This is NOT a streaming service and NOT a music store. It never fetches songs
+from the internet and never sends your files anywhere. It plays what is already
+on the device, fully offline once the files are picked.
+
+## Pages
+
+- [Home](https://localplay.try-dabble.com/): The player and library
+- [Privacy](https://localplay.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://localplay.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/localplay): How-to on try-dabble.com
+
+## Features
+
+- Add files or a folder (File System Access where available, a file picker elsewhere)
+- Title, artist and album read from ID3 tags, file name as the fallback, editable by hand
+- Library views: Tracks, Albums, Artists, Playlists, Favorites, Recent
+- Queue with add / remove / clear, shuffle, repeat off / all / one
+- Three-band equalizer (bass, mid, treble) and playback speed 0.5x to 2x
+- JSON export and import of track info, playlists, favorites and recents (no audio)
+- Tracks relink to their audio by file name when the same folder is added again
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker; plays offline
+
+## Contact
+
+Part of try-dabble.com dabble tools.
