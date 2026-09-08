@@ -1,0 +1,15 @@
+# KSPO DOME 변환 도구
+
+원본: https://www.ksponco.or.kr/attachFiles/download/kspo/kspodome_dae.zip (공공누리 제1유형, 한국체육산업개발·한국문화정보원).
+Blender 5.2에는 Collada 임포터가 없어 DAE를 직접 파싱한다. 모든 스크립트는 Blender 내장 Python으로 실행한다.
+
+    BPY=/Applications/Blender.app/Contents/Resources/5.2/python/bin/python3.13
+    BLENDER=/Applications/Blender.app/Contents/MacOS/Blender
+
+1. `work/`에 zip을 풀어 `temp_export.dae`를 둔다 (zip 안 폴더명이 cp949라 Python zipfile로 꺼낸다).
+2. `$BPY extract_dae.py work/temp_export.dae work/` → `chairs.json`, `shell.obj`, `materials.json`
+3. `$BPY analyze_chairs.py work/` → `work/chairs.svg`, 층·열·구역 클러스터 보고서
+4. `$BPY frame.py work/ --stage-angle <deg> --stage-radius <m>` → `work/frame.json`
+5. `$BPY fit_sections.py work/ sections.json ../../public/venues/kspo-dome/venue.json` → venue.json + `work/fit-report.txt`
+6. `$BLENDER -b --python build_shell.py -- work/ ../../public/venues/kspo-dome/shell.glb`
+7. `$BPY -m unittest discover -s tests -v`
