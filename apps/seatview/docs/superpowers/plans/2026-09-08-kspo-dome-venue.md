@@ -646,7 +646,8 @@ git commit -m "seatview: Stream-parse the KSPO DOME Collada file into a chair po
 
 **Interfaces:**
 - Produces:
-  - `frame.py`: `make_frame(chairs_model, stage_angle_deg, stage_radius_m, floor_z=0.0) -> dict`, `apply_frame(frame, pts_model) -> pts_seatview` ((N,3) → (N,3) SeatView 좌표 [x, y(높이), z]), `load_frame(work_dir)`. `frame.json`: `{"center_model":[cx,cy], "stage_angle_deg":A, "stage_radius_m":R, "floor_z":f}`.
+  - `frame.py`: `make_frame(chairs_model, stage_angle_deg, stage_radius_m, floor_z=0.0) -> dict`, `apply_frame(frame, pts_model) -> pts_seatview` ((N,3) → (N,3) SeatView 좌표 [x, y(높이), z]), `load_frame(work_dir)`, `load_chairs(work_dir, materials=None) -> (N,3)`, `load_chairs_with_materials(work_dir) -> ((N,3), (N,) str)`. `frame.json`: `{"center_model":[cx,cy], "stage_angle_deg":A, "stage_radius_m":R, "floor_z":f, "materials":[...]}`.
+- Consumes: `work/chairs.json`은 `{"units","frame","chairs":[[x,y,z],...],"materials":[name,...]}` — `materials`는 `chairs`와 같은 길이의 병렬 목록(Task 3 fix round 4). 좌석 재질은 `chair_orange`(2·3층 일부), `yellow_chair__1`(1층 1~4·12~15), `yellow_chair__3`(장애인석 84), `red_charir`(Box객석 121). `chair_1`은 팔걸이·레일이므로 항상 제외한다. 모델에는 슬라이드석(1층 5~11, 16~22)이 접혀 있어 의자가 없고 2·3층도 일부 구역만 의자가 있다.
   - SeatView 각도: `angle_deg(pts_sv, center_sv)` = `degrees(atan2(x - cx, z - cz))`, 아레나 중심 `center_sv = [0, R]` (2D [x, z]).
 
 - [ ] **Step 1: 실패하는 테스트** — `tests/test_frame.py`
@@ -675,6 +676,16 @@ class FrameTest(unittest.TestCase):
         pts = np.array([[0, 0, 80.0], [10, 0, 40.0], [-10, 0, 40.0]])
         a = fr.angle_deg(pts, [0, 40])
         np.testing.assert_allclose(a, [0, 90, -90], atol=1e-9)
+
+    def test_load_chairs_filters_by_material(self):
+        import json, os, tempfile
+        d = tempfile.mkdtemp()
+        json.dump({'units': 'm', 'frame': 'model', 'chairs': [[0, 0, 0], [1, 0, 0], [2, 0, 0]],
+                   'materials': ['chair_orange', 'chair_1', 'red_charir']}, open(os.path.join(d, 'chairs.json'), 'w'))
+        self.assertEqual(fr.load_chairs(d).shape, (3, 3))
+        self.assertEqual(fr.load_chairs(d, ['chair_orange', 'red_charir'])[:, 0].tolist(), [0.0, 2.0])
+        P, m = fr.load_chairs_with_materials(d)
+        self.assertEqual(m.tolist(), ['chair_orange', 'chair_1', 'red_charir'])
 
 if __name__ == '__main__':
     unittest.main()
@@ -719,22 +730,35 @@ def angle_deg(pts_sv, center_sv):
 def load_frame(work_dir):
     return json.load(open(os.path.join(work_dir, 'frame.json')))
 
-def load_chairs(work_dir):
-    return np.array(json.load(open(os.path.join(work_dir, 'chairs.json')))['chairs'])
+def load_chairs_with_materials(work_dir):
+    """(N,3) 모델 좌표와 (N,) 재질 이름. chairs.json의 materials는 chairs와 같은 길이의 병렬 목록이다."""
+    d = json.load(open(os.path.join(work_dir, 'chairs.json')))
+    return np.array(d['chairs'], dtype=np.float64), np.array(d['materials'])
+
+def load_chairs(work_dir, materials=None):
+    """materials(이름 목록)를 주면 그 재질의 의자만 돌려준다. 좌석이 아닌 팔걸이(chair_1)를 빼는 데 쓴다."""
+    P, mats = load_chairs_with_materials(work_dir)
+    if materials:
+        P = P[np.isin(mats, list(materials))]
+    return P
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('work'); ap.add_argument('--stage-angle', type=float, required=True)
     ap.add_argument('--stage-radius', type=float, required=True); ap.add_argument('--floor-z', type=float, default=0.0)
+    ap.add_argument('--materials', default='chair_orange,yellow_chair__1,yellow_chair__3,red_charir',
+                    help='좌석으로 볼 재질 이름(쉼표 구분). frame.json에 저장되어 뒤 단계가 같은 값을 쓴다')
     a = ap.parse_args()
-    f = make_frame(load_chairs(a.work), a.stage_angle, a.stage_radius, a.floor_z)
+    mats = [m for m in a.materials.split(',') if m]
+    f = make_frame(load_chairs(a.work, mats), a.stage_angle, a.stage_radius, a.floor_z)
+    f['materials'] = mats
     json.dump(f, open(os.path.join(a.work, 'frame.json'), 'w'), indent=1)
-    sv = apply_frame(f, load_chairs(a.work))
+    sv = apply_frame(f, load_chairs(a.work, mats))
     print('frame.json written', f)
     print('seatview bbox min', sv.min(0).round(2), 'max', sv.max(0).round(2))
 ```
 
-- [ ] **Step 4: 통과 확인** — `$BPY -m unittest tests.test_frame -v` → 2개 PASS. (첫 테스트의 "오른쪽" 단언이 실패하면 `_rot`의 부호가 뒤집힌 것이다. 규약을 바꾸지 말고 행렬을 고친다.)
+- [ ] **Step 4: 통과 확인** — `$BPY -m unittest tests.test_frame -v` → 3개 PASS. (첫 테스트의 "오른쪽" 단언이 실패하면 `_rot`의 부호가 뒤집힌 것이다. 규약을 바꾸지 말고 행렬을 고친다.)
 
 - [ ] **Step 5: `analyze_chairs.py` 작성** — 모델 좌표 점군을 층·열·각도 덩어리로 요약하고 SVG 평면도를 만든다.
 
@@ -762,8 +786,12 @@ def clusters_1d(values, gap):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('work'); ap.add_argument('--frame', action='store_true')
+    ap.add_argument('--materials', default='chair_orange,yellow_chair__1,yellow_chair__3,red_charir')
     a = ap.parse_args()
-    P = fr.load_chairs(a.work)
+    mats = [m for m in a.materials.split(',') if m]
+    P, allm = fr.load_chairs_with_materials(a.work)
+    keep = np.isin(allm, mats); P, allm = P[keep], allm[keep]
+    print('materials:', {m: int((allm == m).sum()) for m in mats})
     if a.frame:
         f = fr.load_frame(a.work)
         S = fr.apply_frame(f, P)
@@ -800,8 +828,9 @@ def main():
         for bi, (a0, a1) in enumerate(blocks):
             mm = m & (ang >= a0) & (ang < a1)
             rows_b = clusters_1d(r[mm], ROW_GAP)
+            by_mat = ','.join(f'{k}={int((allm[mm] == k).sum())}' for k in mats if (allm[mm] == k).any())
             print(f'  block {bi:2d}: angle {a0:7.2f}..{a1:7.2f}  chairs {mm.sum():5d}  rows {len(rows_b):2d}  '
-                  f'r {r[mm].min():.1f}..{r[mm].max():.1f}  h {h[mm].min():.2f}..{h[mm].max():.2f}')
+                  f'r {r[mm].min():.1f}..{r[mm].max():.1f}  h {h[mm].min():.2f}..{h[mm].max():.2f}  {by_mat}')
     # SVG 평면도
     W = 1400; scale = W / (r.max() * 2.2)
     def sx(v): return W / 2 + v * scale
@@ -841,7 +870,7 @@ $BPY frame.py work/ --stage-angle <A> --stage-radius <R> --floor-z <F>
 $BPY analyze_chairs.py work/ --frame | tee work/analyze-seatview.txt
 ```
 
-`--frame` 보고서에서 5~11구역에 해당하는 블록들이 각도 0° 근처(대략 −45°..45°)에, Box객석이 있는 쪽이 각도 양수·음수 어느 쪽인지가 좌석배치도(무대를 보고 오른쪽 = +)와 맞는지 확인한다. 안 맞으면 A를 180° 돌리거나 좌우가 뒤집힌 것이므로 `frame.py`가 아니라 A를 다시 본다(회전만으로 좌우 반전은 못 고친다. 좌우가 뒤집혔다면 좌석배치도를 뒤집어 본 것이다).
+`--frame` 보고서에서 확인할 것: `yellow_chair__1` 블록 8개(1층 1~4, 12~15)가 각도 ±90° 근처 양쪽에 4개씩, `red_charir`(Box객석)가 5~11구역 쪽(각도 0° 근처의 바깥 고리)에, `yellow_chair__3`(장애인석)가 0° 근처 안쪽에 있어야 한다. 무대 방향(A)은 1층 의자가 없는 두 틈(접힌 슬라이드석 5~11과 16~22) 중 Box객석·장애인석의 **반대쪽**이다. Box객석이 있는 쪽이 각도 양수·음수 어느 쪽인지가 좌석배치도(무대를 보고 오른쪽 = +)와 맞는지도 확인한다. 안 맞으면 A를 180° 돌리거나 좌우가 뒤집힌 것이므로 `frame.py`가 아니라 A를 다시 본다(회전만으로 좌우 반전은 못 고친다. 좌우가 뒤집혔다면 좌석배치도를 뒤집어 본 것이다).
 
 결정한 A, R, F와 근거를 `work/frame-notes.txt`에 적고, 같은 내용을 `tools/kspo-dome/README.md` 끝에 "결정값" 절로 남긴다(작업 폴더는 커밋되지 않으므로).
 
@@ -863,8 +892,9 @@ git commit -m "seatview: Chair-cloud analysis and model-to-SeatView frame for KS
 - Create: `public/venues/kspo-dome/venue.json` (생성물)
 
 **Interfaces:**
-- Consumes: `frame.py`의 `load_chairs`, `load_frame`, `apply_frame`, `angle_deg`; `analyze_chairs.clusters_1d`.
-- Produces: `fit_sections.py`: `fit_arc(section_cfg, pts_sv, center_sv) -> (section_dict, report_dict)`, `place_arc(section_dict) -> (N,3)`(seat-engine의 arcPlacer를 그대로 옮긴 것), `run(work, sections_path, out_path)`.
+- Consumes: `frame.py`의 `load_chairs_with_materials`, `load_frame`, `apply_frame`, `angle_deg`; `analyze_chairs.clusters_1d`. `frame.json`의 `materials`.
+- Produces: `fit_sections.py`: `fit_arc(section_cfg, pts_sv, center_sv) -> (section_dict, report_dict)`, `place_arc(section_dict) -> (N,3)`(seat-engine의 arcPlacer를 그대로 옮긴 것), `template_section(cfg, base_section) -> section_dict`(모델에 의자가 없는 구역을 본뜨기), `explicit_section(cfg, pts, center)`, `run(work, sections_path, out_path)`.
+- 모델에 의자가 없는 구역(슬라이드석 5~11, 2·3층 일부)은 `"like": "<구역 id>"`로 같은 층의 피팅된 구역을 본뜬다: rows·rowDepth·riser·baseHeight·radiusStart·center를 복사하고 각도 범위는 자기 것, `seatsPerRow`는 `expected`를 열 수로 고르게 나눈다(나머지는 뒷열부터 1석씩).
 - `sections.json` 형식:
 
 ```json
@@ -873,12 +903,15 @@ git commit -m "seatview: Chair-cloud analysis and model-to-SeatView frame for KS
   "name": "KSPO DOME (올림픽 체조경기장)",
   "credit": "3D 모델: 한국체육산업개발·한국문화정보원 (공공누리 제1유형)",
   "stage": { "size": [20, 1.5, 12] },
+  "seatMaterials": ["chair_orange", "yellow_chair__1", "yellow_chair__3", "red_charir"],
   "tiers": [ { "hMin": -0.5, "hMax": 6.0 }, { "hMin": 6.0, "hMax": 30.0 } ],
   "arcs": [
-    { "id": "5", "label": "1층 5구역", "tier": 0, "angleStart": -40.0, "angleEnd": -29.0, "expected": 292 }
+    { "id": "1", "label": "1층 1구역", "tier": 0, "angleStart": -110.0, "angleEnd": -97.0, "expected": 282, "material": "yellow_chair__1" },
+    { "id": "5", "label": "1층 5구역", "tier": 0, "angleStart": -40.0, "angleEnd": -29.0, "expected": 292, "like": "4" }
   ],
   "explicit": [
-    { "id": "BOX-1", "label": "Box객석 1", "tier": 1, "angleStart": 60.0, "angleEnd": 66.0, "rMin": 55.0, "expected": 14 }
+    { "id": "BOX-1", "label": "Box객석 1", "tier": 1, "angleStart": 60.0, "angleEnd": 66.0, "material": "red_charir", "expected": 14 },
+    { "id": "WHEEL", "label": "장애인석", "tier": 0, "angleStart": -60.0, "angleEnd": 60.0, "material": "yellow_chair__3", "expected": 84 }
   ],
   "floor": [
     { "id": "FLOOR-D", "label": "플로어 D (공연별 상이)", "x": [-18, -6], "z": [10, 34] },
@@ -888,7 +921,7 @@ git commit -m "seatview: Chair-cloud analysis and model-to-SeatView frame for KS
 }
 ```
 
-`angleStart/End`는 SeatView 각도(0° = 무대 정면, 오른쪽 +). `tier`는 `tiers` 배열 인덱스(높이 범위로 의자를 고른다). `rMin`(선택)은 같은 각도 범위 안쪽의 다른 층 의자를 빼기 위한 최소 반경.
+`angleStart/End`는 SeatView 각도(0° = 무대 정면, 오른쪽 +). `tier`는 `tiers` 배열 인덱스(높이 범위로 의자를 고른다). `rMin`/`rMax`(선택)는 같은 각도 범위의 다른 고리 의자를 빼기 위한 반경 한계. `material`(선택)은 그 재질의 의자만 고른다. `like`(선택)는 의자가 없는 구역을 본뜰 구역 id(같은 목록에서 먼저 나와야 한다). `seatMaterials`에 없는 재질(`chair_1` 팔걸이)은 처음부터 버린다.
 
 - [ ] **Step 1: 실패하는 테스트** — `tests/test_fit_sections.py`. 합성 arc 점군을 만들어 파라미터가 복원되는지 본다.
 
@@ -933,6 +966,17 @@ class FitTest(unittest.TestCase):
         P = fs.place_arc(sec)
         np.testing.assert_allclose(P[0], [30.5 * np.sin(np.radians(22.5)), 2.0, 40 + 30.5 * np.cos(np.radians(22.5))], atol=1e-9)
 
+    def test_template_section_copies_rows_and_splits_expected(self):
+        base = {'id': '4', 'label': '1층 4구역', 'shape': {'type': 'arc', 'center': [0, 40], 'radiusStart': 30.0, 'angleStart': -60.0, 'angleEnd': -50.0},
+                'rows': 4, 'rowDepth': 0.9, 'riser': 0.4, 'baseHeight': 1.5, 'seatsPerRow': [20, 21, 22, 23]}
+        sec = fs.template_section({'id': '5', 'label': '1층 5구역', 'angleStart': -49.0, 'angleEnd': -39.0, 'expected': 90}, base)
+        self.assertEqual(sec['id'], '5')
+        self.assertEqual(sec['rows'], 4)
+        self.assertEqual(sec['seatsPerRow'], [22, 22, 23, 23])       # 90 = 22*4 + 2, 나머지는 뒷열부터
+        self.assertEqual(sec['shape']['angleStart'], -49.0)
+        self.assertEqual(sec['shape']['radiusStart'], 30.0)
+        self.assertEqual(base['shape']['angleStart'], -60.0)          # 원본은 그대로
+
     def test_explicit_rows_are_front_to_back_and_left_to_right(self):
         pts = np.array([[1.0, 5.0, 60.0], [-1.0, 5.0, 60.0], [0.0, 5.4, 61.0]])   # 앞열 2석(각도 순), 뒷열 1석
         sec = fs.explicit_section({'id': 'BOX-1', 'label': 'Box객석 1'}, pts, [0.0, 40.0])
@@ -955,7 +999,7 @@ import numpy as np
 import frame as fr
 from analyze_chairs import clusters_1d, ROW_GAP
 
-def select(pts_sv, center, cfg, tiers):
+def select(pts_sv, mats, center, cfg, tiers):
     h = pts_sv[:, 1]
     t = tiers[cfg['tier']]
     ang = fr.angle_deg(pts_sv, center)
@@ -963,7 +1007,17 @@ def select(pts_sv, center, cfg, tiers):
     m = (h >= t['hMin']) & (h < t['hMax']) & (ang >= cfg['angleStart']) & (ang < cfg['angleEnd'])
     if 'rMin' in cfg: m &= r >= cfg['rMin']
     if 'rMax' in cfg: m &= r < cfg['rMax']
+    if 'material' in cfg: m &= mats == cfg['material']
     return pts_sv[m], r[m], ang[m]
+
+def template_section(cfg, base):
+    """의자가 없는 구역: base(피팅된 구역)의 열 구조를 복사하고 expected를 열에 고르게 나눈다. 나머지는 뒷열부터 1석씩."""
+    rows = base['rows']; exp = int(cfg['expected'])
+    per = [exp // rows] * rows
+    for i in range(exp - sum(per)):
+        per[rows - 1 - i] += 1
+    return {**base, 'id': cfg['id'], 'label': cfg['label'], 'seatsPerRow': per if len(set(per)) > 1 else per[0],
+            'shape': {**base['shape'], 'angleStart': cfg['angleStart'], 'angleEnd': cfg['angleEnd']}}
 
 def fit_arc(cfg, pts, center):
     """구역의 의자들로 arc 파라미터를 맞춘다. pts: (N,3) SeatView 좌표."""
@@ -1035,24 +1089,32 @@ def floor_section(cfg):
 def run(work, sections_path, out_path):
     cfg = json.load(open(sections_path))
     f = fr.load_frame(work)
-    pts = fr.apply_frame(f, fr.load_chairs(work))
+    P, mats = fr.load_chairs_with_materials(work)
+    keep = np.isin(mats, cfg['seatMaterials'])
+    pts, mats = fr.apply_frame(f, P[keep]), mats[keep]
     center = [0.0, f['stage_radius_m']]
     sections, lines = [], []
+    fitted = {}
     lines.append(f'{"section":10} {"count":>6} {"expect":>6} {"diff%":>6} {"meanErr":>8} {"maxErr":>7}  rows')
     bad = 0
     for c in cfg['arcs']:
-        sel, _, _ = select(pts, center, c, cfg['tiers'])
+        if 'like' in c:
+            sec = template_section(c, fitted[c['like']])
+            sections.append(sec); fitted[sec['id']] = sec
+            lines.append(f'{c["id"]:10} {c["expected"]:6d} {c["expected"]:6d} {0.0:6.1f} {"template":>8} {c["like"]:>7}  {sec["rows"]}')
+            continue
+        sel, _, _ = select(pts, mats, center, c, cfg['tiers'])
         if sel.shape[0] == 0:
             lines.append(f'{c["id"]:10} NO CHAIRS'); bad += 1; continue
         sec, rep = fit_arc(c, sel, center)
-        sections.append(sec)
+        sections.append(sec); fitted[sec['id']] = sec
         exp = rep['expected'] or rep['count']
         diff = (rep['count'] - exp) / exp * 100
         flag = '' if abs(diff) <= 5 and rep['meanErr'] <= 0.3 and rep['maxErr'] <= 1.0 else '  <-- CHECK'
         if flag: bad += 1
         lines.append(f'{c["id"]:10} {rep["count"]:6d} {exp:6d} {diff:6.1f} {rep["meanErr"]:8.3f} {rep["maxErr"]:7.3f}  {sec["rows"]}{flag}')
     for c in cfg['explicit']:
-        sel, _, _ = select(pts, center, c, cfg['tiers'])
+        sel, _, _ = select(pts, mats, center, c, cfg['tiers'])
         sec = explicit_section(c, sel, center)
         sections.append(sec)
         exp = c.get('expected', len(sec['seats']))
@@ -1083,16 +1145,18 @@ if __name__ == '__main__':
     run(sys.argv[1], sys.argv[2], sys.argv[3])
 ```
 
-- [ ] **Step 4: 통과 확인** — `$BPY -m unittest tests.test_fit_sections -v` → 3개 PASS.
+- [ ] **Step 4: 통과 확인** — `$BPY -m unittest tests.test_fit_sections -v` → 4개 PASS.
 
 - [ ] **Step 5: `sections.json` 작성** — Task 4의 `work/analyze-seatview.txt`(블록별 각도 범위·의자 수·열 수)와 좌석배치도를 대조해 각 블록에 구역 번호를 붙인다. 규칙:
 
 - 좌석배치도 번호는 위에서 시작해 시계 방향으로 는다. SeatView 각도도 시계 방향(+)으로 늘어난다(무대를 보고 오른쪽 +). 5~11구역(무대 정면)이 각도 0° 근처에 있고 번호가 늘수록 각도가 커진다(5 → 11이 −40° → +40° 정도). 1~4는 −90° 근처(왼쪽), 12~15는 +90° 근처(오른쪽). 2·3층은 23부터 시계 방향으로 52까지.
 - 각 arc 항목의 `angleStart/End`는 보고서의 블록 경계(통로 중앙). `expected`는 좌석배치도 표의 값(예: 1~4: 282, 5~11: 292, 12~15: 282, 23: 417, 24: 270, 25: 236, 26: 217, 27: 248, 28: 247, 29: 244, 30: 259, 31: 306, 32: 326, 33: 250, 34: 245, 35: 326, 36: 306, 37: 269, 38: 241, 39: 248, 40: 248, 41: 219, 42: 244, 43: 277, 44: 288, 45: 329, 46: 221, 47: 206, 48: 116, 49: 104, 50: 176, 51: 160, 52: 233).
+- 1층 1~4·12~15는 `material: "yellow_chair__1"`로 피팅한다(모델에 정확히 8×282석이 있다). 1층 5~11은 모델에서 접혀 있으므로 `like`로 본뜬다: 5·6·7은 `"like": "4"`(같은 쪽 이웃), 9·10·11은 `"like": "12"`, 8은 `"like": "4"`. 각도 범위는 좌석배치도상 5~11이 -45°..45° 사이를 7등분한 값에서 시작해, 12·13 사이 통로 각도와 대칭이 되게 맞춘다.
+- 2·3층은 `chair_orange` 블록이 있는 구역만 피팅하고, 의자가 없는 구역은 같은 층의 가장 가까운 피팅된 구역을 `like`로 본뜬다. 보고서 블록 표의 `chair_orange=` 개수가 도면 좌석 수의 절반 이하인 블록은 부분 모델이므로 `like`로 처리한다.
 - 16~22구역은 넣지 않는다(무대 자리). 모델에 그 의자가 있어도 무시한다.
 - 한 블록에 두 구역이 붙어 있으면(통로가 좁아 안 갈라진 경우) `expected` 좌석 수 비율로 각도를 나눠 두 항목을 만든다.
 - 2층과 3층이 같은 각도에서 반경만 다르면 `tiers`를 세 개로 나누거나 `rMin/rMax`를 쓴다.
-- Box객석 1~8(14, 12, 17, 10, 10, 19, 21, 12석)과 장애인석(84석, 1층 5~11구역 앞 난간을 따라 한 줄)은 `explicit`에. 장애인석은 각도 범위가 넓으므로 `rMax`로 1층 첫 열보다 안쪽만 고른다.
+- Box객석 1~8(14, 12, 17, 10, 10, 19, 21, 12석)은 `material: "red_charir"`, 장애인석(84석, 1층 5~11구역 앞 난간을 따라 한 줄)은 `material: "yellow_chair__3"`으로 `explicit`에 넣는다. Box객석은 `red_charir` 블록 8개의 각도 범위를 그대로 쓴다.
 - `floor`는 아레나 바닥 크기에 맞춘다: 1층 첫 열 반경(보고서 tier 0 최소 r)을 R0라 할 때 `z` 범위는 `[8, R + R0 - 3]`, 블록 폭은 각 12 m, 사이 1 m.
 
 - [ ] **Step 6: 피팅 실행과 반복**
