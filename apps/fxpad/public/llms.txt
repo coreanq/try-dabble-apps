@@ -1,0 +1,40 @@
+# Fxpad / 환율패드
+
+> An ad-free, offline-first currency converter for travelers. Sync rates once
+> from Frankfurter (European Central Bank reference rates), keep them on this
+> device, and convert on the plane or without roaming. JPY, KRW, USD, EUR, CNY
+> and 25 more.
+
+This is a Progressive Web App (PWA) hosted at https://fxpad.try-dabble.com/
+The rates snapshot and your last amount / currency pair stay in this browser on
+this device. No accounts, no uploads, no server storage, no ads, no in-app
+purchases.
+
+This is NOT a bank, a remittance service or a live trading feed. The rates are
+daily ECB reference rates, so a bank or exchange counter will quote something
+different. It is a pocket calculator that keeps working when the network does
+not.
+
+## Pages
+
+- [Home](https://fxpad.try-dabble.com/): The converter
+- [Privacy](https://fxpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://fxpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/fxpad): How-to on try-dabble.com
+
+## Features
+
+- One tap "Refresh rates" pulls https://api.frankfurter.app/latest (no API key)
+- Rates persist in localStorage (fxpad:rates:v1) and convert fully offline
+- Online / Offline status, "using cached rates" note, last-updated time and rates date
+- Amount, From / To pickers with flags and searchable names, Swap button
+- Converted result plus the unit rate in both directions (1 JPY = ... KRW)
+- Traveler defaults favor JPY; Japanese readers start from JPY
+- Text size A / A+ / A++
+- Clear error state when the fetch fails and nothing is cached
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

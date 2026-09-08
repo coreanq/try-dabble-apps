@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>환율패드</title>
+  <meta name="description" content="광고 없는 오프라인 환율 계산기. 환율을 한 번 받아 두면 비행기 안, 로밍 없는 곳에서도 그대로 환산합니다. JPY 포함 30여 통화, 로그인 없음, 무료. 데이터는 이 기기에만." />
+  <meta name="theme-color" content="#eaf6f1" />
+  <meta name="application-name" content="환율패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="환율패드" />
+  <link rel="canonical" href="https://fxpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://fxpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://fxpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://fxpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://fxpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://fxpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Fxpad" />
+  <meta property="og:url" content="https://fxpad.try-dabble.com/" />
+  <meta property="og:title" content="환율패드" />
+  <meta property="og:description" content="광고 없는 오프라인 환율. 받아 두고, 비행기 안에서도 환산." />
+  <meta property="og:image" content="https://fxpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="환율패드" />
+  <meta name="twitter:description" content="광고 없는 오프라인 환율. 받아 두고, 비행기 안에서도 환산." />
+  <meta name="twitter:image" content="https://fxpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://fxpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://fxpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://fxpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .fx-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+    No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="fx-app">
+      <p class="fx-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="fx-masthead">
+        <div class="fx-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="fx-mark">
+            <rect x="8" y="12" width="48" height="40" rx="8" fill="#1f8a6b"/>
+            <rect x="12" y="16" width="40" height="32" rx="6" fill="#eaf6f1"/>
+            <path d="M20 40 L28 30 L34 35 L44 24" fill="none" stroke="#1f8a6b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M39 24 h5 v5" fill="none" stroke="#1f8a6b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="50" cy="14" r="8" fill="#4ea3d8"/>
+            <path d="M46.5 14.5 l2.2 -3.5 l3.8 2.1 l-1.5 3.9" fill="none" stroke="#f7fbfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1 id="brand-title">환율패드</h1>
+        </div>
+        <p class="fx-tagline">광고 없는 오프라인 환율. 받아 두고, 비행기 안에서도 환산.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

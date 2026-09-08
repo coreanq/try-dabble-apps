@@ -1,0 +1,666 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Fxpad / 환율패드 — a window seat at cruising altitude.
+  Cream paper below, a wash of sky along the top, mint for the money. One big
+  amount you can read across the aisle, two currency chips with flags, and a
+  swap between them. shadcn is the kit, not the look: card, dialog and button
+  are re-dressed as a boarding pass, a fold-out menu and a soft pill. Light on
+  purpose: never a darkroom, never a stage, never #111, never a shelf.
+*/
+
+@theme {
+  --color-sky: #eaf6f1;
+  --color-sky-2: #d9eef7;
+  --color-cream: #fffdf8;
+  --color-cream-2: #f6f1e6;
+  --color-ink: #17303a;
+  --color-ink-muted: #587079;
+  --color-line: #cfe1da;
+  --color-line-2: #b9d2c9;
+  --color-mint: #1f8a6b;
+  --color-mint-soft: #d7f0e6;
+  --color-mint-deep: #146b52;
+  --color-azure: #4ea3d8;
+  --color-azure-soft: #e1f1fa;
+  --color-amber: #f2c14e;
+  --color-amber-ink: #3b2a05;
+  --color-danger: #b8433a;
+  --color-danger-soft: #f7dedb;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-figures);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-display: "Avenir Next", "Nunito", "Segoe UI Variable Display", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-figures: ui-rounded, "SF Pro Rounded", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --background: #eaf6f1;
+  --foreground: #17303a;
+  --card: #fffdf8;
+  --card-foreground: #17303a;
+  --popover: #fffdf8;
+  --popover-foreground: #17303a;
+  --primary: #1f8a6b;
+  --primary-foreground: #f3fbf7;
+  --secondary: #d9eef7;
+  --secondary-foreground: #17303a;
+  --muted: #e6f0ec;
+  --muted-foreground: #587079;
+  --accent: #d7f0e6;
+  --accent-foreground: #146b52;
+  --destructive: #b8433a;
+  --border: #cfe1da;
+  --input: #cfe1da;
+  --ring: #1f8a6b;
+
+  --radius: 0.9rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  /* A / A+ / A++: everything inside .fx-app is sized in em off this. */
+  --fx-scale: 1;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Sky at the top of the window, cream cabin light below. */
+    background-color: #eaf6f1;
+    background-image:
+      linear-gradient(180deg, rgba(78, 163, 216, 0.22) 0%, rgba(78, 163, 216, 0) 26%),
+      radial-gradient(120% 60% at 50% -10%, rgba(255, 255, 255, 0.85), transparent 60%),
+      linear-gradient(180deg, #eaf6f1 0%, #eef5ee 55%, #f6f1e6 100%);
+    background-attachment: fixed;
+  }
+
+  a {
+    color: var(--color-mint-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Every control: 16px so iOS never zooms, and no double-tap zoom delay. */
+  input,
+  select,
+  button,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mint);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .fx-app {
+    max-width: 30rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.6rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: calc(1rem * var(--fx-scale));
+  }
+  .fx-app[data-size="lg"] {
+    --fx-scale: 1.12;
+  }
+  .fx-app[data-size="xl"] {
+    --fx-scale: 1.28;
+  }
+
+  /* Luggage tag: the amber local-only banner. */
+  .fx-notice {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font-size: 0.78em;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: var(--color-amber);
+    border-radius: 6px 6px 12px 12px;
+    box-shadow: 0 6px 16px rgba(23, 48, 58, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Window frame header: white haze with a mint keyline underneath. */
+  .fx-masthead {
+    margin: 0 -0.85rem;
+    padding: 0.55rem 0.85rem 0.7rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.15));
+    border-bottom: 1px solid var(--color-line);
+    position: relative;
+  }
+  .fx-masthead::after {
+    content: "";
+    position: absolute;
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-mint), var(--color-azure) 55%, transparent 90%);
+    border-radius: 2px;
+  }
+  .fx-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+  }
+  .fx-mark {
+    display: block;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex: 0 0 auto;
+  }
+
+  /* Set by id so the no-JS shell in index.html and the mounted app match. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.45em;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .fx-tagline {
+    margin: 0.3rem 0 0;
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: var(--color-ink-muted);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .fx-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-2);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.1;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  }
+
+  /* Boarding pass: the card. Cream, soft cool shadow, a perforation on top. */
+  .fx-pass {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: var(--color-cream);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 10px 24px rgba(23, 48, 58, 0.08);
+  }
+
+  /* Status row: online dot + source note + updated time, wraps at 390px. */
+  .fx-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.6rem;
+    font-size: 0.78em;
+    color: var(--color-ink-muted);
+    min-width: 0;
+  }
+  .fx-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.18em 0.65em;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-2);
+    background: rgba(255, 255, 255, 0.75);
+    font-weight: 700;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  .fx-pill::before {
+    content: "";
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    background: var(--color-ink-muted);
+    flex: 0 0 auto;
+  }
+  .fx-pill-online::before {
+    background: var(--color-mint);
+    box-shadow: 0 0 0 3px rgba(31, 138, 107, 0.18);
+  }
+  .fx-pill-offline::before {
+    background: var(--color-amber);
+    box-shadow: 0 0 0 3px rgba(242, 193, 78, 0.25);
+  }
+  .fx-source {
+    font-weight: 700;
+    color: var(--color-mint-deep);
+  }
+  .fx-source-cached {
+    color: var(--color-ink-muted);
+  }
+  .fx-updated {
+    font-family: var(--stack-figures);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The amount: the biggest thing on the pass. */
+  .fx-field-label {
+    display: block;
+    font-size: 0.76em;
+    font-weight: 800;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .fx-amount {
+    width: 100%;
+    min-width: 0;
+    background: #ffffff;
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-line-2);
+    border-radius: 14px;
+    padding: 0.45em 0.6em;
+    font-family: var(--stack-figures);
+    font-size: 2em;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(23, 48, 58, 0.06);
+  }
+  .fx-amount::placeholder {
+    color: #a7b7bd;
+    font-weight: 600;
+  }
+  .fx-amount:focus {
+    border-color: var(--color-mint);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(31, 138, 107, 0.18);
+  }
+
+  /* From / swap / To: two chips with a round swap button between. */
+  .fx-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: end;
+    gap: 0.45rem;
+  }
+  .fx-chip {
+    width: 100%;
+    min-width: 0;
+    min-height: 3.6em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em 0.7em;
+    border-radius: 14px;
+    border: 1.5px solid var(--color-line-2);
+    background: linear-gradient(180deg, #ffffff 0%, #f2faf6 100%);
+    color: var(--color-ink);
+    text-align: left;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(23, 48, 58, 0.06);
+    transition:
+      border-color 120ms ease,
+      transform 90ms ease;
+  }
+  .fx-chip:active {
+    transform: translateY(1px);
+  }
+  .fx-chip-to {
+    border-color: rgba(31, 138, 107, 0.55);
+    background: linear-gradient(180deg, #eef9f4 0%, var(--color-mint-soft) 100%);
+  }
+  .fx-flag {
+    font-size: 1.55em;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+  .fx-chip-text {
+    min-width: 0;
+    display: grid;
+  }
+  .fx-code {
+    font-family: var(--stack-figures);
+    font-size: 1.15em;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+  }
+  .fx-name {
+    font-size: 0.72em;
+    line-height: 1.25;
+    color: var(--color-ink-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .fx-swap {
+    flex: 0 0 auto;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-line-2);
+    background: var(--color-cream);
+    color: var(--color-mint-deep);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(23, 48, 58, 0.08);
+    margin-bottom: 0.3em;
+  }
+  .fx-swap:active {
+    transform: translateY(1px) rotate(180deg);
+  }
+
+  /* The result: mint stripe, big figure, unit rates in small figures. */
+  .fx-result {
+    border-radius: 14px;
+    border: 1px solid rgba(31, 138, 107, 0.4);
+    background: linear-gradient(180deg, #e9f7f0 0%, #d7f0e6 100%);
+    padding: 0.7em 0.85em;
+    display: grid;
+    gap: 0.2em;
+    min-width: 0;
+  }
+  .fx-result-label {
+    font-size: 0.74em;
+    font-weight: 800;
+    color: var(--color-mint-deep);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .fx-result-value {
+    margin: 0;
+    font-family: var(--stack-figures);
+    font-size: 2em;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .fx-result-code {
+    font-size: 0.5em;
+    font-weight: 700;
+    color: var(--color-mint-deep);
+    margin-left: 0.3em;
+  }
+  .fx-unit {
+    margin: 0;
+    font-family: var(--stack-figures);
+    font-size: 0.86em;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .fx-hint {
+    margin: 0;
+    font-size: 0.86em;
+    color: var(--color-ink-muted);
+  }
+
+  /* Error card: when the fetch failed and nothing is cached. */
+  .fx-error {
+    border-radius: 14px;
+    border: 1px solid rgba(184, 67, 58, 0.45);
+    background: var(--color-danger-soft);
+    padding: 0.8em 0.9em;
+    display: grid;
+    gap: 0.4em;
+    color: var(--color-danger);
+  }
+  .fx-error-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.05em;
+    font-weight: 800;
+  }
+  .fx-error-body {
+    margin: 0;
+    font-size: 0.86em;
+    line-height: 1.4;
+    color: #7a2f29;
+  }
+
+  /* Refresh: a full-width mint pill under the status row. */
+  .fx-refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+    width: 100%;
+    min-height: 3em;
+    border-radius: 14px;
+    border: 1px solid rgba(20, 107, 82, 0.4);
+    background: var(--color-mint);
+    color: var(--color-primary-foreground);
+    font-size: 1em;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 var(--color-mint-deep);
+  }
+  .fx-refresh:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  .fx-refresh:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  /* A / A+ / A++ */
+  .fx-sizes {
+    display: inline-flex;
+    border: 1px solid var(--color-line-2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+    overflow: hidden;
+  }
+  .fx-size {
+    min-width: 2.6rem;
+    padding: 0.3rem 0.55rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--stack-figures);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .fx-size[aria-pressed="true"] {
+    background: var(--color-mint);
+    color: var(--color-primary-foreground);
+  }
+
+  /* Promise chips: the fail-fix line, rendered as a wrap of small pills. */
+  .fx-promise {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-2);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--color-ink-muted);
+    padding: 0.18em 0.6em;
+    font-size: 0.74em;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  /* Picker list inside the dialog. */
+  .fx-search {
+    width: 100%;
+    min-width: 0;
+    background: #ffffff;
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-2);
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.2;
+    touch-action: manipulation;
+  }
+  .fx-search::placeholder {
+    color: #a7b7bd;
+    font-weight: 500;
+  }
+  .fx-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.3rem;
+    max-height: min(56vh, 26rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .fx-option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3.2rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: #ffffff;
+    color: var(--color-ink);
+    text-align: left;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .fx-option[aria-selected="true"] {
+    border-color: var(--color-mint);
+    background: var(--color-mint-soft);
+  }
+  .fx-option .fx-code {
+    font-size: 1.05rem;
+  }
+  .fx-option .fx-name {
+    font-size: 0.8rem;
+    white-space: normal;
+  }
+}
+
+@media (min-width: 520px) {
+  .fx-app {
+    max-width: 32rem;
+    padding-top: 1rem;
+  }
+}
+
+/* 390px and below: nothing in the header may collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.25em;
+  }
+  .fx-select {
+    max-width: 6.6rem;
+    padding: 0.34rem 0.6rem;
+  }
+  .fx-amount,
+  .fx-result-value {
+    font-size: 1.75em;
+  }
+}
