@@ -1,0 +1,44 @@
+# Poseguide / 포즈가이드
+
+> A free, no-install pose coach for phone photos. Pick a pose from the
+> library, a silhouette floats over the live camera, and an on-device match
+> score plus a voice coach line you up. Front and rear camera, Stranger Mode
+> for handing the phone to a passer-by, captures saved to this device only.
+
+This is a Progressive Web App (PWA) hosted at https://poseguide.try-dabble.com/
+Preferences (camera side, overlay opacity, voice, composition guide, filters)
+and capture metadata stay in this browser on this device. Photos are saved
+through the browser's download path. No accounts, no uploads, no server
+storage, no ads, no in-app purchases, no subscription.
+
+Pose Match runs a small pose-estimation model inside the browser (loaded only
+when you turn Match on). Nothing is sent anywhere. There is deliberately no
+cloud AI coach, no scene detection and no two-phone sync.
+
+## Pages
+
+- [Home](https://poseguide.try-dabble.com/): The pose coach
+- [Privacy](https://poseguide.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://poseguide.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/poseguide): How-to on try-dabble.com
+
+## Features
+
+- Pose library: Solo, Couple, Travel, Grad, Casual, Formal; Everyone / Female / Male;
+  Seated / wheelchair variants; search; 30+ core poses, all free, nothing locked
+- Silhouette (ghost) overlay on the live camera with an opacity slider
+- Front / rear camera toggle; "Allow camera" and "Retry camera" recovery with
+  settings help when permission is denied or the preview is black
+- Pose Match: live 0–100% score against the selected pose, skeleton tinted by accuracy
+- Voice Coach: step-by-step tips spoken in Korean, English, Japanese or Chinese
+- Auto-capture toggle, OFF by default, stays off until you turn it on
+- Stranger Mode: rear camera, simplified screen, one big 3-shot burst button
+- Random / next / previous pose; composition guide (thirds / centre)
+- Hand-position tip for every pose
+- Captures download to this device; daily streak counter
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

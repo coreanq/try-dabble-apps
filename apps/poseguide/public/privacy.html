@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Poseguide</title>
+  <meta name="description" content="Privacy policy for Poseguide. Camera frames, captures and preferences stay on this device." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <style>
+    :root { color-scheme: light; --bg:#fff7f5; --fg:#3b1f27; --muted:#7a5560; --card:#fffdfb; --accent:#e11d48; --line:#f3d3d8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    a { color: var(--accent); }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    p, li { color: var(--muted); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="/">← Poseguide</a></p>
+    <h1>Privacy Policy</h1>
+    <div class="card">
+      <p>Poseguide is local-first. The camera preview is shown on your screen and never uploaded. When you tap Capture, the photo is handed to your browser's download path on this device; the app keeps only a short list of what you captured (pose id and time) in this browser (<strong>localStorage</strong> key <code>poseguide:recent:v1</code>), never the picture itself.</p>
+      <p>Your preferences — camera side, silhouette opacity, Voice Coach, auto-capture, composition guide, filters, chosen pose — are stored in <code>poseguide:prefs:v1</code>, the daily streak in <code>poseguide:streak:v1</code>, and the language in <code>poseguide:lang</code> plus the shared <code>td_lang</code> cookie on try-dabble.com.</p>
+      <p><strong>Pose Match</strong> runs a small pose-estimation model inside your browser. It is downloaded as an ordinary static file when you first turn Match on and then runs entirely on your device. No frames, keypoints or scores are sent anywhere. There is no cloud AI, no scene detection and no server-side processing of any kind.</p>
+      <p><strong>Voice Coach</strong> uses the speech voices built into your browser or phone. Some browsers fetch those voices from the platform vendor; the app itself sends nothing.</p>
+      <p><strong>Advertising:</strong> This app has no ads. It loads no advertising scripts and sets no third-party advertising cookies. The only cookie is <code>td_lang</code>, which remembers your language across try-dabble.com apps.</p>
+      <p>There are no accounts, no sign-in, no subscription and no in-app purchases. Clear site data in your browser settings to erase the preferences and capture list.</p>
+      <p>Last updated: 2026-09-10</p>
+    </div>
+  </main>
+</body>
+</html>

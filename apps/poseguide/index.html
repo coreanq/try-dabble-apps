@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>포즈가이드</title>
+  <meta name="description" content="설치 없는 포즈 코치. 포즈 라이브러리에서 고르면 카메라 위에 실루엣이 겹쳐지고, 매치 점수와 음성 팁이 자세를 잡아 줍니다. 전·후면 카메라, 촬영은 이 기기에만 저장. 핵심 포즈 전부 무료, 구독 없음, 계정 없음." />
+  <meta name="theme-color" content="#fff7f5" />
+  <meta name="application-name" content="포즈가이드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="포즈가이드" />
+  <link rel="canonical" href="https://poseguide.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://poseguide.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://poseguide.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://poseguide.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://poseguide.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://poseguide.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Poseguide" />
+  <meta property="og:url" content="https://poseguide.try-dabble.com/" />
+  <meta property="og:title" content="포즈가이드" />
+  <meta property="og:description" content="설치 없는 포즈 코치. 포즈 라이브러리, 실루엣 오버레이, 매치 점수, 음성 팁, 촬영. 전·후면. 핵심 포즈 무료. 계정 없음." />
+  <meta property="og:image" content="https://poseguide.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="포즈가이드" />
+  <meta name="twitter:description" content="설치 없는 포즈 코치. 포즈 라이브러리, 실루엣 오버레이, 매치 점수, 음성 팁, 촬영. 전·후면. 핵심 포즈 무료. 계정 없음." />
+  <meta name="twitter:image" content="https://poseguide.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://poseguide.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://poseguide.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://poseguide.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .pg-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+    No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="pg-app">
+      <p class="pg-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다. 클라우드 AI·장면 인식 없음.</p>
+      <header class="pg-masthead">
+        <div class="pg-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="pg-mark">
+            <rect x="6" y="10" width="52" height="44" rx="10" fill="#e11d48"/>
+            <rect x="10" y="14" width="44" height="36" rx="7" fill="#fff7f5"/>
+            <path d="M14 22 v-4 h4 M46 18 h4 v4 M14 42 v4 h4 M46 46 h4 v-4" fill="none" stroke="#e11d48" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="32" cy="24" r="4.2" fill="#e11d48"/>
+            <path d="M32 29 v9 M32 31 l-7 5 M32 31 l7 -5 M32 38 l-5 8 M32 38 l5 8" fill="none" stroke="#e11d48" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1 id="brand-title">포즈가이드</h1>
+        </div>
+        <p class="pg-tagline">설치 없는 포즈 코치. 포즈 라이브러리, 실루엣 오버레이, 매치 점수, 음성 팁, 촬영. 전·후면. 핵심 포즈 무료. 계정 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
