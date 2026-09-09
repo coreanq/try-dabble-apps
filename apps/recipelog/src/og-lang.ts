@@ -15,6 +15,7 @@
  * Ad-free on purpose: nothing here injects AdSense. /ads.txt and /app-ads.txt
  * are still served so the publisher id is consistent across the property.
  */
+import { NAVER_META_HTML } from '../../../packages/seo/naver';
 import { checkExtractUrl, extractRecipe } from "./lib/extract-parse.ts";
 
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
@@ -323,6 +324,12 @@ export default {
     // no matter what the client bundle does to the shell. Link only: the app
     // ships no in-page feedback panel of its own.
     return new HTMLRewriter()
+      .on('head', {
+        element(el) {
+          // Shared Naver Search Advisor verification (packages/seo).
+          el.append(NAVER_META_HTML, { html: true });
+        },
+      })
       .on('body', {
         element(el) {
           el.append(

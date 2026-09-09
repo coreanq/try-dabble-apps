@@ -11,6 +11,7 @@
  * /ads.txt and /app-ads.txt answers only keep the try-dabble property
  * consistent across subdomains.
  */
+import { NAVER_META_HTML } from '../../../packages/seo/naver';
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
 const COPY: Record<
@@ -181,6 +182,12 @@ export default {
     // Shared try-dabble feedback widget, appended server-side so it is present
     // no matter what the client bundle does to the shell.
     return new HTMLRewriter()
+      .on('head', {
+        element(el) {
+          // Shared Naver Search Advisor verification (packages/seo).
+          el.append(NAVER_META_HTML, { html: true });
+        },
+      })
       .on('body', {
         element(el) {
           el.append(

@@ -4,6 +4,7 @@
  * appends the shared try-dabble 의견 feedback widget to every HTML response.
  */
 
+import { NAVER_META_HTML } from '../../../packages/seo/naver';
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
 const COPY: Record<
@@ -120,6 +121,12 @@ export default {
     }
 
     return new HTMLRewriter()
+      .on('head', {
+        element(el) {
+          // Shared Naver Search Advisor verification (packages/seo).
+          el.append(NAVER_META_HTML, { html: true });
+        },
+      })
       .on('body', {
         element(el) {
           el.append(

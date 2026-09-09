@@ -5,6 +5,7 @@
  * and every share tag are rewritten here.
  */
 
+import { NAVER_META_HTML } from '../../../packages/seo/naver';
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
 const COPY: Record<
@@ -163,6 +164,12 @@ export default {
     // Shared try-dabble 의견 widget. Appended for every language, including the
     // untouched default, so the feedback button never depends on ?lang=.
     return new HTMLRewriter()
+      .on('head', {
+        element(el) {
+          // Shared Naver Search Advisor verification (packages/seo).
+          el.append(NAVER_META_HTML, { html: true });
+        },
+      })
       .on('body', {
         element(el) {
           el.append(

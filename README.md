@@ -13,12 +13,15 @@ apps/<slug>/          one product app, isolated
   package.json
   public/
 packages/feedback/    shared feedback widget (not an app)
+packages/seo/         shared Naver verification meta (not an app)
 ```
 
 Product apps stay isolated from each other — do not import across `apps/`.
-`packages/` is the exception: it holds shared code, and
+`packages/` is the exception: it holds shared code.
 [`packages/feedback`](packages/feedback) is the source of truth for the widget
 served at `https://try-dabble.com/widget/feedback.js`.
+[`packages/seo`](packages/seo) holds the shared Naver Search Advisor verification
+meta (`naver-site-verification`) every `*.try-dabble.com` app must ship.
 
 Apps load that widget as a CDN script, never as a bundled import, so one deploy
 of [coreanq/try-dabble-main](https://github.com/coreanq/try-dabble-main)

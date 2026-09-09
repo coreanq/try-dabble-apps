@@ -1,0 +1,10 @@
+{
+  "name": "@try-dabble/seo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./naver.ts",
+    "./naver": "./naver.ts"
+  }
+}

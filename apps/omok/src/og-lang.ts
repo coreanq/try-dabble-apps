@@ -1,3 +1,4 @@
+import { NAVER_META_HTML } from '../../../packages/seo/naver';
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
 /**
@@ -127,6 +128,12 @@ export default {
 
     // The 의견 widget rides on every response, localised or not.
     return new HTMLRewriter()
+      .on('head', {
+        element(el) {
+          // Shared Naver Search Advisor verification (packages/seo).
+          el.append(NAVER_META_HTML, { html: true });
+        },
+      })
       .on('body', {
         element(el) {
           el.append(

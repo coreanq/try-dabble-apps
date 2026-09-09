@@ -1,3 +1,4 @@
+import { NAVER_META_HTML } from '../../../packages/seo/naver';
 type Lang = 'ko' | 'en' | 'ja' | 'zh';
 
 const COPY: Record<Lang, { title: string; description: string; locale: string; image: string; localOnly: string }> = {
@@ -103,6 +104,12 @@ export default {
     } // lang rewrite
 
     const withWidget = new HTMLRewriter()
+      .on('head', {
+        element(el) {
+          // Shared Naver Search Advisor verification (packages/seo).
+          el.append(NAVER_META_HTML, { html: true });
+        },
+      })
       .on('body', {
         element(el) {
           el.append(`<script src="https://try-dabble.com/widget/feedback.js" data-app="${SLUG}" defer></script>`, { html: true });
