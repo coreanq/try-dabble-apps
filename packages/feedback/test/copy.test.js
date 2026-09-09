@@ -39,3 +39,24 @@ for (const lang of LANGS) {
 assert.deepStrictEqual(Object.keys(COPY).sort(), [...LANGS].sort(), "unexpected language set");
 
 console.log(`ok - ${LANGS.length} languages x ${KEYS.length} keys`);
+
+
+// Click must open a real new tab. Passing "noopener" as windowFeatures makes
+// window.open return null even on success, which previously forced same-tab.
+assert.ok(
+  /var w = window\.open\(href, "_blank"\);/.test(src),
+  'click handler must call window.open(href, "_blank") without windowFeatures'
+);
+assert.ok(
+  !/window\.open\([^)]*"noopener"/.test(src),
+  'must not pass noopener as a windowFeatures flag (returns null; breaks fallback)'
+);
+assert.ok(
+  /w\.opener = null/.test(src),
+  'must null opener separately after a successful open'
+);
+assert.ok(
+  /if \(w\)[\s\S]*else[\s\S]*location\.href = href/.test(src),
+  'same-tab fallback only when window.open is blocked'
+);
+console.log("ok - click opens _blank with opener-null + blocked fallback");

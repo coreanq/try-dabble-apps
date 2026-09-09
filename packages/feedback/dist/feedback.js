@@ -57,8 +57,15 @@
   btn.type = "button";
   btn.textContent = t.btn;
   btn.addEventListener("click", function () {
-    var w = window.open(href, "_blank", "noopener");
-    if (!w) location.href = href;
+    // Do NOT pass "noopener" as a windowFeatures flag: browsers then return
+    // null even when the tab opened, which made the same-tab fallback always
+    // fire. Null opener separately; only navigate this tab if open was blocked.
+    var w = window.open(href, "_blank");
+    if (w) {
+      try { w.opener = null; } catch (e) {}
+    } else {
+      location.href = href;
+    }
   });
   function mount() {
     root.appendChild(btn);
