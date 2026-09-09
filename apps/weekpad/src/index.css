@@ -1,0 +1,958 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Weekpad / 위크패드 — a fresh page in a weekly planner.
+  Pale mint paper with faint ruled lines, a teal header band like the tab of a
+  planner, white category cards each carrying one progress rail. Numbers are
+  rounded figures you can read at arm's length; overspend turns the rail
+  coral, never red-alarm. shadcn is the kit, not the look: card, dialog and
+  button are re-dressed as planner cards, a bottom sheet and soft pills.
+  Light on purpose: never a darkroom, never #111, never a boarding pass.
+*/
+
+@theme {
+  --color-paper: #f2faf7;
+  --color-paper-2: #e6f4ee;
+  --color-white: #ffffff;
+  --color-ink: #12333a;
+  --color-ink-muted: #527078;
+  --color-line: #cfe6df;
+  --color-line-2: #b5d9cf;
+  --color-teal: #0d9488;
+  --color-teal-deep: #0f766e;
+  --color-teal-soft: #d8f3ec;
+  --color-teal-band: #0f766e;
+  --color-amber: #f2c14e;
+  --color-amber-ink: #3b2a05;
+  --color-coral: #d9534f;
+  --color-coral-soft: #fbe3e1;
+  --color-coral-ink: #8f2a26;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-figures);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-display: "Nunito", "Avenir Next", "Segoe UI Variable Display", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-figures: ui-rounded, "SF Pro Rounded", "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --background: #f2faf7;
+  --foreground: #12333a;
+  --card: #ffffff;
+  --card-foreground: #12333a;
+  --popover: #ffffff;
+  --popover-foreground: #12333a;
+  --primary: #0d9488;
+  --primary-foreground: #f2fbf8;
+  --secondary: #e6f4ee;
+  --secondary-foreground: #12333a;
+  --muted: #e6f4ee;
+  --muted-foreground: #527078;
+  --accent: #d8f3ec;
+  --accent-foreground: #0f766e;
+  --destructive: #d9534f;
+  --border: #cfe6df;
+  --input: #cfe6df;
+  --ring: #0d9488;
+
+  --radius: 0.9rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  /* A / A+ / A++: everything inside .wp-app is sized in em off this. */
+  --wp-scale: 1;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Planner paper: pale mint with faint ruled lines every 2rem. */
+    background-color: #f2faf7;
+    background-image:
+      linear-gradient(180deg, rgba(13, 148, 136, 0.1) 0%, rgba(13, 148, 136, 0) 18%),
+      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(13, 148, 136, 0.07) 31px, rgba(13, 148, 136, 0.07) 32px);
+    background-attachment: fixed;
+  }
+
+  a {
+    color: var(--color-teal-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Every control: 16px so iOS never zooms, and no double-tap zoom delay. */
+  input,
+  select,
+  button,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .wp-app {
+    max-width: 30rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.6rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: calc(1rem * var(--wp-scale));
+  }
+  .wp-app[data-size="lg"] {
+    --wp-scale: 1.12;
+  }
+  .wp-app[data-size="xl"] {
+    --wp-scale: 1.28;
+  }
+
+  /* Sticky note on the first page: the amber local-only banner. */
+  .wp-notice {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font-size: 0.78em;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: var(--color-amber);
+    border-radius: 4px 14px 4px 14px;
+    box-shadow: 0 6px 16px rgba(18, 51, 58, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Planner tab header: a teal band with the brand on it. */
+  .wp-masthead {
+    margin: 0 -0.85rem;
+    padding: 0.6rem 0.85rem 0.75rem;
+    background: linear-gradient(180deg, #0f766e 0%, #0d9488 100%);
+    color: #f2fbf8;
+    border-bottom: 3px solid #a7e6d7;
+    position: relative;
+  }
+  .wp-masthead::before {
+    /* the spiral binding holes along the top */
+    content: "";
+    position: absolute;
+    left: 0.85rem;
+    right: 0.85rem;
+    top: 0.2rem;
+    height: 4px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.55) 1.5px, transparent 2px);
+    background-size: 14px 4px;
+    background-repeat: repeat-x;
+    opacity: 0.8;
+  }
+  .wp-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+    padding-top: 0.3rem;
+  }
+  .wp-mark {
+    display: block;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.15));
+  }
+
+  /* Set by id so the no-JS shell in index.html and the mounted app match. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.45em;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wp-tagline {
+    margin: 0.35rem 0 0;
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: #d8f3ec;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .wp-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-ink);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.1;
+  }
+
+  /* Planner card: white page, thin mint edge, a soft lift. */
+  .wp-card {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-white);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 8px 20px rgba(18, 51, 58, 0.07);
+  }
+
+  .wp-section-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.02em;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+
+  /* Week navigator: arrows on both sides, the range in the middle, the
+     seven days underneath like a calendar strip. */
+  .wp-week-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .wp-week-btn {
+    width: 2.7em;
+    height: 2.7em;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-line-2);
+    background: var(--color-white);
+    color: var(--color-teal-deep);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(18, 51, 58, 0.08);
+  }
+  .wp-week-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  .wp-week-title {
+    min-width: 0;
+    text-align: center;
+    display: grid;
+    gap: 0.1em;
+  }
+  .wp-week-id {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.15em;
+    font-weight: 800;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wp-week-range {
+    margin: 0;
+    font-family: var(--stack-figures);
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .wp-week-tag {
+    display: inline-block;
+    justify-self: center;
+    padding: 0.1em 0.6em;
+    border-radius: 999px;
+    font-size: 0.7em;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: var(--color-teal-soft);
+    color: var(--color-teal-deep);
+  }
+  .wp-week-tag-past {
+    background: var(--color-paper-2);
+    color: var(--color-ink-muted);
+  }
+  .wp-week-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.25rem;
+    margin-top: 0.6rem;
+  }
+  .wp-day {
+    display: grid;
+    justify-items: center;
+    gap: 0.05em;
+    padding: 0.3em 0;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--stack-figures);
+    font-variant-numeric: tabular-nums;
+    min-width: 0;
+  }
+  .wp-day-name {
+    font-size: 0.66em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .wp-day-num {
+    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .wp-day-dot {
+    width: 0.35em;
+    height: 0.35em;
+    border-radius: 50%;
+    background: var(--color-teal);
+    opacity: 0;
+  }
+  .wp-day-has .wp-day-dot {
+    opacity: 1;
+  }
+  .wp-day-today {
+    background: var(--color-teal);
+    border-color: var(--color-teal-deep);
+    color: #d8f3ec;
+  }
+  .wp-day-today .wp-day-num {
+    color: #ffffff;
+  }
+  .wp-day-today .wp-day-dot {
+    background: #ffffff;
+  }
+  .wp-back-btn {
+    justify-self: center;
+    margin-top: 0.5rem;
+  }
+
+  /* Totals: three figures side by side plus one overall rail. */
+  .wp-totals {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+  .wp-total {
+    display: grid;
+    gap: 0.1em;
+    min-width: 0;
+    padding: 0.45em 0.55em;
+    border-radius: 12px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+  }
+  .wp-total-label {
+    font-size: 0.7em;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .wp-total-value {
+    font-family: var(--stack-figures);
+    font-size: 1.05em;
+    font-weight: 800;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+    line-height: 1.2;
+  }
+  .wp-total-over .wp-total-value {
+    color: var(--color-coral);
+  }
+  .wp-total-over {
+    background: var(--color-coral-soft);
+    border-color: rgba(217, 83, 79, 0.35);
+  }
+
+  /* The progress rail: track and fill. Coral once over. */
+  .wp-rail {
+    width: 100%;
+    height: 0.6em;
+    border-radius: 999px;
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .wp-rail-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--color-teal);
+    transition: width 220ms ease;
+  }
+  .wp-rail-fill[data-over="true"] {
+    background: var(--color-coral);
+  }
+
+  /* One category card: name row, rail, figures. */
+  .wp-cat {
+    display: grid;
+    gap: 0.45em;
+    padding: 0.7em 0.8em;
+    border-radius: 14px;
+    border: 1px solid var(--color-line);
+    background: var(--color-white);
+    border-left: 5px solid var(--wp-cat-color, var(--color-teal));
+    min-width: 0;
+  }
+  .wp-cat[data-over="true"] {
+    background: linear-gradient(180deg, #ffffff 0%, #fff4f3 100%);
+  }
+  .wp-cat-head {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    min-width: 0;
+  }
+  .wp-cat-name {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.05em;
+    font-weight: 800;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wp-badge {
+    flex: 0 0 auto;
+    padding: 0.1em 0.55em;
+    border-radius: 999px;
+    font-size: 0.68em;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    background: var(--color-teal-soft);
+    color: var(--color-teal-deep);
+    white-space: nowrap;
+  }
+  .wp-badge-muted {
+    background: var(--color-paper-2);
+    color: var(--color-ink-muted);
+  }
+  .wp-cat-nums {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.2em 0.8em;
+    font-family: var(--stack-figures);
+    font-size: 0.86em;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .wp-cat-nums b {
+    color: var(--color-ink);
+    font-weight: 800;
+  }
+  .wp-remaining {
+    font-family: var(--stack-figures);
+    font-size: 1.15em;
+    font-weight: 800;
+    color: var(--color-teal-deep);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .wp-remaining[data-over="true"] {
+    color: var(--color-coral);
+  }
+  .wp-remaining-label {
+    font-size: 0.7em;
+    font-weight: 700;
+    color: var(--color-ink-muted);
+    margin-right: 0.35em;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* Fields. */
+  .wp-field-label {
+    display: block;
+    font-size: 0.74em;
+    font-weight: 800;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .wp-input,
+  .wp-select-block {
+    width: 100%;
+    min-width: 0;
+    background: #ffffff;
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-line-2);
+    border-radius: 12px;
+    padding: 0.6em 0.75em;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(18, 51, 58, 0.05);
+  }
+  .wp-select-block {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-ink-muted) 50%),
+      linear-gradient(135deg, var(--color-ink-muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.1em) 50%,
+      calc(100% - 0.75em) 50%;
+    background-size: 0.35em 0.35em;
+    background-repeat: no-repeat;
+    padding-right: 2.2em;
+  }
+  .wp-input::placeholder {
+    color: #9fb5ba;
+    font-weight: 500;
+  }
+  .wp-input:focus,
+  .wp-select-block:focus {
+    border-color: var(--color-teal);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.18);
+  }
+  .wp-amount {
+    font-family: var(--stack-figures);
+    font-size: 1.7em;
+    font-weight: 800;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    padding: 0.35em 0.55em;
+  }
+  .wp-amount-wrap {
+    position: relative;
+  }
+  .wp-amount-sym {
+    position: absolute;
+    left: 0.7em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-figures);
+    font-size: 1.1em;
+    font-weight: 800;
+    color: var(--color-teal-deep);
+    pointer-events: none;
+  }
+  .wp-two {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .wp-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Buttons: soft pills. Primary is teal with a deeper shadow line. */
+  .wp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+    min-height: 2.9em;
+    padding: 0.5em 1em;
+    border-radius: 12px;
+    border: 1px solid var(--color-line-2);
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(18, 51, 58, 0.08);
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .wp-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  .wp-btn:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+  .wp-btn-primary {
+    width: 100%;
+    border-color: rgba(15, 118, 110, 0.5);
+    background: var(--color-teal);
+    color: var(--color-primary-foreground);
+    box-shadow: 0 2px 0 var(--color-teal-deep);
+  }
+  .wp-btn-quiet {
+    background: var(--color-paper);
+    color: var(--color-teal-deep);
+  }
+  .wp-btn-danger {
+    border-color: rgba(217, 83, 79, 0.4);
+    background: var(--color-coral-soft);
+    color: var(--color-coral-ink);
+    box-shadow: 0 2px 0 rgba(217, 83, 79, 0.25);
+  }
+  .wp-btn-icon {
+    flex: 0 0 auto;
+    width: 2.4em;
+    height: 2.4em;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--color-ink-muted);
+    background: var(--color-paper);
+  }
+  .wp-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .wp-actions .col-span-2 {
+    grid-column: span 2;
+  }
+
+  /* Expense rows. */
+  .wp-exp-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .wp-exp {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5em 0.7em;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-white);
+    color: var(--color-ink);
+    text-align: left;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .wp-exp:active {
+    background: var(--color-paper);
+  }
+  .wp-exp-date {
+    display: grid;
+    justify-items: center;
+    min-width: 2.4em;
+    padding: 0.2em 0.35em;
+    border-radius: 8px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    font-family: var(--stack-figures);
+    line-height: 1.1;
+  }
+  .wp-exp-date-name {
+    font-size: 0.6em;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+  }
+  .wp-exp-date-num {
+    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .wp-exp-main {
+    min-width: 0;
+    display: grid;
+    gap: 0.05em;
+  }
+  .wp-exp-cat {
+    font-size: 0.92em;
+    font-weight: 800;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+  .wp-exp-swatch {
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background: var(--wp-cat-color, var(--color-teal));
+  }
+  .wp-exp-note {
+    font-size: 0.78em;
+    color: var(--color-ink-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wp-exp-amount {
+    font-family: var(--stack-figures);
+    font-size: 1.02em;
+    font-weight: 800;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Toggle: a checkbox dressed as a switch. */
+  .wp-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8em;
+    padding: 0.55em 0.7em;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .wp-toggle-text {
+    display: grid;
+    gap: 0.1em;
+    min-width: 0;
+  }
+  .wp-toggle-label {
+    font-weight: 800;
+    color: var(--color-ink);
+    font-size: 0.95em;
+  }
+  .wp-toggle-hint {
+    font-size: 0.76em;
+    line-height: 1.35;
+    color: var(--color-ink-muted);
+  }
+  .wp-switch {
+    appearance: none;
+    flex: 0 0 auto;
+    width: 2.8em;
+    height: 1.6em;
+    border-radius: 999px;
+    background: var(--color-line-2);
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+  .wp-switch::after {
+    content: "";
+    position: absolute;
+    top: 0.15em;
+    left: 0.15em;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(18, 51, 58, 0.3);
+    transition: transform 150ms ease;
+  }
+  .wp-switch:checked {
+    background: var(--color-teal);
+  }
+  .wp-switch:checked::after {
+    transform: translateX(1.2em);
+  }
+
+  /* Segmented choices: week start day, A / A+ / A++. */
+  .wp-seg {
+    display: inline-flex;
+    border: 1px solid var(--color-line-2);
+    border-radius: 999px;
+    background: var(--color-white);
+    overflow: hidden;
+  }
+  .wp-seg-btn {
+    min-width: 2.6rem;
+    padding: 0.35rem 0.7rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--stack-figures);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    touch-action: manipulation;
+    white-space: nowrap;
+  }
+  .wp-seg-btn[aria-pressed="true"] {
+    background: var(--color-teal);
+    color: var(--color-primary-foreground);
+  }
+  .wp-setting-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 0.8rem;
+  }
+
+  /* Promise chips: the fail-fix line, rendered as a wrap of small pills. */
+  .wp-promise {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-2);
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--color-ink-muted);
+    padding: 0.18em 0.6em;
+    font-size: 0.74em;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .wp-hint {
+    margin: 0;
+    font-size: 0.82em;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+  .wp-empty {
+    display: grid;
+    gap: 0.3em;
+    padding: 0.9em 0.9em;
+    border-radius: 12px;
+    border: 1.5px dashed var(--color-line-2);
+    background: var(--color-paper);
+    text-align: center;
+  }
+  .wp-empty-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+
+  .wp-sheet-title {
+    font-family: var(--stack-display);
+    font-size: 1.1em;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .wp-error {
+    margin: 0;
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--color-coral-ink);
+  }
+}
+
+@media (min-width: 520px) {
+  .wp-app {
+    max-width: 32rem;
+    padding-top: 1rem;
+  }
+}
+
+/* 390px and below: nothing in the header may collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.25em;
+  }
+  .wp-select {
+    max-width: 6.6rem;
+    padding: 0.34rem 0.6rem;
+  }
+  .wp-amount {
+    font-size: 1.5em;
+  }
+  .wp-total-value {
+    font-size: 0.95em;
+  }
+}

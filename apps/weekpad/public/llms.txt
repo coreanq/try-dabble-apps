@@ -1,0 +1,39 @@
+# Weekpad / 위크패드
+
+> A free, ad-free weekly spending pad with no account. Give each category
+> (groceries, coffee, transit) a small weekly budget, log what you spend, and
+> watch the progress bar and remaining amount. A fresh week starts on its own
+> every Monday (or Sunday) and past weeks stay browsable.
+
+This is a Progressive Web App (PWA) hosted at https://weekpad.try-dabble.com/
+Categories, expenses and preferences stay in this browser on this device. No
+accounts, no bank linking, no uploads, no server storage, no ads, no in-app
+purchases. Export a JSON backup to survive a reinstall or move phones; export
+CSV for a spreadsheet.
+
+This is NOT a monthly budgeting suite, NOT a bank aggregator and NOT a currency
+converter. The currency setting only changes the symbol in front of the numbers.
+
+## Pages
+
+- [Home](https://weekpad.try-dabble.com/): The weekly pad
+- [Privacy](https://weekpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://weekpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/weekpad): How-to on try-dabble.com
+
+## Features
+
+- Weekly planned amount per category; add, edit, archive, delete
+- Quick expense entry: amount, category, optional note, date within the week
+- Progress bar, spent and remaining per category; overspend shown in red
+- Week navigator (previous / this week / next) and an automatic new week on the boundary
+- Recurring categories carry the same weekly budget forward; one-off categories apply to one week
+- Currency symbol preference ($, ₩, ¥, €, and more), display only
+- JSON export / import and CSV export of expenses
+- Text size A / A+ / A++
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

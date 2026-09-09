@@ -1,0 +1,32 @@
+{
+  "name": "위크패드",
+  "short_name": "위크패드",
+  "description": "무료 주간 지출 패드. 카테고리별 미니 예산, 지출 기록, 남은 금액. 매주 자동 리셋. 계정 없음.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f2faf7",
+  "theme_color": "#f2faf7",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
