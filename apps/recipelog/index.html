@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>레시피로그</title>
+  <meta name="description" content="틱톡·인스타·블로그·메일에 흩어진 레시피를 한곳에. 제목, 사진, 조리 시간, 태그, 메모, 재료, 순서를 이 기기에만 저장합니다. URL 붙여넣기로 재료·순서 가져오기, 인분 조절, JSON 백업. 계정 없음, 광고 없음, 무료." />
+  <meta name="theme-color" content="#fbf5ea" />
+  <meta name="application-name" content="레시피로그" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="레시피로그" />
+  <link rel="canonical" href="https://recipelog.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://recipelog.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://recipelog.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://recipelog.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://recipelog.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://recipelog.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Recipelog" />
+  <meta property="og:url" content="https://recipelog.try-dabble.com/" />
+  <meta property="og:title" content="레시피로그" />
+  <meta property="og:description" content="무료 로컬 레시피 보관함. 제목·사진·시간·태그와 메모를 한곳에. 계정 없음." />
+  <meta property="og:image" content="https://recipelog.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="레시피로그" />
+  <meta name="twitter:description" content="무료 로컬 레시피 보관함. 제목·사진·시간·태그와 메모를 한곳에. 계정 없음." />
+  <meta name="twitter:image" content="https://recipelog.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://recipelog.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://recipelog.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://recipelog.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .rl-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+    No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="rl-app">
+      <p class="rl-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="rl-masthead">
+        <div class="rl-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="rl-mark">
+            <rect x="10" y="8" width="44" height="48" rx="8" fill="#c45c26"/>
+            <rect x="15" y="13" width="34" height="38" rx="5" fill="#fffdf8"/>
+            <circle cx="32" cy="27" r="9" fill="#e3ebdf"/>
+            <circle cx="32" cy="27" r="5.5" fill="#c45c26"/>
+            <rect x="21" y="41" width="22" height="2.6" rx="1.3" fill="#7f9a7a"/>
+            <rect x="21" y="46" width="15" height="2.6" rx="1.3" fill="#7f9a7a"/>
+            <rect x="4" y="18" width="6" height="28" rx="3" fill="#7f9a7a"/>
+          </svg>
+          <h1 id="brand-title">레시피로그</h1>
+        </div>
+        <p class="rl-tagline">무료 로컬 레시피 보관함. 제목·사진·시간·태그와 메모를 한곳에. 계정 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

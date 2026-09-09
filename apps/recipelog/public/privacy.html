@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Recipelog</title>
+  <meta name="description" content="Privacy policy for Recipelog. Your recipes, photos and shopping list stay on this device." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <style>
+    :root { color-scheme: light; --bg:#fbf5ea; --fg:#33261d; --muted:#6f5d52; --card:#fffdf8; --accent:#c45c26; --line:#e6d6c2; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    a { color: var(--accent); }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    p, li { color: var(--muted); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="/">← Recipelog</a></p>
+    <h1>Privacy Policy</h1>
+    <div class="card">
+      <p>Recipelog is local-first. Your recipes (title, times, tags, notes, ingredients, steps, source URL), your shopping list and your text-size choice are stored only in this browser (<strong>localStorage</strong> keys <code>recipelog:recipes:v1</code>, <code>recipelog:shopping:v1</code>, <code>recipelog:prefs:v1</code>). Photos are compressed on your device and stored in this browser's <strong>IndexedDB</strong> database <code>recipelog-photos</code>. Language uses localStorage (<code>recipelog:lang</code>) and the shared <code>td_lang</code> cookie on try-dabble.com.</p>
+      <p>Nothing you type or photograph is uploaded. There are no accounts, no sign-in, no cloud sync and no server-side copy of your recipes.</p>
+      <p><strong>URL extraction:</strong> When you paste a recipe page address and tap “Extract”, that address is sent to this app's own server endpoint (<code>/api/extract</code>), which fetches the page once, reads its public recipe data and returns it to your browser. The recipe photo may be relayed the same way (<code>/api/image</code>) so it can be compressed on your device. The server does not log or store the address, the page or the result beyond the moment it takes to answer. Instagram and TikTok pages are never fetched.</p>
+      <p><strong>Advertising:</strong> This app has no ads. It loads no advertising scripts and sets no third-party advertising cookies. The only cookie is <code>td_lang</code>, which remembers your language across try-dabble.com apps.</p>
+      <p><strong>Backups:</strong> “Export JSON” writes a file to your device containing every recipe, photo included. Keep it wherever you keep files; we never see it.</p>
+      <p>Clear site data in your browser settings to erase recipes, photos and preferences.</p>
+      <p>Last updated: 2026-09-09</p>
+    </div>
+  </main>
+</body>
+</html>

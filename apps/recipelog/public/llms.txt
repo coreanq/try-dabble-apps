@@ -1,0 +1,41 @@
+# Recipelog / 레시피로그
+
+> A free, local-only recipe vault. Title, photo, prep/cook time, tags, notes,
+> ingredients and ordered steps in one place. Paste a public recipe URL to pull
+> ingredients and steps (schema.org/Recipe); when a site blocks that, paste or
+> type them in. Scale servings, keep a shopping list, back up to JSON.
+> No account, no ads, no paywall.
+
+This is a Progressive Web App (PWA) hosted at https://recipelog.try-dabble.com/
+Recipes and photos stay in this browser on this device. No accounts, no
+uploads, no server storage, no ads, no in-app purchases. The only server-side
+work is the optional URL extraction, which fetches the page you pasted and
+returns the recipe data without storing anything.
+
+This is NOT a recipe catalog, a meal planner with a subscription, or an
+Instagram / TikTok downloader. Videos are never scraped: paste the caption and
+keep a screenshot as the photo.
+
+## Pages
+
+- [Home](https://recipelog.try-dabble.com/): The vault
+- [Privacy](https://recipelog.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://recipelog.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/recipelog): How-to on try-dabble.com
+
+## Features
+
+- Manual entry: title, photo (compressed on device), prep / cook / total minutes, base servings, tags, notes, ingredients, steps, source URL
+- URL extract: POST /api/extract reads schema.org/Recipe JSON-LD or microdata; blocked / paywalled sites (NYT, AllRecipes, ...) return a clear fallback to paste or manual entry
+- Search across title, tags, notes and ingredients
+- Servings control scales ingredients that start with a number; free-text lines stay as written
+- Cook mode: one step at a time with a simple timer
+- Shopping list merged from any recipes, tick items off, copy as text
+- JSON backup export / import including photos (fail-case: no login, so no login wipe)
+- Text size A / A+ / A++
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
