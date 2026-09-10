@@ -1,0 +1,32 @@
+{
+  "name": "트레일퀘스트",
+  "short_name": "트레일퀘스트",
+  "description": "무료 로컬 가상 장거리 트레일 트래커. 실제 마일/걸음을 기록해 PCT·AT급 루트를 진행. 마일스톤·스트릭·JSON 백업. 계정 없음. AI 아트 없음.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f3e8",
+  "theme_color": "#f7f3e8",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

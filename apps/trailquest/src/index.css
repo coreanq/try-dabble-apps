@@ -1,0 +1,966 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Trailquest / 트레일퀘스트 — a day-hike map unfolded on cream paper.
+  Cream paper with a faint contour grid, a moss-green header band like the
+  cover of a trail map, white cards with a soft sky-mist edge, and one ochre
+  trail-dirt progress rail per route. Milestones are little SVG markers, boot
+  prints and mountain silhouettes. Everything here is hand-drawn vector; there
+  is no generated landscape anywhere. shadcn is the kit, not the look.
+  Light on purpose: never a darkroom, never #111, never a teal planner twin.
+*/
+
+@theme {
+  --color-paper: #f7f3e8;
+  --color-paper-2: #efe8d6;
+  --color-white: #ffffff;
+  --color-ink: #2b3a2e;
+  --color-ink-muted: #5f6f61;
+  --color-line: #dcd5c2;
+  --color-line-2: #c9c0a8;
+  --color-moss: #3f6b4b;
+  --color-moss-deep: #2f5238;
+  --color-moss-soft: #dfeadf;
+  --color-ochre: #c2883a;
+  --color-ochre-deep: #9a6a2a;
+  --color-ochre-soft: #f3e3c6;
+  --color-mist: #e4ecf1;
+  --color-mist-deep: #b9cbd6;
+  --color-amber: #f2c14e;
+  --color-amber-ink: #3b2a05;
+  --color-coral: #c85a4f;
+  --color-coral-soft: #f7e1dd;
+  --color-coral-ink: #7f2f27;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --font-mono: var(--stack-figures);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-display: "Nunito", "Avenir Next", "Segoe UI Variable Display", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-figures: ui-rounded, "SF Pro Rounded", "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --background: #f7f3e8;
+  --foreground: #2b3a2e;
+  --card: #ffffff;
+  --card-foreground: #2b3a2e;
+  --popover: #ffffff;
+  --popover-foreground: #2b3a2e;
+  --primary: #3f6b4b;
+  --primary-foreground: #f4f8f3;
+  --secondary: #efe8d6;
+  --secondary-foreground: #2b3a2e;
+  --muted: #efe8d6;
+  --muted-foreground: #5f6f61;
+  --accent: #dfeadf;
+  --accent-foreground: #2f5238;
+  --destructive: #c85a4f;
+  --border: #dcd5c2;
+  --input: #dcd5c2;
+  --ring: #3f6b4b;
+
+  --radius: 0.9rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  /* A / A+ / A++: everything inside .tq-app is sized in em off this. */
+  --tq-scale: 1;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Map paper: cream with a faint contour-style grid. */
+    background-color: #f7f3e8;
+    background-image:
+      linear-gradient(180deg, rgba(63, 107, 75, 0.1) 0%, rgba(63, 107, 75, 0) 16%),
+      repeating-linear-gradient(0deg, transparent 0, transparent 35px, rgba(63, 107, 75, 0.06) 35px, rgba(63, 107, 75, 0.06) 36px),
+      repeating-linear-gradient(90deg, transparent 0, transparent 35px, rgba(63, 107, 75, 0.05) 35px, rgba(63, 107, 75, 0.05) 36px);
+    background-attachment: fixed;
+  }
+
+  a {
+    color: var(--color-moss-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Every control: 16px so iOS never zooms, and no double-tap zoom delay. */
+  input,
+  select,
+  button,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-moss);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .tq-app {
+    max-width: 30rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.6rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: calc(1rem * var(--tq-scale));
+  }
+  .tq-app[data-size="lg"] {
+    --tq-scale: 1.12;
+  }
+  .tq-app[data-size="xl"] {
+    --tq-scale: 1.28;
+  }
+
+  /* Sticky note on the map: the amber local-only banner. */
+  .tq-notice {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font-size: 0.78em;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: var(--color-amber);
+    border-radius: 4px 14px 4px 14px;
+    box-shadow: 0 6px 16px rgba(43, 58, 46, 0.12);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Map cover: a moss band with the brand and a ridge line along the bottom. */
+  .tq-masthead {
+    margin: 0 -0.85rem;
+    padding: 0.7rem 0.85rem 0.8rem;
+    background: linear-gradient(180deg, #2f5238 0%, #3f6b4b 100%);
+    color: #f4f8f3;
+    border-bottom: 4px solid var(--color-ochre);
+    position: relative;
+    overflow: hidden;
+  }
+  .tq-masthead::after {
+    /* a faint mountain silhouette behind the title */
+    content: "";
+    position: absolute;
+    right: -1rem;
+    bottom: -0.2rem;
+    width: 14rem;
+    height: 3.4rem;
+    background: linear-gradient(135deg, transparent 49%, rgba(255, 255, 255, 0.08) 50%) 0 0 / 3.4rem 3.4rem repeat-x;
+    pointer-events: none;
+  }
+  .tq-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+    position: relative;
+  }
+  .tq-mark {
+    display: block;
+    width: 2.3rem;
+    height: 2.3rem;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.18));
+  }
+
+  /* Set by id so the no-JS shell in index.html and the mounted app match. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.45em;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tq-tagline {
+    margin: 0.35rem 0 0;
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: #dfeadf;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    position: relative;
+  }
+
+  .tq-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-ink);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.1;
+  }
+
+  /* Map card: white sheet, a sky-mist edge, a soft lift. */
+  .tq-card {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-white);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 8px 20px rgba(43, 58, 46, 0.07);
+  }
+  .tq-card-mist {
+    background: linear-gradient(180deg, #ffffff 0%, #f2f6f8 100%);
+    border-color: var(--color-mist-deep);
+  }
+
+  .tq-section-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.02em;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+
+  /* Active route: name, region, the trail picture, the rail and figures. */
+  .tq-route-name {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.2em;
+    font-weight: 800;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+  .tq-route-region {
+    margin: 0.1em 0 0;
+    font-size: 0.78em;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+  .tq-trail-art {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-mist);
+  }
+  .tq-figures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+  .tq-figure {
+    display: grid;
+    gap: 0.1em;
+    min-width: 0;
+    padding: 0.45em 0.55em;
+    border-radius: 12px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+  }
+  .tq-figure-label {
+    font-size: 0.68em;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .tq-figure-value {
+    font-family: var(--stack-figures);
+    font-size: 1.05em;
+    font-weight: 800;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+    line-height: 1.2;
+  }
+  .tq-figure-accent .tq-figure-value {
+    color: var(--color-ochre-deep);
+  }
+  .tq-figure-moss .tq-figure-value {
+    color: var(--color-moss-deep);
+  }
+
+  /* The progress rail: trail dirt over a paper track. */
+  .tq-rail {
+    width: 100%;
+    height: 0.75em;
+    border-radius: 999px;
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .tq-rail-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-ochre-deep), var(--color-ochre));
+    background-image:
+      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0 4px, transparent 4px 9px),
+      linear-gradient(90deg, var(--color-ochre-deep), var(--color-ochre));
+    transition: width 260ms ease;
+  }
+  .tq-rail-fill[data-done="true"] {
+    background: var(--color-moss);
+  }
+  .tq-rail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.6em;
+    font-family: var(--stack-figures);
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .tq-rail-row b {
+    font-size: 1.25em;
+    color: var(--color-ochre-deep);
+  }
+  .tq-next {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em 0.7em;
+    border-radius: 12px;
+    background: var(--color-moss-soft);
+    border: 1px solid rgba(63, 107, 75, 0.25);
+    font-size: 0.86em;
+    color: var(--color-moss-deep);
+    min-width: 0;
+  }
+  .tq-next b {
+    font-weight: 800;
+  }
+  .tq-next-label {
+    font-size: 0.78em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex: 0 0 auto;
+  }
+  .tq-done {
+    display: grid;
+    gap: 0.2em;
+    padding: 0.7em 0.8em;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #e9f2e6 0%, #dfeadf 100%);
+    border: 1px solid rgba(63, 107, 75, 0.35);
+  }
+  .tq-done-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.1em;
+    font-weight: 800;
+    color: var(--color-moss-deep);
+  }
+
+  /* Route picker: a list of pills, presets then the reader's own. */
+  .tq-group-label {
+    margin: 0.2em 0 0.3em;
+    font-size: 0.7em;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .tq-route-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .tq-route-btn {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5em 0.7em;
+    border-radius: 12px;
+    border: 1.5px solid var(--color-line);
+    background: var(--color-white);
+    color: var(--color-ink);
+    text-align: left;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .tq-route-btn[aria-pressed="true"] {
+    border-color: var(--color-moss);
+    background: var(--color-moss-soft);
+  }
+  .tq-route-btn:active {
+    background: var(--color-paper);
+  }
+  .tq-route-icon {
+    width: 2.1em;
+    height: 2.1em;
+    flex: 0 0 auto;
+  }
+  .tq-route-main {
+    min-width: 0;
+    display: grid;
+    gap: 0.1em;
+  }
+  .tq-route-title {
+    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tq-route-sub {
+    font-size: 0.76em;
+    color: var(--color-ink-muted);
+    font-family: var(--stack-figures);
+    font-variant-numeric: tabular-nums;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tq-route-pct {
+    font-family: var(--stack-figures);
+    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--color-ochre-deep);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .tq-route-pct[data-done="true"] {
+    color: var(--color-moss-deep);
+  }
+  .tq-mini-rail {
+    grid-column: 2 / span 2;
+    height: 0.35em;
+    border-radius: 999px;
+    background: var(--color-paper-2);
+    overflow: hidden;
+  }
+  .tq-mini-rail-fill {
+    height: 100%;
+    background: var(--color-ochre);
+    border-radius: 999px;
+  }
+  .tq-mini-rail-fill[data-done="true"] {
+    background: var(--color-moss);
+  }
+
+  /* Milestones: a vertical trail with markers; unlocked ones are moss. */
+  .tq-ms-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0;
+    position: relative;
+  }
+  .tq-ms {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.45em 0.2em;
+    position: relative;
+    min-width: 0;
+  }
+  .tq-ms + .tq-ms::before {
+    /* the dotted trail joining markers */
+    content: "";
+    position: absolute;
+    left: calc(0.2em + 1.05em - 1px);
+    top: -0.45em;
+    height: 0.9em;
+    border-left: 2px dashed var(--color-line-2);
+  }
+  .tq-ms[data-unlocked="true"] + .tq-ms[data-unlocked="true"]::before {
+    border-left-color: var(--color-moss);
+  }
+  .tq-ms-badge {
+    width: 2.1em;
+    height: 2.1em;
+    flex: 0 0 auto;
+  }
+  .tq-ms-main {
+    min-width: 0;
+    display: grid;
+    gap: 0.05em;
+  }
+  .tq-ms-name {
+    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+  .tq-ms[data-unlocked="false"] .tq-ms-name {
+    color: var(--color-ink-muted);
+    font-weight: 700;
+  }
+  .tq-ms-desc {
+    font-size: 0.76em;
+    line-height: 1.35;
+    color: var(--color-ink-muted);
+  }
+  .tq-ms-dist {
+    display: grid;
+    justify-items: end;
+    gap: 0.05em;
+    font-family: var(--stack-figures);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .tq-ms-miles {
+    font-size: 0.9em;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .tq-ms-state {
+    font-size: 0.68em;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .tq-ms[data-unlocked="true"] .tq-ms-state {
+    color: var(--color-moss-deep);
+  }
+
+  /* Fields. */
+  .tq-field-label {
+    display: block;
+    font-size: 0.74em;
+    font-weight: 800;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .tq-input,
+  .tq-select-block {
+    width: 100%;
+    min-width: 0;
+    background: #ffffff;
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-line-2);
+    border-radius: 12px;
+    padding: 0.6em 0.75em;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(43, 58, 46, 0.05);
+  }
+  .tq-select-block {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-ink-muted) 50%),
+      linear-gradient(135deg, var(--color-ink-muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.1em) 50%,
+      calc(100% - 0.75em) 50%;
+    background-size: 0.35em 0.35em;
+    background-repeat: no-repeat;
+    padding-right: 2.2em;
+  }
+  .tq-input::placeholder {
+    color: #a3ab9f;
+    font-weight: 500;
+  }
+  .tq-input:focus,
+  .tq-select-block:focus {
+    border-color: var(--color-moss);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63, 107, 75, 0.18);
+  }
+  .tq-amount {
+    font-family: var(--stack-figures);
+    font-size: 1.7em;
+    font-weight: 800;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    padding: 0.35em 3.2em 0.35em 0.55em;
+  }
+  .tq-amount-wrap {
+    position: relative;
+  }
+  .tq-amount-unit {
+    position: absolute;
+    right: 0.7em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--stack-figures);
+    font-size: 1em;
+    font-weight: 800;
+    color: var(--color-ochre-deep);
+    pointer-events: none;
+  }
+  .tq-two {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .tq-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Buttons: soft pills. Primary is moss with a deeper shadow line. */
+  .tq-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+    min-height: 2.9em;
+    padding: 0.5em 1em;
+    border-radius: 12px;
+    border: 1px solid var(--color-line-2);
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 rgba(43, 58, 46, 0.08);
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .tq-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  .tq-btn:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+  .tq-btn-primary {
+    width: 100%;
+    border-color: rgba(47, 82, 56, 0.5);
+    background: var(--color-moss);
+    color: var(--color-primary-foreground);
+    box-shadow: 0 2px 0 var(--color-moss-deep);
+  }
+  .tq-btn-ochre {
+    width: 100%;
+    border-color: rgba(154, 106, 42, 0.5);
+    background: var(--color-ochre);
+    color: #fff8ec;
+    box-shadow: 0 2px 0 var(--color-ochre-deep);
+  }
+  .tq-btn-quiet {
+    background: var(--color-paper);
+    color: var(--color-moss-deep);
+  }
+  .tq-btn-danger {
+    border-color: rgba(200, 90, 79, 0.4);
+    background: var(--color-coral-soft);
+    color: var(--color-coral-ink);
+    box-shadow: 0 2px 0 rgba(200, 90, 79, 0.25);
+  }
+  .tq-btn-icon {
+    flex: 0 0 auto;
+    width: 2.4em;
+    height: 2.4em;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--color-ink-muted);
+    background: var(--color-paper);
+  }
+  .tq-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .tq-actions .col-span-2 {
+    grid-column: span 2;
+  }
+
+  /* Log rows. */
+  .tq-log-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .tq-log {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5em 0.7em;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-white);
+    color: var(--color-ink);
+    text-align: left;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .tq-log:active {
+    background: var(--color-paper);
+  }
+  .tq-log-date {
+    display: grid;
+    justify-items: center;
+    min-width: 2.6em;
+    padding: 0.2em 0.35em;
+    border-radius: 8px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    font-family: var(--stack-figures);
+    line-height: 1.1;
+  }
+  .tq-log-date-mon {
+    font-size: 0.6em;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+  }
+  .tq-log-date-num {
+    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .tq-log-main {
+    min-width: 0;
+    display: grid;
+    gap: 0.05em;
+  }
+  .tq-log-note {
+    font-size: 0.9em;
+    font-weight: 700;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tq-log-meta {
+    font-size: 0.76em;
+    color: var(--color-ink-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tq-log-dist {
+    font-family: var(--stack-figures);
+    font-size: 1.02em;
+    font-weight: 800;
+    color: var(--color-ochre-deep);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Stats tiles. */
+  .tq-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  /* Segmented choices: mi / km, A / A+ / A++. */
+  .tq-seg {
+    display: inline-flex;
+    border: 1px solid var(--color-line-2);
+    border-radius: 999px;
+    background: var(--color-white);
+    overflow: hidden;
+  }
+  .tq-seg-btn {
+    min-width: 2.6rem;
+    padding: 0.35rem 0.7rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--stack-figures);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    touch-action: manipulation;
+    white-space: nowrap;
+  }
+  .tq-seg-btn[aria-pressed="true"] {
+    background: var(--color-moss);
+    color: var(--color-primary-foreground);
+  }
+  .tq-setting-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 0.8rem;
+  }
+
+  /* Promise chips: the fail-fix line, rendered as a wrap of small pills. */
+  .tq-promise {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-2);
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--color-ink-muted);
+    padding: 0.18em 0.6em;
+    font-size: 0.74em;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .tq-hint {
+    margin: 0;
+    font-size: 0.82em;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+  .tq-empty {
+    display: grid;
+    gap: 0.3em;
+    padding: 0.9em 0.9em;
+    border-radius: 12px;
+    border: 1.5px dashed var(--color-line-2);
+    background: var(--color-paper);
+    text-align: center;
+  }
+  .tq-ms-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+    gap: 0.4rem;
+    align-items: end;
+  }
+  .tq-sheet-title {
+    font-family: var(--stack-display);
+    font-size: 1.1em;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  .tq-error {
+    margin: 0;
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--color-coral-ink);
+  }
+  .tq-result {
+    padding: 0.55em 0.75em;
+    border-radius: 12px;
+    background: var(--color-ochre-soft);
+    border: 1px solid rgba(154, 106, 42, 0.3);
+    font-family: var(--stack-figures);
+    font-weight: 800;
+    color: var(--color-ochre-deep);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+}
+
+@media (min-width: 520px) {
+  .tq-app {
+    max-width: 32rem;
+    padding-top: 1rem;
+  }
+}
+
+/* 390px and below: nothing in the header may collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.25em;
+  }
+  .tq-select {
+    max-width: 6.6rem;
+    padding: 0.34rem 0.6rem;
+  }
+  .tq-amount {
+    font-size: 1.5em;
+  }
+  .tq-figure-value {
+    font-size: 0.95em;
+  }
+}

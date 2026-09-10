@@ -1,0 +1,45 @@
+# Trailquest / 트레일퀘스트
+
+> A free, ad-free virtual long-trail tracker with no account. Type in the
+> distance you really walked or ran (or paste your phone's step count) and
+> your marker moves along the Pacific Crest Trail, the Appalachian Trail, the
+> Continental Divide Trail, the Camino de Santiago, the John Muir Trail, the
+> Baekdudaegan ridge or a Tokyo-to-Kyoto Tōkaidō, unlocking milestones as you
+> pass them. Custom routes with your own milestones are free too.
+
+This is a Progressive Web App (PWA) hosted at https://trailquest.try-dabble.com/
+Routes, log entries, milestones and preferences stay in this browser on this
+device. No accounts, no membership, no uploads, no server storage, no ads, no
+in-app purchases, no automatic step or GPS tracking, and no generative AI
+landscapes: every picture is hand-drawn SVG. Export a JSON backup to survive
+a reinstall or a new phone.
+
+This is NOT a fitness tracker that reads HealthKit or Google Fit (a web app
+cannot), NOT a GPS recorder and NOT a social leaderboard. Every entry is one
+you typed in on purpose.
+
+## Pages
+
+- [Home](https://trailquest.try-dabble.com/): The tracker
+- [Privacy](https://trailquest.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://trailquest.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/trailquest): How-to on try-dabble.com
+
+## Features
+
+- Seven preset routes with ordered, named milestones in Korean, English, Japanese and Chinese
+- Custom routes: name, total distance in miles or km, optional milestones
+- Manual distance log: distance, date, optional note; mi / km toggle
+- Step-count helper: paste steps, set steps per mile, log the converted distance
+- Progress per route: percentage, walked, remaining, next milestone, SVG trail map
+- Milestones unlock with the date they were reached; lock again if an entry is removed
+- Edit or delete any entry; progress recalculates on the spot
+- Switching routes keeps every route's own progress and log
+- Stats: total distance, active days, current streak, longest streak
+- JSON export / import of routes, entries, progress and preferences
+- Text size A / A+ / A++
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
