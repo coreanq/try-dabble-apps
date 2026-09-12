@@ -1,0 +1,979 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Affirmpad / 어펌패드 — a sunrise page in an affirmation journal.
+  Cream paper with a soft dawn wash at the top (lavender into blush), gently
+  rounded cards, one large practice card with the sentence set big and a
+  round lavender tap button underneath. Dark mode is deep indigo, not #111:
+  the same lavender accents on a night sky. shadcn is the kit, not the look:
+  card, dialog and button are re-dressed as journal cards and soft pills.
+  Never teal, never moss, never terracotta.
+*/
+
+@theme {
+  --color-paper: #faf7f2;
+  --color-paper-2: #f3ecf8;
+  --color-white: #ffffff;
+  --color-ink: #2e2547;
+  --color-ink-muted: #6f6485;
+  --color-line: #e6ddf0;
+  --color-line-2: #d4c6e6;
+  --color-lav: #a78bfa;
+  --color-lav-deep: #7c5cd6;
+  --color-lav-soft: #ede7fb;
+  --color-blush: #f6c8d0;
+  --color-blush-deep: #d98ba0;
+  --color-blush-ink: #7a2e48;
+  --color-amber: #f5c65b;
+  --color-amber-ink: #3b2a05;
+  --color-coral: #d9534f;
+  --color-coral-soft: #fbe3e1;
+  --color-coral-ink: #8f2a26;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+
+  --stack-display: "Nunito", "Avenir Next", "Segoe UI Variable Display", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Hiragino Sans", system-ui, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI",
+    system-ui, -apple-system, sans-serif;
+  --stack-figures: ui-rounded, "SF Pro Rounded", "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  /* Surfaces, re-pointed in dark mode. */
+  --ap-paper: #faf7f2;
+  --ap-paper-2: #f3ecf8;
+  --ap-card: #ffffff;
+  --ap-ink: #2e2547;
+  --ap-ink-muted: #6f6485;
+  --ap-line: #e6ddf0;
+  --ap-line-2: #d4c6e6;
+  --ap-lav: #a78bfa;
+  --ap-lav-deep: #7c5cd6;
+  --ap-lav-soft: #ede7fb;
+  --ap-blush: #f6c8d0;
+  --ap-blush-deep: #d98ba0;
+  --ap-blush-ink: #7a2e48;
+  --ap-dawn-a: rgba(167, 139, 250, 0.22);
+  --ap-dawn-b: rgba(246, 200, 208, 0.28);
+  --ap-shadow: rgba(46, 37, 71, 0.1);
+  --ap-placeholder: #a99fbf;
+
+  --background: var(--ap-paper);
+  --foreground: var(--ap-ink);
+  --card: var(--ap-card);
+  --card-foreground: var(--ap-ink);
+  --popover: var(--ap-card);
+  --popover-foreground: var(--ap-ink);
+  --primary: var(--ap-lav);
+  --primary-foreground: #ffffff;
+  --secondary: var(--ap-paper-2);
+  --secondary-foreground: var(--ap-ink);
+  --muted: var(--ap-paper-2);
+  --muted-foreground: var(--ap-ink-muted);
+  --accent: var(--ap-lav-soft);
+  --accent-foreground: var(--ap-lav-deep);
+  --destructive: #d9534f;
+  --border: var(--ap-line);
+  --input: var(--ap-line);
+  --ring: var(--ap-lav);
+
+  --radius: 1rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  /* A / A+ / A++: everything inside .ap-app is sized in em off this. */
+  --ap-scale: 1;
+}
+
+/* Dark mode: deep indigo night, lavender still the accent. Set on <html>. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ap-paper: #1c1a2e;
+  --ap-paper-2: #262340;
+  --ap-card: #2a2646;
+  --ap-ink: #ece7f7;
+  --ap-ink-muted: #aba2c6;
+  --ap-line: #3c3760;
+  --ap-line-2: #4d4776;
+  --ap-lav: #b9a4ff;
+  --ap-lav-deep: #d4c6ff;
+  --ap-lav-soft: #38315e;
+  --ap-blush: #5a3550;
+  --ap-blush-deep: #e6a3b8;
+  --ap-blush-ink: #f6c8d0;
+  --ap-dawn-a: rgba(167, 139, 250, 0.18);
+  --ap-dawn-b: rgba(217, 139, 160, 0.12);
+  --ap-shadow: rgba(0, 0, 0, 0.35);
+  --ap-placeholder: #7f77a0;
+  --primary-foreground: #1c1a2e;
+  --destructive: #f08a86;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--ap-paper);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Dawn wash: lavender at the top fading through blush into cream paper. */
+    background-color: var(--ap-paper);
+    background-image:
+      radial-gradient(120% 60% at 50% -10%, var(--ap-dawn-a) 0%, transparent 70%),
+      radial-gradient(90% 40% at 80% 6%, var(--ap-dawn-b) 0%, transparent 70%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  a {
+    color: var(--ap-lav-deep);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Every control: 16px so iOS never zooms, and no double-tap zoom delay. */
+  input,
+  select,
+  button,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ap-lav);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .ap-app {
+    max-width: 30rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.6rem 0.85rem calc(1.6rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: calc(1rem * var(--ap-scale));
+    color: var(--ap-ink);
+  }
+  .ap-app[data-size="lg"] {
+    --ap-scale: 1.12;
+  }
+  .ap-app[data-size="xl"] {
+    --ap-scale: 1.28;
+  }
+
+  /* Sticky note on the first page: the amber local-only banner. */
+  .ap-notice {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font-size: 0.78em;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-amber-ink);
+    background: var(--color-amber);
+    border-radius: 4px 14px 4px 14px;
+    box-shadow: 0 6px 16px var(--ap-shadow);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Masthead: brand row on the dawn wash, no heavy band. */
+  .ap-masthead {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.2rem 0 0.1rem;
+  }
+  .ap-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+  }
+  .ap-mark {
+    display: block;
+    width: 2.3rem;
+    height: 2.3rem;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 3px 6px var(--ap-shadow));
+  }
+
+  /* Set by id so the no-JS shell in index.html and the mounted app match. */
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.5em;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ap-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ap-tagline {
+    margin: 0;
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: var(--ap-ink-muted);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .ap-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ap-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--ap-card);
+    color: var(--ap-ink);
+    border: 1px solid var(--ap-line-2);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1.1;
+  }
+
+  /* Journal card: white page, thin lavender edge, a soft lift. */
+  .ap-card {
+    position: relative;
+    border: 1px solid var(--ap-line);
+    border-radius: 18px;
+    background: var(--ap-card);
+    color: var(--ap-ink);
+    box-shadow: 0 8px 24px var(--ap-shadow);
+  }
+
+  /* Icon toggle pills in the masthead: dark / sound / vibration. */
+  .ap-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    min-height: 2.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--ap-line-2);
+    background: var(--ap-card);
+    color: var(--ap-ink-muted);
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .ap-pill[aria-pressed="true"] {
+    background: var(--ap-lav-soft);
+    border-color: var(--ap-lav);
+    color: var(--ap-lav-deep);
+  }
+  .ap-pill-text {
+    font-size: 0.8em;
+  }
+
+  /* ---- practice card ---------------------------------------------------- */
+  .ap-practice {
+    display: grid;
+    gap: 0.7rem;
+    justify-items: center;
+    text-align: center;
+    padding: 0.4rem 0.2rem 0.2rem;
+    min-width: 0;
+  }
+  .ap-practice-topic {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.15em 0.7em;
+    border-radius: 999px;
+    background: var(--ap-lav-soft);
+    color: var(--ap-lav-deep);
+    font-size: 0.74em;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .ap-practice-text {
+    margin: 0;
+    width: 100%;
+    font-family: var(--stack-display);
+    font-size: 1.55em;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ap-ink);
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+  .ap-count {
+    display: grid;
+    justify-items: center;
+    line-height: 1;
+  }
+  .ap-count-num {
+    font-family: var(--stack-figures);
+    font-size: 3.2em;
+    font-weight: 800;
+    color: var(--ap-lav-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .ap-count-label {
+    font-size: 0.74em;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ap-ink-muted);
+  }
+  .ap-rail {
+    width: 100%;
+    height: 0.55em;
+    border-radius: 999px;
+    background: var(--ap-paper-2);
+    border: 1px solid var(--ap-line);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .ap-rail-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--ap-lav) 0%, var(--ap-blush-deep) 100%);
+    transition: width 180ms ease;
+  }
+  .ap-rail-fill[data-done="true"] {
+    background: var(--ap-lav-deep);
+  }
+  /* The big round tap target. */
+  .ap-tap {
+    width: 7.5em;
+    height: 7.5em;
+    min-height: 64px;
+    min-width: 64px;
+    border-radius: 50%;
+    border: 0;
+    background: radial-gradient(circle at 35% 30%, #c4b0ff 0%, var(--ap-lav) 55%, var(--ap-lav-deep) 100%);
+    color: #ffffff;
+    font-family: var(--stack-display);
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow:
+      0 10px 24px rgba(124, 92, 214, 0.35),
+      0 0 0 8px var(--ap-lav-soft);
+    transition: transform 80ms ease, box-shadow 80ms ease;
+  }
+  .ap-tap:active {
+    transform: scale(0.94);
+    box-shadow:
+      0 4px 10px rgba(124, 92, 214, 0.3),
+      0 0 0 12px var(--ap-lav-soft);
+  }
+  .ap-tap:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .ap-practice-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .ap-practice-nav {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .ap-practice-meta {
+    font-size: 0.78em;
+    font-weight: 700;
+    color: var(--ap-ink-muted);
+    text-align: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Fullscreen: the practice card takes the viewport. Works both under the
+     Fullscreen API (:fullscreen) and as a plain fixed overlay fallback. */
+  .ap-stage:fullscreen,
+  .ap-stage[data-immersive="true"] {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    margin: 0;
+    max-width: none;
+    border-radius: 0;
+    border: 0;
+    display: grid;
+    align-content: center;
+    padding: 1.2rem 1.2rem calc(1.2rem + var(--safe-b));
+    overflow: auto;
+    background:
+      radial-gradient(120% 60% at 50% -10%, var(--ap-dawn-a) 0%, transparent 70%),
+      radial-gradient(90% 40% at 80% 6%, var(--ap-dawn-b) 0%, transparent 70%),
+      var(--ap-paper);
+  }
+  .ap-stage:fullscreen .ap-practice-text,
+  .ap-stage[data-immersive="true"] .ap-practice-text {
+    font-size: 2.1em;
+  }
+  .ap-stage:fullscreen .ap-count-num,
+  .ap-stage[data-immersive="true"] .ap-count-num {
+    font-size: 4.2em;
+  }
+  .ap-stage:fullscreen .ap-tap,
+  .ap-stage[data-immersive="true"] .ap-tap {
+    width: 9.5em;
+    height: 9.5em;
+  }
+  .ap-stage:fullscreen .ap-practice,
+  .ap-stage[data-immersive="true"] .ap-practice {
+    max-width: 34rem;
+    margin: 0 auto;
+    gap: 1.1rem;
+  }
+  .ap-stage:fullscreen .ap-card-head,
+  .ap-stage[data-immersive="true"] .ap-card-head {
+    display: none;
+  }
+
+  /* ---- filter chips ----------------------------------------------------- */
+  .ap-filters {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding: 0.1rem 0.1rem 0.3rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ap-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .ap-chip {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    min-height: 2.3rem;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--ap-line-2);
+    background: var(--ap-card);
+    color: var(--ap-ink-muted);
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ap-chip[aria-pressed="true"] {
+    background: var(--ap-ink);
+    border-color: var(--ap-ink);
+    color: var(--ap-paper);
+  }
+  .ap-chip-dot {
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: var(--ap-cat-color, var(--ap-lav));
+    flex: 0 0 auto;
+  }
+  .ap-chip[aria-pressed="true"] .ap-chip-dot {
+    outline: 2px solid var(--ap-paper);
+  }
+
+  /* ---- affirmation rows ------------------------------------------------- */
+  .ap-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .ap-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.5em;
+    padding: 0.6em 0.6em 0.6em 0.7em;
+    border-radius: 14px;
+    border: 1px solid var(--ap-line);
+    background: var(--ap-card);
+    border-left: 5px solid var(--ap-cat-color, var(--ap-line-2));
+    min-width: 0;
+  }
+  .ap-row[data-active="true"] {
+    background: var(--ap-lav-soft);
+    border-color: var(--ap-lav);
+  }
+  .ap-star {
+    flex: 0 0 auto;
+    width: 2.4em;
+    height: 2.4em;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    color: var(--ap-line-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ap-star[aria-pressed="true"] {
+    color: var(--color-amber);
+  }
+  .ap-row-main {
+    min-width: 0;
+    display: grid;
+    gap: 0.25em;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    padding: 0.2em 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ap-row-text {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ap-ink);
+    overflow-wrap: anywhere;
+  }
+  .ap-row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3em 0.6em;
+    font-size: 0.74em;
+    font-weight: 700;
+    color: var(--ap-ink-muted);
+  }
+  .ap-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.05em 0.55em;
+    border-radius: 999px;
+    background: var(--ap-paper-2);
+    color: var(--ap-ink-muted);
+    white-space: nowrap;
+  }
+  .ap-badge-dot {
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    background: var(--ap-cat-color, var(--ap-lav));
+  }
+  .ap-row-actions {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  /* ---- fields ----------------------------------------------------------- */
+  .ap-field-label {
+    display: block;
+    font-size: 0.74em;
+    font-weight: 800;
+    color: var(--ap-ink-muted);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .ap-input,
+  .ap-select-block,
+  .ap-textarea {
+    width: 100%;
+    min-width: 0;
+    background: var(--ap-card);
+    color: var(--ap-ink);
+    border: 1.5px solid var(--ap-line-2);
+    border-radius: 12px;
+    padding: 0.6em 0.75em;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    touch-action: manipulation;
+  }
+  .ap-textarea {
+    resize: vertical;
+    min-height: 5.5em;
+  }
+  .ap-select-block {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ap-ink-muted) 50%),
+      linear-gradient(135deg, var(--ap-ink-muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.1em) 50%,
+      calc(100% - 0.75em) 50%;
+    background-size: 0.35em 0.35em;
+    background-repeat: no-repeat;
+    padding-right: 2.2em;
+  }
+  .ap-input::placeholder,
+  .ap-textarea::placeholder {
+    color: var(--ap-placeholder);
+    font-weight: 500;
+  }
+  .ap-input:focus,
+  .ap-select-block:focus,
+  .ap-textarea:focus {
+    border-color: var(--ap-lav);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
+  }
+  .ap-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ---- buttons: soft pills. Primary is lavender. ------------------------ */
+  .ap-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+    min-height: 2.9em;
+    padding: 0.5em 1em;
+    border-radius: 12px;
+    border: 1px solid var(--ap-line-2);
+    background: var(--ap-card);
+    color: var(--ap-ink);
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 0 2px 0 var(--ap-shadow);
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .ap-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  .ap-btn:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+  .ap-btn-primary {
+    width: 100%;
+    border-color: var(--ap-lav-deep);
+    background: var(--ap-lav);
+    color: #ffffff;
+    box-shadow: 0 2px 0 var(--ap-lav-deep);
+  }
+  :root[data-theme="dark"] .ap-btn-primary {
+    color: #1c1a2e;
+  }
+  .ap-btn-quiet {
+    background: var(--ap-paper-2);
+    color: var(--ap-lav-deep);
+  }
+  .ap-btn-danger {
+    border-color: rgba(217, 83, 79, 0.4);
+    background: var(--color-coral-soft);
+    color: var(--color-coral-ink);
+    box-shadow: 0 2px 0 rgba(217, 83, 79, 0.25);
+  }
+  .ap-btn-icon {
+    flex: 0 0 auto;
+    width: 2.4em;
+    height: 2.4em;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--ap-ink-muted);
+    background: var(--ap-paper-2);
+    box-shadow: none;
+  }
+  .ap-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .ap-actions .col-span-2 {
+    grid-column: span 2;
+  }
+
+  /* ---- toggles, segmented, settings ------------------------------------- */
+  .ap-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8em;
+    padding: 0.55em 0.7em;
+    border-radius: 12px;
+    border: 1px solid var(--ap-line);
+    background: var(--ap-paper-2);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .ap-toggle-text {
+    display: grid;
+    gap: 0.1em;
+    min-width: 0;
+  }
+  .ap-toggle-label {
+    font-weight: 800;
+    color: var(--ap-ink);
+    font-size: 0.95em;
+  }
+  .ap-toggle-hint {
+    font-size: 0.76em;
+    line-height: 1.35;
+    color: var(--ap-ink-muted);
+  }
+  .ap-switch {
+    appearance: none;
+    flex: 0 0 auto;
+    width: 2.8em;
+    height: 1.6em;
+    border-radius: 999px;
+    background: var(--ap-line-2);
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+  .ap-switch::after {
+    content: "";
+    position: absolute;
+    top: 0.15em;
+    left: 0.15em;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(46, 37, 71, 0.3);
+    transition: transform 150ms ease;
+  }
+  .ap-switch:checked {
+    background: var(--ap-lav);
+  }
+  .ap-switch:checked::after {
+    transform: translateX(1.2em);
+  }
+  .ap-seg {
+    display: inline-flex;
+    border: 1px solid var(--ap-line-2);
+    border-radius: 999px;
+    background: var(--ap-card);
+    overflow: hidden;
+  }
+  .ap-seg-btn {
+    min-width: 2.6rem;
+    padding: 0.35rem 0.7rem;
+    border: 0;
+    background: transparent;
+    color: var(--ap-ink-muted);
+    font-family: var(--stack-figures);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    touch-action: manipulation;
+    white-space: nowrap;
+  }
+  .ap-seg-btn[aria-pressed="true"] {
+    background: var(--ap-lav);
+    color: #ffffff;
+  }
+  :root[data-theme="dark"] .ap-seg-btn[aria-pressed="true"] {
+    color: #1c1a2e;
+  }
+  .ap-setting-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 0.8rem;
+  }
+  .ap-goal-input {
+    width: 5.5rem;
+    text-align: center;
+    font-family: var(--stack-figures);
+    font-weight: 800;
+  }
+
+  /* Promise chips: the fail-fix line, rendered as a wrap of small pills. */
+  .ap-promise {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--ap-line-2);
+    background: var(--ap-card);
+    color: var(--ap-ink-muted);
+    padding: 0.18em 0.6em;
+    font-size: 0.74em;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .ap-hint {
+    margin: 0;
+    font-size: 0.82em;
+    line-height: 1.45;
+    color: var(--ap-ink-muted);
+  }
+  .ap-empty {
+    display: grid;
+    gap: 0.3em;
+    padding: 0.9em 0.9em;
+    border-radius: 12px;
+    border: 1.5px dashed var(--ap-line-2);
+    background: var(--ap-paper-2);
+    text-align: center;
+  }
+  .ap-empty-title {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-weight: 800;
+    color: var(--ap-ink);
+  }
+  .ap-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .ap-sheet-title {
+    font-family: var(--stack-display);
+    font-size: 1.1em;
+    font-weight: 800;
+    color: var(--ap-ink);
+  }
+  .ap-error {
+    margin: 0;
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--color-coral-ink);
+  }
+  :root[data-theme="dark"] .ap-error {
+    color: #f6a19d;
+  }
+  .ap-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.25rem 0 0.5rem;
+    font-size: 0.8em;
+    color: var(--ap-ink-muted);
+  }
+}
+
+@media (min-width: 520px) {
+  .ap-app {
+    max-width: 32rem;
+    padding-top: 1rem;
+  }
+}
+
+/* 390px and below: nothing in the header may collide. */
+@media (max-width: 390px) {
+  #brand-title {
+    font-size: 1.28em;
+  }
+  .ap-select {
+    max-width: 6.6rem;
+    padding: 0.34rem 0.6rem;
+  }
+  .ap-practice-text {
+    font-size: 1.35em;
+  }
+  .ap-count-num {
+    font-size: 2.8em;
+  }
+}

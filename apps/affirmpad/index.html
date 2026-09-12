@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>어펌패드</title>
+  <meta name="description" content="계정 없는 무료 확언 연습 패드. 나만의 확언과 주제를 적고, 전체화면으로 한 문장을 크게 띄운 채 탭으로 반복 횟수를 세세요. 실수는 되돌리기, 마음에 드는 문장은 즐겨찾기, 밤에는 다크 모드. 무료 체험 후 연 $47 같은 함정도, 해지 장벽도, 광고도 없습니다. JSON 백업. 데이터는 이 기기에만." />
+  <meta name="theme-color" content="#faf7f2" />
+  <meta name="application-name" content="어펌패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="어펌패드" />
+  <link rel="canonical" href="https://affirmpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://affirmpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://affirmpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://affirmpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://affirmpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://affirmpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Affirmpad" />
+  <meta property="og:url" content="https://affirmpad.try-dabble.com/" />
+  <meta property="og:title" content="어펌패드" />
+  <meta property="og:description" content="무료 로컬 확언 연습. 맞춤 주제, 전체화면 탭 카운트, 즐겨찾기, 다크 모드, JSON 백업. 계정 없음. 구독 없음." />
+  <meta property="og:image" content="https://affirmpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="어펌패드" />
+  <meta name="twitter:description" content="무료 로컬 확언 연습. 맞춤 주제, 전체화면 탭 카운트, 즐겨찾기, 다크 모드, JSON 백업. 계정 없음. 구독 없음." />
+  <meta name="twitter:image" content="https://affirmpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://affirmpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://affirmpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://affirmpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .ap-tagline here before any script
+    runs, so crawlers and JS-off readers get the requested ?lang= immediately.
+    React replaces this subtree with the identical masthead on mount.
+    No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="ap-app">
+      <p class="ap-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다. 구독·광고 없음.</p>
+      <header class="ap-masthead">
+        <div class="ap-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="ap-mark">
+            <rect x="6" y="6" width="52" height="52" rx="14" fill="#a78bfa"/>
+            <rect x="10" y="10" width="44" height="44" rx="11" fill="#faf7f2"/>
+            <circle cx="32" cy="36" r="11" fill="#f6c8d0"/>
+            <circle cx="32" cy="36" r="7" fill="#f5c65b"/>
+            <rect x="14" y="36" width="36" height="12" rx="2" fill="#faf7f2"/>
+            <rect x="16" y="38" width="32" height="2.5" rx="1.25" fill="#a78bfa"/>
+            <rect x="16" y="43" width="22" height="2.5" rx="1.25" fill="#d4c6e6"/>
+            <rect x="16" y="48" width="27" height="2.5" rx="1.25" fill="#d4c6e6"/>
+          </svg>
+          <h1 id="brand-title">어펌패드</h1>
+        </div>
+        <p class="ap-tagline">무료 로컬 확언 연습. 맞춤 주제, 전체화면 탭 카운트, 즐겨찾기, 다크 모드, JSON 백업. 계정 없음. 구독 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+# Affirmpad / 어펌패드
+
+> A free, ad-free affirmation practice pad with no account. Write your own
+> affirmations under your own topics, put one sentence up fullscreen and tap
+> once per repetition. Undo a slip, star favorites, switch to dark mode.
+
+This is a Progressive Web App (PWA) hosted at https://affirmpad.try-dabble.com/
+Affirmations, topics, practice counts and preferences stay in this browser on
+this device. No accounts, no sign-in, no uploads, no server storage, no ads,
+no in-app purchases, no subscription and no free trial that turns into a
+yearly charge. Export a JSON backup to survive a reinstall or move phones.
+
+This is NOT a guided meditation service, NOT a social feed and NOT a
+subscription library of pre-written quotes. Every line is yours to write,
+edit and delete; a few starter lines per language are included and removable.
+
+## Pages
+
+- [Home](https://affirmpad.try-dabble.com/): The practice pad
+- [Privacy](https://affirmpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://affirmpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/affirmpad): How-to on try-dabble.com
+
+## Features
+
+- Custom affirmations: add, edit, delete; optional topic per line
+- Topics (categories): add, rename, delete; unlimited and free
+- Practice mode: one sentence set large, tap to count repetitions, undo, reset, session goal progress
+- Fullscreen practice (Fullscreen API with a CSS fallback), exit by button or Escape; the count is kept
+- Favorites: star / unstar, filter by favorites or by topic
+- Soft click sound and short vibration on each tap, each with its own toggle (no-op where unsupported)
+- Dark mode (deep indigo, lavender accents), persisted
+- Text size A / A+ / A++
+- JSON export / import of affirmations, topics and preferences; delete all data
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
