@@ -134,6 +134,11 @@ test("static PWA files are served", async () => {
   for (const p of ["/sw.js", "/robots.txt", "/sitemap.xml", "/llms.txt", "/privacy.html", "/terms.html", "/og-image-zh.png", "/icons/icon-192.png"]) {
     const res = await fetch(`${BASE}${p}`);
     assert.equal(res.status, 200, p);
+    // The SPA fallback answers 200 with index.html for anything missing, so
+    // check the type too: a PNG must really be a PNG.
+    const ct = res.headers.get("content-type") || "";
+    if (p.endsWith(".png")) assert.match(ct, /^image\/png/, `${p} content-type ${ct}`);
+    else if (!p.endsWith(".html")) assert.doesNotMatch(ct, /text\/html/, `${p} fell through to index.html`);
   }
   const sw = await (await fetch(`${BASE}/sw.js`)).text();
   assert.match(sw, /"peptidelog-v1"/);
