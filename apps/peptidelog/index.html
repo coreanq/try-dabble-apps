@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>펩타이드로그</title>
+  <meta name="description" content="계정 없는 무료 로컬 펩타이드·주사 기록 앱. 화합물을 개수 제한 없이 등록하고, 바이알 mg와 주사용수 mL로 농도와 주사기 눈금을 계산(산술만)하고, 용량·시간·부위·메모를 남기세요. 어느 날짜든 기록·수정·삭제, 바이알 재고와 부족 경고, 여러 프로토콜 스케줄, 부위 로테이션 추천, JSON 백업. 구독 함정도 광고도 없습니다. 데이터는 이 기기에만. 의료 조언이 아닙니다." />
+  <meta name="theme-color" content="#f4f7fb" />
+  <meta name="application-name" content="펩타이드로그" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="펩타이드로그" />
+  <link rel="canonical" href="https://peptidelog.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://peptidelog.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://peptidelog.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://peptidelog.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://peptidelog.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://peptidelog.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Peptidelog" />
+  <meta property="og:url" content="https://peptidelog.try-dabble.com/" />
+  <meta property="og:title" content="펩타이드로그" />
+  <meta property="og:description" content="무료 로컬 펩타이드·주사 기록. 화합물, 재구성 계산, 용량 로그, 바이알 재고, 스케줄, 부위 로테이션, JSON 백업. 계정 없음. 의료 조언 아님." />
+  <meta property="og:image" content="https://peptidelog.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="펩타이드로그" />
+  <meta name="twitter:description" content="무료 로컬 펩타이드·주사 기록. 화합물, 재구성 계산, 용량 로그, 바이알 재고, 스케줄, 부위 로테이션, JSON 백업. 계정 없음. 의료 조언 아님." />
+  <meta name="twitter:image" content="https://peptidelog.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://peptidelog.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://peptidelog.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://peptidelog.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, #not-medical, h1#brand-title and .pl-tagline here
+    before any script runs, so crawlers and JS-off readers get the requested
+    ?lang= immediately. React replaces this subtree with the identical
+    masthead on mount. No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="pl-app">
+      <p class="pl-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다. 의료 조언이 아닙니다.</p>
+      <p class="pl-disclaimer" id="not-medical" role="note">의료 조언이 아닙니다. 계산기는 산술만 제공합니다. 용량·용법은 의료 전문가와 상의하세요.</p>
+      <header class="pl-masthead">
+        <div class="pl-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="pl-mark">
+            <rect x="6" y="6" width="52" height="52" rx="14" fill="#2a7a8c"/>
+            <rect x="10" y="10" width="44" height="44" rx="11" fill="#f4f7fb"/>
+            <rect x="24" y="16" width="16" height="5" rx="2" fill="#b9a8f2"/>
+            <rect x="26" y="21" width="12" height="4" fill="#d9e6ef"/>
+            <rect x="21" y="25" width="22" height="24" rx="5" fill="#ffffff" stroke="#2a7a8c" stroke-width="2"/>
+            <rect x="23" y="36" width="18" height="11" rx="3" fill="#8fd0dc"/>
+            <rect x="26" y="29" width="3" height="14" rx="1.5" fill="#ffffff" opacity="0.85"/>
+          </svg>
+          <h1 id="brand-title">펩타이드로그</h1>
+        </div>
+        <p class="pl-tagline">무료 로컬 펩타이드·주사 기록. 화합물, 재구성 계산, 용량 로그, 바이알 재고, 스케줄, 부위 로테이션, JSON 백업. 계정 없음. 의료 조언 아님.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

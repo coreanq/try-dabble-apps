@@ -1,0 +1,45 @@
+# Peptidelog / 펩타이드로그
+
+> A free, ad-free local peptide and injection tracker with no account. Add
+> compounds, turn vial mg + bacteriostatic water mL into concentration and
+> syringe units (arithmetic only), log dose / time / site / notes on any day,
+> keep vial inventory with a low-stock warning, run several protocol
+> schedules, get a site-rotation suggestion and export a JSON backup.
+> Not medical advice.
+
+This is a Progressive Web App (PWA) hosted at https://peptidelog.try-dabble.com/
+Compounds, vials, logs, schedules, supplies and preferences stay in this
+browser on this device. No accounts, no sign-in, no uploads, no server
+storage, no ads, no in-app purchases, no subscription, no free trial that
+turns into a paywall. Export a JSON backup to survive a reinstall or move phones.
+
+This is NOT a medical service. It gives no dose recommendations, has no AI
+"dosing assistant", no clinician or telehealth features, no cloud sync and no
+SMS reminders. The reconstitution calculator only multiplies and divides the
+numbers the person typed. Every screen carries a "not medical advice" line.
+
+## Pages
+
+- [Home](https://peptidelog.try-dabble.com/): The tracker
+- [Privacy](https://peptidelog.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://peptidelog.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/guides/peptidelog): How-to on try-dabble.com
+
+## Features
+
+- Compounds: add, edit, delete; unlimited and free; optional unit label, default dose, notes, user-entered half-life hours
+- Reconstitution calculator: vial mg + diluent mL → mg/mL and mcg/mL; desired dose → syringe units (U-100 by default, adjustable) and volume; doses per vial
+- Quick dose log: compound, amount, unit, editable date & time (any day), injection site, optional vial link, notes
+- Calendar: month grid, tap any past or future day, add / edit / delete logs there (not locked to today)
+- Vial inventory: remaining mg or mL, low-stock threshold with a "Low" chip, automatic deduction when a log is linked to a vial
+- Schedules: several named protocols, weekday or every-N-days, one or more times per day, next-7-days list, "Done" writes a log
+- Site rotation: least-recently-used suggestion over common subcutaneous sites; override with one tap
+- Optional half-life estimate: user-entered hours, simple halving decay, labelled "estimate only"
+- Supplies checklist: swabs, syringes, water with optional quantity and low threshold
+- JSON export / import of everything; delete all data
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
