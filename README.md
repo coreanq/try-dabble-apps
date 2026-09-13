@@ -58,3 +58,4 @@ those folders, which builds and then deploys.
 - [seatview](https://seatview.try-dabble.com/) — 좌석 시야 3D 미리보기 (concert seat-view previewer + venue digitising tool at /admin/); Vite + TS + three.js, `npm run deploy`
 - [timerpad](https://timerpad.try-dabble.com/) — HIIT + Pomodoro + stopwatch; Vite + React + TS, `npm run deploy`
 - [scrubpad](https://scrubpad.try-dabble.com/) — local PII scrubber with stable placeholders, review list and restore map; Vite + React + TS, `npm run deploy`
+- [subpad](https://subpad.try-dabble.com/) — local subscription tracker with renewals, per-currency totals, templates, payment history and .ics export; Vite + React + TS, `npm run deploy`

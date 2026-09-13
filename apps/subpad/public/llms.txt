@@ -1,0 +1,38 @@
+# Subpad / 섭패드
+
+> A free, ad-free local subscription and bill tracker with no account and
+> no bank link. Price, next renewal, days until renewal, monthly and yearly
+> totals per currency, searchable service templates, local brand tiles,
+> payment history, filters, JSON backup and a calendar (.ics) export.
+
+This is a Progressive Web App (PWA) hosted at https://subpad.try-dabble.com/
+Subscriptions, payments and preferences stay in this browser on this device.
+No accounts, no sign-in, no bank or card connection, no uploads, no server
+storage, no ads, no in-app purchases, no catalog lock. Totals are grouped
+per currency; the app never invents exchange rates. Export a JSON backup to
+survive a reinstall or move phones.
+
+## Pages
+
+- [Home](https://subpad.try-dabble.com/): The tracker
+- [Privacy](https://subpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://subpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/subpad): How-to on try-dabble.com
+
+## Features
+
+- Add or edit a subscription: name, price, currency, next renewal, billing cycle (weekly, monthly, quarterly, yearly), category, notes, website
+- Days until renewal, with overdue wording when the date has passed
+- Monthly and yearly totals, grouped by currency, never merged with invented FX rates
+- Searchable templates (Netflix, Spotify, YouTube Premium, iCloud+, Adobe, ChatGPT, Claude, domains, mobile plans and more) with categories
+- Local brand tiles: initials on category colour, baked into the app, no logo fetching
+- Mark paid or skip; paying advances the next renewal by one cycle; payment history list
+- Search and filter by name, category, currency, cycle, status and upcoming window
+- JSON export / import (also accepts simple legacy shapes with a services list)
+- Calendar .ics export for all or one subscription, with a one-day reminder alarm
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
