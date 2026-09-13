@@ -1,0 +1,40 @@
+# Gymac / 자이맥
+
+> A free, ad-free local gym workout log and macro tracker with no account.
+> Log each exercise as sets of weight × reps, see personal records (heaviest
+> set and Epley estimated 1RM) per exercise, compute daily calorie and
+> protein / carb / fat targets with Mifflin–St Jeor, track daily macros with
+> your own custom foods, log weigh-ins, keep unlimited routines, run a
+> foreground rest timer and export a JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://gymac.try-dabble.com/
+Workouts, meals, weigh-ins, foods, routines, profile and preferences stay in
+this browser on this device. No accounts, no sign-in, no uploads, no server
+storage, no ads, no in-app purchases, no subscription, no routine or history
+cap, no paid food database. Export a JSON backup to survive a reinstall or
+move phones.
+
+## Pages
+
+- [Home](https://gymac.try-dabble.com/): The tracker
+- [Privacy](https://gymac.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://gymac.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/gymac): How-to on try-dabble.com
+
+## Features
+
+- Workout log: one or more sessions per day, unlimited exercises per session, set rows of weight × reps, inline edit and delete of sets, exercises and sessions, optional session name and notes
+- Strength / PRs: per exercise the heaviest set and the best Epley estimated 1RM (weight × (1 + reps / 30)), session count, tap to see full history
+- Targets: Mifflin–St Jeor BMR × activity factor → TDEE; default split protein 2.0 g/kg, fat 25 % of calories, carbs the rest; every target editable
+- Daily macros: calories, protein, carbs, fat totals vs targets with progress bars; log servings of a custom food or a quick one-off entry; edit or delete entries
+- Custom foods: name, serving description, kcal and P/C/F per serving; unlimited; no paid database
+- Weigh-ins: date and weight in kg or lb, newest first with change vs previous, "use latest" for the profile
+- Routines: unlimited named exercise lists that pre-fill a session
+- Rest timer: 60 / 90 / 120 / 180 s presets and a custom value, counts down in the foreground only, no background notifications
+- JSON export / import of everything; delete all data
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>자이맥</title>
+  <meta name="description" content="계정 없는 무료 로컬 헬스 운동 기록 + 매크로 앱. 운동별 세트(중량×횟수)를 남기고, 개인 기록(최고 중량·추정 1RM)을 자동으로 찾고, Mifflin-St Jeor로 하루 칼로리와 단백질·탄수화물·지방 목표를 계산하고, 커스텀 음식으로 하루 매크로를 기록하고, 체중을 남기세요. 루틴·기록 무제한, 구독 벽 없음, 광고 없음, JSON 백업으로 재설치해도 안전. 데이터는 이 기기에만." />
+  <meta name="theme-color" content="#fff8f3" />
+  <meta name="application-name" content="자이맥" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="자이맥" />
+  <link rel="canonical" href="https://gymac.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://gymac.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://gymac.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://gymac.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://gymac.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://gymac.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gymac" />
+  <meta property="og:url" content="https://gymac.try-dabble.com/" />
+  <meta property="og:title" content="자이맥" />
+  <meta property="og:description" content="무료 로컬 헬스·매크로 기록. 운동(세트×횟수×중량), 하루 칼로리·P/C/F, 체중, PR, 커스텀 음식, JSON 백업. 계정 없음. 광고 없음." />
+  <meta property="og:image" content="https://gymac.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="자이맥" />
+  <meta name="twitter:description" content="무료 로컬 헬스·매크로 기록. 운동(세트×횟수×중량), 하루 칼로리·P/C/F, 체중, PR, 커스텀 음식, JSON 백업. 계정 없음. 광고 없음." />
+  <meta name="twitter:image" content="https://gymac.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://gymac.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://gymac.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://gymac.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .gm-tagline here before any
+    script runs, so crawlers and JS-off readers get the requested ?lang=
+    immediately. React replaces this subtree with the identical masthead on
+    mount. No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="gm-app">
+      <p class="gm-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="gm-masthead">
+        <div class="gm-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="gm-mark">
+            <rect x="6" y="6" width="52" height="52" rx="14" fill="#e85d4c"/>
+            <rect x="10" y="10" width="44" height="44" rx="11" fill="#fff8f3"/>
+            <rect x="26" y="30" width="12" height="4" rx="2" fill="#2a1f1a"/>
+            <rect x="16" y="24" width="7" height="16" rx="2.5" fill="#0d9488"/>
+            <rect x="41" y="24" width="7" height="16" rx="2.5" fill="#0d9488"/>
+            <rect x="12" y="27" width="4" height="10" rx="1.5" fill="#e85d4c"/>
+            <rect x="48" y="27" width="4" height="10" rx="1.5" fill="#e85d4c"/>
+          </svg>
+          <h1 id="brand-title">자이맥</h1>
+        </div>
+        <p class="gm-tagline">무료 로컬 헬스·매크로 기록. 운동(세트×횟수×중량), 하루 칼로리·P/C/F, 체중, PR, 커스텀 음식, JSON 백업. 계정 없음. 광고 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
