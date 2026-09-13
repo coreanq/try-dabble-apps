@@ -1,0 +1,38 @@
+# Scrubpad / 스크럽패드
+
+> A free, ad-free local PII scrubber with no account and no upload.
+> Paste text; emails, phone numbers, addresses, payment card numbers, IPs,
+> API keys / tokens and person names are replaced with stable placeholders
+> such as [NAME_1]. Review every detection, uncheck what should stay, add your
+> own words, compare original and scrubbed side by side, copy or download the
+> scrubbed text, and optionally keep a restore map (token → original) on
+> this device.
+
+This is a Progressive Web App (PWA) hosted at https://scrubpad.try-dabble.com/
+Scrubbing runs inside the browser tab on this device. The pasted text is
+never sent to a server. No accounts, no sign-in, no uploads, no server
+storage, no analytics, no ads, no in-app purchases, no subscription.
+
+## Pages
+
+- [Home](https://scrubpad.try-dabble.com/): The scrubber
+- [Privacy](https://scrubpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://scrubpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/scrubpad): How-to on try-dabble.com
+
+## Features
+
+- Large paste box first on the page
+- Detects emails, phones (international, KR, US, IT, JP, CN), street-ish addresses and postcodes, Luhn-valid card numbers, IPv4 / IPv6, API keys and tokens (OpenAI, AWS, GitHub, Slack, Google, JWT, Bearer, labelled secrets), person names (English, Korean, Japanese, Chinese heuristics)
+- Stable placeholders: the same entity always gets the same token in one pass
+- Review list with type badge, original and token; uncheck to keep the original
+- Custom words become [WORD_n]; dictionary import / export as JSON
+- Side-by-side original vs scrubbed with tokens highlighted
+- Copy scrubbed, download scrubbed (.txt)
+- Optional restore map (token → original) as JSON, with a warning to keep it out of the chat
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
