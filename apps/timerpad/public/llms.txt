@@ -1,0 +1,38 @@
+# Timerpad / 타이머패드
+
+> A free, ad-free local HIIT + Pomodoro + stopwatch with no account.
+> Countdown, editable Pomodoro rounds, editable HIIT/Tabata intervals,
+> stopwatch with laps, saved routines, fullscreen, wake lock, short cue
+> sounds, drift-corrected timing and a JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://timerpad.try-dabble.com/
+Routines and preferences stay in this browser on this device. No accounts,
+no sign-in, no uploads, no server storage, no ads, no in-app purchases,
+no subscription, no locked presets. Export a JSON backup to survive a
+reinstall or move phones.
+
+## Pages
+
+- [Home](https://timerpad.try-dabble.com/): The timer
+- [Privacy](https://timerpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://timerpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/timerpad): How-to on try-dabble.com
+
+## Features
+
+- Countdown timer with hours, minutes and seconds
+- Pomodoro rounds: work, rest, long rest, rounds and long-break spacing are all editable
+- Interval / HIIT / Tabata: every step (kind, seconds, optional name) and round count is editable
+- Stopwatch with laps
+- Save, load and delete routines
+- Fullscreen and screen wake lock
+- Short cue sounds that do not hijack music
+- Drift-corrected timing that keeps ticking when the tab is backgrounded as much as the browser allows
+- Stop and reset stay available mid-workout
+- JSON export / import; delete all data
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

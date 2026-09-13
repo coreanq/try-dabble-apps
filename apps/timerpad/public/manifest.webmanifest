@@ -1,0 +1,32 @@
+{
+  "name": "타이머패드",
+  "short_name": "타이머패드",
+  "description": "무료 로컬 HIIT·포모도로·스톱워치. 편집 가능한 프리셋, 랩, 루틴 저장, 전체화면·화면 켜짐, 소리, JSON 백업. 계정 없음. 광고 없음.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#eef3f8",
+  "theme_color": "#eef3f8",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

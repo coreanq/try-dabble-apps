@@ -56,3 +56,4 @@ those folders, which builds and then deploys.
 - [jump-map](https://jump-map.try-dabble.com/) — Block Jumper CSR/PWA
 - [sudoku](https://sudoku.try-dabble.com/) — 스도쿠 3D wooden-board sudoku; three.js + R3F, ported off Expo
 - [seatview](https://seatview.try-dabble.com/) — 좌석 시야 3D 미리보기 (concert seat-view previewer + venue digitising tool at /admin/); Vite + TS + three.js, `npm run deploy`
+- [timerpad](https://timerpad.try-dabble.com/) — HIIT + Pomodoro + stopwatch; Vite + React + TS, `npm run deploy`

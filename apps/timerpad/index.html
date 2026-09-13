@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>타이머패드</title>
+  <meta name="description" content="계정 없는 무료 로컬 타이머. 카운트다운, 포모도로 라운드, HIIT·타바타 인터벌, 스톱워치와 랩을 한 화면에서. 프리셋은 모두 편집할 수 있고, 루틴을 저장하고, 운동 중간에 멈추거나 리셋할 수 있습니다. 전체화면과 화면 켜짐, 짧은 알림음, 백그라운드에서도 드리프트를 보정한 시각. JSON 백업. 광고 없음, 결제 없음. 데이터는 이 기기에만." />
+  <meta name="theme-color" content="#eef3f8" />
+  <meta name="application-name" content="타이머패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="타이머패드" />
+  <link rel="canonical" href="https://timerpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://timerpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://timerpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://timerpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://timerpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://timerpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timerpad" />
+  <meta property="og:url" content="https://timerpad.try-dabble.com/" />
+  <meta property="og:title" content="타이머패드" />
+  <meta property="og:description" content="계정 없는 무료 로컬 타이머. 카운트다운, 포모도로 라운드, HIIT·타바타 인터벌, 스톱워치와 랩을 한 화면에서. 프리셋은 모두 편집할 수 있고, 루틴을 저장하고, 운동 중간에 멈추거나 리셋할 수 있습니다. 전체화면과 화면 켜짐, 짧은 알림음, 백그라운드에서도 드리프트를 보정한 시각. JSON 백업. 광고 없음, 결제 없음. 데이터는 이 기기에만." />
+  <meta property="og:image" content="https://timerpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="타이머패드" />
+  <meta name="twitter:description" content="계정 없는 무료 로컬 타이머. 카운트다운, 포모도로 라운드, HIIT·타바타 인터벌, 스톱워치와 랩을 한 화면에서. 프리셋은 모두 편집할 수 있고, 루틴을 저장하고, 운동 중간에 멈추거나 리셋할 수 있습니다. 전체화면과 화면 켜짐, 짧은 알림음, 백그라운드에서도 드리프트를 보정한 시각. JSON 백업. 광고 없음, 결제 없음. 데이터는 이 기기에만." />
+  <meta name="twitter:image" content="https://timerpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://timerpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://timerpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://timerpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .tp-tagline here before any
+    script runs, so crawlers and JS-off readers get the requested ?lang=
+    immediately. React replaces this subtree with the identical masthead on
+    mount. No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="tp-app">
+      <p class="tp-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 서버로 보내지 않습니다.</p>
+      <header class="tp-masthead">
+        <div class="tp-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="tp-mark">
+            <circle cx="32" cy="32" r="28" fill="#2f6fed"/>
+            <circle cx="32" cy="32" r="22" fill="#eef3f8"/>
+            <circle cx="32" cy="32" r="3" fill="#1a2332"/>
+            <rect x="30.6" y="16" width="2.8" height="16" rx="1.4" fill="#1a2332"/>
+            <rect x="32" y="30.6" width="12" height="2.8" rx="1.4" fill="#e05a33"/>
+          </svg>
+          <h1 id="brand-title">타이머패드</h1>
+        </div>
+        <p class="tp-tagline">무료 로컬 HIIT·포모도로·스톱워치. 편집 가능한 프리셋, 랩, 루틴 저장, 전체화면·화면 켜짐, 소리, JSON 백업. 계정 없음. 광고 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
