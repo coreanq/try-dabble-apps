@@ -1,0 +1,39 @@
+# PetPlay / 펫플레이
+
+> A free, ad-free local digital pet with no account and no generative AI.
+> Build a sprite from SVG parts (dog / cat / bunny / bird / fox; ears, eyes,
+> body, tail, accessory, three colours) or crop and tint your own photo on
+> this device, name the pet, and care for it with Feed, Play, Pet and Clean
+> against visible fullness / happiness / energy / cleanliness meters that
+> drift down over time. Export a JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://petplay.try-dabble.com/
+The pet's look, name, needs and preferences stay in this browser on this
+device. No accounts, no sign-in, no uploads, no server storage, no ads, no
+in-app purchases, no tokens, no paid parts or skins, and no generative AI or
+cloud portrait: the art is a fixed set of SVG shapes, or your own photo
+cropped by your browser. Export a JSON backup to survive a reinstall or move
+phones.
+
+## Pages
+
+- [Home](https://petplay.try-dabble.com/): The pet
+- [Privacy](https://petplay.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://petplay.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/petplay): How-to on try-dabble.com
+
+## Features
+
+- Parts sprite: five species, five ear styles, five eye styles, three bodies, four tails, five accessories, palette swatches plus a free colour picker for body / belly / accent; all free, no tokens
+- Photo sprite: pick a local image, square crop with zoom and offset sliders, optional tint, rendered on a canvas in the browser and saved as an inline image; never uploaded, no AI
+- Name the pet (up to 24 characters)
+- Needs: fullness, happiness, energy, cleanliness from 0 to 100, shown as bars; they drift down while the tab is open and, capped, for time away
+- Care: Feed (+fullness), Play (+happiness, −a little energy), Pet (+energy, +happiness), Clean (+cleanliness); a "Skip 1 hour" demo button and a "pause drift" toggle
+- Mood face and speech bubble follow the meters (happy / okay / sad / hungry / sleepy / needs a wash / bored)
+- JSON export / import of pet + needs + preferences; delete all
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

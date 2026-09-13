@@ -1,0 +1,32 @@
+{
+  "name": "펫플레이",
+  "short_name": "펫플레이",
+  "description": "생성형 AI 없는 무료 로컬 디지털 펫. 파츠·색으로 꾸미거나 내 사진으로 스프라이트(기기에서 자르고 색만 입힘), 이름 짓고 먹이·놀아주기, JSON 백업. 계정 없음. 토큰 없음. 광고 없음.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff5f0",
+  "theme_color": "#ffd6e0",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
