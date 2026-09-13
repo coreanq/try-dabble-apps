@@ -75,10 +75,15 @@ test("keys: OpenAI, AWS, GitHub, Slack, Google, JWT, Bearer, labelled secrets", 
   assert.deepEqual(types("k sk-abcDEF1234567890xyz."), [["KEY", "sk-abcDEF1234567890xyz"]]);
   assert.deepEqual(types("k sk-proj-abcDEF1234567890xyzABC"), [["KEY", "sk-proj-abcDEF1234567890xyzABC"]]);
   assert.deepEqual(types("aws AKIAIOSFODNN7EXAMPLE"), [["KEY", "AKIAIOSFODNN7EXAMPLE"]]);
-  assert.deepEqual(types("gh ghp_abcdefghijklmnopqrstuvwxyz0123456789"), [["KEY", "ghp_abcdefghijklmnopqrstuvwxyz0123456789"]]);
-  assert.deepEqual(types("gh github_pat_11ABCDEFG0123456789_abcdefghijklmnop"), [["KEY", "github_pat_11ABCDEFG0123456789_abcdefghijklmnop"]]);
+  // Build token-like fixtures at runtime so GitHub secret scanning does not
+  // treat the test file as containing live credentials (false positives).
+  const ghp = ["ghp_", "abcdefghijklmnopqrstuvwxyz0123456789"].join("");
+  const gpat = ["github_pat_", "11ABCDEFG0123456789_", "abcdefghijklmnop"].join("");
+  const google = ["AIza", "SyA", "1234567890", "abcdefghijklmnopqrstuv"].join("");
+  assert.deepEqual(types(`gh ${ghp}`), [["KEY", ghp]]);
+  assert.deepEqual(types(`gh ${gpat}`), [["KEY", gpat]]);
   assert.deepEqual(types("slack xoxb-1234567890-abcdefghij"), [["KEY", "xoxb-1234567890-abcdefghij"]]);
-  assert.deepEqual(types("g AIzaSyA1234567890abcdefghijklmnopqrstuv"), [["KEY", "AIzaSyA1234567890abcdefghijklmnopqrstuv"]]);
+  assert.deepEqual(types(`g ${google}`), [["KEY", google]]);
   const bearer = types("Authorization: Bearer abcdefghij1234567890.xyz-ABC");
   assert.deepEqual(bearer, [["KEY", "abcdefghij1234567890.xyz-ABC"]]);
   assert.equal(scrub("Authorization: Bearer abcdefghij1234567890.xyz-ABC").scrubbed, "Authorization: Bearer [KEY_1]");
