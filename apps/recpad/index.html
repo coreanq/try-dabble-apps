@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>렉패드</title>
+  <meta name="description" content="설치 없이 쓰는 무료 로컬 연습 녹음기. 마이크로 기타·연습 테이크를 녹음하고 파형을 보며 구간을 선택해 자르거나 삭제하고, 노이즈 정리와 게인·노멀라이즈를 적용하고, 되돌리기로 실수를 되돌립니다. WAV와 MP3로 내려받고, 초안은 이 기기에만 저장됩니다. 녹음·처리·내보내기 모두 이 기기에서만. 계정 없음, 업로드 없음, 광고 없음, 구독 없음." />
+  <meta name="theme-color" content="#f7f0e6" />
+  <meta name="application-name" content="렉패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="렉패드" />
+  <link rel="canonical" href="https://recpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://recpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://recpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://recpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://recpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://recpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Recpad" />
+  <meta property="og:url" content="https://recpad.try-dabble.com/" />
+  <meta property="og:title" content="렉패드" />
+  <meta property="og:description" content="설치 없이 쓰는 무료 로컬 연습 녹음기. 마이크로 기타·연습 테이크를 녹음하고 파형을 보며 구간을 선택해 자르거나 삭제하고, 노이즈 정리와 게인·노멀라이즈를 적용하고, 되돌리기로 실수를 되돌립니다. WAV와 MP3로 내려받고, 초안은 이 기기에만 저장됩니다. 녹음·처리·내보내기 모두 이 기기에서만. 계정 없음, 업로드 없음, 광고 없음, 구독 없음." />
+  <meta property="og:image" content="https://recpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="렉패드" />
+  <meta name="twitter:description" content="설치 없이 쓰는 무료 로컬 연습 녹음기. 마이크로 기타·연습 테이크를 녹음하고 파형을 보며 구간을 선택해 자르거나 삭제하고, 노이즈 정리와 게인·노멀라이즈를 적용하고, 되돌리기로 실수를 되돌립니다. WAV와 MP3로 내려받고, 초안은 이 기기에만 저장됩니다. 녹음·처리·내보내기 모두 이 기기에서만. 계정 없음, 업로드 없음, 광고 없음, 구독 없음." />
+  <meta name="twitter:image" content="https://recpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://recpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://recpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://recpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .rp-tagline here before any
+    script runs, so crawlers and JS-off readers get the requested ?lang=
+    immediately. React replaces this subtree with the identical masthead on
+    mount. No ad script lives in this file or anywhere in the bundle, and the
+    audio a user records never leaves the tab.
+  -->
+  <div id="root">
+    <div class="rp-app">
+      <p class="rp-notice" id="local-only" role="note">이 앱의 녹음과 처리는 이 기기에서만 이루어지며 서버로 보내지 않습니다. 구독·광고 없음.</p>
+      <header class="rp-masthead">
+        <div class="rp-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="rp-mark">
+            <rect x="6" y="4" width="52" height="56" rx="10" fill="#4a1942"/>
+            <rect x="11" y="9" width="42" height="46" rx="6" fill="#f7f0e6"/>
+            <rect x="16" y="27" width="3" height="10" rx="1.5" fill="#0d9488"/>
+            <rect x="21" y="21" width="3" height="22" rx="1.5" fill="#0d9488"/>
+            <rect x="26" y="15" width="3" height="34" rx="1.5" fill="#0d9488"/>
+            <rect x="31" y="24" width="3" height="16" rx="1.5" fill="#0d9488"/>
+            <rect x="36" y="18" width="3" height="28" rx="1.5" fill="#0d9488"/>
+            <rect x="41" y="26" width="3" height="12" rx="1.5" fill="#0d9488"/>
+            <rect x="46" y="29" width="3" height="6" rx="1.5" fill="#0d9488"/>
+            <circle cx="46" cy="47" r="5.5" fill="#e11d48"/>
+          </svg>
+          <h1 id="brand-title">렉패드</h1>
+        </div>
+        <p class="rp-tagline">무료 로컬 연습 녹음. 마이크 녹음, 노이즈 정리, 자르기, 게인, WAV·MP3 내보내기. 초안은 이 기기에만. 계정 없음. 업로드 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

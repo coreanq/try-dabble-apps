@@ -60,3 +60,4 @@ those folders, which builds and then deploys.
 - [scrubpad](https://scrubpad.try-dabble.com/) — local PII scrubber with stable placeholders, review list and restore map; Vite + React + TS, `npm run deploy`
 - [subpad](https://subpad.try-dabble.com/) — local subscription tracker with renewals, per-currency totals, templates, payment history and .ics export; Vite + React + TS, `npm run deploy`
 - [hourpad](https://hourpad.try-dabble.com/) — local work-hours tracker with check-in, breaks, weekly target and an overtime bank that rolls into next week; Vite + React + TS, `npm run deploy`
+- [recpad](https://recpad.try-dabble.com/) — local practice mic recorder with waveform selection, trim/cut/undo, on-device noise clean, gain/normalize, WAV + MP3 export and drafts on this device; Vite + React + TS, `npm run deploy`

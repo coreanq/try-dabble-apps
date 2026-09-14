@@ -1,0 +1,37 @@
+# Recpad / 렉패드
+
+> A free, ad-free local practice recorder with no account and no upload.
+> Record a guitar or practice take from the mic, see the waveform, select a
+> region to trim or cut, clean noise with an on-device spectral gate, apply
+> gain or normalize to -1 dB, undo mistakes, download as WAV or MP3, and keep
+> drafts on this device.
+
+This is a Progressive Web App (PWA) hosted at https://recpad.try-dabble.com/
+Recording, noise clean, gain and export all run inside the browser tab on
+this device. Audio is never sent to a server. No accounts, no sign-in, no
+uploads, no server storage, no analytics, no ads, no in-app purchases, no
+subscription.
+
+## Pages
+
+- [Home](https://recpad.try-dabble.com/): The recorder
+- [Privacy](https://recpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://recpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/recpad): How-to on try-dabble.com
+
+## Features
+
+- Big Record / Stop button; browser speech-style noise suppression and auto gain are switched off so instruments come through as they are
+- Waveform with playhead; drag to select a region, tap to seek, drag an edge to adjust
+- Trim to selection, cut selection, clear selection, undo (several levels)
+- Noise clean: spectral gate built from the quietest frames of the take, three strengths, computed on this device
+- Gain in dB and normalize to about -1 dB
+- Export WAV (16-bit PCM) and MP3 (128 kbps, encoded in the tab)
+- Drafts on this device: save, open, rename, delete; they survive a refresh
+- Demo take so every edit can be tried without a microphone
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
