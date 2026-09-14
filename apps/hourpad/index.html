@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>아워패드</title>
+  <meta name="description" content="회사 시스템도 로그인도 없는 무료 로컬 근무 시간 기록. 출근 버튼으로 시작하고, 휴식은 따로 재고, 퇴근으로 끝냅니다. 세션마다 선택 작업명. 오늘의 근무·휴식 합계와 이번 주 근무 시간을 설정 가능한 주 목표(기본 40시간)와 비교합니다. 주가 끝나면 목표 대비 초과·부족분이 초과 근무 뱅크로 넘어가고, 홈에서 보고 직접 고칠 수 있습니다. 하루·주 기록, JSON 내보내기·불러오기, 오프라인 PWA. 탭을 뒤로 보내도 실제 시각으로 계산합니다. 계정 없음, 광고 없음. 데이터는 이 기기에만." />
+  <meta name="theme-color" content="#eef2f7" />
+  <meta name="application-name" content="아워패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="아워패드" />
+  <link rel="canonical" href="https://hourpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://hourpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://hourpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://hourpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://hourpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://hourpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hourpad" />
+  <meta property="og:url" content="https://hourpad.try-dabble.com/" />
+  <meta property="og:title" content="아워패드" />
+  <meta property="og:description" content="회사 시스템도 로그인도 없는 무료 로컬 근무 시간 기록. 출근 버튼으로 시작하고, 휴식은 따로 재고, 퇴근으로 끝냅니다. 세션마다 선택 작업명. 오늘의 근무·휴식 합계와 이번 주 근무 시간을 설정 가능한 주 목표(기본 40시간)와 비교합니다. 주가 끝나면 목표 대비 초과·부족분이 초과 근무 뱅크로 넘어가고, 홈에서 보고 직접 고칠 수 있습니다. 하루·주 기록, JSON 내보내기·불러오기, 오프라인 PWA. 탭을 뒤로 보내도 실제 시각으로 계산합니다. 계정 없음, 광고 없음. 데이터는 이 기기에만." />
+  <meta property="og:image" content="https://hourpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="아워패드" />
+  <meta name="twitter:description" content="회사 시스템도 로그인도 없는 무료 로컬 근무 시간 기록. 출근 버튼으로 시작하고, 휴식은 따로 재고, 퇴근으로 끝냅니다. 세션마다 선택 작업명. 오늘의 근무·휴식 합계와 이번 주 근무 시간을 설정 가능한 주 목표(기본 40시간)와 비교합니다. 주가 끝나면 목표 대비 초과·부족분이 초과 근무 뱅크로 넘어가고, 홈에서 보고 직접 고칠 수 있습니다. 하루·주 기록, JSON 내보내기·불러오기, 오프라인 PWA. 탭을 뒤로 보내도 실제 시각으로 계산합니다. 계정 없음, 광고 없음. 데이터는 이 기기에만." />
+  <meta name="twitter:image" content="https://hourpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://hourpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://hourpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://hourpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .hp-tagline here before any
+    script runs, so crawlers and JS-off readers get the requested ?lang=
+    immediately. React replaces this subtree with the identical masthead on
+    mount. No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="hp-app">
+      <p class="hp-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 로그인·광고 없음. 휴식과 초과 근무 뱅크는 무료입니다.</p>
+      <header class="hp-masthead">
+        <div class="hp-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="hp-mark">
+            <rect x="6" y="8" width="52" height="48" rx="8" fill="#3730a3"/>
+            <rect x="12" y="14" width="40" height="5" rx="2.5" fill="#eef2f7" opacity="0.55"/>
+            <circle cx="28" cy="36" r="13" fill="#eef2f7"/>
+            <path d="M28 27v9l6 4" fill="none" stroke="#1e293b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 36l-5 -3" fill="none" stroke="#d97706" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="28" cy="36" r="1.8" fill="#1e293b"/>
+            <rect x="44" y="40" width="10" height="10" rx="3" fill="#0f766e"/>
+            <path d="M46.5 45l2 2 3.5 -4" fill="none" stroke="#ccfbf1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1 id="brand-title">아워패드</h1>
+        </div>
+        <p class="hp-tagline">무료 로컬 근무 시간 기록. 출근·휴식·퇴근. 일·주 합계와 목표 시간. 초과 근무 뱅크가 다음 주로 넘어갑니다. JSON 백업. 계정 없음. 광고 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

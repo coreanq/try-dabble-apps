@@ -59,3 +59,4 @@ those folders, which builds and then deploys.
 - [timerpad](https://timerpad.try-dabble.com/) — HIIT + Pomodoro + stopwatch; Vite + React + TS, `npm run deploy`
 - [scrubpad](https://scrubpad.try-dabble.com/) — local PII scrubber with stable placeholders, review list and restore map; Vite + React + TS, `npm run deploy`
 - [subpad](https://subpad.try-dabble.com/) — local subscription tracker with renewals, per-currency totals, templates, payment history and .ics export; Vite + React + TS, `npm run deploy`
+- [hourpad](https://hourpad.try-dabble.com/) — local work-hours tracker with check-in, breaks, weekly target and an overtime bank that rolls into next week; Vite + React + TS, `npm run deploy`

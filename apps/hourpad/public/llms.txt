@@ -1,0 +1,41 @@
+# Hourpad / 아워패드
+
+> A free, ad-free local work-hours tracker with no account and no company
+> system. Check in, take breaks, check out. Daily and weekly work and break
+> totals against a settable weekly target (default 40h). When a week ends,
+> the surplus or shortfall rolls into an overtime bank that is visible on
+> the home screen and editable. Day and week history, JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://hourpad.try-dabble.com/
+Sessions, the open session, the weekly target, the bank balance and settled
+weeks stay in this browser on this device. No accounts, no sign-in, no team
+or company workspace, no uploads, no server storage, no ads, no in-app
+purchases: breaks and the overtime bank are free. Elapsed time is computed
+from the wall clock (check-in timestamp vs now), so totals stay honest after
+the tab goes to the background. Export a JSON backup to survive a reinstall
+or move phones.
+
+## Pages
+
+- [Home](https://hourpad.try-dabble.com/): The tracker
+- [Privacy](https://hourpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://hourpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/hourpad): How-to on try-dabble.com
+
+## Features
+
+- Check in to start a work session; Break pauses work into a separately timed break; Resume work; Check out ends the session
+- Optional free-text task label on the current session
+- Today card: work total and break total (breaks never count as work)
+- This week card: work hours vs the weekly target, remaining or over, and the overtime bank balance
+- Overtime bank: when a week with work logged ends, work minus target is added to the bank (can go negative); the balance is editable
+- Weekly target is editable (default 40 hours)
+- Day history: sessions for any date with start, end, duration and label; manual entry for a forgotten check-in
+- Week history: work and break totals per week, target, settled bank delta
+- JSON export / import (also accepts a plain list of sessions)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
