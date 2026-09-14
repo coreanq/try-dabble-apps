@@ -1,0 +1,41 @@
+# Paypad / 페이패드
+
+> A free, ad-free local envelope budget for irregular income, with no
+> account and no bank link. Log earnings as they land, split them into
+> percent or fixed envelopes across savings / debt / bills / sinking /
+> flexible, see monthly and annual views, keep the leftover as a buffer,
+> and back everything up as JSON.
+
+This is a Progressive Web App (PWA) hosted at https://paypad.try-dabble.com/
+Plans, earnings, envelopes and preferences stay in this browser on this
+device. No accounts, no sign-in, no bank or card connection, no uploads, no
+server storage, no ads, no in-app purchases, no Plus tier, no envelope cap.
+Totals are grouped per currency; the app never invents exchange rates.
+Export a JSON backup to survive a reinstall or move phones.
+
+## Pages
+
+- [Home](https://paypad.try-dabble.com/): The planner
+- [Privacy](https://paypad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://paypad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/paypad): How-to on try-dabble.com
+
+## Features
+
+- Several named paycheck / payout plans: create, rename, duplicate (envelopes copied, earnings left empty), delete
+- Income mode per plan: biweekly, monthly or irregular; plan currency
+- Add earnings as they land: amount, date, optional label, optional per-entry currency
+- Envelopes as a percent of income or a fixed amount; unlimited count
+- Envelope categories: savings, debt, bills, sinking fund, flexible
+- Percent envelopes, totals and charts recompute the moment an earning is added, edited or deleted
+- Totals: income, allocated, buffer (leftover to next paycheck); clear over-allocation warning
+- Allocated vs buffer bar and per-category breakdown drawn with plain CSS
+- Monthly view (one month's earnings) and annual view (twelve months aggregated)
+- Other currencies totalled separately, never merged with invented FX rates
+- JSON export / import (also accepts simple paycheck-planner style incomes / buckets)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.
