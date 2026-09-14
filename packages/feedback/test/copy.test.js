@@ -7,7 +7,7 @@ const assert = require("node:assert");
 const src = readFileSync(join(__dirname, "..", "src", "feedback.js"), "utf8");
 
 const LANGS = ["ko", "en", "ja", "zh"];
-const KEYS = ["btn"];
+const KEYS = ["btn", "guide", "demandTitle", "sync", "backup", "team", "ask", "email", "send", "skip", "done", "fail", "close"];
 
 // The source is a browser IIFE, so lift the COPY literal out by evaluating
 // only that expression rather than loading the whole widget under node.
@@ -60,3 +60,12 @@ assert.ok(
   'same-tab fallback only when window.open is blocked'
 );
 console.log("ok - click opens _blank with opener-null + blocked fallback");
+
+// The demand items must post exactly the features the hub accepts
+// (src/worker/feedback.ts DEMAND_FEATURES), and usage events must never carry
+// anything but app, event and lang.
+assert.ok(/var FEATURES = \["sync", "backup", "team"\];/.test(src), "FEATURES must match the hub's DEMAND_FEATURES");
+assert.ok(/kind: "demand", feature: feature, email: email, lang: L/.test(src), "demand post shape");
+assert.ok(/JSON\.stringify\(\{ app: app, event: String\(ev\)\.slice\(0, 20\), lang: L \}\)/.test(src), "track payload is app+event+lang only");
+assert.ok(/window\.tdTrack = track;/.test(src), "apps can call window.tdTrack('save')");
+console.log("ok - demand features and track payload shape");
