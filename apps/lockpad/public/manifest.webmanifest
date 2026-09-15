@@ -1,0 +1,32 @@
+{
+  "name": "락패드",
+  "short_name": "락패드",
+  "description": "메모별 PIN 잠금이 있는 심플 로컬 메모장. 잠금 해제 모달, 유휴 자동 잠금, 제목 검색(잠긴 본문은 암호문 그대로), 태그·색상, 잠긴 블롭까지 담는 JSON 백업. 계정 없음. 광고 없음. 인앱 결제 없음.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5efe6",
+  "theme_color": "#f5efe6",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

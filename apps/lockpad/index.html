@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>락패드</title>
+  <meta name="description" content="삼성 노트처럼 메모 하나하나에 잠금을 걸 수 있는, 로그인도 광고도 인앱 결제도 없는 무료 로컬 메모장입니다. 메모를 만들고, 골라서 PIN이나 비밀번호로 잠그면 본문은 이 기기에서 Web Crypto(PBKDF2 + AES-GCM)로 암호화되어 암호문으로만 저장됩니다. 잠긴 메모를 열 때는 잠금 해제 모달이 뜨고, PIN을 틀릴수록 대기 시간이 1초·2초·4초로 늘어납니다. 원하면 일정 시간 손대지 않거나 탭을 숨길 때 열린 메모를 모두 다시 잠그는 자동 잠금을 켤 수 있습니다. 검색은 제목과 태그만 봅니다 — 잠긴 본문은 절대 복호화하지 않습니다. 태그와 색상은 선택입니다. JSON 백업에는 잠긴 메모가 암호문·솔트·KDF 파라미터 그대로 들어가서 새 브라우저나 새 기기에서 불러와도 그대로 잠긴 채 복원되고, 같은 PIN으로 열립니다. 잠긴 메모를 평문으로 몰래 풀어 내보내는 일은 없습니다. 사진·음성 첨부 유료 벽 없음, 전체 삭제 버튼 없음(있어도 타이핑 확인 뒤), 사용 중 광고 없음. 안드로이드와 모든 브라우저에서 설치해 오프라인으로 쓰는 PWA입니다. 데이터는 이 기기에만 남습니다." />
+  <meta name="theme-color" content="#f5efe6" />
+  <meta name="application-name" content="락패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="락패드" />
+  <link rel="canonical" href="https://lockpad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://lockpad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://lockpad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://lockpad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://lockpad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://lockpad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Lockpad" />
+  <meta property="og:url" content="https://lockpad.try-dabble.com/" />
+  <meta property="og:title" content="락패드" />
+  <meta property="og:description" content="삼성 노트처럼 메모 하나하나에 잠금을 걸 수 있는, 로그인도 광고도 인앱 결제도 없는 무료 로컬 메모장입니다. 메모를 만들고, 골라서 PIN이나 비밀번호로 잠그면 본문은 이 기기에서 Web Crypto(PBKDF2 + AES-GCM)로 암호화되어 암호문으로만 저장됩니다. 잠긴 메모를 열 때는 잠금 해제 모달이 뜨고, PIN을 틀릴수록 대기 시간이 1초·2초·4초로 늘어납니다. 원하면 일정 시간 손대지 않거나 탭을 숨길 때 열린 메모를 모두 다시 잠그는 자동 잠금을 켤 수 있습니다. 검색은 제목과 태그만 봅니다 — 잠긴 본문은 절대 복호화하지 않습니다. 태그와 색상은 선택입니다. JSON 백업에는 잠긴 메모가 암호문·솔트·KDF 파라미터 그대로 들어가서 새 브라우저나 새 기기에서 불러와도 그대로 잠긴 채 복원되고, 같은 PIN으로 열립니다. 잠긴 메모를 평문으로 몰래 풀어 내보내는 일은 없습니다. 사진·음성 첨부 유료 벽 없음, 전체 삭제 버튼 없음(있어도 타이핑 확인 뒤), 사용 중 광고 없음. 안드로이드와 모든 브라우저에서 설치해 오프라인으로 쓰는 PWA입니다. 데이터는 이 기기에만 남습니다." />
+  <meta property="og:image" content="https://lockpad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="락패드" />
+  <meta name="twitter:description" content="삼성 노트처럼 메모 하나하나에 잠금을 걸 수 있는, 로그인도 광고도 인앱 결제도 없는 무료 로컬 메모장입니다. 메모를 만들고, 골라서 PIN이나 비밀번호로 잠그면 본문은 이 기기에서 Web Crypto(PBKDF2 + AES-GCM)로 암호화되어 암호문으로만 저장됩니다. 잠긴 메모를 열 때는 잠금 해제 모달이 뜨고, PIN을 틀릴수록 대기 시간이 1초·2초·4초로 늘어납니다. 원하면 일정 시간 손대지 않거나 탭을 숨길 때 열린 메모를 모두 다시 잠그는 자동 잠금을 켤 수 있습니다. 검색은 제목과 태그만 봅니다 — 잠긴 본문은 절대 복호화하지 않습니다. 태그와 색상은 선택입니다. JSON 백업에는 잠긴 메모가 암호문·솔트·KDF 파라미터 그대로 들어가서 새 브라우저나 새 기기에서 불러와도 그대로 잠긴 채 복원되고, 같은 PIN으로 열립니다. 잠긴 메모를 평문으로 몰래 풀어 내보내는 일은 없습니다. 사진·음성 첨부 유료 벽 없음, 전체 삭제 버튼 없음(있어도 타이핑 확인 뒤), 사용 중 광고 없음. 안드로이드와 모든 브라우저에서 설치해 오프라인으로 쓰는 PWA입니다. 데이터는 이 기기에만 남습니다." />
+  <meta name="twitter:image" content="https://lockpad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://lockpad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://lockpad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://lockpad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .lp-tagline here before any
+    script runs, so crawlers and JS-off readers get the requested ?lang=
+    immediately. React replaces this subtree with the identical masthead on
+    mount. No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="lp-app">
+      <p class="lp-notice" id="local-only" role="note">메모는 이 기기에만 저장됩니다. 잠긴 메모는 암호문으로만 남습니다. 로그인·광고 없음. JSON으로 백업하세요.</p>
+      <header class="lp-masthead">
+        <div class="lp-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="lp-mark">
+            <rect x="10" y="5" width="44" height="54" rx="7" fill="#fbf7f0" stroke="#1a1625" stroke-width="2"/>
+            <rect x="18" y="14" width="28" height="3" rx="1.5" fill="#a8a29e"/>
+            <rect x="18" y="22" width="20" height="3" rx="1.5" fill="#a8a29e"/>
+            <rect x="18" y="30" width="24" height="3" rx="1.5" fill="#d6d3d1"/>
+            <path d="M24 42v-7a8 8 0 0 1 16 0v7" fill="none" stroke="#b45309" stroke-width="3.4" stroke-linecap="round"/>
+            <rect x="19" y="40" width="26" height="18" rx="5" fill="#b45309"/>
+            <circle cx="32" cy="48" r="2.4" fill="#f5efe6"/>
+            <rect x="31" y="49" width="2" height="4.5" rx="1" fill="#f5efe6"/>
+          </svg>
+          <h1 id="brand-title">락패드</h1>
+        </div>
+        <p class="lp-tagline">메모별 PIN 잠금이 있는 심플 로컬 메모장. 잠금 해제 모달, 유휴 자동 잠금, 제목 검색(잠긴 본문은 암호문 그대로), 태그·색상, 잠긴 블롭까지 담는 JSON 백업. 계정 없음. 광고 없음. 인앱 결제 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

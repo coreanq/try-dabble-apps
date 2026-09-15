@@ -1,0 +1,34 @@
+# Lockpad
+
+> A free, ad-free local notepad with a Samsung Notes–style lock on any note,
+> no account and no in-app purchases. Write notes, lock the ones that matter
+> behind a PIN (Web Crypto PBKDF2 + AES-GCM; body stored as ciphertext only),
+> unlock through a modal with wrong-PIN backoff, optionally auto-lock on idle
+> or when the tab is hidden. Search titles and tags (locked bodies are never
+> decrypted). Tags and colours. Export / import JSON that carries locked
+> notes as ciphertext + salt + KDF params, so a new browser restores them
+> still locked. Works as an offline PWA on Android and any browser.
+
+Notes and preferences stay in this browser on this device. There is no
+account and no cloud sync. The JSON backup is the phone-loss answer, and it
+never contains a locked note as plaintext.
+
+## Links
+
+- [Home](https://lockpad.try-dabble.com/): The notepad
+- [Guide](https://try-dabble.com/en/guides/lockpad): How Lockpad works
+- [Privacy](https://lockpad.try-dabble.com/privacy.html)
+- [Terms](https://lockpad.try-dabble.com/terms.html)
+
+## Features
+
+- Multi-note list with create / rename / delete, editor with autosave
+- Per-note lock with PIN or password (PBKDF2-SHA-256 ≥100k iterations, AES-GCM); locked note = `{ ciphertext, iv, salt, kdf }`, no plaintext body
+- Unlock modal with wrong-PIN backoff (1s, 2s, 4s … capped)
+- Optional auto-lock after idle time and / or when the tab is hidden
+- Search on titles and tags; a locked note's body is never opened for search
+- Optional tags and colours
+- JSON export / import (`{ app: "lockpad", version: 1, notes, prefs }`) with locked blobs intact; import merges, never wipes
+- No photo / voice attachments (so no attachment paywall); "delete all" only behind a typed confirm
+- Local-only amber banner; ko / en / ja / zh via `?lang=`
+- No login, no tool-UI ads, no subscription, no IAP

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Lockpad</title>
+  <meta name="description" content="Privacy policy for Lockpad. Your notes stay on this device; locked notes are stored as ciphertext only." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <style>
+    :root { color-scheme: light; --bg:#f5efe6; --fg:#1a1625; --muted:#57534e; --card:#fbf7f0; --accent:#b45309; --line:#e7dfd2; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    a { color: var(--accent); }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    p, li { color: var(--muted); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 1.25rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="/">← Lockpad</a></p>
+    <h1>Privacy Policy</h1>
+    <div class="card">
+      <p>Lockpad is local-first. Your notes (title, body, tags, colour), the auto-lock preferences and the wrong-PIN backoff counters stay in this browser on this device. Language uses this browser and the shared <code>td_lang</code> cookie on try-dabble.com.</p>
+      <p>Nothing you enter is uploaded. There are no accounts, no sign-in, no cloud sync and no server-side copy of your notes. The app never knows what you wrote beyond what stays on this device.</p>
+      <p><strong>Locked notes:</strong> when you lock a note, its body is encrypted on this device with the browser's Web Crypto API (PBKDF2-SHA-256 key derivation, AES-GCM encryption) and only the ciphertext, a random salt, the iv and the KDF parameters are stored. The PIN itself is never stored. A decrypted body lives only in memory for the current session and is dropped again on re-lock, auto-lock or when the page closes. There is no recovery path: a forgotten PIN means the ciphertext cannot be opened.</p>
+      <p><strong>Backups:</strong> “Export JSON” creates a file on your device through the browser's download. Locked notes are written to that file exactly as stored — ciphertext, salt and KDF parameters — never as plaintext. Where you keep that file is up to you; the app never sends it anywhere.</p>
+      <p><strong>Advertising and payments:</strong> This app has no ads on the tool UI, no in-app purchases, no subscription and no Plus tier. It loads no advertising scripts and sets no third-party advertising cookies. The only cookie is <code>td_lang</code>, which remembers your language across try-dabble.com apps.</p>
+      <p><strong>Feedback:</strong> the Guide &amp; Feedback button opens the try-dabble.com hub; anything you send there is covered by the hub's own policy. Nothing from your notes is attached.</p>
+      <p>Last updated: 2026-09-16</p>
+    </div>
+  </main>
+</body>
+</html>
