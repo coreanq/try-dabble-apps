@@ -1,0 +1,42 @@
+# Listenpad / 리슨패드
+
+> A free, ad-free local language-listening practice player with no account
+> and no subscription. Pick one audio file on this device and drill it:
+> one-tap 1 / 2 / 3 / 4 second rewind and skip, A–B loop, playback speed
+> from 0.5× to 1.5×, a scrubber with time labels, and listening notes kept
+> per file name. Big buttons sized for a phone.
+
+This is a Progressive Web App (PWA) hosted at https://listenpad.try-dabble.com/
+The audio file is opened straight from this device and is never uploaded;
+settings, loop points and notes stay in this browser on this device. No
+accounts, no sign-in, no server-side copy, no ads, no in-app purchases, no
+recurring charge. Rewind, loop and speed are all free. It is a drill player
+for one file at a time, not a music library: no playlists, albums or queue.
+Export a JSON backup (settings and notes only, no audio) to survive a
+reinstall or move phones.
+
+## Pages
+
+- [Home](https://listenpad.try-dabble.com/): The player
+- [Privacy](https://listenpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://listenpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/listenpad): How-to on try-dabble.com
+
+## Features
+
+- Pick a file or drop one: MP3, M4A/AAC, WAV, OGG, FLAC and anything else the browser can play
+- Big Play / Pause
+- Four one-tap rewind buttons (1s, 2s, 3s, 4s) and four matching skip-forward buttons
+- A–B loop: Set A, Set B, Clear; playback jumps back to A when it reaches B; markers on the scrubber
+- Speed chips 0.5× to 1.5× with Reset 1×; pitch is preserved
+- Scrubber with current time and duration
+- Listening notes per file name, autosaved on this device
+- Last rewind amount, speed and A–B points remembered; notes return when the same file name is opened again
+- Keyboard: Space plays / pauses, ← and → rewind / skip by the last amount tapped
+- On iPhone Safari the file must be picked again after a reload; notes and loop points for that file name come back
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker (cache listenpad-v1)
+
+## Contact
+
+Part of try-dabble.com dabble tools.
