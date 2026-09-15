@@ -1,0 +1,41 @@
+# Progresspad / 프로그레스패드
+
+> A free, ad-free local progress pad for tasks that take days or weeks, with
+> no account and no subscription. Add a task, set a target in hours (say
+> 40h) or in percent, and log the focus time afterwards by hand: a date and
+> a number of minutes. No live timer has to run, and a missed day never
+> wilts or resets anything. Progress bar, totals, an optional plant or
+> blocks stage that only grows, editable per-task history, several tasks,
+> JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://progresspad.try-dabble.com/
+Tasks, their focus logs and the stage preference stay in this browser on
+this device. No accounts, no sign-in, no cloud sync, no uploads, no server
+storage, no ads, no in-app purchases, no subscription and no Plus tier.
+The timer is optional: logging by hand is the primary path. Works on
+Android and any modern browser, not only Apple devices. Export a JSON
+backup to survive a reinstall or move phones.
+
+## Pages
+
+- [Home](https://progresspad.try-dabble.com/): The progress pad
+- [Privacy](https://progresspad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://progresspad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/progresspad): How-to on try-dabble.com
+
+## Features
+
+- Several tasks: create, rename, change the target, delete
+- Target per task in HOURS (e.g. 40h) or in PERCENT (default 100%); percent tasks convert logged minutes with a shared "minutes per 1%" rate (default 30 min = 1%)
+- "Log focus": minutes (whole number) + date (defaults to today, any past day allowed) + optional note; quick-add chips for 15 / 25 / 30 / 45 / 60 / 90 minutes
+- Progress bar with percent, logged total vs target, time or percent still to go; "Target reached" at 100% and a friendly over-target line past it
+- Optional stage visual: plant (seed → sprout → leaves → bud → bloom) or stacked blocks at 0 / 25 / 50 / 75 / 100%; it only grows, never wilts or dies; can be switched off without losing data
+- Optional simple timer: start / stop, then a prompt to save the minutes to today; skipping saves nothing and changes nothing
+- Per-task history list with edit and delete; progress recomputes immediately
+- JSON export / import (`{ app: "progresspad", version: 1, tasks, prefs }`; also accepts a bare array or alternate key names)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

@@ -1,0 +1,663 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Progresspad / 프로그레스패드 — a soft greenhouse on a clay-garden bench.
+  Mist-green paper #eef6f0, deep forest ink #14532d, clay terracotta #b45309
+  for the progress fill, soft leaf #4ade80 / #16a34a for growth, warm stone
+  #78716c for muted copy, cream cards #fafaf9, a gentle sky mist #bae6fd for
+  the timer. Rounded, light, nothing dark. Never a sibling app's parchment,
+  indigo, lavender, mint or sky-paper, and never Forest's shame-dark.
+*/
+
+@theme {
+  --color-paper: #eef6f0;
+  --color-paper-2: #e2efe5;
+  --color-card: #fafaf9;
+  --color-ink: #14532d;
+  --color-ink-muted: #78716c;
+  --color-line: #d6e5da;
+  --color-line-2: #bcd3c3;
+  --color-clay: #b45309;
+  --color-clay-deep: #92400e;
+  --color-clay-soft: #fdebd8;
+  --color-leaf: #16a34a;
+  --color-leaf-bright: #4ade80;
+  --color-leaf-soft: #dcfce7;
+  --color-stone: #78716c;
+  --color-stone-soft: #f5f5f4;
+  --color-sky: #bae6fd;
+  --color-sky-ink: #0c4a6e;
+  --color-rose: #be123c;
+  --color-rose-soft: #ffe4e6;
+  --color-notice: #fde68a;
+  --color-notice-ink: #4a2e05;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+  --stack-display: "Avenir Next", "Nunito", "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans",
+    "Segoe UI", system-ui, -apple-system, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI", system-ui,
+    -apple-system, sans-serif;
+  --stack-figures: "Avenir Next", "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --pp-paper: #eef6f0;
+  --pp-paper-2: #e2efe5;
+  --pp-card: #fafaf9;
+  --pp-ink: #14532d;
+  --pp-muted: #78716c;
+  --pp-line: #d6e5da;
+  --pp-line-2: #bcd3c3;
+  --pp-clay: #b45309;
+  --pp-clay-deep: #92400e;
+  --pp-clay-soft: #fdebd8;
+  --pp-leaf: #16a34a;
+  --pp-leaf-bright: #4ade80;
+  --pp-leaf-soft: #dcfce7;
+  --pp-stone: #78716c;
+  --pp-stone-soft: #f5f5f4;
+  --pp-sky: #bae6fd;
+  --pp-sky-soft: #e0f2fe;
+  --pp-sky-ink: #0c4a6e;
+  --pp-rose: #be123c;
+  --pp-rose-soft: #ffe4e6;
+  --pp-shadow: rgba(20, 83, 45, 0.08);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --background: var(--pp-paper);
+  --foreground: var(--pp-ink);
+  --card: var(--pp-card);
+  --card-foreground: var(--pp-ink);
+  --popover: var(--pp-card);
+  --popover-foreground: var(--pp-ink);
+  --primary: var(--pp-clay);
+  --primary-foreground: #ffffff;
+  --secondary: var(--pp-paper-2);
+  --secondary-foreground: var(--pp-ink);
+  --muted: var(--pp-paper-2);
+  --muted-foreground: var(--pp-muted);
+  --accent: var(--pp-leaf-soft);
+  --accent-foreground: var(--pp-ink);
+  --destructive: var(--pp-rose);
+  --border: var(--pp-line);
+  --input: var(--pp-line);
+  --ring: var(--pp-leaf);
+  --radius: 1.1rem;
+}
+
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(820px 420px at -5% -10%, rgba(74, 222, 128, 0.18), transparent 55%),
+    radial-gradient(640px 360px at 105% 5%, rgba(186, 230, 253, 0.55), transparent 55%),
+    radial-gradient(520px 320px at 50% 110%, rgba(180, 83, 9, 0.08), transparent 60%),
+    var(--pp-paper);
+  color: var(--pp-ink);
+  font-family: var(--stack-ui);
+}
+
+input, textarea, select, button {
+  font-size: 16px;
+  touch-action: manipulation;
+  font-family: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@layer components {
+  .pp-app {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.7rem 0.9rem calc(5.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    color: var(--pp-ink);
+  }
+
+  .pp-notice {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-notice-ink);
+    background: var(--color-notice);
+    border: 1px solid #f3d060;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px var(--pp-shadow);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .pp-masthead { display: grid; gap: 0.35rem; padding: 0.2rem 0 0.1rem; }
+  .pp-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+  }
+  .pp-mark {
+    display: block;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 3px 6px var(--pp-shadow));
+  }
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--pp-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pp-tagline {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--pp-muted);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .pp-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--pp-card);
+    color: var(--pp-ink);
+    border: 1px solid var(--pp-line-2);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  /* cards */
+  .pp-card {
+    background: var(--pp-card);
+    border: 1px solid var(--pp-line);
+    border-radius: 18px;
+    padding: 0.9rem 0.85rem;
+    display: grid;
+    gap: 0.65rem;
+    box-shadow: 0 8px 22px var(--pp-shadow);
+    min-width: 0;
+  }
+  .pp-card h2 {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .pp-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .pp-hint {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--pp-muted);
+  }
+  .pp-how {
+    border-left: 4px solid var(--pp-leaf);
+    background: var(--pp-card);
+    padding: 0.65rem 0.8rem;
+    border-radius: 0 14px 14px 0;
+    display: grid;
+    gap: 0.2rem;
+  }
+  .pp-how b { font-family: var(--stack-display); font-size: 0.98rem; }
+
+  /* task chips */
+  .pp-tasks {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding: 0.1rem 0 0.25rem;
+    margin: 0;
+    list-style: none;
+    scrollbar-width: thin;
+  }
+  .pp-task-tab {
+    flex: 0 0 auto;
+    max-width: 14rem;
+    border: 1px solid var(--pp-line-2);
+    background: var(--pp-card);
+    color: var(--pp-muted);
+    border-radius: 999px;
+    padding: 0.42rem 0.85rem;
+    font-weight: 700;
+    font-size: 0.86rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pp-task-tab .pp-mini {
+    width: 2.2rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: var(--pp-paper-2);
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+  .pp-task-tab .pp-mini > i { display: block; height: 100%; background: var(--pp-clay); border-radius: 999px; }
+  .pp-task-tab.is-on {
+    background: var(--pp-ink);
+    border-color: var(--pp-ink);
+    color: #f0fdf4;
+  }
+  .pp-task-tab.is-on .pp-mini { background: rgba(255, 255, 255, 0.25); }
+  .pp-task-tab.is-on .pp-mini > i { background: var(--pp-leaf-bright); }
+  .pp-task-tab.is-new {
+    border-style: dashed;
+    color: var(--pp-clay-deep);
+  }
+
+  /* the bench (active task) */
+  .pp-bench {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(74, 222, 128, 0.10), transparent 40%),
+      var(--pp-card);
+    border: 1px solid var(--pp-line);
+    border-radius: 22px;
+    padding: 0.95rem 0.9rem 0.9rem;
+    display: grid;
+    gap: 0.6rem;
+    box-shadow: 0 12px 28px var(--pp-shadow);
+    min-width: 0;
+  }
+  .pp-bench-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .pp-bench-title {
+    margin: 0;
+    flex: 1 1 12rem;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.28rem;
+    font-weight: 800;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .pp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    white-space: nowrap;
+    background: var(--pp-clay-soft);
+    color: var(--pp-clay-deep);
+    border: 1px solid #f6d3b1;
+  }
+  .pp-badge.is-percent { background: var(--pp-sky-soft); color: var(--pp-sky-ink); border-color: #bae6fd; }
+  .pp-badge.is-leaf { background: var(--pp-leaf-soft); color: var(--pp-ink); border-color: #bbf7d0; }
+  .pp-bench-body {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.6rem;
+    align-items: end;
+    min-width: 0;
+  }
+  .pp-bench-body.no-stage { grid-template-columns: 1fr; }
+  .pp-count {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .pp-count-label { font-size: 0.74rem; font-weight: 800; color: var(--pp-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .pp-count-big {
+    margin: 0;
+    font-family: var(--stack-figures);
+    font-size: 2.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--pp-clay-deep);
+    overflow-wrap: anywhere;
+  }
+  .pp-bench.is-done .pp-count-big { color: var(--pp-ink); }
+  .pp-count-of {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--pp-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .pp-bar {
+    height: 0.85rem;
+    border-radius: 999px;
+    background: var(--pp-paper-2);
+    border: 1px solid var(--pp-line);
+    overflow: hidden;
+  }
+  .pp-bar > span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--pp-clay), #d97706);
+    border-radius: 999px;
+    transition: width 260ms ease-out;
+  }
+  .pp-bar.is-done > span { background: linear-gradient(90deg, var(--pp-leaf), var(--pp-leaf-bright)); }
+  .pp-bar-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--pp-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .pp-bar-row .is-leaf { color: var(--pp-ink); }
+  .pp-over {
+    margin: 0;
+    padding: 0.5rem 0.65rem;
+    border-radius: 12px;
+    background: var(--pp-leaf-soft);
+    border: 1px solid #bbf7d0;
+    color: var(--pp-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .pp-bench-actions {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.45rem;
+    align-items: center;
+  }
+
+  /* stage visual */
+  .pp-stage {
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    width: 6.2rem;
+    min-width: 0;
+  }
+  .pp-stage svg { width: 5.6rem; height: 5.6rem; display: block; }
+  .pp-stage-name { font-size: 0.72rem; font-weight: 800; color: var(--pp-ink); }
+  .pp-stage-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--pp-muted);
+  }
+  .pp-seg {
+    display: inline-grid;
+    grid-auto-flow: column;
+    border: 1px solid var(--pp-line-2);
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--pp-paper);
+  }
+  .pp-seg button {
+    border: 0;
+    background: transparent;
+    color: var(--pp-muted);
+    padding: 0.4rem 0.75rem;
+    font-weight: 800;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .pp-seg button.is-on {
+    background: var(--pp-ink);
+    color: #f0fdf4;
+  }
+
+  /* timer */
+  .pp-timer {
+    border: 1px solid #bae6fd;
+    background: linear-gradient(180deg, var(--pp-sky-soft), var(--pp-card));
+    border-radius: 18px;
+    padding: 0.85rem 0.85rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .pp-timer h2 { margin: 0; font-family: var(--stack-display); font-size: 1rem; font-weight: 800; color: var(--pp-sky-ink); }
+  .pp-timer-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+  .pp-timer-clock {
+    font-family: var(--stack-figures);
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--pp-sky-ink);
+  }
+
+  .pp-field, .pp-card label.pp-field {
+    display: grid;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--pp-muted);
+    min-width: 0;
+  }
+  .pp-input, .pp-select-block, .pp-textarea {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--pp-line-2);
+    border-radius: 12px;
+    background: var(--pp-paper);
+    color: var(--pp-ink);
+    padding: 0.55rem 0.65rem;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .pp-input.is-big {
+    font-family: var(--stack-figures);
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding: 0.6rem 0.75rem;
+  }
+  .pp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .pp-row { display: flex; gap: 0.45rem; align-items: center; min-width: 0; flex-wrap: wrap; }
+  .pp-row .pp-input { flex: 1; }
+  .pp-quick { display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center; }
+  .pp-quick span { font-size: 0.74rem; font-weight: 800; color: var(--pp-muted); }
+
+  .pp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid var(--pp-line-2);
+    padding: 0.5rem 0.9rem;
+    font-weight: 800;
+    font-size: 0.92rem;
+    background: var(--pp-card);
+    color: var(--pp-ink);
+    white-space: nowrap;
+  }
+  .pp-btn:disabled { opacity: 0.4; }
+  .pp-btn-sm { padding: 0.36rem 0.7rem; font-size: 0.82rem; }
+  .pp-btn-big { padding: 0.85rem 1rem; font-size: 1.08rem; }
+  .pp-btn-primary {
+    background: var(--pp-clay);
+    border-color: var(--pp-clay-deep);
+    color: #fff;
+    box-shadow: 0 2px 0 var(--pp-clay-deep);
+  }
+  .pp-btn-leaf {
+    background: var(--pp-leaf-soft);
+    border-color: #bbf7d0;
+    color: var(--pp-ink);
+  }
+  .pp-btn-sky {
+    background: var(--pp-sky);
+    border-color: #7dd3fc;
+    color: var(--pp-sky-ink);
+  }
+  .pp-btn-quiet { background: var(--pp-paper-2); }
+  .pp-btn-danger {
+    background: var(--pp-rose-soft);
+    border-color: #fecdd3;
+    color: #9f1239;
+  }
+  .pp-actions { display: flex; justify-content: flex-end; gap: 0.45rem; flex-wrap: wrap; }
+  .pp-dialog-title { font-family: var(--stack-display); font-weight: 800; }
+
+  .pp-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
+  }
+  .pp-tab {
+    border: 1px solid var(--pp-line-2);
+    background: var(--pp-card);
+    color: var(--pp-muted);
+    border-radius: 999px;
+    padding: 0.45rem 0.2rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .pp-tab.is-on {
+    background: var(--pp-ink);
+    border-color: var(--pp-ink);
+    color: #f0fdf4;
+  }
+
+  /* history list */
+  .pp-list { display: grid; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+  .pp-entry {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 0.4rem 0.5rem;
+    align-items: center;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--pp-line);
+    border-radius: 12px;
+    background: var(--pp-paper);
+    font-size: 0.85rem;
+    min-width: 0;
+  }
+  .pp-entry-main { display: grid; gap: 0.1rem; min-width: 0; }
+  .pp-entry-main b { font-size: 0.9rem; }
+  .pp-entry-main span { font-size: 0.74rem; color: var(--pp-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pp-entry-min {
+    font-family: var(--stack-figures);
+    font-size: 0.98rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--pp-clay-deep);
+    white-space: nowrap;
+  }
+
+  .pp-empty {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.9rem;
+    border: 1px dashed var(--pp-line-2);
+    border-radius: 14px;
+    background: var(--pp-paper);
+  }
+
+  .pp-promises { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .pp-promise {
+    display: inline-block;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: var(--pp-leaf-soft);
+    color: var(--pp-ink);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .pp-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.25rem 0 0.5rem;
+    font-size: 0.8rem;
+    color: var(--pp-muted);
+  }
+  .pp-footer a { color: var(--pp-clay-deep); }
+  .pp-error { margin: 0; color: #9f1239; font-size: 0.82rem; font-weight: 700; }
+}
+
+@media (min-width: 520px) {
+  .pp-app { max-width: 34rem; padding-top: 1rem; }
+}
+@media (max-width: 390px) {
+  #brand-title { font-size: 1.3rem; }
+  .pp-select { max-width: 6.6rem; padding: 0.34rem 0.6rem; }
+  .pp-tab { font-size: 0.78rem; }
+  .pp-count-big { font-size: 1.9rem; }
+  .pp-stage { width: 5.2rem; }
+  .pp-stage svg { width: 4.8rem; height: 4.8rem; }
+  .pp-bench-actions { grid-template-columns: 1fr 1fr; }
+  .pp-bench-actions .pp-btn-big { grid-column: 1 / -1; }
+  .pp-entry { grid-template-columns: 1fr auto; }
+  .pp-entry .pp-btn { grid-column: span 1; }
+}

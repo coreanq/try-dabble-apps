@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="naver-site-verification" content="cb50b4906a09539a5c0ede24022028167b4f7751" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>프로그레스패드</title>
+  <meta name="description" content="로그인도 광고도 없는 무료 로컬 장기 과제 진행 기록. 논문, 자격증 공부, 사이드 프로젝트처럼 며칠·몇 주 걸리는 과제를 추가하고 목표를 시간(예: 40시간) 또는 퍼센트로 정합니다. 집중한 시간은 나중에 날짜와 분으로 직접 기록하면 됩니다. 실시간 타이머를 켜 둘 필요가 없고, 하루 빠져도 아무것도 시들거나 죽지 않습니다. 진행 막대와 합계, 선택적 식물·블록 스테이지, 과제별 기록 목록(수정·삭제), 선택적 간단 타이머, 여러 과제, JSON 내보내기·불러오기, 안드로이드와 모든 브라우저에서 되는 오프라인 PWA. 계정 없음, 광고 없음, 구독 없음. 데이터는 이 기기에만." />
+  <meta name="theme-color" content="#eef6f0" />
+  <meta name="application-name" content="프로그레스패드" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="프로그레스패드" />
+  <link rel="canonical" href="https://progresspad.try-dabble.com/" />
+  <link rel="alternate" hreflang="ko" href="https://progresspad.try-dabble.com/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://progresspad.try-dabble.com/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://progresspad.try-dabble.com/?lang=ja" />
+  <link rel="alternate" hreflang="zh" href="https://progresspad.try-dabble.com/?lang=zh" />
+  <link rel="alternate" hreflang="x-default" href="https://progresspad.try-dabble.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Progresspad" />
+  <meta property="og:url" content="https://progresspad.try-dabble.com/" />
+  <meta property="og:title" content="프로그레스패드" />
+  <meta property="og:description" content="로그인도 광고도 없는 무료 로컬 장기 과제 진행 기록. 논문, 자격증 공부, 사이드 프로젝트처럼 며칠·몇 주 걸리는 과제를 추가하고 목표를 시간(예: 40시간) 또는 퍼센트로 정합니다. 집중한 시간은 나중에 날짜와 분으로 직접 기록하면 됩니다. 실시간 타이머를 켜 둘 필요가 없고, 하루 빠져도 아무것도 시들거나 죽지 않습니다. 진행 막대와 합계, 선택적 식물·블록 스테이지, 과제별 기록 목록(수정·삭제), 선택적 간단 타이머, 여러 과제, JSON 내보내기·불러오기, 안드로이드와 모든 브라우저에서 되는 오프라인 PWA. 계정 없음, 광고 없음, 구독 없음. 데이터는 이 기기에만." />
+  <meta property="og:image" content="https://progresspad.try-dabble.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="프로그레스패드" />
+  <meta name="twitter:description" content="로그인도 광고도 없는 무료 로컬 장기 과제 진행 기록. 논문, 자격증 공부, 사이드 프로젝트처럼 며칠·몇 주 걸리는 과제를 추가하고 목표를 시간(예: 40시간) 또는 퍼센트로 정합니다. 집중한 시간은 나중에 날짜와 분으로 직접 기록하면 됩니다. 실시간 타이머를 켜 둘 필요가 없고, 하루 빠져도 아무것도 시들거나 죽지 않습니다. 진행 막대와 합계, 선택적 식물·블록 스테이지, 과제별 기록 목록(수정·삭제), 선택적 간단 타이머, 여러 과제, JSON 내보내기·불러오기, 안드로이드와 모든 브라우저에서 되는 오프라인 PWA. 계정 없음, 광고 없음, 구독 없음. 데이터는 이 기기에만." />
+  <meta name="twitter:image" content="https://progresspad.try-dabble.com/og-image.png" />
+
+  <link rel="icon" href="https://progresspad.try-dabble.com/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://progresspad.try-dabble.com/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="https://progresspad.try-dabble.com/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+<body>
+  <!--
+    Everything inside #root is the no-JS shell. The Worker (src/og-lang.ts)
+    rewrites #local-only, h1#brand-title and .pp-tagline here before any
+    script runs, so crawlers and JS-off readers get the requested ?lang=
+    immediately. React replaces this subtree with the identical masthead on
+    mount. No ad script lives in this file or anywhere in the bundle.
+  -->
+  <div id="root">
+    <div class="pp-app">
+      <p class="pp-notice" id="local-only" role="note">이 앱의 데이터는 이 기기에만 저장됩니다. 로그인·광고 없음. 강제 타이머 없이 손으로 기록하면 됩니다.</p>
+      <header class="pp-masthead">
+        <div class="pp-masthead-row">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="pp-mark">
+            <rect x="6" y="6" width="52" height="52" rx="14" fill="#fafaf9" stroke="#14532d" stroke-width="2.2"/>
+            <path d="M20 46c0-9 4-15 12-18" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M32 28c-6-1-10-6-10-12 6 0 10 4 10 12z" fill="#4ade80" stroke="#16a34a" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M32 34c6-1 11-5 12-11-6-1-11 3-12 11z" fill="#4ade80" stroke="#16a34a" stroke-width="1.6" stroke-linejoin="round"/>
+            <rect x="14" y="46" width="36" height="7" rx="3.5" fill="#e7e5e4"/>
+            <rect x="14" y="46" width="24" height="7" rx="3.5" fill="#b45309"/>
+          </svg>
+          <h1 id="brand-title">프로그레스패드</h1>
+        </div>
+        <p class="pp-tagline">무료 로컬 장기 과제 진행 기록. 시간 또는 % 목표, 날짜별 집중 분 기록, 진행 막대. 선택적 식물·블록 스테이지 — 강제 타이머·시드는 나무 없음. 여러 과제, JSON 백업. 계정 없음. 광고 없음.</p>
+      </header>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
