@@ -1,0 +1,27 @@
+# Ondaypad
+
+> A free, ad-free local nostalgia calendar with no account and no subscription.
+> Open a month grid, leave notes on any day, and open “this day across years”
+> to stack every year’s notes for the same MM-DD. Navigate any date. Export
+> and import JSON so a lost phone is not the end. Works as an offline PWA on
+> Android and any browser.
+
+Notes and preferences stay in this browser on this device. There is no
+account and no cloud sync. The JSON backup is the phone-loss answer.
+
+## Links
+
+- [Home](https://ondaypad.try-dabble.com/): The nostalgia calendar
+- [Guide](https://try-dabble.com/en/guides/ondaypad): How Ondaypad works
+- [Privacy](https://ondaypad.try-dabble.com/privacy.html)
+- [Terms](https://ondaypad.try-dabble.com/terms.html)
+
+## Features
+
+- Month calendar grid with prev/next, today highlight, days-with-notes marked
+- Notes per calendar day (YYYY-MM-DD): optional title + body; multiple notes per day allowed
+- “This day across years” stack for any MM-DD (newest or oldest year first)
+- Navigate any month / year / date
+- JSON export / import (`{ app: "ondaypad", version: 1, notes, prefs }`)
+- Local-only amber banner; ko / en / ja / zh via `?lang=`
+- No login, no tool-UI ads, no subscription

@@ -1,0 +1,517 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Ondaypad / 온데이패드 — a nostalgia calendar on faded photo paper.
+  Soft apricot paper #fff7ed, warm terracotta ink #9a3412, faded photo sepia
+  #c4a484 / #a18072 for the calendar's binder rings and quiet markers, cream
+  card #fefce8, a soft rose accent #fb7185 for a marked memory day, a gentle
+  gold ring #fbbf24 for "today", sage quiet #78716c for muted copy. Rounded,
+  warm, paper-like. Never a sibling app's dark theme, parchment, greenhouse
+  green, mint, lavender or indigo.
+*/
+
+@theme {
+  --color-paper: #fff7ed;
+  --color-paper-2: #fef1e0;
+  --color-card: #fefce8;
+  --color-ink: #9a3412;
+  --color-ink-muted: #78716c;
+  --color-line: #f0ddc2;
+  --color-line-2: #e2c49b;
+  --color-sepia: #c4a484;
+  --color-sepia-deep: #a18072;
+  --color-sepia-soft: #f6ecdd;
+  --color-rose: #fb7185;
+  --color-rose-deep: #e11d48;
+  --color-rose-soft: #ffe4e6;
+  --color-gold: #fbbf24;
+  --color-gold-deep: #b45309;
+  --color-gold-soft: #fef3c7;
+  --color-stone: #78716c;
+  --color-stone-soft: #f5f5f4;
+  --color-notice: #fde68a;
+  --color-notice-ink: #4a2e05;
+}
+
+@theme inline {
+  --font-sans: var(--stack-ui);
+  --font-heading: var(--stack-display);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
+}
+
+:root {
+  color-scheme: light;
+  --stack-display: "Avenir Next", "Nunito", "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans",
+    "Segoe UI", system-ui, -apple-system, sans-serif;
+  --stack-ui: "Apple SD Gothic Neo", "Noto Sans KR", "Hiragino Sans", "Segoe UI", system-ui,
+    -apple-system, sans-serif;
+  --stack-figures: "Avenir Next", "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --od-paper: #fff7ed;
+  --od-paper-2: #fef1e0;
+  --od-card: #fefce8;
+  --od-ink: #9a3412;
+  --od-muted: #78716c;
+  --od-line: #f0ddc2;
+  --od-line-2: #e2c49b;
+  --od-sepia: #c4a484;
+  --od-sepia-deep: #a18072;
+  --od-sepia-soft: #f6ecdd;
+  --od-rose: #fb7185;
+  --od-rose-deep: #e11d48;
+  --od-rose-soft: #ffe4e6;
+  --od-gold: #fbbf24;
+  --od-gold-deep: #b45309;
+  --od-gold-soft: #fef3c7;
+  --od-stone: #78716c;
+  --od-stone-soft: #f5f5f4;
+  --od-shadow: rgba(154, 52, 18, 0.1);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --background: var(--od-paper);
+  --foreground: var(--od-ink);
+  --card: var(--od-card);
+  --card-foreground: var(--od-ink);
+  --popover: var(--od-card);
+  --popover-foreground: var(--od-ink);
+  --primary: var(--od-ink);
+  --primary-foreground: #fff7ed;
+  --secondary: var(--od-paper-2);
+  --secondary-foreground: var(--od-ink);
+  --muted: var(--od-paper-2);
+  --muted-foreground: var(--od-muted);
+  --accent: var(--od-gold-soft);
+  --accent-foreground: var(--od-ink);
+  --destructive: var(--od-rose-deep);
+  --border: var(--od-line);
+  --input: var(--od-line);
+  --ring: var(--od-gold);
+  --radius: 1.1rem;
+}
+
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(820px 420px at -5% -10%, rgba(251, 191, 36, 0.16), transparent 55%),
+    radial-gradient(640px 360px at 105% 5%, rgba(196, 164, 132, 0.28), transparent 55%),
+    radial-gradient(520px 320px at 50% 110%, rgba(251, 113, 133, 0.10), transparent 60%),
+    var(--od-paper);
+  color: var(--od-ink);
+  font-family: var(--stack-ui);
+}
+
+input, textarea, select, button {
+  font-size: 16px;
+  touch-action: manipulation;
+  font-family: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@layer components {
+  .od-app {
+    max-width: 34rem;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0.7rem 0.9rem calc(5.5rem + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    color: var(--od-ink);
+  }
+
+  .od-notice {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-notice-ink);
+    background: var(--color-notice);
+    border: 1px solid #f3d060;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px var(--od-shadow);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .od-masthead { display: grid; gap: 0.35rem; padding: 0.2rem 0 0.1rem; }
+  .od-masthead-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    min-width: 0;
+  }
+  .od-mark {
+    display: block;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 3px 6px var(--od-shadow));
+  }
+  #brand-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--stack-display);
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--od-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .od-tagline {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--od-muted);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .od-select {
+    appearance: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 7.25rem;
+    background: var(--od-card);
+    color: var(--od-ink);
+    border: 1px solid var(--od-line-2);
+    border-radius: 999px;
+    padding: 0.38rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  /* cards */
+  .od-card {
+    background: var(--od-card);
+    border: 1px solid var(--od-line);
+    border-radius: 18px;
+    padding: 0.9rem 0.85rem;
+    display: grid;
+    gap: 0.65rem;
+    box-shadow: 0 8px 22px var(--od-shadow);
+    min-width: 0;
+  }
+  .od-card h2 {
+    margin: 0;
+    font-family: var(--stack-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .od-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .od-hint {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--od-muted);
+  }
+  .od-how {
+    border-left: 4px solid var(--od-gold);
+    background: var(--od-card);
+    padding: 0.65rem 0.8rem;
+    border-radius: 0 14px 14px 0;
+    display: grid;
+    gap: 0.2rem;
+  }
+  .od-how b { font-family: var(--stack-display); font-size: 0.98rem; }
+
+  /* calendar */
+  .od-cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+  .od-cal-month {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 8rem;
+    display: grid;
+    justify-items: center;
+    cursor: pointer;
+  }
+  .od-cal-month-label {
+    font-family: var(--stack-display);
+    font-size: 1.02rem;
+    font-weight: 800;
+    color: var(--od-ink);
+    white-space: nowrap;
+  }
+  .od-cal-month-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .od-cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--od-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .od-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.2rem;
+  }
+  .od-cal-pad { display: block; }
+  .od-cal-day {
+    position: relative;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: var(--od-paper-2);
+    color: var(--od-ink);
+    font-weight: 700;
+    font-size: 0.88rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .od-cal-day.is-today {
+    border-color: var(--od-gold);
+    box-shadow: inset 0 0 0 2px var(--od-gold-soft);
+  }
+  .od-cal-day.is-selected {
+    background: var(--od-ink);
+    color: var(--od-paper);
+    border-color: var(--od-ink);
+  }
+  .od-cal-dot {
+    position: absolute;
+    bottom: 0.28rem;
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 999px;
+    background: var(--od-rose);
+  }
+  .od-cal-day.is-selected .od-cal-dot { background: var(--od-gold); }
+
+  /* tabs */
+  .od-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
+  }
+  .od-tab {
+    border: 1px solid var(--od-line-2);
+    background: var(--od-card);
+    color: var(--od-muted);
+    border-radius: 999px;
+    padding: 0.45rem 0.2rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .od-tab.is-on {
+    background: var(--od-ink);
+    border-color: var(--od-ink);
+    color: var(--od-paper);
+  }
+
+  /* notes list */
+  .od-list { display: grid; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+  .od-entry {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.35rem 0.5rem;
+    align-items: start;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--od-line);
+    border-radius: 12px;
+    background: var(--od-paper);
+    font-size: 0.85rem;
+    min-width: 0;
+  }
+  .od-entry-main { display: grid; gap: 0.15rem; min-width: 0; overflow-wrap: anywhere; }
+  .od-entry-main b { font-size: 0.92rem; color: var(--od-ink); }
+  .od-entry-main span { font-size: 0.84rem; color: var(--od-muted); white-space: pre-wrap; }
+
+  .od-stack { display: grid; gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
+  .od-stack-year {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.6rem 0.6rem;
+    border: 1px solid var(--od-line-2);
+    border-radius: 14px;
+    background: var(--od-sepia-soft);
+  }
+  .od-stack-year-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .od-stack-year-head b {
+    font-family: var(--stack-figures);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--od-sepia-deep);
+  }
+
+  .od-empty {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.9rem;
+    border: 1px dashed var(--od-line-2);
+    border-radius: 14px;
+    background: var(--od-paper);
+  }
+
+  .od-field, .od-card label.od-field {
+    display: grid;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--od-muted);
+    min-width: 0;
+  }
+  .od-input, .od-select-block, .od-textarea {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--od-line-2);
+    border-radius: 12px;
+    background: var(--od-paper);
+    color: var(--od-ink);
+    padding: 0.55rem 0.65rem;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .od-textarea { resize: vertical; font-family: var(--stack-ui); font-weight: 500; line-height: 1.5; }
+
+  .od-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid var(--od-line-2);
+    padding: 0.5rem 0.9rem;
+    font-weight: 800;
+    font-size: 0.92rem;
+    background: var(--od-card);
+    color: var(--od-ink);
+    white-space: nowrap;
+  }
+  .od-btn:disabled { opacity: 0.4; }
+  .od-btn-sm { padding: 0.36rem 0.7rem; font-size: 0.82rem; }
+  .od-btn-primary {
+    background: var(--od-ink);
+    border-color: var(--od-ink);
+    color: var(--od-paper);
+    box-shadow: 0 2px 0 #7c2d12;
+  }
+  .od-btn-quiet { background: var(--od-paper-2); }
+  .od-btn-danger {
+    background: var(--od-rose-soft);
+    border-color: #fecdd3;
+    color: #9f1239;
+  }
+  .od-actions { display: flex; justify-content: flex-end; gap: 0.45rem; flex-wrap: wrap; }
+  .od-dialog-title { font-family: var(--stack-display); font-weight: 800; }
+
+  .od-seg {
+    display: inline-grid;
+    grid-auto-flow: column;
+    border: 1px solid var(--od-line-2);
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--od-paper);
+  }
+  .od-seg button {
+    border: 0;
+    background: transparent;
+    color: var(--od-muted);
+    padding: 0.4rem 0.75rem;
+    font-weight: 800;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .od-seg button.is-on {
+    background: var(--od-ink);
+    color: var(--od-paper);
+  }
+
+  .od-promises { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .od-promise {
+    display: inline-block;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: var(--od-gold-soft);
+    color: var(--od-gold-deep);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .od-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.25rem 0 0.5rem;
+    font-size: 0.8rem;
+    color: var(--od-muted);
+  }
+  .od-footer a { color: var(--od-ink); }
+  .od-error { margin: 0; color: #9f1239; font-size: 0.82rem; font-weight: 700; }
+}
+
+@media (min-width: 520px) {
+  .od-app { max-width: 34rem; padding-top: 1rem; }
+}
+@media (max-width: 390px) {
+  #brand-title { font-size: 1.3rem; }
+  .od-select { max-width: 6.6rem; padding: 0.34rem 0.6rem; }
+  .od-tab { font-size: 0.78rem; }
+  .od-entry { grid-template-columns: 1fr auto; }
+  .od-entry .od-btn { grid-column: span 1; }
+}
