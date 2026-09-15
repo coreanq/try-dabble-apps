@@ -1,0 +1,40 @@
+# Dictpad / 딕트패드
+
+> A free, ad-free local talk-to-text notepad with no account and no
+> subscription. Tap record and speak; the browser's speech recognition
+> dictates live into a notepad you can edit at any time. Voice punctuation
+> (period, comma, new line, new paragraph), a recognition-language picker,
+> several named notes, autosave, copy, TXT download, JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://dictpad.try-dabble.com/
+Notes and preferences stay in this browser on this device. No accounts, no
+sign-in, no uploads to the app's own server, no ads, no in-app purchases, no
+recurring charge. Speech recognition is the browser's own service (Web Speech API,
+SpeechRecognition / webkitSpeechRecognition); on most browsers that service
+needs an internet connection, and the notepad shell itself opens offline.
+It is an in-browser notepad, not a cross-app keyboard or system IME. Export
+a JSON backup to survive a reinstall or move phones.
+
+## Pages
+
+- [Home](https://dictpad.try-dabble.com/): The notepad
+- [Privacy](https://dictpad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://dictpad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/dictpad): How-to on try-dabble.com
+
+## Features
+
+- Record / Stop: continuous live dictation with interim text shown in a listening strip and final sentences appended to the notepad
+- Editable notepad (textarea) that autosaves on this device
+- Voice punctuation: period / full stop, comma, new line, new paragraph, question mark in Korean, English, Japanese and Chinese command words
+- Recognition-language picker (ko-KR, en-US, en-GB, ja-JP, zh-CN, zh-TW and more), separate from the UI language
+- Several named notes: new, rename, delete
+- Copy to clipboard, download .txt, JSON export / import (also accepts a plain list of notes)
+- Stop cleanly ends recognition so the next Record always works; the session restarts itself when the browser ends a segment
+- Screen kept awake while recording where the browser supports it
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker (cache dictpad-v1)
+
+## Contact
+
+Part of try-dabble.com dabble tools.
