@@ -1,0 +1,41 @@
+# Essaypad / 에세이패드
+
+> A free, ad-free local essay and writing-project word-progress tracker with
+> no account and no subscription. Add an essay, set a target word count and
+> an optional deadline, write anywhere else, then enter the new total here.
+> Progress bar, percentage, words to go, and a daily target computed from
+> the remaining words and the write days left (all days or weekdays only).
+> Back-dated updates, per-day calendar history, several essays, JSON backup.
+
+This is a Progressive Web App (PWA) hosted at https://essaypad.try-dabble.com/
+Essays, their per-day history and the write-days setting stay in this browser
+on this device. No accounts, no sign-in, no cloud sync, no uploads, no server
+storage, no ads, no in-app purchases, no subscription: unlimited essays are
+free. It is not an editor: you write in Docs, Word, Notion or on paper and
+type the new total here. Works on Android and any modern browser, not only
+Apple devices. Export a JSON backup to survive a reinstall or move phones.
+
+## Pages
+
+- [Home](https://essaypad.try-dabble.com/): The tracker
+- [Privacy](https://essaypad.try-dabble.com/privacy.html): Privacy policy
+- [Terms](https://essaypad.try-dabble.com/terms.html): Terms of use
+- [Guide](https://try-dabble.com/en/guides/essaypad): How-to on try-dabble.com
+
+## Features
+
+- Several essays / projects: create, rename, edit target and deadline, delete
+- Target word count (required) and optional, clearable deadline
+- "Update words": enter the new absolute total; optional date (defaults to today) to back-date; optional note
+- Progress bar with percent and words to go; "Target reached" when done
+- Over-limit warning when the count passes 110% of the target
+- Daily target = remaining words ÷ write days from today through the deadline; overdue and catch-up messaging past the deadline
+- Write-days toggle: all calendar days, or weekdays only (Saturday and Sunday skipped)
+- Per-day history: month calendar with the words added each day plus a list of totals and changes; entries can be deleted
+- JSON export / import (`{ app: "essaypad", version: 1, essays, prefs }`; also accepts a bare array or alternate key names)
+- Multi-language UI: Korean, English, Japanese, Chinese
+- Installable PWA with a network-first service worker
+
+## Contact
+
+Part of try-dabble.com dabble tools.

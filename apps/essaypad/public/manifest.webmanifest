@@ -1,0 +1,32 @@
+{
+  "name": "에세이패드",
+  "short_name": "에세이패드",
+  "description": "무료 로컬 에세이·프로젝트 단어 진행 기록. 목표 단어 수와 선택 마감일을 정하고, 쓴 단어 수를 직접 입력하면 진행률과 하루 목표가 보입니다. 주말 제외 옵션. JSON 백업. 계정 없음. 구독 없음.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f1e8",
+  "theme_color": "#f7f1e8",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
